@@ -1,0 +1,84 @@
+package routines;
+
+public class ContactProcessingVHP {
+	
+	/// ContactIVO -> EntityTypeVORef
+    public static EntityTypeVORef returnEntityTypeVORef(long idPartnerType) {
+    	if(idPartnerType == 1 || idPartnerType == 8 || idPartnerType == 9) {
+    		return new EntityTypeVORef(1, "Individual");
+    	} else if (idPartnerType == 2 || idPartnerType == 4 || idPartnerType == 5 || idPartnerType == 7 || idPartnerType == 10) {
+    		return new EntityTypeVORef(101, "Legal Entity");
+    	} else if (idPartnerType == 3 || idPartnerType == 6) {
+    		return new EntityTypeVORef(10003, "Self-employed");
+    	} else {    	
+    		return new EntityTypeVORef(-1, "");
+    	}
+    }
+    /// ContactEmailVO -> EmailTypeVORef    
+    public static EmailTypeVORef returnEmailTypeVORef(int entityTypeVORefID, int typeSeq) {    	
+    	if(entityTypeVORefID == 1 && typeSeq == 1) {    		
+    		return new EmailTypeVORef(1, "Private");
+    	}else if (entityTypeVORefID != 1 &&  typeSeq == 1) {
+    		return new EmailTypeVORef(2, "Work");
+    	}  	
+    	else {
+    		return new EmailTypeVORef(10009, "Unknown");
+    	}
+    }
+    
+ /// ContactIdentifierList -> IdRefType
+    
+    public static IdRefType returnIdTypeRef(int entityTypeVORefID, long id_number_type) {    
+    	if(entityTypeVORefID == 1 && id_number_type == 1) {    		
+    		return new IdRefType(6, "Social security number");
+    	} else if (entityTypeVORefID != 1 && id_number_type == 1)	
+    		return new IdRefType(-1, "");
+    	else {
+    		return new IdRefType(2, "Tax Number");
+    	}
+    }
+    
+    /// External contact number logic///
+    public static String returnExternalContactNumber(long partnerID) {
+    	String external = "MIG_MP-" + Long.toString(partnerID); 
+    	return external;
+    } 
+    
+    public static String returnExternalContactNumber(long partnerID, boolean isTestLoad, int migrationID) {
+    	String external = "MIG_MP-" + Long.toString(partnerID);    	
+    	if(isTestLoad) {
+    		external = external +"_"+Integer.toString(migrationID);
+    	} 	
+    	return external;
+    }
+    
+   
+    
+	/// UNIVERSAL TOOLS/// 
+    public static boolean checkStringNotEmpty (String string) {
+    	if (string == null || string.isEmpty() || string.trim().isEmpty()) { 
+    	    return true;
+    	}else {
+    		return false;
+    	}
+    }
+    
+    public static String firstWord (String string) {
+    	if(checkStringNotEmpty(string)) {
+    		return "";
+    	}else {
+    		string = string.trim();
+    		int i = string.indexOf(' ');
+    		if(i == -1){
+                return string;
+            }else{
+                String word = string.substring(0, i);
+                return word;
+            }
+    	}
+    }
+    
+    
+    
+    
+}
