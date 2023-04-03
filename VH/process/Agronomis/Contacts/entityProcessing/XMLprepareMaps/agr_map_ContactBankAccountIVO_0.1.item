@@ -49,7 +49,7 @@
     <elementParameter field="TEXT" name="PROPERTIES_IMPLICIT_CONTEXT" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="SCHEMA_DB_IMPLICIT_CONTEXT" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER_IMPLICIT_CONTEXT" show="false" value="&quot;&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS_IMPLICIT_CONTEXT" show="false" value="enc:system.encryption.key.v1:yLgWocWC2RdEfMOZmP43wRDVH/Vrh/yBi7VYaZ6C"/>
+    <elementParameter field="PASSWORD" name="PASS_IMPLICIT_CONTEXT" show="false" value="enc:system.encryption.key.v1:fQ58WbRGTwNVJefeHv3An0gUGfkMnVc3bzF1yv/Q"/>
     <elementParameter field="FILE" name="DBFILE_IMPLICIT_CONTEXT" show="false" value="&quot;&quot;"/>
     <elementParameter field="DBTABLE" name="DBTABLE_IMPLICIT_CONTEXT" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="QUERY_CONDITION_IMPLICIT_CONTEXT" show="false" value="&quot;&quot;"/>
@@ -84,7 +84,7 @@
     <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="SCHEMA_DB" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" show="false" value="&quot;&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:r16q+giqPupgtS3BNhPaXu2VdsIAQE6/b5dnyvBY"/>
+    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:PWcmaBDNv31mNBjQ1WLA+YFZLVHyN7pNPFZv6Lkn"/>
     <elementParameter field="FILE" name="DBFILE" show="false" value="&quot;&quot;"/>
     <elementParameter field="DBTABLE" name="TABLE_STATS" show="false" value="&quot;&quot;"/>
     <elementParameter field="DBTABLE" name="TABLE_LOGS" show="false" value="&quot;&quot;"/>
@@ -119,6 +119,7 @@
     <routinesParameter id="_tGeHcMlvEe2pvuBUnRcxzQ" name="DataMasking"/>
     <routinesParameter id="_tG6zYMlvEe2pvuBUnRcxzQ" name="DqStringHandling"/>
     <routinesParameter id="_tGumIMlvEe2pvuBUnRcxzQ" name="DataQualityDependencies"/>
+    <routinesParameter id="_ul8JQM_JEe2M9_himD71ag" name="ContactProcessingAGR"/>
   </parameters>
   <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="128" posY="160">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
@@ -131,7 +132,7 @@
     <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:sP/HEK1U+AapDZZVMps1fEdJNlNz9wwIN6Jo2WaW"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:SEOpR9iNQ7vQb+O4C/esUHgliniEzyX2eE2KX+yR"/>
     <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_Q-RB8NIHEe27YvMgwsdpxA - AGRONOMIS_BANK_ACCOUNT_SELECTION"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_BANK_ACCOUNT_SELECTION&quot;"/>
@@ -183,7 +184,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="main">
+    <metadata comment="" label="agr_ContactBankAccountIVO" name="main">
       <column comment="" key="false" length="-1" name="legacyID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="accountCurrencyVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="accountCurrencyVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -198,19 +199,21 @@
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="ContactProcessingAGR.returnBankAccountExternalNumber(row3.PARTNERID, row3.BANKACCOUNTID, context.isTestLoad, context.migrationID); " name="bankAccountExternalNumber" type="id_String"/>
+      </varTables>
       <outputTables activateCondensedTool="true" id="_S5NSYNIMEe27YvMgwsdpxA - agr_ContactBankAccountIVO" name="main" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="legacyID" type="id_Long"/>
-        <mapperTableEntries name="accountCurrencyVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="accountCurrencyVORefContent" nullable="true" type="id_String"/>
-        <mapperTableEntries name="bankAccountExternalNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row3.PARTNERID " name="legacyID" type="id_Long"/>
+        <mapperTableEntries expression="1" name="accountCurrencyVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;Euro&quot;" name="accountCurrencyVORefContent" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="Var.bankAccountExternalNumber " name="bankAccountExternalNumber" nullable="true" type="id_String"/>
         <mapperTableEntries name="countryVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="countryVORefContent" nullable="true" type="id_String"/>
-        <mapperTableEntries name="ibanReference" nullable="true" type="id_String"/>
-        <mapperTableEntries name="paymentChanelVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="paymentChanelVORefContent" nullable="true" type="id_String"/>
-        <mapperTableEntries name="processingStatusVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="processingStatusVORefContent" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row3.IBANNUMBER " name="ibanReference" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="1" name="paymentChanelVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;Bank Accounts&quot;" name="paymentChanelVORefContent" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="10000" name="processingStatusVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;Available for the processing&quot;" name="processingStatusVORefContent" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row3" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PARTNERID" type="id_Long"/>
@@ -229,7 +232,7 @@
     <elementParameter field="TEXT" name="DBNAME" value="&quot;proj&quot;+context.EntityID"/>
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:u4I1I7TzkH6oRvpXBpgwGlB6gPybMYpIBh/Dp5vn"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:jL0QoLzK8T2LxVqkb4oUEaiVObcYfkRZDjD+Keic"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;agr_ContactBankAccountIVO&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="CREATE_IF_NOT_EXISTS"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
@@ -334,7 +337,6 @@
   </node>
   <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="992" posY="160">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
@@ -344,116 +346,58 @@
     <elementParameter field="TEXT" name="DBNAME" value="&quot;proj&quot;+context.EntityID"/>
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:sSHsIwOEtXBwWqGzRtWE15pc8eqK+O1p9A1PED6T"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:ZESfGwwB5dBjogQM2y1NwBNQaCKi53CjBjcdKkdd"/>
     <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_VlqIYM1oEe2M9_himD71ag - XMLContactIVO"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;XMLContactIVO&quot;"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_S5NSYNIMEe27YvMgwsdpxA - agr_ContactBankAccountIVO"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;agr_ContactBankAccountIVO&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT XMLContactIVO.ID_CONTACT,&#10;&#9;&#9;XMLContactIVO.ID_PARTNER,&#10;&#9;&#9;XMLContactIVO.masterEntityID,&#10;&#9;&#9;XMLContactIVO.name,&#10;&#9;&#9;XMLContactIVO.firstName,&#10;&#9;&#9;XMLContactIVO.middleName,&#10;&#9;&#9;XMLContactIVO.activityRemark,&#10;&#9;&#9;XMLContactIVO.externalContactNumber,&#10;&#9;&#9;XMLContactIVO.headOfFamily,&#10;&#9;&#9;XMLContactIVO.residentFlag,&#10;&#9;&#9;XMLContactIVO.entityTypeVORefID,&#10;&#9;&#9;XMLContactIVO.entityTypeVORefContent,&#10;&#9;&#9;XMLContactIVO.languageRefID,&#10;&#9;&#9;XMLContactIVO.languageRefContent,&#10;&#9;&#9;XMLContactIVO.processingStatusVORefID,&#10;&#9;&#9;XMLContactIVO.processingStatusVORefContent,&#10;&#9;&#9;XMLContactIVO.dateOfBirth,&#10;&#9;&#9;XMLContactIVO.establishedDate,&#10;&#9;&#9;XMLContactIVO.entitySubTypeID,&#10;&#9;&#9;XMLContactIVO.entitySubTypeContent,&#10;&#9;&#9;XMLContactIVO.foreignEntityRefID,&#10;&#9;&#9;XMLContactIVO.foreignEntityRefContent,&#10;&#9;&#9;XMLContactIVO.titleVORefId,&#10;&#9;&#9;XMLContactIVO.titleVORefContent,&#10;&#9;&#9;XMLContactIVO.hasAdditionalInsurance,&#10;&#9;&#9;XMLContactIVO.memberStatusIdRefId,&#10;&#9;&#9;XMLContactIVO.memberStatusIdRefContent,&#10;&#9;&#9;XMLContactIVO.companyHectarSize,&#10;&#9;&#9;XMLContactIVO.tDistrictClubVORefId,&#10;&#9;&#9;XMLContactIVO.tDistrictClubVORefContent&#10;FROM&#9;XMLContactIVO&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT agr_ContactBankAccountIVO.legacyID,&#10;&#9;&#9;agr_ContactBankAccountIVO.accountCurrencyVORefID,&#10;&#9;&#9;agr_ContactBankAccountIVO.accountCurrencyVORefContent,&#10;&#9;&#9;agr_ContactBankAccountIVO.bankAccountExternalNumber,&#10;&#9;&#9;agr_ContactBankAccountIVO.countryVORefID,&#10;&#9;&#9;agr_ContactBankAccountIVO.countryVORefContent,&#10;&#9;&#9;agr_ContactBankAccountIVO.ibanReference,&#10;&#9;&#9;agr_ContactBankAccountIVO.paymentChanelVORefID,&#10;&#9;&#9;agr_ContactBankAccountIVO.paymentChanelVORefContent,&#10;&#9;&#9;agr_ContactBankAccountIVO.processingStatusVORefID,&#10;&#9;&#9;agr_ContactBankAccountIVO.processingStatusVORefContent&#10;FROM&#9;agr_ContactBankAccountIVO&quot;"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="ID_CONTACT"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="legacyID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ID_PARTNER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="accountCurrencyVORefID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="masterEntityID"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="accountCurrencyVORefContent"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="name"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="bankAccountExternalNumber"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="firstName"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="countryVORefID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="middleName"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="countryVORefContent"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="activityRemark"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ibanReference"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="externalContactNumber"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paymentChanelVORefID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="headOfFamily"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="residentFlag"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="entityTypeVORefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="entityTypeVORefContent"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="languageRefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="languageRefContent"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paymentChanelVORefContent"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefID"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefContent"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="dateOfBirth"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="establishedDate"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="entitySubTypeID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="entitySubTypeContent"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="foreignEntityRefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="foreignEntityRefContent"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="titleVORefId"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="titleVORefContent"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="hasAdditionalInsurance"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="memberStatusIdRefId"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="memberStatusIdRefContent"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="companyHectarSize"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="tDistrictClubVORefId"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="tDistrictClubVORefContent"/>
-      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="XMLContactIVO" name="tHSQLDbInput_2">
-      <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="ID_PARTNER" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="masterEntityID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="name" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="firstName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="middleName" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="activityRemark" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="externalContactNumber" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="headOfFamily" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="residentFlag" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="entityTypeVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="entityTypeVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="languageRefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="languageRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="processingStatusVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="processingStatusVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="dateOfBirth" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="establishedDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="entitySubTypeID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="entitySubTypeContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="foreignEntityRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="foreignEntityRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="titleVORefId" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="titleVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="hasAdditionalInsurance" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="memberStatusIdRefId" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="memberStatusIdRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="companyHectarSize" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tDistrictClubVORefId" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tDistrictClubVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    <metadata connector="FLOW" label="agr_ContactBankAccountIVO" name="tHSQLDbInput_2">
+      <column comment="" key="false" length="-1" name="legacyID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="accountCurrencyVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="accountCurrencyVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="bankAccountExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="countryVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="countryVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ibanReference" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="paymentChanelVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="paymentChanelVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="processingStatusVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="processingStatusVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1216" posY="160">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
     <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
     <elementParameter field="RADIO" name="VERTICAL" value="false"/>
@@ -466,104 +410,47 @@
     <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
     <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
     <elementParameter field="TABLE" name="LENGTHS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="ID_CONTACT"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="legacyID"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ID_PARTNER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="accountCurrencyVORefID"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="masterEntityID"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="accountCurrencyVORefContent"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="name"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="bankAccountExternalNumber"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="firstName"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="countryVORefID"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="middleName"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="countryVORefContent"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="activityRemark"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ibanReference"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="externalContactNumber"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paymentChanelVORefID"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="headOfFamily"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="residentFlag"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="entityTypeVORefID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="entityTypeVORefContent"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="languageRefID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="languageRefContent"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paymentChanelVORefContent"/>
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefID"/>
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefContent"/>
       <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="dateOfBirth"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="establishedDate"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="entitySubTypeID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="entitySubTypeContent"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="foreignEntityRefID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="foreignEntityRefContent"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="titleVORefId"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="titleVORefContent"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="hasAdditionalInsurance"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="memberStatusIdRefId"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="memberStatusIdRefContent"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="companyHectarSize"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="tDistrictClubVORefId"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="tDistrictClubVORefContent"/>
-      <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="XMLContactIVO" name="tLogRow_1">
-      <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="ID_PARTNER" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="masterEntityID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="name" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="firstName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="middleName" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="activityRemark" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="externalContactNumber" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="headOfFamily" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="residentFlag" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="entityTypeVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="entityTypeVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="languageRefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="languageRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="processingStatusVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="processingStatusVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="dateOfBirth" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="establishedDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="entitySubTypeID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="entitySubTypeContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="foreignEntityRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="foreignEntityRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="titleVORefId" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="titleVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="hasAdditionalInsurance" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="memberStatusIdRefId" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="memberStatusIdRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="companyHectarSize" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tDistrictClubVORefId" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tDistrictClubVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    <metadata connector="FLOW" label="agr_ContactBankAccountIVO" name="tLogRow_1">
+      <column comment="" key="false" length="-1" name="legacyID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="accountCurrencyVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="accountCurrencyVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="bankAccountExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="countryVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="countryVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ibanReference" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="paymentChanelVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="paymentChanelVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="processingStatusVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="processingStatusVORefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="736" posY="352" sizeX="64" sizeY="32">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="672" posY="320" sizeX="64" sizeY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_3"/>
     <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
@@ -574,7 +461,7 @@
     <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:n/bLHaQy97pNWA0WU4e30G4gbztl2cH5DGm1wm5J"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:FgEva0JVvbwDf5/csK7AYP34sq6JxNNpNvGkCud8"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;logsGlobal&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="CREATE_IF_NOT_EXISTS"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
@@ -697,12 +584,10 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="main"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbInput_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
   <subjob>
@@ -720,13 +605,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_273daa65-c5a2-40e4-83a1-e27ccaee3016"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+THzdcdaCftODxD0CI2gyvqO9kvU+R6xAOkIRAz5YZ3rgnQVCfEKiTZbx9eiyUTlQXAF8r4ZP0Oh&#13;
-82odfgCXbg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_cc6ac53d-e569-4eb8-9890-68c9026c07b3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>D74HT7uotlBerPw6N4wBKtaraTZw/EUpCn5cKfFTT8nB5dwITYPAXLj/QC4yA0ge7wCVW65T11KG&#13;
-tiWFVoDeBQ==</DigestValue></Reference></SignedInfo><SignatureValue>YL1MAXKTm8X8fhW8lnwqK0F4va+fGn5ArkYXVc/h37ssNCfj1xHa7JgGLtBdNRZWSlW4opH2OIPr&#13;
-gd1l7uG+zwc63VgpCPmxXSUn7UlkjqK0aY4pM2SuZxop87UJF5VloWio8inS9f59QH0LWLsZwfne&#13;
-gkJHX2qjoL2Yxj5mk8J0tP4Gwa2HPBGgJCNnStjXZl2ZSd9qh0H17oSMVupXFHo67zpIDCUM1/es&#13;
-WK7j6Qym1kjO6lyt9EuReZCW0VTZYctLqsfCp0LvvgZpvjmozDjRcBhzR+RCNR5Bw0pzK38fABz4&#13;
-q6FAKKBxDdcdu32HtKTuDy0gTNN+7vVx++r5/A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_84532ea0-27a7-495f-91f5-a5e937616149"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vTQdZiYw7dvRRqAk/zjQ9y9o4BYsQgniGYXDSQWscrhjtCMPHa9dn1UTy+mdiGN02vTMi7+9kjer&#13;
+I8ca2Bq5mA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_dd0f5b26-160b-45b7-8e2e-f2b95aa03ca7"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>CpxF/o5RjXmP06PTEbOGS8yWF/6IfQEigYcKAtM6I95ocvktld3ldq+JLuAfPpTXxHn/JConn7Wg&#13;
+xlNr3HlR+g==</DigestValue></Reference></SignedInfo><SignatureValue>FzDqSuRNmZFqmk7rtVSZCVN0QBO1ID41pEDh0IXK6LSAYCC3jcVBXXunWZLT5FaLOMgRoTNLYXk2&#13;
+oh23eH82aBYrSmt0ry2rF4EWzXZz9YYZUIZCrheXKsUA1HqCgus8RqNplVUF5J+YH/4lFuD/7/3G&#13;
+e7EbeQO0us18ME/cLlRRgVOkWAiV4LGrx/DRQp7aWM1m6IVI5UJexKs7TzR0AOaK3npGaDBe48Yk&#13;
+Amqy0zI2gkRZgR12OaEc75tYgsA0yOG9bgwA6uMAtO6GxCVPZ3loianZhOQXEvEHxSspe/J/NWXv&#13;
+9/sPAj17D2IESHXKLtgJltrFIFHNJa1f+YpZAA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -748,4 +633,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_cc6ac53d-e569-4eb8-9890-68c9026c07b3" Target="#_273daa65-c5a2-40e4-83a1-e27ccaee3016"><Timestamp>2023-04-03 11:01:58</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_dd0f5b26-160b-45b7-8e2e-f2b95aa03ca7" Target="#_84532ea0-27a7-495f-91f5-a5e937616149"><Timestamp>2023-04-03 11:18:09</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
