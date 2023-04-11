@@ -1,0 +1,135 @@
+package routines;
+
+/*
+ * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
+ * it must be before the "{talendTypes}" key.
+ * 
+ * 2. {talendTypes} 's value must be talend Type, it is required . its value should be one of: String, char | Character,
+ * long | Long, int | Integer, boolean | Boolean, byte | Byte, Date, double | Double, float | Float, Object, short |
+ * Short
+ * 
+ * 3. {Category} define a category for the Function. it is required. its value is user-defined .
+ * 
+ * 4. {param} 's format is: {param} <type>[(<default value or closed list values>)] <name>[ : <comment>]
+ * 
+ * <type> 's value should be one of: string, int, list, double, object, boolean, long, char, date. <name>'s value is the
+ * Function's parameter name. the {param} is optional. so if you the Function without the parameters. the {param} don't
+ * added. you can have many parameters for the Function.
+ * 
+ * 5. {example} gives a example for the Function. it is optional.
+ */
+public class ContactProcessingAGR {
+
+	
+	///ContactIVO -> entityTypeVORef
+	public static GenericVORef entityType(String geburtsdatum) {
+		GenericVORef entityType = new GenericVORef (10003, "Self Employed");
+		/*
+		if (geburtsdatum != null) 
+		{
+			entityType = new GenericVORef (1, "Individual");
+		}
+		else if(geburtsdatum == null) 
+		{
+			entityType = new GenericVORef (101, "Legal Entity");
+		}
+		*/
+		
+		return entityType;
+	}
+	
+	/// AddressIVO -> CountryVORef
+    public static double geoLocFromString(String i_string) {
+    	double geoLoc =0.0;
+    	if (i_string != null ) //|| string.isEmpty() || string.trim().isEmpty())
+     	{ 
+    		i_string=i_string.replace(',', '.');
+        	geoLoc = Double.parseDouble(i_string);
+    	}
+
+    	return geoLoc;
+    }
+	
+	/// AddressIVO -> CountryVORef
+    public static GenericVORef returnCountryVORef(String i_code) {
+
+    	if (i_code.equals( "A"))       {	return new GenericVORef(13, "AUSTRIA"); }
+    	else if (i_code.equals("B"))   {	return new GenericVORef(1, "BELGIUM"); }
+    	else if (i_code.equals("CH"))  {	return new GenericVORef(195, "SWITZERLAND"); }
+    	else if (i_code.equals("CZ"))  {	return new GenericVORef(54, "CZECH REPUBLIC"); }
+    	else if (i_code.equals ("D"))  {	return new GenericVORef(77, "GERMANY"); }
+    	else if(i_code.equals("DK"))   {	return new GenericVORef(55, "DENMARK"); }
+    	else if(i_code.equals("E"))    {	return new GenericVORef(64, "ESTONIA"); }
+    	else if(i_code.equals("F"))    {	return new GenericVORef(70, "FRANCE"); }
+    	else if(i_code.equals("HR"))   {	return new GenericVORef(64, "CROATIA"); }
+    	else if(i_code.equals("I"))    {	return new GenericVORef(100, "ITALY"); }
+    	else if(i_code.equals("L"))    {	return new GenericVORef(119, "LUXEMBOURG"); }
+    	else if(i_code.equals("LT"))   {	return new GenericVORef(118, "LITHUANIA"); }
+    	else if(i_code.equals("LV"))   {	return new GenericVORef(112, "LATVIA"); }
+    	else if(i_code.equals("MOL"))  {	return new GenericVORef(135, "MOLDOVA"); }
+    	else if(i_code.equals("NL"))   {	return new GenericVORef(145, "NETHERLANDS"); }
+    	else if(i_code.equals("PL"))   {	return new GenericVORef(163, "POLAND"); }
+    	else if(i_code.equals("RO"))   {	return new GenericVORef(168, "ROMANIA"); }
+    	else if(i_code.equals("S"))    {	return new GenericVORef(186, "SPAIN"); }
+    	else {    	
+    		return new GenericVORef(-1, i_code);
+    	}
+    }
+    
+   /// ContactBankAccountIVO -> bankAccountExternalNumber logic   
+    
+    public static String returnBankAccountExternalNumber(long partnerID, long bankAccountId, boolean isTestLoad, int migrationID) {
+    	
+    	String external = "MIG-" + Long.toString(partnerID) + "-" + Long.toString(bankAccountId);
+    	if(isTestLoad) {
+    		external = external +"_"+Integer.toString(migrationID);
+    	} 	
+    	return external;
+    }
+
+    
+   /// ContactBankAccountIVO -> countryVORef
+
+    public static GenericVORef returnCountryVORefFromIBAN(String iban) {    	
+    	iban = iban.trim();
+    	iban = iban.substring(0,2);
+    	if(		 iban.equals("AT")){	return new GenericVORef(13, "AUSTRIA"); }
+    	else if (iban.equals("BE")) {	return new GenericVORef(1, "BELGIUM"); }
+    	else if (iban.equals("CH")) {	return new GenericVORef(195, "SWITZERLAND"); }
+    	else if (iban.equals("CZ")) {	return new GenericVORef(54, "CZECH REPUBLIC"); }
+    	else if (iban.equals("DK")) {	return new GenericVORef(55, "DENMARK"); }
+    	else if (iban.equals("DE")) {	return new GenericVORef(77, "GERMANY"); }
+    	else if (iban.equals("EE")) {	return new GenericVORef(64, "ESTONIA"); }
+    	else if (iban.equals("FR")) {	return new GenericVORef(70, "FRANCE"); }
+    	else if (iban.equals("HR")) {	return new GenericVORef(51, "CROATIA"); }
+    	else if (iban.equals("IT")) {	return new GenericVORef(100, "ITALY"); }    	
+    	else if (iban.equals("LT")) {	return new GenericVORef(118, "LITHUANIA"); }
+    	else if (iban.equals("LV")) {	return new GenericVORef(112, "LATVIA"); }
+    	else if (iban.equals("LU")) {	return new GenericVORef(119, "LUXEMBOURG"); }
+    	else if (iban.equals("MD")) {	return new GenericVORef(135, "MOLDOVA"); }
+    	else if (iban.equals("NL")) {	return new GenericVORef(145, "NETHERLANDS"); }
+    	else if (iban.equals("PL")) {	return new GenericVORef(163, "POLAND"); }
+    	else if (iban.equals("RO")) {	return new GenericVORef(168, "ROMANIA"); }
+    	else if (iban.equals("ES")) {	return new GenericVORef(186, "SPAIN"); }
+    	else {    	
+    		return new GenericVORef(-1, iban);
+    	}
+    }
+    /// Identifier value based on isTestFlag
+    public static String returnIdentifierValue(long identifier, boolean isTestLoad, int migrationID) {    	   	
+    	String identifierStr = Long.toString(identifier);
+    	if(isTestLoad) {
+    		identifierStr = identifierStr +"_"+Integer.toString(migrationID);
+    	} 	
+    	return identifierStr;
+    }
+    ///externalContactNumber
+    public static String returnExternalContactNumber(long partnerID, boolean isTestLoad, int migrationID) {
+    	String external = "MIG_MP-" + Long.toString(partnerID);    	
+    	if(isTestLoad) {
+    		external = external +"_"+Integer.toString(migrationID);
+    	} 	
+    	return external;
+    }
+    
+}
