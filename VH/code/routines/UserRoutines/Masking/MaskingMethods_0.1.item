@@ -1,16 +1,20 @@
 package routines;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 // Each method could have only one input parameter of type String
 // Inside the input parameters are concatenated a standard parameters (entityID and value before masking)and parameters defined by user in maskingRules table
 
 public class MaskingMethods {   
 	
-	public static String returnRandomString(String params) {
+	public static String returnRandomStringGivenLength(String params) {
 		System.out.println(params);
-		String ran = DataMasking.createRandomString(12);
+		String[] args = params.split("\\;");
+		int minLength = NumberUtils.toInt(args[2]);
+		int maxLength = NumberUtils.toInt(args[3]);
+		Random random = new Random();		
+		String ran = DataMasking.createRandomString(random.nextInt(minLength, maxLength));
         return ran;
     }	
 	
