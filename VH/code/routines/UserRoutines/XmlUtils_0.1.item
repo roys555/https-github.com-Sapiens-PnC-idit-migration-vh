@@ -1,11 +1,14 @@
 package routines;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+
+
+import java.io.StringWriter;
+import java.io.Writer;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.*;
 
 import org.w3c.dom.Document;
+
 
 public class XmlUtils {
   public static void prettyPrint(Document xml) throws TransformerException {
@@ -17,4 +20,27 @@ public class XmlUtils {
     StreamResult result = new StreamResult(System.out);
     transformer.transform(source, result);
   }
+  
+  public static String prettyPrintByTransformer(String xmlString, int indent, boolean ignoreDeclaration) {
+
+	    try {
+	        InputSource src = new InputSource(new StringReader(xmlString));
+	        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(src);
+
+	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	        transformerFactory.setAttribute("indent-number", indent);
+	        Transformer transformer = transformerFactory.newTransformer();
+	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+	        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, ignoreDeclaration ? "yes" : "no");
+	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+	        Writer out = new StringWriter();
+	        transformer.transform(new DOMSource(document), new StreamResult(out));
+	        return out.toString();
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error occurs when pretty-printing xml:\n" + xmlString, e);
+	    }
+	}
+
+  
 }
