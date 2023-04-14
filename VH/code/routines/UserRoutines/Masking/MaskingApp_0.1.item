@@ -6,14 +6,14 @@ import java.sql.*;
 
 public class MaskingApp{
 	
-	public static void MaskMaster (String branch, String dbName, String entityID ) {
+	public static void MaskMaster (String dbName, String entityID ) {
 		
 	      try (
 	    	         Connection conn = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName,"SA",""); 
 	    		     Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName+entityID,"SA","");
 	    	         Statement stmt = conn.createStatement();
 	    	      ) {	    	         
-	    	         String strSelect = "SELECT branch, tableName, columName, maskMethod FROM	maskingRules WHERE isActive = true AND branch ='"+branch+"'";	    	 
+	    	         String strSelect = "SELECT branch, tableName, columName, maskMethod FROM	maskingRules WHERE isActive = true";	    	 
 	    	         ResultSet rset = stmt.executeQuery(strSelect);	    	         
 	    	         	    	         
 	    	         while(rset.next()) {
