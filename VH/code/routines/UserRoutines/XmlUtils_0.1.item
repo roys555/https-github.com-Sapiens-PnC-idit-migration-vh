@@ -1,46 +1,30 @@
 package routines;
 
-
+import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Writer;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
-
-import org.w3c.dom.Document;
-
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 public class XmlUtils {
-  public static void prettyPrint(Document xml) throws TransformerException {
-    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-    Transformer transformer = transformerFactory.newTransformer();
-    transformer.setOutputProperty("indent", "yes");
-    transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-    DOMSource source = new DOMSource(xml);
-    StreamResult result = new StreamResult(System.out);
-    transformer.transform(source, result);
-  }
-  
-  public static String prettyPrintByTransformer(String xmlString, int indent, boolean ignoreDeclaration) {
 
-	    try {
-	        InputSource src = new InputSource(new StringReader(xmlString));
-	        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(src);
+ public static String getPrettyString(String xmlData, int indent) throws Exception {
+  TransformerFactory transformerFactory = TransformerFactory.newInstance();
+  transformerFactory.setAttribute("indent-number", indent);
 
-	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	        transformerFactory.setAttribute("indent-number", indent);
-	        Transformer transformer = transformerFactory.newTransformer();
-	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-	        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, ignoreDeclaration ? "yes" : "no");
-	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+  Transformer transformer = transformerFactory.newTransformer();
+  transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-	        Writer out = new StringWriter();
-	        transformer.transform(new DOMSource(document), new StreamResult(out));
-	        return out.toString();
-	    } catch (Exception e) {
-	        throw new RuntimeException("Error occurs when pretty-printing xml:\n" + xmlString, e);
-	    }
-	}
+  StringWriter stringWriter = new StringWriter();
+  StreamResult xmlOutput = new StreamResult(stringWriter);
 
-  
+  Source xmlInput = new StreamSource(new StringReader(xmlData));
+  transformer.transform(xmlInput, xmlOutput);
+
+  return xmlOutput.getWriter().toString();
+ }
 }
