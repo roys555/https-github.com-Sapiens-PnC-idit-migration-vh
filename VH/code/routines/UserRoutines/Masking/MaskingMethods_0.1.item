@@ -48,30 +48,40 @@ public class MaskingMethods {
 // =============================================
 // Author:		Piotr K
 // Create date: 2023-04-17
-// Description:	returnRandomIntRange(<String EntityID, String currentValue>, int minValue, int maxValue)
+// Description:	ChangeDayAndMonth(<String EntityID, String currentValue>)
 //	 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
-//				Method return a random int. Value of the int is between given parameters, minValue inclusive, maxValue exclusive. 
-//				minValue <= random < maxValue
-// AGR14823813 Date: 1981-09-18
+//				Method take year from to be masked field and generate a random day from this year. Do...while loops prevent cases whene generated date is
+//				the same as original one.
 // =============================================
-			public static String ChangeDayAndMonth(String params) {		
-				String[] args = params.split("\\;");
-				String result;
-				do {
-					GregorianCalendar gc = new GregorianCalendar();				
-					int year = NumberUtils.toInt(args[1].substring(0, 4));
-			        gc.set(gc.YEAR, year);
-			        int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
-			        gc.set(gc.DAY_OF_YEAR, dayOfYear);
-			        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			        result = dateFormat.format(gc.getTime());
-				} while (args[1].equalsIgnoreCase(result));
-				
-		        return result;
-		    }	
-		  private static int randBetween(int start, int end) {
-		        return start + (int)Math.round(Math.random() * (end - start));
-		    }
-					
+		public static String ChangeDayAndMonth(String params) {		
+			String[] args = params.split("\\;");
+			String result;
+			do {
+				GregorianCalendar gc = new GregorianCalendar();				
+				int year = NumberUtils.toInt(args[1].substring(0, 4));
+		        gc.set(gc.YEAR, year);
+		        int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
+		        gc.set(gc.DAY_OF_YEAR, dayOfYear);
+		        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		        result = dateFormat.format(gc.getTime());
+			} while (args[1].equalsIgnoreCase(result));
+			
+	        return result;
+	    }	
+	  private static int randBetween(int start, int end) {
+	        return start + (int)Math.round(Math.random() * (end - start));
+	    }
+	// =============================================
+	// Author:		Piotr K
+	// Create date: 2023-04-17
+	// Description:	ChangeDayAndMonth(<String EntityID, String currentValue>)
+	//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+	//					Method take year from to be masked field and generate a random day from this year. Do...while loops prevent cases whene generated date is
+	//					the same as original one.
+	// =============================================					
 		
+	  public static String ZipCodeMaskingLogic(String params) {
+		  
+		  return"";
+	  }
 }
