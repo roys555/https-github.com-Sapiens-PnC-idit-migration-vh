@@ -114,12 +114,10 @@ public static String ChangeDayAndMonth(String params) {
 // =============================================		
   public static String chooseRandomStringFromTable(String params) {
 	  String[] args = params.split("\\;");
-	  String entityID = args[0];
 	  String dbName = args[2];
 	  String tableName = args[3];
-	  String colName = args[4];
-	  System.out.println("Table to choose: "+ tableName+". Column name: "+colName+". DBName: "+dbName);
-	 
+	  String colName = args[4];	  
+	  String maskedValue;
 	  try (
 	 	         Connection conn = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName,"SA",""); 
 	 	         Statement stmt = conn.createStatement();
@@ -136,32 +134,13 @@ public static String ChangeDayAndMonth(String params) {
 	 	        int length = valuesResult.size();
 	 	        Random random = new Random();
 	 	        int index = random.nextInt(0, length);
-	 	        System.out.println("Retrieved values:  " + valuesResult.get(index));
-	 	         
-	 	        	
+	 	        maskedValue = valuesResult.get(index);
 	 	         
 	 	      } catch(SQLException ex) {
 	 	         ex.printStackTrace();
-	 	      }  
-	/*	 	         
- 	         ArrayList<String> valuesResult = new ArrayList<>(); 
- 	         while(rset.next()) {
- 	        	valuesResult.add(rset.getString("tableName"));  
-	            
-	         } 	         
- 	         int length = valuesResult.size();
- 	         System.out.println("Lenght: " + length);
- 	         System.out.println("Retrieved value " + valuesResult.get(0));
- 	         System.out.println("Retrieved value " + valuesResult.get(1));
- 	         
- 	         conn.close();	
- 	         
- 	      } catch(SQLException ex) {
- 	         ex.printStackTrace();
- 	      } 
-	  */
+	 	      }  	
 	  
-	  return "test";
+	  return maskedValue;
   }
   
   
