@@ -18,14 +18,14 @@ public class MaskingMethods {
 // 				parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
 //				Method return a random String. Length of the string is between two given parameters. 
 // =============================================
-	public static String returnRandomStringGivenLength(String params) {		
-		String[] args = params.split("\\;");
-		int minLength = NumberUtils.toInt(args[2]);
-		int maxLength = NumberUtils.toInt(args[3]);		
-		Random random = new Random();		
-		String ran = DataMasking.createRandomString(random.nextInt(minLength, maxLength));
-        return ran;
-    }	
+public static String returnRandomStringGivenLength(String params) {		
+	String[] args = params.split("\\;");
+	int minLength = NumberUtils.toInt(args[2]);
+	int maxLength = NumberUtils.toInt(args[3]);		
+	Random random = new Random();		
+	String ran = DataMasking.createRandomString(random.nextInt(minLength, maxLength));
+    return ran;
+}	
 
 // =============================================
 // Author:		Piotr K
@@ -36,14 +36,14 @@ public class MaskingMethods {
 //				minValue <= random < maxValue
 
 // =============================================
-		public static int returnRandomIntRange(String params) {		
-			String[] args = params.split("\\;");
-			int minLength = NumberUtils.toInt(args[2]);
-			int maxLength = NumberUtils.toInt(args[3]);		
-			Random random = new Random();		
-			int ran = random.nextInt(minLength, maxLength);
-	        return ran;
-	    }	
+public static int returnRandomIntRange(String params) {		
+	String[] args = params.split("\\;");
+	int minLength = NumberUtils.toInt(args[2]);
+	int maxLength = NumberUtils.toInt(args[3]);		
+	Random random = new Random();		
+	int ran = random.nextInt(minLength, maxLength);
+    return ran;
+}	
 // =============================================
 // Author:		Piotr K
 // Create date: 2023-04-17
@@ -52,54 +52,68 @@ public class MaskingMethods {
 //				Method take year from to be masked field and generate a random day from this year. Do...while loops prevent cases whene generated date is
 //				the same as original one.
 // =============================================
-		public static String ChangeDayAndMonth(String params) {		
-			String[] args = params.split("\\;");
-			String result;
-			do {
-				GregorianCalendar gc = new GregorianCalendar();				
-				int year = NumberUtils.toInt(args[1].substring(0, 4));
-		        gc.set(gc.YEAR, year);
-		        int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
-		        gc.set(gc.DAY_OF_YEAR, dayOfYear);
-		        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		        result = dateFormat.format(gc.getTime());
-			} while (args[1].equalsIgnoreCase(result));
-			
-	        return result;
-	    }	
-	  private static int randBetween(int start, int end) {
-	        return start + (int)Math.round(Math.random() * (end - start));
-	    }
-	// =============================================
-	// Author:		Piotr K
-	// Create date: 2023-04-17
-	// Description:	ZipCodeMaskingLogic(<String EntityID, String currentValue>)
-	//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
-	//					Method to change last 3 chars in zip code to randomly generated.
-	// =============================================					
+public static String ChangeDayAndMonth(String params) {		
+	String[] args = params.split("\\;");
+	String result;
+	do {
+		GregorianCalendar gc = new GregorianCalendar();				
+		int year = NumberUtils.toInt(args[1].substring(0, 4));
+        gc.set(gc.YEAR, year);
+        int dayOfYear = randBetween(1, gc.getActualMaximum(gc.DAY_OF_YEAR));
+        gc.set(gc.DAY_OF_YEAR, dayOfYear);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        result = dateFormat.format(gc.getTime());
+		} while (args[1].equalsIgnoreCase(result));
 		
-	  public static String ZipCodeMaskingLogic(String params) {
-		  String[] args = params.split("\\;");
-		  String originalZip = args[1];
-		  int originalZipLength = originalZip.length();
-		  String replace = DataMasking.createRandomString(3);
-		  String maskedZip = originalZip.substring(0,originalZipLength-3) + replace;
-		  return maskedZip;
-	  }
-		// =============================================
-		// Author:		Piotr K
-		// Create date: 2023-04-17
-		// Description:	TelephoneNumberMaskingLogic (<String EntityID, String currentValue>)
-		//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
-		//					Method to mask telephone number. First 3 chars will be kept from original, the rest is replaced with randomly generated.
-		// =============================================					
+        return result;
+    }	
+  private static int randBetween(int start, int end) {
+        return start + (int)Math.round(Math.random() * (end - start));
+    }
+// =============================================
+// Author:		Piotr K
+// Create date: 2023-04-17
+// Description:	ZipCodeMaskingLogic(<String EntityID, String currentValue>)
+//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//					Method to change last 3 chars in zip code to randomly generated.
+// =============================================					
+		
+  public static String ZipCodeMaskingLogic(String params) {
+	  String[] args = params.split("\\;");
+	  String originalZip = args[1];
+	  int originalZipLength = originalZip.length();
+	  String replace = DataMasking.createRandomString(3);
+	  String maskedZip = originalZip.substring(0,originalZipLength-3) + replace;
+	  return maskedZip;
+  }
+// =============================================
+// Author:		Piotr K
+// Create date: 2023-04-17
+// Description:	TelephoneNumberMaskingLogic (<String EntityID, String currentValue>)
+//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//					Method to mask telephone number. First 3 chars will be kept from original, the rest is replaced with randomly generated.
+// =============================================					
 			
-		  public static String TelephoneNumberMaskingLogic(String params) {
-			  String[] args = params.split("\\;");
-			  String originalNum = args[1];
-			  int originalNumLength = originalNum.length();
-			  String replace = DataMasking.createRandomString(originalNumLength-3);
-			  String maskedNum = originalNum.substring(0,3) + replace;			  
-			  return maskedNum;
-		  }
+  public static String TelephoneNumberMaskingLogic(String params) {
+	  String[] args = params.split("\\;");
+	  String originalNum = args[1];
+	  int originalNumLength = originalNum.length();
+	  String replace = DataMasking.createRandomString(originalNumLength-3);
+	  String maskedNum = originalNum.substring(0,3) + replace;			  
+	  return maskedNum;
+  }
+		  
+// =============================================
+// Author:		Piotr K
+// Create date: 2023-04-18
+// Description:	chooseRandomStringFromTable (<String EntityID, String currentValue>, String tableName, String colName)
+//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//					Method to choose random String record from HSQL table. 
+// =============================================		
+  public static String chooseRandomStringFromTable(String tableName, String colName) {
+	  
+	  return " ";
+  }
+  
+  
 }
