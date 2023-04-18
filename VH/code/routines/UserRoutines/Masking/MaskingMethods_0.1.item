@@ -109,7 +109,7 @@ public static String ChangeDayAndMonth(String params) {
 // =============================================
 // Author:		Piotr K
 // Create date: 2023-04-18
-// Description:	chooseRandomStringFromTable (<String EntityID, String currentValue>, String tableName, String colName)
+// Description:	chooseRandomStringFromTable (<String EntityID, String currentValue>, String tableName, String colName, String dbName)
 //		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
 //					Method to choose random String record from HSQL table. 
 // =============================================		
@@ -143,20 +143,31 @@ public static String ChangeDayAndMonth(String params) {
   }
 //=============================================
 //Author:		Piotr K
-//Create date: 2023-04-18
-//Description:	chooseRandomStringFromTable (<String EntityID, String currentValue>, String tableName, String colName)
-//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
-//					Method to choose random String record from HSQL table. 
+//Create date:  2023-04-18
+//Description:	hashWithChar (<String EntityID, String currentValue>, String char)
+//		 		parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//				Method replace all characters in string with given character
 //=============================================		
  public static String hashWithChar(String params) {
 	  String[] args = params.split("\\;");
 	  String originalValue = args[1];
 	  String replaceWith = args[2];
 	  String maskedValue = StringUtils.repeat(replaceWith, originalValue.length());
-	  System.out.println("Original: "+originalValue+" Masked: "+maskedValue);	  
 	  
 	  return maskedValue;
  }
-  
+//=============================================
+//Author:		Piotr K
+//Create date:  2023-04-18
+//Description:	chooseRandomStringFromTable (<String EntityID, String currentValue>, String tableName, String colName)
+//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//					method will hide all characters under the '*' except first letter of email, first letter of the domain, "@ ." and suffix as ".com/.pl"
+//=============================================		
+public static String maskEmailAddress(String params) {
+	  String[] args = params.split("\\;");
+	  String originalValue = args[1];
+	  return originalValue.replaceAll("(?<=.)[^@](?=[^@]*?@)|(?:(?<=@.)|(?!^)\\G(?=[^@]*$)).(?=.*\\.)", "*");	
+}
+ 
   
 }
