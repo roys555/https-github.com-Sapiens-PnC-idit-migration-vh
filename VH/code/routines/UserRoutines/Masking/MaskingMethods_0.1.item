@@ -119,6 +119,24 @@ public static String ChangeDayAndMonth(String params) {
 	  String tableName = args[3];
 	  String colName = args[4];
 	  System.out.println("Table to choose: "+ tableName+". Column name: "+colName+". DBName: "+dbName);
+	 
+	  try (
+	 	         Connection conn = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName,"SA",""); 
+	 	         Statement stmt = conn.createStatement();
+	 	      ) {	    	         
+	 	         String strSelect = "SELECT " + colName+ " FROM " +tableName;	    	 
+	 	         ResultSet rset = stmt.executeQuery(strSelect);	 	         
+	 	        
+	 	         while(rset.next()) {
+    	            String value = rset.getString(colName);  
+    	            System.out.println("value:"+value);
+    	            
+    	         }
+	 	         conn.close();	
+	 	         
+	 	      } catch(SQLException ex) {
+	 	         ex.printStackTrace();
+	 	      }  
 	  /*
 	  try (
  	         Connection conn = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName,"SA",""); 
