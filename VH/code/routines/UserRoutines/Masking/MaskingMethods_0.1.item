@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.sql.*;
 
+import static java.lang.Character.isDigit;
+import static java.lang.Character.isLetter;
+
 // Each method could have only one input parameter of type String
 // Inside the input parameters are concatenated a standard parameters (entityID and value before masking)and parameters defined by user in maskingRules table
 
@@ -163,12 +166,42 @@ public static String ChangeDayAndMonth(String params) {
 //		 		parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
 //				method will hide all characters under the '*' except first letter of email, first letter of the domain, "@ ." and suffix as ".com/.pl"
 //=============================================		
-public static String maskEmailAddress(String params) {
-	  String[] args = params.split("\\;");
-	  String originalValue = args[1];
-	  // return originalValue.replaceAll("(?<=.)[^@](?=[^@]*?@)|(?:(?<=@.)|(?!^)\\G(?=[^@]*$)).(?=.*\\.)", "*");	
-	  return originalValue.replaceAll("[^*@.]", "*");	
-}
+ public static String maskEmailAddress(String params) {
+     String[] args = params.split("\\;");
+     String originalValue = args[1];
+
+     StringBuilder sb = new StringBuilder();
+     StringBuffer output = new StringBuffer(110);
+
+     for (char ch: originalValue.toCharArray()) {
+         if(isLetter(ch)){
+             char ran = randomSeriesForThreeCharacter();
+             output.append(ran);
+             continue;
+         }else if(isDigit(ch)){
+             Random random = new Random();
+             int ranInt = random.nextInt(0, 10);
+             output.append(ranInt);
+             continue;
+         }else if(ch == '@'){
+             output.append('@');
+             continue;
+         }else if(ch == '.'){
+             output.append('.');
+             continue;
+         }else {
+             char ran = randomSeriesForThreeCharacter();
+             output.append(ran);
+         }
+     }
+
+     return output.toString();
+ }
+ public static char randomSeriesForThreeCharacter() {
+     Random r = new Random();
+     char c = (char) (r.nextInt(26) + 'a');
+     return c;
+ }
  
   
 }
