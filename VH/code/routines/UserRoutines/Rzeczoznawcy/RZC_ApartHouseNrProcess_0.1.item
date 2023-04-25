@@ -18,24 +18,48 @@ package routines;
  * 
  * 5. {example} gives a example for the Function. it is optional.
  */
-public class RZC_ApartHouseNrProcess {
+/**
+ * @author Tomasz Korneluk
+ */ 
 
-    /**
-     * helloExample: not return value, only print "hello" + message.
-     * 
-     * 
-     * {talendTypes} String
-     * 
-     * {Category} User Defined
-     * 
-     * {param} string("world") input: The string need to be printed.
-     * 
-     * {example} helloExemple("world") # hello world !.
-     */
-    public static void helloExample(String message) {
-        if (message == null) {
-            message = "World"; //$NON-NLS-1$
+public class RZC_ApartHouseNrProcess {
+    
+    public static ApartHouseNr returnApartHouseNr(String contact_type, String streetnr, String companystreetnr) {
+        int slashLoc = streetnr.indexOf("/");
+        int slashLoc_2 = (companystreetnr == null) ? -1 : companystreetnr.indexOf("/");
+
+        //System.out.println("Slashlock_osPryw: " + slashLoc);
+        //System.out.println("Slashlock_Firma: " + slashLoc_2);
+        String apartNr = "";
+        String houseNr = "";
+        String apartNr_2 = "";
+        String houseNr_2 = "";
+
+        //Os.Fizyczna
+        if (slashLoc > 0) {
+            apartNr = streetnr.substring(0, slashLoc);
+            houseNr = streetnr.substring(slashLoc + 1);
+        } else if (slashLoc == -1) {
+            apartNr = streetnr;
+            houseNr = null;
         }
-        System.out.println("Hello " + message + " !"); //$NON-NLS-1$ //$NON-NLS-2$
+        
+        //Firma
+                if (contact_type == "Firma" && companystreetnr !=null) {
+
+            if (contact_type == "Firma" && slashLoc_2 > 0) {
+                apartNr_2 = companystreetnr.substring(0, slashLoc_2);
+                houseNr_2 = companystreetnr.substring(slashLoc_2 + 1);
+            } else if (contact_type == "Firma" && slashLoc_2 == -1) {
+                apartNr_2 = companystreetnr;
+                houseNr_2 = null;
+            }
+            return new ApartHouseNr(apartNr_2, houseNr_2);
+            } 
+        else {
+            return new ApartHouseNr(apartNr, houseNr);
+        }
+    
     }
+
 }
