@@ -204,4 +204,34 @@ public static String ChangeDayAndMonth(String params) {
  }
  
   
+//=============================================
+//Author:		Piotr K
+//Create date: 2023-04-14
+//Description:	returnRandomStringGivenLength(<String EntityID, String currentValue>, int minLength, int maxLength)
+//				parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//				Method return a random String. Length of the string is between two given parameters. 
+//=============================================
+public static String returnRandomLettersGivenLength(String params) {		
+	int leftLimit = 97; // letter 'a'
+    int rightLimit = 122; // letter 'z'
+    
+    String[] args = params.split("\\;");
+	
+    int minLength = NumberUtils.toInt(args[2]);
+	int maxLength = NumberUtils.toInt(args[3]);	
+	
+    Random random = new Random();
+    int targetStringLength = random.nextInt(minLength, maxLength);
+    
+    StringBuilder buffer = new StringBuilder(targetStringLength);
+    for (int i = 0; i < targetStringLength; i++) {
+        int randomLimitedInt = leftLimit + (int) 
+          (random.nextFloat() * (rightLimit - leftLimit + 1));
+        buffer.append((char) randomLimitedInt);
+    }
+    String generatedString = buffer.toString();
+
+    System.out.println(generatedString);
+    return generatedString;
+	}	
 }
