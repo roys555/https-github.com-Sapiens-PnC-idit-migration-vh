@@ -102,9 +102,14 @@ public static String ChangeDayAndMonth(String params) {
 			
   public static String TelephoneNumberMaskingLogic(String params) {
 	  String[] args = params.split("\\;");
+//	  String entityID = args[0];
 	  String originalNum = args[1];
-	  int originalNumLength = originalNum.length();
-	  String replace = DataMasking.createRandomString(originalNumLength-3);
+//	  String min_val = args[2];
+//	  String max_val = args[3];
+	  int modifiedNumLength = originalNum.length()-3;
+	  //String replace = DataMasking.createRandomString(originalNumLength-3);
+	  String input_params = ";;"+originalNum+";"+modifiedNumLength+";"+modifiedNumLength;
+	  String replace = MaskingMethods.returnRandomDigitsGivenLength(input_params);
 	  String maskedNum = originalNum.substring(0,3) + replace;			  
 	  return maskedNum;
   }
@@ -233,7 +238,38 @@ public static String returnRandomLettersGivenLength(String params) {
 
     //System.out.println(generatedString);
     return generatedString;
-	}	
+	}
+
+//=============================================
+//Author:		Piotr K
+//Create date: 2023-04-27
+//Description:	returnRandomLettersGivenLength(<String EntityID, String currentValue>, int minLength, int maxLength)
+//				parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//				Method return a random String that contains only digits from 0-9. Length of the string is between two given parameters. 
+//=============================================
+public static String returnRandomDigitsGivenLength(String params) {		
+	int leftLimit = 48; // digit 0
+  int rightLimit = 57; // digit 9
+  
+  String[] args = params.split("\\;");
+	
+  int minLength = NumberUtils.toInt(args[2]);
+	int maxLength = NumberUtils.toInt(args[3]);	
+	
+  Random random = new Random();
+  int targetStringLength = random.nextInt(minLength, maxLength);
+  
+  StringBuilder buffer = new StringBuilder(targetStringLength);
+  for (int i = 0; i < targetStringLength; i++) {
+      int randomLimitedInt = leftLimit + (int) 
+        (random.nextFloat() * (rightLimit - leftLimit + 1));
+      buffer.append((char) randomLimitedInt);
+  }
+  String generatedString = buffer.toString();
+
+  //System.out.println(generatedString);
+  return generatedString;
+	}
 //=============================================
 //Author:		Piotr K
 //Create date: 2023-04-27
