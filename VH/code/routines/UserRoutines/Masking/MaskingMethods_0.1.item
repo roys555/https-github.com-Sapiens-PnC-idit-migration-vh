@@ -96,25 +96,27 @@ public static String ChangeDayAndMonth(String params) {
 // Author:		Piotr K
 // Create date: 2023-04-17
 // Description:	TelephoneNumberMaskingLogic (<String EntityID, String currentValue>)
-//		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
-//					Method to mask telephone number. First 3 chars will be kept from original, the rest is replaced with randomly generated.
+//		 		parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//				Method to mask telephone number. First 3 chars will be kept from original, the rest is replaced with randomly generated digits. The total number length is preserved.
 // =============================================					
 			
   public static String TelephoneNumberMaskingLogic(String params) {
 	  String[] args = params.split("\\;");
-//	  String entityID = args[0];
+/
 	  String originalNum = args[1];
-//	  String min_val = args[2];
-//	  String max_val = args[3];
+
 	  int modifiedNumLength = ((originalNum.length()-3)<1)?1:(originalNum.length()-3);
+	  
 	  String min_val = String.valueOf(modifiedNumLength);
 	  String max_val = String.valueOf(modifiedNumLength+1);
-	  //String replace = DataMasking.createRandomString(originalNumLength-3);
+	  
+	  //prepare input string to call another method that generates digits with certain length of string
 	  String input_params = ";;"+min_val+";"+max_val;
 	  String replace = MaskingMethods.returnRandomDigitsGivenLength(input_params);
+	  
 	  String maskedNum = originalNum.substring(0,3) + replace;			  
 	  
-	  System.out.println("Oryginal: "+originalNum+", Replace: "+replace+",Maskowany: "+maskedNum);
+	  //System.out.println("Oryginal: "+originalNum+", Replace: "+replace+",Maskowany: "+maskedNum);
 	  return maskedNum;
   }
 		  
