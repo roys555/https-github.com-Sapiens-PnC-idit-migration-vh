@@ -26,8 +26,8 @@ public class MaskingMethods {
 // =============================================
 public static String returnRandomStringGivenLength(String params) {		
 	String[] args = params.split("\\;");
-	int minLength = NumberUtils.toInt(args[2]);
-	int maxLength = NumberUtils.toInt(args[3]);		
+	int minLength = NumberUtils.toInt(args[4]);
+	int maxLength = NumberUtils.toInt(args[5]);		
 	Random random = new Random();		
 	String ran = DataMasking.createRandomString(random.nextInt(minLength, maxLength));
     return ran;
@@ -44,8 +44,8 @@ public static String returnRandomStringGivenLength(String params) {
 // =============================================
 public static int returnRandomIntRange(String params) {		
 	String[] args = params.split("\\;");
-	int minLength = NumberUtils.toInt(args[2]);
-	int maxLength = NumberUtils.toInt(args[3]);		
+	int minLength = NumberUtils.toInt(args[4]);
+	int maxLength = NumberUtils.toInt(args[5]);		
 	Random random = new Random();		
 	int ran = random.nextInt(minLength, maxLength);
     return ran;
@@ -61,7 +61,7 @@ public static int returnRandomIntRange(String params) {
 public static String ChangeDayAndMonth(String params) {		
 	String[] args = params.split("\\;");
 	String result;
-	int year = NumberUtils.toInt(args[1].substring(0, 4));
+	int year = NumberUtils.toInt(args[3].substring(0, 4));
 	do {
 		GregorianCalendar gc = new GregorianCalendar();	
         gc.set(gc.YEAR, year);
@@ -69,7 +69,7 @@ public static String ChangeDayAndMonth(String params) {
         gc.set(gc.DAY_OF_YEAR, dayOfYear);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	        result = dateFormat.format(gc.getTime());
-		} while (args[1].equalsIgnoreCase(result));
+		} while (args[3].equalsIgnoreCase(result));
 		
         return result;
     }	
@@ -86,7 +86,7 @@ public static String ChangeDayAndMonth(String params) {
 		
   public static String ZipCodeMaskingLogic(String params) {
 	  String[] args = params.split("\\;");
-	  String originalZip = args[1];
+	  String originalZip = args[3];
 	  int originalZipLength = originalZip.length();
 	  String replace = DataMasking.createRandomString(3);
 	  String maskedZip = originalZip.substring(0,originalZipLength-3) + replace;
@@ -103,7 +103,7 @@ public static String ChangeDayAndMonth(String params) {
   public static String TelephoneNumberMaskingLogic(String params) {
 	  String[] args = params.split("\\;");
 
-	  String originalNum = args[1];
+	  String originalNum = args[3];
 
 	  int modifiedNumLength = ((originalNum.length()-3)<1)?1:(originalNum.length()-3);
 	  
@@ -129,9 +129,9 @@ public static String ChangeDayAndMonth(String params) {
 // =============================================		
   public static String chooseRandomStringFromTable(String params) {
 	  String[] args = params.split("\\;");
-	  String dbName = args[2];
-	  String tableName = args[3];
-	  String colName = args[4];	 
+	  String dbName = args[5];
+	  String tableName = args[6];
+	  String colName = args[+];	 
 	  try (
 	 	         Connection conn = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName,"SA",""); 
 	 	         Statement stmt = conn.createStatement();
@@ -164,8 +164,8 @@ public static String ChangeDayAndMonth(String params) {
 //=============================================		
  public static String hashWithChar(String params) {
 	  String[] args = params.split("\\;");
-	  String originalValue = args[1];
-	  String replaceWith = args[2];
+	  String originalValue = args[3];
+	  String replaceWith = args[4];
 	  String maskedValue = StringUtils.repeat(replaceWith, originalValue.length());
 	  
 	  return maskedValue;
@@ -179,7 +179,7 @@ public static String ChangeDayAndMonth(String params) {
 //=============================================		
  public static String maskEmailAddress(String params) {
      String[] args = params.split("\\;");
-     String originalValue = args[1];
+     String originalValue = args[3];
 
      StringBuilder sb = new StringBuilder();
      StringBuffer output = new StringBuffer(110);
@@ -228,8 +228,8 @@ public static String returnRandomLettersGivenLength(String params) {
     
     String[] args = params.split("\\;");
 	
-    int minLength = NumberUtils.toInt(args[2]);
-	int maxLength = NumberUtils.toInt(args[3]);	
+    int minLength = NumberUtils.toInt(args[4]);
+	int maxLength = NumberUtils.toInt(args[5]);	
 	
     Random random = new Random();
     int targetStringLength = random.nextInt(minLength, maxLength);
@@ -259,8 +259,8 @@ public static String returnRandomDigitsGivenLength(String params) {
   
   String[] args = params.split("\\;");
 	
-  int minLength = NumberUtils.toInt(args[2]);
-	int maxLength = NumberUtils.toInt(args[3]);	
+  int minLength = NumberUtils.toInt(args[4]);
+	int maxLength = NumberUtils.toInt(args[5]);	
 	
   Random random = new Random();
   int targetStringLength = random.nextInt(minLength, maxLength);
@@ -287,7 +287,7 @@ public static String returnRandomDigitsGivenLength(String params) {
 	  
 	  String[] args = params.split("\\;");
 	  
-	  double input_val = NumberUtils.toDouble(args[2]);
+	  double input_val = NumberUtils.toDouble(args[4]);
 	  //System.out.println(input_val);
 	  return input_val;
 	}	
