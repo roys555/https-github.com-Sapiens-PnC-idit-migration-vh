@@ -135,53 +135,54 @@ public static String ChangeDayAndMonth(String params) {
 	  String dictDbName = args[4];
 	  String dictTableName = args[5];
 	  String dictColName = args[6];	 
+	  boolean repetFlag = true;
+	  repetFlag = Boolean.parseBoolean(args[7]);
+	  System.out.println("Repetition flag is: "+repetFlag);
+	  ArrayList<String> entityResult = new ArrayList<>(); 
+      ArrayList<String> dictResult = new ArrayList<>(); 	
 	    
-	  try (	 	 
-			 // Dict params
- 	         Connection connDict = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName,"SA",""); 
- 	         Statement stmtDict = connDict.createStatement();
-		     // Entity state
-		  	 Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
- 	         Statement stmtEntity= connEntity.createStatement();			  
-	 	      ) {	    
-		  		 // Dictionary read
-	 	         String strSelectDict = "SELECT " + dictColName+ " FROM " +dictTableName;	    	 
-	 	         ResultSet rset = stmtDict.executeQuery(strSelectDict);	 	         
-	 	         ArrayList<String> dictResult = new ArrayList<>(); 	 	         
-	 	         
-	 	         while(rset.next()) {
-    	            String value = rset.getString(dictColName);
-    	            dictResult.add(value);  
-    	         }
-	 	         // Current entity data read
-	 	         String strSelectEntity = "SELECT " + colToUpdate+ " FROM " +tableToUpdate;	    	 
-	 	         ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	 	         
-	 	         ArrayList<String> entityResult = new ArrayList<>(); 	 	         
-	 	         
-	 	         while(rsetEntity.next()) {
-	 	        	 String value = rsetEntity.getString(colToUpdate);
-	 	        	 entityResult.add(value);  
-	 	         }
-	 	         
-	 	         connDict.close();
-	 	         connEntity.close();
-	 	         
-	 	         //
-	 	         System.out.println("Dict list is: "+dictResult);
-	 	         System.out.println("Entity list is: "+entityResult);
-	 	         dictResult.removeAll(entityResult);
-	 	         System.out.println("List after removing is: "+dictResult);
-	 	         
-	 	         int length = dictResult.size();
-	 	         Random random = new Random();
-	 	         String maskedIban = dictResult.get(random.nextInt(0, length));	 	         
-	 	         return maskedIban;
-	 	         
-	 	      } catch(SQLException ex) {
-	 	         ex.printStackTrace();
-	 	      }  	
+	  try(
+		   Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
+		   Statement stmtEntity= connEntity.createStatement(); 
+		 ){
+		      String strSelectEntity = "SELECT " + colToUpdate+ " FROM " +tableToUpdate;	    	 
+		      ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	
+	          while(rsetEntity.next()) {
+		        	 String value = rsetEntity.getString(colToUpdate);
+		        	 entityResult.add(value);  
+	          }
+	          connEntity.close();
+	  }catch(SQLException ex) {
+ 	         ex.printStackTrace();
+ 	  } 
 	  
-	  return "Street";
+	  try (	 	 
+ 	       Connection connDict = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName,"SA",""); 
+ 	       Statement stmtDict = connDict.createStatement();
+		  ){	    
+ 	         String strSelectDict = "SELECT " + dictColName+ " FROM " +dictTableName;	    	 
+ 	         ResultSet rset = stmtDict.executeQuery(strSelectDict);	
+ 	         while(rset.next()) {
+	            String value = rset.getString(dictColName);
+	            dictResult.add(value);  
+	         }
+ 	         connDict.close();
+	 	         
+  	   }catch(SQLException ex) {
+ 	         ex.printStackTrace();
+       }  	
+	  
+	  //
+       System.out.println("Dict list is: "+dictResult);
+       System.out.println("Entity list is: "+entityResult);
+       dictResult.removeAll(entityResult);
+       System.out.println("List after removing is: "+dictResult);
+       
+       int length = dictResult.size();
+       Random random = new Random();
+       String maskedIban = dictResult.get(random.nextInt(0, length));	 	         
+       return maskedIban;
+	  
   }
 //=============================================
 //Author:		Piotr K
