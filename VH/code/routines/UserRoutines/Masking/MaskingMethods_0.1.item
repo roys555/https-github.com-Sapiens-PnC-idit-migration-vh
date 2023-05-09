@@ -135,24 +135,41 @@ public static String ChangeDayAndMonth(String params) {
 	  String dictDbName = args[4];
 	  String dictTableName = args[5];
 	  String dictColName = args[6];	 
-	  System.out.println("Parameters are: " + params);	  
+	    
 	  try (
 	 	         Connection connDict = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName,"SA",""); 
 	 	         Statement stmtDict = connDict.createStatement();
-	 	      ) {	    	         
+			  	 Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
+	 	         Statement stmtEntity= connEntity.createStatement();
+			  
+	 	      ) {	    
+		  		 // Dictionary read
 	 	         String strSelectDict = "SELECT " + dictColName+ " FROM " +dictTableName;	    	 
 	 	         ResultSet rset = stmtDict.executeQuery(strSelectDict);	 	         
-	 	         ArrayList<String> dictResult = new ArrayList<>(); 
+	 	         ArrayList<String> dictResult = new ArrayList<>(); 	 	         
 	 	         
 	 	         while(rset.next()) {
     	            String value = rset.getString(dictColName);
     	            dictResult.add(value);  
     	         }
+	 	         // Current entity data read
+	 	         String strSelectEntity = "SELECT " + colToUpdate+ " FROM " +tableToUpdate;	    	 
+	 	         ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	 	         
+	 	         ArrayList<String> entityResult = new ArrayList<>(); 	 	         
+	 	         
+	 	         while(rsetEntity.next()) {
+	 	        	 String value = rsetEntity.getString(colToUpdate);
+	 	        	 System.out.println("Iban is: " + value);	
+	 	        	 entityResult.add(value);  
+	 	         }
+	 	         
 	 	         connDict.close();
+	 	         connEntity.close();
+	 	         
 	 	         int length = dictResult.size();
 	 	         Random random = new Random();
 	 	         String maskedIban = dictResult.get(random.nextInt(0, length));
-	 	         System.out.println("Choosed iban is: "+ maskedIban);	
+	 	         System.out.println("To masking chosed iban: "+ maskedIban);	
 	 	         return maskedIban;
 	 	         
 	 	      } catch(SQLException ex) {
