@@ -129,32 +129,34 @@ public static String ChangeDayAndMonth(String params) {
 // =============================================		
   public static String chooseRandomStringFromTable(String params) {
 	  String[] args = params.split("\\;");
-	  String dbName = args[5];
-	  String tableName = args[6];
-	  String colName = args[3];	 
-	  System.out.println("Parameters are: " + params);
-	  /*
+	  String tableToUpdate = args[0];
+	  String colToUpdate = args[1];
+	  String entityID = args[2]; 
+	  String dictDbName = args[4];
+	  String dictTableName = args[5];
+	  String dictColName = args[6];	 
+	  System.out.println("Parameters are: " + params);	  
 	  try (
-	 	         Connection conn = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName,"SA",""); 
-	 	         Statement stmt = conn.createStatement();
+	 	         Connection connDict = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName,"SA",""); 
+	 	         Statement stmtDict = connDict.createStatement();
 	 	      ) {	    	         
-	 	         String strSelect = "SELECT " + colName+ " FROM " +tableName;	    	 
-	 	         ResultSet rset = stmt.executeQuery(strSelect);	 	         
-	 	         ArrayList<String> valuesResult = new ArrayList<>(); 
+	 	         String strSelectDict = "SELECT " + dictColName+ " FROM " +dictTableName;	    	 
+	 	         ResultSet rset = stmtDict.executeQuery(strSelectDict);	 	         
+	 	         ArrayList<String> dictResult = new ArrayList<>(); 
 	 	         
 	 	         while(rset.next()) {
-    	            String value = rset.getString(colName);
-    	            valuesResult.add(value);  
+    	            String value = rset.getString(dictColName);
+    	            dictResult.add(value);  
     	         }
-	 	         conn.close();
-	 	         int length = valuesResult.size();
+	 	         connDict.close();
+	 	         int length = dictResult.size();
 	 	         Random random = new Random();
-	 	         return valuesResult.get(random.nextInt(0, length));
+	 	         return dictResult.get(random.nextInt(0, length));
 	 	         
 	 	      } catch(SQLException ex) {
 	 	         ex.printStackTrace();
 	 	      }  	
-	  */
+	  
 	  return "Street";
   }
 //=============================================
