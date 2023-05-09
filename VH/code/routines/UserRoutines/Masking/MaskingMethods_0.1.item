@@ -136,12 +136,13 @@ public static String ChangeDayAndMonth(String params) {
 	  String dictTableName = args[5];
 	  String dictColName = args[6];	 
 	    
-	  try (
-	 	         Connection connDict = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName,"SA",""); 
-	 	         Statement stmtDict = connDict.createStatement();
-			  	 Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
-	 	         Statement stmtEntity= connEntity.createStatement();
-			  
+	  try (	 	 
+			 // Dict params
+ 	         Connection connDict = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName,"SA",""); 
+ 	         Statement stmtDict = connDict.createStatement();
+		     // Entity state
+		  	 Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
+ 	         Statement stmtEntity= connEntity.createStatement();			  
 	 	      ) {	    
 		  		 // Dictionary read
 	 	         String strSelectDict = "SELECT " + dictColName+ " FROM " +dictTableName;	    	 
@@ -159,12 +160,17 @@ public static String ChangeDayAndMonth(String params) {
 	 	         
 	 	         while(rsetEntity.next()) {
 	 	        	 String value = rsetEntity.getString(colToUpdate);
-	 	        	 System.out.println("Iban is: " + value);	
 	 	        	 entityResult.add(value);  
 	 	         }
 	 	         
 	 	         connDict.close();
 	 	         connEntity.close();
+	 	         
+	 	         //
+	 	         System.out.println("Dict list is: "+dictResult);
+	 	         System.out.println("Entity list is: "+entityResult);
+	 	         dictResult.removeAll(entityResult);
+	 	         System.out.println("List after removing is: "+dictResult);
 	 	         
 	 	         int length = dictResult.size();
 	 	         Random random = new Random();
