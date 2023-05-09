@@ -140,27 +140,22 @@ public static String ChangeDayAndMonth(String params) {
 	  
 	  ArrayList<String> entityResult = new ArrayList<>(); 
       ArrayList<String> dictResult = new ArrayList<>(); 	
-	  if(repetFlag) {
-		  System.out.println("Repetition flag is true"); 
-	  }else
-	  {
-		  System.out.println("Repetition flag is false"); 
+	  if(repetFlag) {		  
+		  try(
+			   Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
+			   Statement stmtEntity= connEntity.createStatement(); 
+			 ){
+			      String strSelectEntity = "SELECT " + colToUpdate+ " FROM " +tableToUpdate;	    	 
+			      ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	
+		          while(rsetEntity.next()) {
+			        	 String value = rsetEntity.getString(colToUpdate);
+			        	 entityResult.add(value);  
+		          }
+		          connEntity.close();
+		  }catch(SQLException ex) {
+	 	         ex.printStackTrace();
+	 	  } 
 	  }
-	  try(
-		   Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
-		   Statement stmtEntity= connEntity.createStatement(); 
-		 ){
-		      String strSelectEntity = "SELECT " + colToUpdate+ " FROM " +tableToUpdate;	    	 
-		      ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	
-	          while(rsetEntity.next()) {
-		        	 String value = rsetEntity.getString(colToUpdate);
-		        	 entityResult.add(value);  
-	          }
-	          connEntity.close();
-	  }catch(SQLException ex) {
- 	         ex.printStackTrace();
- 	  } 
-	  
 	  try (	 	 
  	       Connection connDict = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName,"SA",""); 
  	       Statement stmtDict = connDict.createStatement();
@@ -180,7 +175,9 @@ public static String ChangeDayAndMonth(String params) {
 	  //
        System.out.println("Dict list is: "+dictResult);
        System.out.println("Entity list is: "+entityResult);
-       dictResult.removeAll(entityResult);
+       if(repetFlag) {	
+    	   dictResult.removeAll(entityResult);
+       }
        System.out.println("List after removing is: "+dictResult);
        
        int length = dictResult.size();
