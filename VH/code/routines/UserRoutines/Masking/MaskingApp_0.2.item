@@ -1,112 +1,97 @@
+// =============================================
+// Author:		Piotr K
+// Create date: 2023-04-14
+// Description:	Engine is designed to collect all declared masking methods and apply them on the HSQL per entity DB before XML serialization
+// Change log:  [0.2], 09-05-2023, Piotr - Changed parameters passed in java reflection (added table and column to be masked names)
+//
+// =============================================
 package routines;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.*;
+import java.sql. * ;
 
-public class MaskingApp{
-	
-	public static void MaskMaster (String dbName, String entityID ) {
-		
-	      try (
-	    	         Connection conn = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName,"SA",""); 
-	    		     Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dbName+entityID,"SA","");
-	    	         Statement stmt = conn.createStatement();
-	    	      ) {	    	         
-	    	         String strSelect = "SELECT tableName, columName, maskMethod FROM	maskingRules WHERE isActive = true";	    	 
-	    	         ResultSet rset = stmt.executeQuery(strSelect);	    	         
-	    	         	    	         
-	    	         while(rset.next()) {
-	    	            String tableName = rset.getString("tableName");  
-	    	            String columName = rset.getString("columName");
-	    	            String maskMethod = rset.getString("maskMethod");
-	    	            GrabRowsToUpdate(tableName, columName, maskMethod, connEntity, entityID);
-	    	            
-	    	         }
-	    	         
-	    	         connEntity.close();
-	    	         conn.close();	
-	    	         
-	    	      } catch(SQLException ex) {
-	    	         ex.printStackTrace();
-	    	      } 
-	}
-	
-	private static void GrabRowsToUpdate(String tableName, String columName,String maskMethod, Connection connEntity, String entityID) {
-		try (
-   	         Statement stmt = connEntity.createStatement();
-   	      ) {	
-   	         String strSelect = "SELECT "+columName+ " FROM	"+tableName+" WHERE "+columName+" IS NOT NULL";	    	 
-   	         ResultSet rset = stmt.executeQuery(strSelect);	    	         
-   	         	    	         
-   	         while(rset.next()) {   	        	
-   	            String columnValue = rset.getString(columName);   	            
-   	            if (columnValue != null && !columnValue.trim().isEmpty()) {   
-   	            	applyMask(tableName, columName, maskMethod, columnValue, connEntity, entityID);
-   	            }
-   	         }
-   	 
-   	      } catch(SQLException ex) {
-   	         ex.printStackTrace();
-   	      } 
-		
-	}
-	
-	@SuppressWarnings("rawtypes")
-	private static void applyMask(String tableName, String columName, String maskMethod,String columnValue, Connection connEntity, String entityID) {
-		
-		String maskMethodName = maskMethod.substring(0,maskMethod.indexOf(";"));
-		String maskMethodParameters = maskMethod.substring(maskMethod.indexOf(";")+1);;		
-		
-		String className = "routines.MaskingMethods"; 
-		Object result = new Object();
-		try {
-		    Class<?> clazz = Class.forName(className);	
-		    Class[] cArg = new Class[1];
-	        cArg[0] = String.class;
-		    Method method = clazz.getMethod(maskMethodName,cArg);
-		    maskMethodParameters = entityID + ";" + columnValue + ";" + maskMethodParameters;
-		    result = method.invoke(clazz.getDeclaredConstructor(), maskMethodParameters);   
-		}
-		
-		catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | SecurityException e) {
-			e.printStackTrace();
-		}
-		/// String Update
-		
-		try (
-	   	      Statement stmt = connEntity.createStatement();
-	   	      ) 		
-			  {	
-	   	         String strSelect = "UPDATE "+ tableName +" SET " + columName +" = '"+result+"' WHERE "  + columName +" = '"+columnValue+"'";	   	         
-	   	         stmt.executeQuery(strSelect);	    	         
-	   	        
-	   	      } catch(SQLException ex) {
-	   	    	try (
-	   		   	      Statement stmt = connEntity.createStatement();
-	   		   	      ) 		
-	   				  {	
-	   		   	         String strSelect = "UPDATE "+ tableName +" SET " + columName +" = "+result+" WHERE "  + columName +" = "+columnValue;	   	         
-	   		   	         stmt.executeQuery(strSelect);	    	         
-	   		   	        
-	   		   	      } catch(SQLException ex2) {
-	   		   	    	ex2.printStackTrace();
-	   		   	      } 
-	   	      } 
-			
-		
-	}
+public class MaskingApp {
+
+  public static void MaskMaster(String dbName, String entityID) {
+    try (
+      Connection conn = DriverManager.getConnection("jdbc:hsqldb:mem:" + dbName, "SA", "");
+      Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:" + dbName + entityID, "SA", "");
+      Statement stmt = conn.createStatement();) {
+      String strSelect = "SELECT tableName, columName, maskMethod FROM	maskingRules WHERE isActive = true";
+      ResultSet rset = stmt.executeQuery(strSelect);
+
+      while (rset.next()) {
+        String tableName = rset.getString("tableName");
+        String columName = rset.getString("columName");
+        String maskMethod = rset.getString("maskMethod");
+        GrabRowsToUpdate(tableName, columName, maskMethod, connEntity, entityID);
+      }
+
+      connEntity.close();
+      conn.close();
+
+    } catch(SQLException ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  private static void GrabRowsToUpdate(String tableName, String columName, String maskMethod, Connection connEntity, String entityID) {
+    try (
+    Statement stmt = connEntity.createStatement();) {
+      String strSelect = "SELECT " + columName + " FROM	" + tableName + " WHERE " + columName + " IS NOT NULL";
+      ResultSet rset = stmt.executeQuery(strSelect);
+
+      while (rset.next()) {
+        String columnValue = rset.getString(columName);
+        if (columnValue != null && !columnValue.trim().isEmpty()) {
+          applyMask(tableName, columName, maskMethod, columnValue, connEntity, entityID);
+        }
+      }
+
+    } catch(SQLException ex) {
+      ex.printStackTrace();
+    }
+
+  }
+
+  @SuppressWarnings("rawtypes")
+  private static void applyMask(String tableName, String columName, String maskMethod, String columnValue, Connection connEntity, String entityID) {
+
+    String maskMethodName = maskMethod.substring(0, maskMethod.indexOf(";"));
+    String maskMethodParameters = maskMethod.substring(maskMethod.indexOf(";") + 1);;
+
+    String className = "routines.MaskingMethods";
+    Object result = new Object();
+    try {
+      Class < ?>clazz = Class.forName(className);
+      Class[] cArg = new Class[1];
+      cArg[0] = String.class;
+      Method method = clazz.getMethod(maskMethodName, cArg);
+      maskMethodParameters = tableName + ";" + columName + ";" + entityID + ";" + columnValue + ";" + maskMethodParameters;
+      result = method.invoke(clazz.getDeclaredConstructor(), maskMethodParameters);
+    }
+
+    catch(ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | SecurityException e) {
+      e.printStackTrace();
+    }
+    /// String Update
+
+    try (
+    Statement stmt = connEntity.createStatement();) {
+      String strSelect = "UPDATE " + tableName + " SET " + columName + " = '" + result + "' WHERE " + columName + " = '" + columnValue + "'";
+      stmt.executeQuery(strSelect);
+
+    } catch(SQLException ex) {
+      try (
+      Statement stmt = connEntity.createStatement();) {
+        String strSelect = "UPDATE " + tableName + " SET " + columName + " = " + result + " WHERE " + columName + " = " + columnValue;
+        stmt.executeQuery(strSelect);
+
+      } catch(SQLException ex2) {
+        ex2.printStackTrace();
+      }
+    }
+
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
