@@ -1,5 +1,7 @@
 package routines;
 
+import java.util.Scanner;
+
 public class ContactProcessingVHP {
 	
 	/// ContactIVO -> EntityTypeVORef
@@ -85,7 +87,29 @@ public class ContactProcessingVHP {
         	return new GenericVORef(1000001, "Correspondence address");
         }	                   
     }    
+    /// HouseNr and ProvinceName
     
+    public static AddressDetails parseHouseNr(String houseNr) {  
+        int sign = -1;
+        try {
+            sign = new Scanner(houseNr).useDelimiter("\\D+").nextInt();
+        }catch(Exception e){
+            // do nothing
+        }
+
+        if(sign > 0){
+            int index = houseNr.indexOf(Integer.toString(sign));
+            int len = houseNr.length();
+            String houseNumber = houseNr.substring(index,len);
+            String provinceName = houseNr.substring(0,index);
+            return new AddressDetails(houseNumber,provinceName);
+        }else{
+            return new AddressDetails(houseNr);
+        }
+
+    	
+    	
+    }
     
     /// External contact number logic///
     public static String returnExternalContactNumber(long partnerID) {
