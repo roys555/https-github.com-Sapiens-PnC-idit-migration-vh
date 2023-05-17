@@ -1,5 +1,7 @@
 package routines;
 
+import java.util.Scanner;
+
 /*
  * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
  * it must be before the "{talendTypes}" key.
@@ -56,4 +58,27 @@ public class contactProcessing {
 	    else {	    	return "Correspondence address";	    }	
                
 	}
+    /// HouseNr and ProvinceName
+    
+    public static AddressDetails parseHouseNr(String houseNr) {  
+        int sign = -1;
+        try {
+            sign = new Scanner(houseNr).useDelimiter("\\D+").nextInt();
+        }catch(Exception e){
+            // do nothing
+        }
+
+        if(sign > 0){
+            int index = houseNr.indexOf(Integer.toString(sign));
+            int len = houseNr.length();
+            String houseNumber = houseNr.substring(index,len).trim();
+            String provinceName = houseNr.substring(0,index).trim();
+            return new AddressDetails(houseNumber,provinceName);
+        }else{
+            return new AddressDetails(houseNr);
+        }
+
+    	
+    	
+    }
 }
