@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" name="Default">
-    <contextParameter comment="" internalId="_gaBZcMTOEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="5"/>
-    <contextParameter comment="" internalId="_5rBYQBWOEe6GZNz_X5itSQ" name="dms_files_path" prompt="dms_files_path?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:/VHmigration/CommuniationDocs/DMS_FILES/&quot;"/>
-    <contextParameter comment="" internalId="_5rBYQRWOEe6GZNz_X5itSQ" name="excel_files_path" prompt="excel_files_path?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:/VHmigration/CommuniationDocs/EXCEL_FILES/&quot;"/>
-    <contextParameter comment="" internalId="_RocqMBr_Ee6rDb1Uvhz6Ew" name="stdl_files_path" prompt="stdl_files_path?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:/VHmigration/CommuniationDocs/STDL_FILES/&quot;"/>
+    <contextParameter comment="" internalId="_gaBZcMTOEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="13"/>
+    <contextParameter comment="" internalId="_tNe2EBsLEe6rDb1Uvhz6Ew" name="filePathPrefix" prompt="filePathPrefix?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:\\VHmigration\\CommuniationDocs\\&quot;"/>
     <contextParameter comment="specifies max rows readed for test purposes" internalId="_1jXqoBc0Ee6i4aUP0C2REw" name="no_max_rows" prompt="no_max_rows?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="20"/>
     <contextParameter comment="restricts no of rows readed from all sources" internalId="_1jXqohc0Ee6i4aUP0C2REw" name="test_mig" prompt="test_mig?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
     <contextParameter comment="context var -temporary" internalId="_ar4eYBqjEe6j6PV26qq4XQ" name="max_rows" prompt="max_rows?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value=""/>
@@ -126,7 +124,7 @@
   <node componentName="tFileInputDelimited" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="64">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileInputDelimited_1"/>
     <elementParameter field="LABEL" name="FILENAMETEXT" value="&quot;When the input source is a stream or a zip file,footer and random shouldn't be bigger than 0.&quot;"/>
-    <elementParameter field="FILE" name="FILENAME" value="context.dms_files_path+&quot;data.csv&quot;"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.filePathPrefix+&quot;DMS_FILES/data.csv&quot;"/>
     <elementParameter field="CHECK" name="CSV_OPTION" value="false"/>
     <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
     <elementParameter field="OPENED_LIST" name="CSVROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
@@ -250,7 +248,7 @@
         <mapperTableEntries expression="row1.ID " name="LEGACY_DOC_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;DMS_DOC&quot;" name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row1.fileName " name="FILE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row1.relativePath.substring(0, row1.relativePath.lastIndexOf(&quot;\\&quot;)) " name="FILE_RELPATH" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;DMS_FILES\\&quot;+(row1.relativePath.substring(0, row1.relativePath.lastIndexOf(&quot;\\&quot;)) ) " name="FILE_RELPATH" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row1.relativePath " name="FILE_RELPATH_ORIG" nullable="true" type="id_String"/>
         <mapperTableEntries name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Integer"/>
@@ -480,7 +478,7 @@
   <node componentName="tFileInputExcel" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="256">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileInputExcel_1"/>
     <elementParameter field="CHECK" name="VERSION_2007" value="true"/>
-    <elementParameter field="FILE" name="FILENAME" value="context.excel_files_path+&quot;agent_additional_files.xlsx&quot;"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.filePathPrefix+&quot;EXCEL_FILES/agent_additional_files.xlsx&quot;"/>
     <elementParameter field="PASSWORD" name="PASSWORD" value="enc:system.encryption.key.v1:CVXS765zWHzkuuVkUViAHAZDODPTvcI/xfUM5zVs"/>
     <elementParameter field="CHECK" name="ALL_SHEETS" value="true"/>
     <elementParameter field="TABLE" name="SHEETLIST" show="false"/>
@@ -520,8 +518,8 @@
       <elementValue elementRef="CONVERTDATE" value="false"/>
       <elementValue elementRef="PATTERN" value="&quot;MM-dd-yyyy&quot;"/>
     </elementParameter>
-    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;"/>
-    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;UTF-8&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="CUSTOM"/>
     <elementParameter field="CHECK" name="READ_REAL_VALUE" show="false" value="false"/>
     <elementParameter field="CHECK" name="STOPREAD_ON_EMPTYROW" value="false"/>
     <elementParameter field="CHECK" name="NOVALIDATE_ON_CELL" show="false" value="false"/>
@@ -644,7 +642,7 @@
         <mapperTableEntries expression="Var.ID " name="LEGACY_DOC_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Agent_XLSX&quot;" name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(row2.file_name != null)?row2.file_name:(row2.file_path.substring(row2.file_path.lastIndexOf(&quot;\\&quot;)+1) ) " name="FILE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="(row2.file_name != null)?row2.file_path.replace(&quot;:&quot;, &quot;&quot;):(row2.file_path.substring(0, row2.file_path.lastIndexOf(&quot;\\&quot;)).replace(&quot;:&quot;, &quot;&quot;) ) " name="FILE_RELPATH" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(row2.file_name != null)?&quot;EXCEL_FILES\\&quot;+row2.file_path.replace(&quot;:&quot;, &quot;&quot;):&quot;EXCEL_FILES\\&quot;+(row2.file_path.substring(0, row2.file_path.lastIndexOf(&quot;\\&quot;)).replace(&quot;:&quot;, &quot;&quot;) ) " name="FILE_RELPATH" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.file_path " name="FILE_RELPATH_ORIG" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.doc_type_name " name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Integer"/>
@@ -963,7 +961,7 @@
   <node componentName="tFileInputExcel" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="832" posY="256">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileInputExcel_2"/>
     <elementParameter field="CHECK" name="VERSION_2007" value="true"/>
-    <elementParameter field="FILE" name="FILENAME" value="context.excel_files_path+&quot;Baza rzeczoznawców - files.xlsx&quot;"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.filePathPrefix+&quot;EXCEL_FILES/Baza rzeczoznawców - files.xlsx&quot;"/>
     <elementParameter field="PASSWORD" name="PASSWORD" value="enc:system.encryption.key.v1:HzEe+vKGsZICeUQEFipscL0y5lGG8KwguYbVg46/"/>
     <elementParameter field="CHECK" name="ALL_SHEETS" value="true"/>
     <elementParameter field="TABLE" name="SHEETLIST" show="false"/>
@@ -1134,7 +1132,7 @@
         <mapperTableEntries expression="Var.ID " name="LEGACY_DOC_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Rzecz_XLSX&quot;" name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(row3.file_name != null)?row3.file_name:(row3.file_path.substring(row3.file_path.lastIndexOf(&quot;\\&quot;)+1) ) " name="FILE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="(row3.file_name != null)?row3.file_path.replace(&quot;:&quot;, &quot;&quot;):(row3.file_path.substring(0, row3.file_path.lastIndexOf(&quot;\\&quot;)).replace(&quot;:&quot;, &quot;&quot;) ) " name="FILE_RELPATH" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(row3.file_name != null)?&quot;EXCEL_FILES\\&quot;+row3.file_path.replace(&quot;:&quot;, &quot;&quot;):&quot;EXCEL_FILES\\&quot;+(row3.file_path.substring(0, row3.file_path.lastIndexOf(&quot;\\&quot;)).replace(&quot;:&quot;, &quot;&quot;) ) " name="FILE_RELPATH" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row3.file_path " name="FILE_RELPATH_ORIG" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row3.doc_type_name " name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Integer"/>
@@ -1561,7 +1559,7 @@
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Integer"/>
@@ -1855,7 +1853,7 @@
   </node>
   <node componentName="tFileList" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="512">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileList_1"/>
-    <elementParameter field="DIRECTORY" name="DIRECTORY" value="context.stdl_files_path"/>
+    <elementParameter field="DIRECTORY" name="DIRECTORY" value="context.filePathPrefix+&quot;STDL_FILES&quot;"/>
     <elementParameter field="CLOSED_LIST" name="LIST_MODE" value="FILES"/>
     <elementParameter field="CHECK" name="INCLUDSUBDIR" value="true"/>
     <elementParameter field="CLOSED_LIST" name="CASE_SENSITIVE" value="YES"/>
@@ -1870,7 +1868,7 @@
     <elementParameter field="RADIO" name="ORDER_ACTION_DESC" value="false"/>
     <elementParameter field="CHECK" name="IFEXCLUDE" value="false"/>
     <elementParameter field="TEXT" name="EXCLUDEFILEMASK" show="false" value="&quot;*.txt&quot;"/>
-    <elementParameter field="CHECK" name="FORMAT_FILEPATH_TO_SLASH" value="true"/>
+    <elementParameter field="CHECK" name="FORMAT_FILEPATH_TO_SLASH" value="false"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
   <node componentName="tIterateToFlow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="384" posY="512">
@@ -1974,7 +1972,7 @@
         <mapperTableEntries expression="Var.ID " name="LEGACY_DOC_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;STDL_FILES&quot;" name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row6.fileName " name="FILE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row6.filePath.replaceFirst(context.stdl_files_path, &quot;&quot;) " name="FILE_RELPATH" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row6.filePath.substring(StringHandling.LEN(context.filePathPrefix) ) " name="FILE_RELPATH" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row6.filePath " name="FILE_RELPATH_ORIG" nullable="true" type="id_String"/>
         <mapperTableEntries name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Integer"/>
@@ -2386,13 +2384,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_79a091b3-17f7-4c09-bd54-7c4e06c2cc77"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QdA/AjdrYv46zqcHnP2xIcOI8YYdTXPNDOHwFmrflqTrmOykxRH0261CreoRZs87zgIWuic+iVEb&#13;
-bwxYmjgOjQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_80db0da2-fc8d-41b3-a7c0-34a00f344ad2"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>MyZ7HsvKTx3cqhNZLaV4hnr71ylZEZCiDvWPY3V+E/DtolK7B5r6FBhFMhIOu4Y0ZRxkX8MCiE2B&#13;
-Svo+z6oQnA==</DigestValue></Reference></SignedInfo><SignatureValue>MOyJWJ2RsRzaf4p3EIL+pVCfjGMXBr0o/mbXTzfjBnDYykNi04y6WbOmFLvY7eZjeQd4sOycN3sb&#13;
-0b9CZuYKOnPfpS0HGwBx82Trb/JE5b77aBzyytjQmTvOXX5ZcbYnWKayhC3NW3SdHjTRB2R+6LuY&#13;
-tg8AbnD18jQqfaWwr7dPthaJeaaZyimsXzagYGqJFCatpBYI3kHBBbM/ZhJPP30JlhcMywYQjYuD&#13;
-XHMj74PNbie1iy9XspaP3cuZ9fVBnU12Y+TtQRYKbToTmQbmPkR8Fbc+L6k6AUA8cmnjV+pUQQNl&#13;
-Ps6qd6z0OND9r8WT2JKLrcaoQAKfDja6tJ4ziw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_769bdbcf-82ec-44ea-a839-adebd216383f"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>9jC+VBFBgetlzF9q78gn5SRCJmaOiqroAYdMTR7Z5MyL6cXOQj8bWOmCOAhpxbltOuAdDX1Pumat&#13;
+Eknlw4LNAg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d43e4b56-f3c9-4410-b3cf-f80ae3151e6f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>MZ3rYtl5cA9SfkiiqKv/AKJ2w11NeWImf3zP8toEusOnU3gDMfAImxljdDmZckTvmgIPCirfQlLK&#13;
+UJDn7+Ts+A==</DigestValue></Reference></SignedInfo><SignatureValue>I054Ae3+cycvJYv4aOyWv8abWBN8ZZyXblt48GYFLIm5VVkwjrnVBnLX4UpOtk4u5EpIIf6MhZA5&#13;
+BHqn0GbdERnL7WfTHdaMTJZrj4KFEJR+SdaHQWWPxYwp98VXAJbN5Ex5BY+oGj7ahMbxiKAasSzT&#13;
+6T1Mmc/vJcO1v5/o9dOS+j6eJGHGHMMOvTsUh3m9hyQgiveUcNRxoG4Q4pHglDVOASF7LwUGHsM9&#13;
+REcz2PfE1deSjD87FN2lnUIo8fKlglcZcm+0h2I1Xdit1UaeSDlzU1L3rBo/JTcALWhx0j3h+8l0&#13;
++ph2pjREoKDT9gyFG6mIuaNUkQ9KuCfVT7tbuQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2414,4 +2412,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_80db0da2-fc8d-41b3-a7c0-34a00f344ad2" Target="#_79a091b3-17f7-4c09-bd54-7c4e06c2cc77"><Timestamp>2023-07-05 07:59:02</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d43e4b56-f3c9-4410-b3cf-f80ae3151e6f" Target="#_769bdbcf-82ec-44ea-a839-adebd216383f"><Timestamp>2023-07-05 12:09:37</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
