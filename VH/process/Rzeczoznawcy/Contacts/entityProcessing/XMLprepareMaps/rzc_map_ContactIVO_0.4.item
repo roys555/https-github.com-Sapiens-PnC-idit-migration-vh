@@ -320,12 +320,12 @@
       <column comment="" key="false" length="50" name="headOfFamily" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="residentFlag" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="entityTypeVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="entityTypeVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="entityTypeVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="languageRefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="languageRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="languageRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="processingStatusVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="processingStatusVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="dateOfBirth" nullable="true" originalLength="-1" pattern="&quot;yyyy-MM-dd'T'HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="processingStatusVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="dateOfBirth" nullable="true" originalLength="-1" pattern="&quot;yyyy-MM-dd'T'HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="entitySubTypeID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="entitySubTypeContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="foreignEntityRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -368,6 +368,7 @@
       <column comment="" key="false" length="50" name="telephonePrefix" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="contactRoleVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="contactRoleVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="sourceOfContact" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="rejectedEntityTypes">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -416,8 +417,8 @@
         <mapperTableEntries expression="row3.ID " name="ID" type="id_Long"/>
         <mapperTableEntries expression="row3.CONTRACTNUMBER " name="ID_RZC" type="id_String"/>
         <mapperTableEntries expression="row3.SURNAME " name="masterEntityID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="(Var.entityTypeVoRefID==1)?row3.SURNAME: ((ContactProcessingVHP.checkStringNotEmpty(row3.COMPANYNAME) == false)?row3.COMPANYNAME:row3.SURNAME ) " name="name" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="(Var.entityTypeVoRefID==1)?row3.FIRSTNAME: ((ContactProcessingVHP.checkStringNotEmpty(row3.COMPANYNAME) == false)?(row3.FIRSTNAME+&quot; &quot;+row3.SURNAME ):row3.FIRSTNAME) " name="firstName" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(row3.entityTypeVoRefID==1||row3.entityTypeVoRefID==10003)?row3.SURNAME: ((ContactProcessingVHP.checkStringNotEmpty(row3.COMPANYNAME) == false)?row3.COMPANYNAME:row3.SURNAME ) " name="name" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(row3.entityTypeVoRefID==1||row3.entityTypeVoRefID==10003)?row3.FIRSTNAME: ((ContactProcessingVHP.checkStringNotEmpty(row3.COMPANYNAME) == false)?(row3.FIRSTNAME+&quot; &quot;+row3.SURNAME ):row3.FIRSTNAME) " name="firstName" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row3.SECONDNAME " name="middleName" nullable="true" type="id_String"/>
         <mapperTableEntries name="activityRemark" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;MIG_MR-&quot;+row3.CONTRACTNUMBER +  Var.addToExtNum " name="externalContactNumber" nullable="true" type="id_String"/>
@@ -472,6 +473,7 @@
         <mapperTableEntries expression="&quot;000&quot;" name="telephonePrefix" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(row3.ROLE_TYPE.equals(&quot;Rzeczoznawca&quot;))?105:110 " name="contactRoleVoRefID" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="(row3.ROLE_TYPE.equals(&quot;Rzeczoznawca&quot;))?&quot;Expert&quot;:&quot;Expert Coordinator&quot; " name="contactRoleVoRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;Migration MojeVH&quot;" name="sourceOfContact" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateExpressionFilter="true" columnNameFilter="" expressionFilter="0 == -1  " minimized="true" name="rejectedEntityTypes" reject="true" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -1111,6 +1113,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="sourceOfContact"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="contactIVO"/>
@@ -1175,6 +1182,7 @@
       <column comment="" key="false" length="50" name="telephonePrefix" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="contactRoleVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="contactRoleVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="sourceOfContact" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XML_all_IVO" name="REJECT">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1236,6 +1244,7 @@
       <column comment="" key="false" length="50" name="telephonePrefix" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="contactRoleVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="contactRoleVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="sourceOfContact" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1372,6 +1381,8 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="contactRoleVoRefDesc"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="sourceOfContact"/>
+      <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
@@ -1437,6 +1448,7 @@
       <column comment="" key="false" length="50" name="telephonePrefix" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="contactRoleVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="contactRoleVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="sourceOfContact" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1152" posY="128">
@@ -1498,21 +1510,21 @@
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="relationShipIVO"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="XML_RelationShip_IVO" name="tHSQLDbOutput_4">
+    <metadata connector="FLOW" name="tHSQLDbOutput_4">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="ID_RZC" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ID_RZC" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relatedContactExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relationshipTypeVOREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;yyyy-MM-dd'T'HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
-    <metadata connector="REJECT" label="XML_RelationShip_IVO" name="REJECT">
+    <metadata connector="REJECT" name="REJECT">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="ID_RZC" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ID_RZC" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relatedContactExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relationshipTypeVOREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;yyyy-MM-dd'T'HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1585,13 +1597,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_66704a65-6d9b-4929-87e0-c528242be0d8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+CwrX0oLXRfniI6eUfC/fq5z3+zqUi1TiZaGc5Ipov9IE9LAA2QQptCqegQdGy09sFEUIsBbHixE&#13;
-8HR+koWpfw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_dc4e1b46-f7b6-42e7-99a8-e9bcc10b9457"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ufSrdTC5ZKczaZCyrb7YX27p2JZFgx0lBnm+RfKhFH5TXbG06XyQkk9RWYzkwXi+lJc2psMqDjiv&#13;
-YFylZQ/i3w==</DigestValue></Reference></SignedInfo><SignatureValue>dej9sre09++Pnz0iF/tK4oSbQfzWYkzE5BsRJVNnKRxJWGTCUxUyBIRbDWezfzBlIl+JT4kPGeXw&#13;
-4RbqJeZeqJVqLwZ+CaKI3hVL2WLAPhOcL6C63H+2Qo0GcPER+6V9NQ3FHTbDqASjIR5pZ3tlQ9v8&#13;
-gYgy2Z6Wm+/TGSNji/C1tz+WfbARzElN1ufwVoFzWYqrr3+WGnsrBKCNMtrrih0X+fLeNDFfQ5UH&#13;
-jqL9WhCC1T3t5OVs0AL7Ynh5m55FA/QtJQa9AmzzXgFi+FWuER/d0ow1A2o1L2/QPZ2ueSAkxwIR&#13;
-y631QYyUDwfVT64yRMALQE1y9n+0WCJH0x7Ybw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_17ae2734-a20a-46b0-b715-ec90afd69096"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>wDmGIxo5dzROrzjIodJLTTK8q+0+GwZHgQ9LQXTNnwmU6EAaz5YPtPsQNTGA4kqeD46pJwsLju2E&#13;
+qyvZMcQxDQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_fde0e83d-cd92-4fd4-9d2e-7b72b7e42145"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>72+E0b8ZAJk5GzjT6ctB2cEeHZhIiGiNDMU8hNCym/dk0KJYEH7Z5dhAk4z8aNBCI5IiSKT0mGg1&#13;
+pnYqmSTt1Q==</DigestValue></Reference></SignedInfo><SignatureValue>k5tdCkcIAk5Jc1pn/rMKYwE1HcE3zcbFg3Gs/8EtvkbWloQTDxFO+YvrdDj7cx0ldyf7BGHp+PPl&#13;
+myKHIfjN832wCmMoyOIXyP+AReyN4V6qKkKw7uxxgnGO+bB09dAclyN/bpnfp1Abfm7eRg3VqD4Q&#13;
+5WxPCe6jvSGhzt6nJuWM4bwNTc7KuYKKwBOofGWvA47W3aaOsfGQfcuOcF5Ck9UuYiuWGPuu5tPv&#13;
+89AsVKujaUYz8mH0fIUmZPhxuf9uS7Cp0f2xLw3D+gKOcTLLlP5u602m0z1zCtjg6ZFSVYCMF9gR&#13;
+79e1mq95zRZmp+pje3UoYV/02+WFnLI/eYSqtw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1613,4 +1625,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_dc4e1b46-f7b6-42e7-99a8-e9bcc10b9457" Target="#_66704a65-6d9b-4929-87e0-c528242be0d8"><Timestamp>2023-07-07 09:32:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_fde0e83d-cd92-4fd4-9d2e-7b72b7e42145" Target="#_17ae2734-a20a-46b0-b715-ec90afd69096"><Timestamp>2023-07-07 11:10:10</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
