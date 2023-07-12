@@ -488,15 +488,6 @@
       <column comment="" key="false" length="100" name="PAR_PRIV_EMAIL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="PREVIOUS_FA_EMAIL" nullable="true" originalLength="100" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
-    <metadata connector="FLOW" name="wijscie_pomoc">
-      <column comment="" defaultValue="" key="false" length="10" name="ROW_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="PAR_AEN_DATUM" nullable="false" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="PAR_FA_EMAIL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="PAR_PRIV_EMAIL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="PREVIOUS_FA_EMAIL" nullable="true" originalLength="100" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
@@ -507,15 +498,6 @@
         <mapperTableEntries expression="row5.PAR_AEN_DATUM " name="PAR_AEN_DATUM" type="id_Date"/>
         <mapperTableEntries expression="row5.PAR_FA_EMAIL " name="PAR_FA_EMAIL" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row5.PAR_PRIV_EMAIL " name="PAR_PRIV_EMAIL" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="PAR_FA_EMAIL_tMemorizeRows_1[1]" name="PREVIOUS_FA_EMAIL" nullable="true" type="id_String"/>
-      </outputTables>
-      <outputTables name="wijscie_pomoc" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row5.ROW_ID" name="ROW_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row5.PAR_PARTNER_NR" name="PAR_PARTNER_NR" type="id_Long"/>
-        <mapperTableEntries expression="row5.ID" name="ID" type="id_Long"/>
-        <mapperTableEntries expression="row5.PAR_AEN_DATUM" name="PAR_AEN_DATUM" type="id_Date"/>
-        <mapperTableEntries expression="row5.PAR_FA_EMAIL" name="PAR_FA_EMAIL" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row5.PAR_PRIV_EMAIL" name="PAR_PRIV_EMAIL" nullable="true" type="id_String"/>
         <mapperTableEntries expression="PAR_FA_EMAIL_tMemorizeRows_1[1]" name="PREVIOUS_FA_EMAIL" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row5" sizeState="INTERMEDIATE">
@@ -533,7 +515,7 @@
     <elementParameter field="CLOSED_LIST" name="LOGICAL_OP" value="&amp;&amp;"/>
     <elementParameter field="TABLE" name="CONDITIONS"/>
     <elementParameter field="CHECK" name="USE_ADVANCED" value="true"/>
-    <elementParameter field="MEMO_JAVA" name="ADVANCED_COND" value="// code sample : use input_row to define the condition.&#10;// input_row.columnName1.equals(&quot;foo&quot;) ||!(input_row.columnName2.equals(&quot;bar&quot;))&#10;// replace the following expression by your own filter condition &#10;//input_row.columnName1.equals(input_row.columnName2)&#10;//input_row.PAR_FA_EMAIL != input_row.PREVIOUS_FA_EMAIL&#10;//input_row.PAR_FA_EMAIL.isEmpty()&#10;input_row.PREVIOUS_FA_EMAIL != null&#10;&amp;&amp;&#10;(input_row.PAR_FA_EMAIL == null || ! input_row.PAR_FA_EMAIL.equals(input_row.PREVIOUS_FA_EMAIL))&#10;//input_row.PREVIOUS_FA_EMAIL != input_row.PAR_FA_EMAIL&#10;&#10;&#9;&#9;&#9;"/>
+    <elementParameter field="MEMO_JAVA" name="ADVANCED_COND" value="// code sample : use input_row to define the condition.&#10;// input_row.columnName1.equals(&quot;foo&quot;) ||!(input_row.columnName2.equals(&quot;bar&quot;))&#10;// replace the following expression by your own filter condition &#10;//input_row.columnName1.equals(input_row.columnName2)&#10;//input_row.PAR_FA_EMAIL != input_row.PREVIOUS_FA_EMAIL&#10;//input_row.PAR_FA_EMAIL.isEmpty()&#10;(input_row.PREVIOUS_FA_EMAIL != null&#10;&amp;&amp;&#10;(input_row.PAR_FA_EMAIL == null || ! input_row.PAR_FA_EMAIL.equals(input_row.PREVIOUS_FA_EMAIL)))||(input_row.PREVIOUS_FA_EMAIL == null &amp;&amp; input_row.PAR_FA_EMAIL != null)&#10;//input_row.PREVIOUS_FA_EMAIL != input_row.PAR_FA_EMAIL&#10;&#10;&#9;&#9;&#9;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tFilterRow_8">
       <column comment="" defaultValue="" key="false" length="10" name="ROW_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -591,7 +573,7 @@
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="historical_emails" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row6.PAR_PARTNER_NR " name="id_partner" type="id_Long"/>
-        <mapperTableEntries expression="row6.PREVIOUS_FA_EMAIL " name="email" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row6.PAR_FA_EMAIL " name="email" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)2" name="emailTypeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Work email&quot;" name="emailTypeVORefContent" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(boolean)false" name="incorectEmail" nullable="true" type="id_Boolean"/>
@@ -726,49 +708,6 @@
       <column comment="" key="false" length="-1" name="discontinueDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="960" posY="352">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_3"/>
-    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
-    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
-    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
-    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
-    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
-    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
-    <elementParameter field="TABLE" name="LENGTHS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="ROW_ID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_AEN_DATUM"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_FA_EMAIL"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PRIV_EMAIL"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="PREVIOUS_FA_EMAIL"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
-    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
-    <elementParameter field="TEXT" name="LABEL" value="wyjscie pomocnicze"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tLogRow_3">
-      <column comment="" defaultValue="" key="false" length="10" name="ROW_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="PAR_AEN_DATUM" nullable="false" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="PAR_FA_EMAIL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="PAR_PRIV_EMAIL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="PREVIOUS_FA_EMAIL" nullable="true" originalLength="100" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -798,13 +737,9 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
-  <connection connectorName="FLOW" label="enriched_data" lineStyle="0" metaname="enriched_data" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_2" target="tFilterRow_8">
+  <connection connectorName="FLOW" label="enriched_data" lineStyle="0" metaname="enriched_data" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tFilterRow_8">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="enriched_data"/>
-  </connection>
-  <connection connectorName="FLOW" label="wijscie_pomoc" lineStyle="0" metaname="wijscie_pomoc" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_2" target="tLogRow_3">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="wijscie_pomoc"/>
   </connection>
   <connection connectorName="FILTER" label="row6" lineStyle="0" metaname="FILTER" offsetLabelX="0" offsetLabelY="0" source="tFilterRow_8" target="tMap_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -833,13 +768,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_60372296-625f-409b-bd86-ec7fec5282f7"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>kIr/MRWGEUKKSpBrH2a8/VdEdPw7R+oCsrcqNOiKyZfD7+TMPlsfLGCxxWsa5Et/JUR/5vqKgujp&#13;
-RWX5X7UAoA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9fbcc226-2a7f-41a0-8ffa-6372682a6eb1"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>oAteTTEkvInHA+V+vfluMQKLj1js8l6ny8jjDVecsxMrF9/7c32BaVlL1fFgJwCr/aLAi6xzv1HR&#13;
-aB5h6H76nw==</DigestValue></Reference></SignedInfo><SignatureValue>S/1Yb+C+nUkSn9cBvK2+DNejmfGK9hFAY97c7cgKTX0k0OXLQtkLlyTSoeEa02xUc/btkUF2BVtu&#13;
-6tY6cJV1FQTeQ7r22eAfLYryygzOKRHblGUapL75X2qpnI3PkmjGPGUrQvnfm62TqO4oGSRqhmeT&#13;
-x0WPlzGPFy/Z7fo5wkeluMhGpnIE4mcsJB9fh5AAfD5cyGwIPHdgrc88auCE+bgqCaYj8uog6lUS&#13;
-sDPlfC1vhiRZc3KAHewY1xrTcxLRUXn346JM2tvCs+RE/Nk37EOT2VHdv6bc+Vvsw1wzGfWsC68B&#13;
-lzMTyfHadcgZYr6c6u028EJjK5RU/oR+ztjXhQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bd68a3c5-812c-4e20-9861-9ab0f961a78a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8LECLBlfguSfFR8RCSUZaJIpxtQQwVFXmp14YUVoNFNvZlxjshW+7URWMd8CBpj2Tv9CWhS+8ZH3&#13;
+RQmCOQE2TQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_77e60ec7-0d88-4d37-afd9-7868810a0321"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>eFQHvX7PSMCm1x24DEjUCBWjpeF05u9WyBW4xE4JcAFJ2bDTUoTbcYbpnKIGu5sdaEvo+nee8zaP&#13;
+pLTFaF6YFQ==</DigestValue></Reference></SignedInfo><SignatureValue>nzay1W0kfVSpFHqhMVMU/hs8IpI6/PQYRlnORF+ktzLRVwUde8OFckHFIQ/JlXOS1KniF/BmkjvQ&#13;
+aTLYwYGZ2fFw1jXs7C+sAn3d4dE2DEjPlL/R4f3ykim12hxQDlhc47VOGvFf9n6F9xpvO61ztN/N&#13;
+xBqRMXBXqP1xytWIFOlNzZHZXCjxTkOMVeRsnQGN7lEnPoSYXikap9ZJMzWkDatmC1NVqp5MS6Gc&#13;
+G+G2lZy34GklBZfrgszp1mwL+vS2/k+mX9uO/NwqPdv1Y5Fk3OIvHKgZMAn0XGDBFzU1X61hqxKU&#13;
+X7+Q0dO0kp7DnuNPRq+RdsIb1IkwMprGrc2/7Q==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -861,4 +796,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9fbcc226-2a7f-41a0-8ffa-6372682a6eb1" Target="#_60372296-625f-409b-bd86-ec7fec5282f7"><Timestamp>2023-07-12 13:35:54</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_77e60ec7-0d88-4d37-afd9-7868810a0321" Target="#_bd68a3c5-812c-4e20-9861-9ab0f961a78a"><Timestamp>2023-07-12 13:55:43</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
