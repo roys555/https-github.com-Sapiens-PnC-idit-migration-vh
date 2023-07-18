@@ -239,11 +239,11 @@
       <column comment="" key="false" length="50" name="headOfFamily" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="residentFlag" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="entityTypeVORefID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="entityTypeVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="entityTypeVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="languageRefID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="languageRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="languageRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="processingStatusVORefID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="processingStatusVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="processingStatusVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="dateOfBirth" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="establishedDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="entitySubTypeID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -251,7 +251,7 @@
       <column comment="" key="false" length="-1" name="foreignEntityRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="foreignEntityRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="titleVORefId" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="titleVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="titleVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="hasAdditionalInsurance" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="memberStatusIdRefId" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="memberStatusIdRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -286,13 +286,13 @@
         <mapperTableEntries expression="&quot;Available for the processing&quot;" name="processingStatusVORefContent" nullable="true" type="id_String"/>
         <mapperTableEntries expression="legacy_2.PAR_GEBURTSDATUM " name="dateOfBirth" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="legacy_2.PAR_GRUENDUNGSTAG " name="establishedDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="(long)((legacy_2.entityTypeVORefId==101)?null:(legacy_2.entityTypeVORefId==1)?1000004:1000005 ) " name="entitySubTypeID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="legacy_2.entityTypeVORefId==101?null:(legacy_2.entityTypeVORefId==1)?(long)1000004:(long)1000005 " name="entitySubTypeID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(legacy_2.entityTypeVORefId==101)?null:&quot;Individual&quot; " name="entitySubTypeContent" nullable="true" type="id_String"/>
         <mapperTableEntries name="foreignEntityRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="foreignEntityRefContent" nullable="true" type="id_String"/>
         <mapperTableEntries expression="titleVoRef.titleVoRefID != null?(long)titleVoRef.titleVoRefID:null " name="titleVORefId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="titleVoRef.titleVoRefDesc " name="titleVORefContent" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="(long)5" name="hasAdditionalInsurance" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="add_insurance.PAR_PARTNER_NR==context.LegacyID?(long)-1:(long)0 " name="hasAdditionalInsurance" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(long)1000017" name="memberStatusIdRefId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Payable Membership&quot;" name="memberStatusIdRefContent" nullable="true" type="id_String"/>
         <mapperTableEntries expression="legacy_2.PAR_BETRIEBSFLAECHE " name="companyHectarSize" nullable="true" type="id_Long"/>
@@ -1727,13 +1727,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_66ce4907-61a6-4673-96fe-daa13193bdd9"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>5KrDUuj7IWMqLs5Dv+9nTuG9sqiPPcvlmXxe8totBtOocCt2JPGHsftjcj+5vzoexjeJCRe2y2S4&#13;
-S3cFLKVTcA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_2880820a-e8aa-4abf-b5f7-1fb8a3d76bcc"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>p7wuN44JoNCpdEdlMnhhIgRkta7oCIcUE/xdxGje7SB6ggi1+L2udt7DtLq/RruXoV0qZwDJ19f0&#13;
-3bAnajaXHg==</DigestValue></Reference></SignedInfo><SignatureValue>M+2emdR1kFw8eIrKOB0SkT/HCbh2cDqeKPFG0El9H2dQ9Kx0GAko36OylpC/PPnDc6lydv6Ew5nf&#13;
-z5gyorS00kl5/JyUonZdm0TrgYKB7hBvkjhD/wi9NgDQ/LnZeq52XVp/zPuUFAkhjW+3lYoonY0P&#13;
-/WMyliOfxNzInplUcZZCE6Y086o++WEtOZ/3j0kukGOR7FLP3ixYqM2thrlCZElLs/K4QwyiE/sS&#13;
-tq/wa28zPDOKXuXXD3B7NHPyNIcCWzNW0KxSfTAdhHiSqYfu3keG8Cx8eYqA4qG5QXWagQ1tE/ST&#13;
-u3yqTTvZrucUk/MO/Q6In3CWGoy/bZyb99Pqqw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_867bd925-bc88-435f-979e-b56ae3d63b79"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>PlPbN+YFcjrrvjUtOE+VSr94yaFcRV8rRda6DI69kpz15etatVBekJH8Ueex+VO9PBBPHt8Drqd0&#13;
+Etf1spisOA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a988a379-eaab-4639-aa4d-eaccc27f2885"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>aPF/6gMXsIttcmwM8YAJM0khjGwCNb5tJCfWovoPwX9TMCuG8PIm/v+MEz0BWdKImX3V4NObnsxD&#13;
+w68qk/9orA==</DigestValue></Reference></SignedInfo><SignatureValue>MWeV2eIMz8V2K+bmSEJ/8L8ihN8qXPIoAkokU6vAmR66I/zZ7Ov/4FT/fPrwvgpwNC2dXe/FUPKc&#13;
+m6hA4evWLwm3jcW3RG0AoVwi55m8lcm9GqVyPMJq/y4HBYuWsHbuGsORK1uQEkgLP2QUVfyTDwnF&#13;
+pCZnD6Y7ITESAPajYV1XLzIPwTpBt95ReuPNwMTyxPs2zcdANIbju7bTHgtiGijZat/F8nQAKNNW&#13;
+mzMkR80Y9kvWoh+iQMeN3Wx0teDijYDn/rWgYi5XPx2ZdDssUW1n6fs9mBuG9lBy8SMga2VgEt2Y&#13;
+uOhqIdfFPsrmZ3mAjFz6N+TCvGUcYH/7O8APew==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1755,4 +1755,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_2880820a-e8aa-4abf-b5f7-1fb8a3d76bcc" Target="#_66ce4907-61a6-4673-96fe-daa13193bdd9"><Timestamp>2023-07-18 13:59:02</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a988a379-eaab-4639-aa4d-eaccc27f2885" Target="#_867bd925-bc88-435f-979e-b56ae3d63b79"><Timestamp>2023-07-18 14:18:39</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
