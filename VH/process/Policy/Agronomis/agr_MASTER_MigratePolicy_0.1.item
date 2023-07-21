@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" name="Default">
-    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="625"/>
+    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="1008"/>
     <contextParameter comment="Path to directory where you want to save generated contact XMLs." internalId="_s-hx8cTFEe2kmaNIdZptpQ" name="PATH_contactXMLOutputDirectory" prompt="PATH_contactXMLOutputDirectory?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:/VHmigration/PolicyXMLs/AGR&quot;"/>
     <contextParameter comment="Prefix used for identyfing migration scope" internalId="_s-hx8sTFEe2kmaNIdZptpQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
     <contextParameter comment="Name for 'total' HSQLDB" internalId="_q44TEMTQEe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;proj&quot;"/>
@@ -602,7 +602,7 @@
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;update K2V_DEV.MIGRATION_PROCESS_STATUS mps &#13;&#10;set  mps.T_END = sysdate, &#13;&#10;mps.status = 'ENDED' &#13;&#10;where mps.migration_id = &quot;+context.migrationID+ &quot;&#13;&#10;and mps.PROCESS_NAME = '&quot;+context.ProcessName+&quot;'&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;update K2V_DEV.MIGRATION_PROCESS_STATUS mps &#13;&#10;set  mps.T_END = sysdate, &#13;&#10;mps.status = 'ENDED' &#13;&#10;where mps.migration_id = &quot;+context.migrationID+ &quot;&#13;&#10;and mps.PROCESS_NAME = '&quot;+context.processName+&quot;'&quot;"/>
     <elementParameter field="CLOSED_LIST" name="USE_NB_LINE" value="NONE"/>
     <elementParameter field="LABEL" name="USE_NB_LINE_NOTE" value="* Only used if the query is an insert, an update or a delete."/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
@@ -650,7 +650,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#10;  pms.BUNDLE_POLICY_ID as bp_id, &#10;  pms.POLICY_ID as p_id&#10;FROM K2V_DEV.POLICY_MIGRATION_STATUS pms&#13;&#10;WHERE  pms.POLICY_MIGRATION_STATUS = 100 AND  pms.MIGRATION_ID = &quot; + context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#10;  pms.BUNDLE_POLICY_ID as bp_id, &#10;  pms.POLICY_ID as p_id &#13;&#10; ,pms.ENTITY_ID&#10;FROM K2V_DEV.POLICY_MIGRATION_STATUS pms&#13;&#10;WHERE  pms.POLICY_MIGRATION_STATUS = 100 AND  pms.MIGRATION_ID = &quot; + context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -665,82 +665,21 @@
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="ROW_NUMBER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BP_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_ID"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="P_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="EXTERNAL_NUMBER"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_POLICY_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VERSION_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_TYPE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_MIGRATION_STATUS"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ZIP_MIGRATION_STATUS"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ZIP_FILE_NAME"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_STATUS_TIMESTAMP"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_ERROR"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_CODE"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="POLICY_MIGRATION_STATUS" name="tDBInput_2">
-      <column comment="" defaultValue="K2V_DEV&quot;.&quot;ISEQ$$_143135&quot;.nextval" key="true" length="-1" name="ROW_NUMBER" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="50" name="EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="'Legacy Polizen'" key="false" length="-1" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value="'Legacy Polizen'"/>
-      </column>
-      <column comment="'Legacy Vertrag'" key="false" length="-1" name="POLICY_ID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value="'Legacy Vertrag'"/>
-      </column>
-      <column comment="'Artifictial identifier represents in Legacy one year Vertrag'" key="false" length="-1" name="VERSION_ID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value="'Artifictial identifier represents in Legacy one year Vertrag'"/>
-      </column>
-      <column comment="" key="false" length="10" name="POLICY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="POLICY_MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="ZIP_MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="50" name="ZIP_FILE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="2000" name="MIGRATION_ERROR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
+    <metadata connector="FLOW" name="tDBInput_2">
+      <column comment="" defaultValue="" key="false" length="38" name="BP_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="38" name="P_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tFlowToIterate" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="448" posY="160">
@@ -764,13 +703,13 @@
     <elementParameter field="CHECK" name="TRANSMIT_WHOLE_CONTEXT" value="true"/>
     <elementParameter field="TABLE" name="CONTEXTPARAMS">
       <elementValue elementRef="PARAM_NAME_COLUMN" value="bp_id"/>
-      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Long)globalMap.get(&quot;row1.bp_id&quot;))"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Long)globalMap.get(&quot;row1.BP_ID&quot;))"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="p_id"/>
-      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Integer)globalMap.get(&quot;row1.p_id&quot;))"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Integer)globalMap.get(&quot;row1.P_ID&quot;))"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="migrationID"/>
       <elementValue elementRef="PARAM_VALUE_COLUMN" value="context.migrationID"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="EntityID"/>
-      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((String)globalMap.get(&quot;row1.Entity_ID&quot;))"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((String)globalMap.get(&quot;row1.ENTITY_ID&quot;))"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="HQLDB_name"/>
       <elementValue elementRef="PARAM_VALUE_COLUMN" value="context.HQLDB_name"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="PATH_contactXMLOutputDirectory"/>
@@ -817,6 +756,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="main"/>
   </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tFlowToIterate_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
@@ -858,13 +802,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_fb7f5f5a-3aa5-4545-91ef-c9ced1cdbc57"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>5Y0P97Ks2XgWqkyS/bLguLpUzp4W+dpTlTiKkBUvI56lWhGtkco3+1cdSPsRoWdt8jLyfAikMnoV&#13;
-mghpT6jd6Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_782b1685-b4f4-42d8-a200-79769c1cffc2"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>THamtOs/tZ+tQP3K8WnG49HdrFldjaRSdK9XA5BKKfEvaWM6UkBHtRt++dH48slkFlFUXacP2gg8&#13;
-170wYXd6WA==</DigestValue></Reference></SignedInfo><SignatureValue>iubI6XcWE0NgXGz/oFEMnnbRDI6k+AbfPPAFRAaCzpUXOoLJyj9v/kS93OzAPvKCKYFRes43bCD6&#13;
-18o13Qn0YUDG/mbJEw5c9aBHPL+p9SdwKq55vl3RYOdR2+nYAhvo3qsT0BLttj7om6Um63zWxmJP&#13;
-CZVwbucKc1l3R+uaD3F829/+o2wXSCaUgzUGLlTYiujomSSm+pJQ1FO79lRk47DOcZAEFmSv/rAY&#13;
-BVHpj+0HX3tdcqQ2F1MKmHoeXM/QRZfxOAavt+gpvt8K6SplD6TAHmqOsM2kz3Zp0d0Ws+qUrTd9&#13;
-K/4UdfDz1m6fMqZxUSqYiFBESPOiQjzbwoPcbw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_193991d5-950f-45e6-a6a6-2c647ab21838"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NwsiXKNtU0MjGm3MSGeiIaZICZeEdrz9r3V/K6l9A/W0AU4mnPN50izDHb+J0v7cIgrYKbCEMX/I&#13;
+ktyDyGwWQw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_32ea3708-f0b7-456b-a199-ca3baad8d53c"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>B4fWChcHB1bVjTn41ca3gh9tk1Wn+rSWPmRzB72ZLbhNMGVu0lmBsGEknmMIwrEwcZXuifP9nuZS&#13;
+cSjYzcGhHw==</DigestValue></Reference></SignedInfo><SignatureValue>cmCfGXsSKTHTUrLZIc3aeXR7fVWZr1NfVFVLZFrARA41B8L16kvXPRr+tlbRRiJNLqDL6mONE7xL&#13;
+DyzM6bUn9NOfFX8J2AgAQbnXwWcnTG3+bTMHBv7ApoFi36/VMv8LSNA0nybQ4KuJwpLJTF3CXabd&#13;
+VBEyYc3jUampmgbs95OAZoMgqx1WzJjjgZ5Z/JFqi3PsYb6N47FDe9kcnzURNQMGdTBZcNlWZ7+8&#13;
+vsLNmoG0xCHx2DVIT20aqVSYM0zkzKe7x2YjpfStmO8oV2NkdDXZKRdxZy65GHg/dPs00tCEQe60&#13;
+UkAKlo+DXHqMNwGtrMaRv7ZK8QXWnWkeGDykwQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -886,4 +830,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_782b1685-b4f4-42d8-a200-79769c1cffc2" Target="#_fb7f5f5a-3aa5-4545-91ef-c9ced1cdbc57"><Timestamp>2023-07-21 10:49:31</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_32ea3708-f0b7-456b-a199-ca3baad8d53c" Target="#_193991d5-950f-45e6-a6a6-2c647ab21838"><Timestamp>2023-07-21 13:10:27</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>

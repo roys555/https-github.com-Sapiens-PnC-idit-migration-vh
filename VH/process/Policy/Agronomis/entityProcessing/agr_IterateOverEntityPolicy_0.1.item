@@ -7,7 +7,7 @@
     <contextParameter comment="" internalId="_Y5Qw0McKEe2DoJT7zYL8TA" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
     <contextParameter comment="" internalId="_mQVXQMcYEe2DoJT7zYL8TA" name="PATH_contactXMLOutputDirectory" prompt="PATH_contactXMLOutputDirectory?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
     <contextParameter comment="" internalId="_kIdgQMciEe2DoJT7zYL8TA" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value=""/>
-    <contextParameter comment="" internalId="_J6h0kMljEe2yWd6DHWSO0Q" name="externalContactNumber" prompt="externalContactNumber?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
+    <contextParameter comment="" internalId="_J6h0kMljEe2yWd6DHWSO0Q" name="externalPolicyNumber" prompt="externalPolicyNumber?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
     <contextParameter comment="" internalId="_yOzr4NhlEe2V4YqPxc1dgg" name="addFileNameSuffix" prompt="addFileNameSuffix?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value=""/>
     <contextParameter comment="" internalId="_oZgAINkUEe2kI7SA8hRY3w" name="errorCode" prompt="errorCode?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
     <contextParameter comment="" internalId="_oZgAIdkUEe2kI7SA8hRY3w" name="errorMessaage" prompt="errorMessaage?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
@@ -169,6 +169,7 @@
   </node>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1280" posY="352">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_2"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="DropEntityHSQLDB"/>
@@ -223,7 +224,7 @@
       <elementValue elementRef="PARAM_NAME_COLUMN" value="addFileNameSuffix"/>
       <elementValue elementRef="PARAM_VALUE_COLUMN" value="context.addFileNameSuffix"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="externalContactNumber"/>
-      <elementValue elementRef="PARAM_VALUE_COLUMN" value="context.externalContactNumber"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="context.externalPolicyNumber"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PROPAGATE_CHILD_RESULT" value="false"/>
     <elementParameter field="CHECK" name="PRINT_PARAMETER" value="false"/>
@@ -247,29 +248,29 @@
     <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" value="&quot;proj&quot;+context.EntityID"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name+context.EntityID"/>
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:MAUpkfBj4uPZicVS2Ql8ZMG+CUEJJcCmxH10VjwJ"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;XMLContactIVO&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;XMLpolicyHeaderIVO&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;'externalContactNumber' as key&#13;&#10;,XMLContactIVO.externalContactNumber as value&#10;FROM&#9; XMLContactIVO&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT 'externalPolicyNumber' as key&#10;&#9;&#9;,XMLpolicyHeaderIVO.externalPolicyNumber  as value&#10;FROM&#9;XMLpolicyHeaderIVO&quot;"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="key"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_id"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="value"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="externalPolicyNumber"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
-    <elementParameter field="TEXT" name="LABEL" value="ContactIVO"/>
+    <elementParameter field="TEXT" name="LABEL" value="XMLpolicyHeaderIVO"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="XMLContactIVO" name="tHSQLDbInput_1">
-      <column comment="" key="false" length="50" name="key" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="value" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    <metadata connector="FLOW" label="XMLpolicyHeaderIVO" name="tHSQLDbInput_1">
+      <column comment="" key="false" length="-1" name="partner_id" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="externalPolicyNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tContextLoad" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="320" posY="256">
@@ -281,7 +282,7 @@
     <elementParameter field="CHECK" name="DISABLE_WARNINGS" value="true"/>
     <elementParameter field="CHECK" name="DISABLE_INFO" value="true"/>
     <elementParameter field="CHECK" name="DIEONERROR" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="CollectExternalContactNumber"/>
+    <elementParameter field="TEXT" name="LABEL" value="CollectExternalPolicyNumber"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tContextLoad_1">
       <column defaultValue="" key="false" length="255" name="key" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
@@ -309,7 +310,7 @@
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;update k2v_dev.contact_migration_status  &#13;&#10;set migration_Status = 200, &#13;&#10;EXTERNAL_NUMBER ='&quot;+(String)context.externalContactNumber+&quot;' &#13;&#10;,MIGRATION_STATUS_TIMESTAMP = sysdate &#13;&#10;where migration_id = &quot;+context.migrationID+&quot; and Entity_ID= '&quot;+ (String)context.EntityID +&quot;'&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;update k2v_dev.contact_migration_status  &#13;&#10;set migration_Status = 200, &#13;&#10;EXTERNAL_NUMBER ='&quot;+(String)context.externalPolicyNumber+&quot;' &#13;&#10;,MIGRATION_STATUS_TIMESTAMP = sysdate &#13;&#10;where migration_id = &quot;+context.migrationID+&quot; and Entity_ID= '&quot;+ (String)context.EntityID +&quot;'&quot;"/>
     <elementParameter field="CLOSED_LIST" name="USE_NB_LINE" value="NONE"/>
     <elementParameter field="LABEL" name="USE_NB_LINE_NOTE" value="* Only used if the query is an insert, an update or a delete."/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
@@ -355,7 +356,7 @@
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;update k2v_dev.contact_migration_status  &#13;&#10;set migration_Status = 202, &#13;&#10;EXTERNAL_NUMBER ='&quot;+(String)context.externalContactNumber+&quot;' &#13;&#10;,MIGRATION_STATUS_TIMESTAMP = sysdate &#13;&#10;,ERROR_CODE ='&quot;+context.errorCode+&quot;'&#13;&#10;,MIGRATION_ERROR = '&quot;+context.errorMessaage+&quot;' where migration_id = &quot;+context.migrationID+&quot; and Entity_ID= '&quot;+ (String)context.EntityID +&quot;'&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;update k2v_dev.contact_migration_status  &#13;&#10;set migration_Status = 202, &#13;&#10;EXTERNAL_NUMBER ='&quot;+(String)context.externalPolicyNumber+&quot;' &#13;&#10;,MIGRATION_STATUS_TIMESTAMP = sysdate &#13;&#10;,ERROR_CODE ='&quot;+context.errorCode+&quot;'&#13;&#10;,MIGRATION_ERROR = '&quot;+context.errorMessaage+&quot;' where migration_id = &quot;+context.migrationID+&quot; and Entity_ID= '&quot;+ (String)context.EntityID +&quot;'&quot;"/>
     <elementParameter field="CLOSED_LIST" name="USE_NB_LINE" value="NONE"/>
     <elementParameter field="LABEL" name="USE_NB_LINE_NOTE" value="* Only used if the query is an insert, an update or a delete."/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
@@ -477,6 +478,14 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_1"/>
   </node>
+  <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="160" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_2"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(jobName);&#10;System.out.println(context.bp_id);&#10;System.out.println(context.p_id);&#10;System.out.println(context.EntityID);"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="LABEL" value="print variables"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tJava_2"/>
+  </node>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_1" offsetLabelX="0" offsetLabelY="0" source="tRunJob_1" target="tHSQLDbInput_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
   </connection>
@@ -491,6 +500,7 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk2"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBRow_2" offsetLabelX="0" offsetLabelY="0" source="tDBRow_2" target="tRunJob_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBConnection_1" offsetLabelX="0" offsetLabelY="0" source="tDBConnection_1" target="tRunJob_1">
@@ -558,13 +568,18 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9599ce57-b208-45a6-91e7-8249b5b1d26b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pAzTh9CT3YUn+5vArBPmsOCfw+vR6pRifA8a9wKcfDKAsXxfwoltj+4D3LRrhI96FiGAlk+SpesV&#13;
-fiGqhFvyWg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_008a7353-fbce-4776-bbae-3ca61c4140e4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qjgvm8Hc3YZVnNudsoM7IqeRvixvqXM90IUuW7TMHU/4cz1WcjW1WeJGOWeIrC/O0WW1PHHiOzqU&#13;
-4D8+VTcCtA==</DigestValue></Reference></SignedInfo><SignatureValue>TmZqGbSEEX6qeR6DyjQmAKkZ87ioc/wNvozEMurIW9qwvjVNR2CU0qGADIJLI0yA+SGoRJIDSfyo&#13;
-kByyqKa2PNIvd8AbBd9a07KFyxDXId6iWtT+HSl4FklJg8suC9+UkybYL8Qb8AgE94fh0McfrYJ0&#13;
-vcaoQPDN72UUnDJvtklpMCVTv5NxbFnUcFYUffTZHtey/eOcU4MCpo75QdaW2giUgt6tAXl1zc3s&#13;
-osBflHQ8UANzhnHI+0ye97RYUsa7vWdhDgd0xRhCPW6WZkmCLEesOZW0/EP+k2WQIWHSO3HtaZXA&#13;
-A5i1uxRVbE2FOE8QleU/fGLEztygUgaNK3eF+g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_2"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a063d268-6827-4a5a-8edd-72327aac4f91"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>iYTK2wHgCEgAQkmFu1wHzH8+ef3/C5N8iTWDALPS6lF7qtbc0e6vU72Mjm0cgN/1S5wh83QHvWmT&#13;
+Ag9Zx/wGFg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ccd4e142-fcc8-44ef-a151-cceaa4950171"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>F0CDPFJ0Q1QW0XU51c/TagvG2DmxJON+Jn/KGWK7g4EuRiD61Mh+LwPkRUWKFvJ+U/1NsOrI/Q7O&#13;
+5F3CE2Bwzw==</DigestValue></Reference></SignedInfo><SignatureValue>dATRjc8z2z1CjUrehgJTSGJMbaGpmIvKc+8RoWce60UJzcAroxkXvjNAgG8jfD8oV30H91UxY5eM&#13;
+ESkaGI96eEZICqLv2ldUHUTafdmw9aJmccI4xNUHGkk0CrNOBRBUmJH6krHyV7fk8CBgLlJTLKk1&#13;
+VKYenDFKXP5LLiTPJs2tpX+NDZD+jquqWzEpR3Awp0JT2pIujwk5uGXFpj+cg24CxRZqberVB2gy&#13;
+g+1167IkNYCc2ERCtOvaefDjDW/ViNIMI2n2vaG9jOv/0780BunVqIzppy6fqM5gpYgj7tndVD9a&#13;
+4q9zguXqSOS2QjVYCUJTkiU+VTin3fsxAhQQmQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -586,4 +601,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_008a7353-fbce-4776-bbae-3ca61c4140e4" Target="#_9599ce57-b208-45a6-91e7-8249b5b1d26b"><Timestamp>2023-07-21 11:06:30</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ccd4e142-fcc8-44ef-a151-cceaa4950171" Target="#_a063d268-6827-4a5a-8edd-72327aac4f91"><Timestamp>2023-07-21 13:19:27</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
