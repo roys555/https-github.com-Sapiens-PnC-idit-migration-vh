@@ -174,7 +174,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.par_partner_nr,&#13;&#10;       p.PAR_ZUS_ANREDE,&#13;&#10;       p.PAR_NAME,&#13;&#10;       p.PAR_GEBURTSDATUM,&#13;&#10;       p.PAR_GRUENDUNGSTAG, &#13;&#10;       p.PAR_VORNAME,&#13;&#10;       p.PAR_NAME2,&#13;&#10;       p.PAR_BETRIEBSFLAECHE,&#13;&#10;       p.PAR_BEZIRKSVEREIN_NR,&#13;&#10;       p.par_amtsgericht,&#13;&#10;     p.par_gf_vorstand,&#13;&#10;&#9;p.par_handelsregister_nr,&#13;&#10;&#9;p.par_titel&#13;&#10;FROM Sev.partner p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE P.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.par_partner_nr,&#13;&#10;       p.PAR_ZUS_ANREDE,&#13;&#10;       p.PAR_NAME,&#13;&#10;       p.PAR_GEBURTSDATUM,&#13;&#10;       p.PAR_GRUENDUNGSTAG, &#13;&#10;       p.PAR_VORNAME,&#13;&#10;       p.PAR_NAME2,&#13;&#10;       p.PAR_BETRIEBSFLAECHE,&#13;&#10;       p.PAR_BEZIRKSVEREIN_NR,&#13;&#10;       p.par_amtsgericht,&#13;&#10;     p.par_gf_vorstand,&#13;&#10;&#9;p.par_handelsregister_nr,&#13;&#10;&#9;p.par_titel,&#13;&#10;&#9;p.PAR_WIRTSCHAFTSZWEIG,&#13;&#10;&#9;p.PAR_AKAD_TITEL&#13;&#10;FROM Sev.partner p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE P.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -215,6 +215,10 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PAR_TITEL"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_WIRTSCHAFTSZWEIG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_AKAD_TITEL"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
@@ -234,6 +238,8 @@
       <column comment="" key="false" length="60" name="PAR_GF_VORSTAND" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="PAR_HANDELSREGISTER_NR" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="PAR_TITEL" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="PAR_WIRTSCHAFTSZWEIG" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="PAR_AKAD_TITEL" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="320">
@@ -326,6 +332,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_WIRTSCHAFTSZWEIG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_AKAD_TITEL"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="AGRONOMIS_CONTACT_SELECTION"/>
@@ -344,6 +360,8 @@
       <column comment="" key="false" length="60" name="PAR_GF_VORSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="PAR_HANDELSREGISTER_NR" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="PAR_TITEL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="PAR_WIRTSCHAFTSZWEIG" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="PAR_AKAD_TITEL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="AGRONOMIS_CONTACT_SELECTION" name="REJECT">
       <column comment="" defaultValue="" key="false" length="-1" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -359,6 +377,8 @@
       <column comment="" key="false" length="60" name="PAR_GF_VORSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="PAR_HANDELSREGISTER_NR" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="PAR_TITEL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="PAR_WIRTSCHAFTSZWEIG" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="PAR_AKAD_TITEL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -3301,6 +3321,12 @@
       <elementValue elementRef="TRACE_COLUMN" value="PAR_TITEL"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="PAR_WIRTSCHAFTSZWEIG"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="PAR_AKAD_TITEL"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -3631,13 +3657,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_e3f93b09-2c3b-4d64-a5ee-ffe9f77481d8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>42X+zLhuK+BegtSDpjRBfHm5+yU6H5/KV1S5vawy1bI/QaR6/s265jw1aOa3XlN26RLcpwmpqDqu&#13;
-wEzjjJ3z4Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c256b300-9f9c-4e8f-918f-5e550797be19"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ujh/0IFUi5rbkvtJBX6/luRHmKUXVWFp+qaxONdjjz6RduEUhttIphMBC2xsceJGvbDE5FPIn5pQ&#13;
-vlTErGdPOQ==</DigestValue></Reference></SignedInfo><SignatureValue>NAi7cM6cBt2wxDwje4hFPVRWywL9hn3tJofloaprzuWXJNdhz9bQ1LVK4nADiECwhhQksCgB/NDd&#13;
-U7HkpKHeTiNtdTOeCiWVSxTh1eZjIinLZGIXwvskBl8y5OOGhkUTbxKs8Mlwf0aCO0ebWUSgqqVt&#13;
-xMc/iwC5qEDhzBNyT42oubYQ3WYXIOLCpE1EccongtB2Tgsdg5o22+6k+d26XBekZJU/+2Ogjr+m&#13;
-6mjQpFb3LAmKq5eMlJA2JZqx6paYubIQ3pq/9i0rQEUFafFzQTuKpdV2GRsIXuufP6e8Zioxw7Um&#13;
-CAfmkm2AwoJT9frFpb8QzLPO2NUVvCMIGehH8g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_1cabdaaa-0d5b-4a96-91cf-c0f75c3e4fa5"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>HTecAET5m/KkpgaOlwSYZ8c7qQBtJx7vswuQZmaQdEQV8NvP5Tzx9s4l39TOy1hMbAytvWCLbcGD&#13;
+RyD2BShGvw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3f7ee220-1e31-4224-aad1-7d0096406691"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>TI5wBR3FFoPCwhRA8sD9pvJNg1Euq7cKCHmHANB2Jll9om6hMtwSk2IUjrop2dUy+/ernHzOXxdv&#13;
+jEi0UOyUFA==</DigestValue></Reference></SignedInfo><SignatureValue>dRe9WmudnnQJ0RFW8MMO4kxMh7eMX+skHITNgaS40RhKil1IP39H/ZpqrxCO4Y2WhrMfeLkOqZnF&#13;
+QaRpB+4SWux/0z4cysKtpppfiKiHXOaIjrIEsMHsdPfmo5R7EqCtJaX0od8Aj2/7vB4B/iHsY+AZ&#13;
+HhYzcSrWI4gr9gjsWBFN5CgVposrqGVtoaXZ4p4tIhSVYlnM0U7iNI8FbGd77tU6Bei8LFdbGj4Q&#13;
+rY/NpBqmTs09mFlKIXgveMJ50/U3fxVF4bW3TRlfZaLbGWDoFH14g9ZJ92jrWXEpOrVhqzg7Ublu&#13;
+tulOmoEkQUAFqK1bbF3sYb7ooR8EJOZIYXEkEQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -3659,4 +3685,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c256b300-9f9c-4e8f-918f-5e550797be19" Target="#_e3f93b09-2c3b-4d64-a5ee-ffe9f77481d8"><Timestamp>2023-07-27 13:44:51</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3f7ee220-1e31-4224-aad1-7d0096406691" Target="#_1cabdaaa-0d5b-4a96-91cf-c0f75c3e4fa5"><Timestamp>2023-07-28 10:40:32</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
