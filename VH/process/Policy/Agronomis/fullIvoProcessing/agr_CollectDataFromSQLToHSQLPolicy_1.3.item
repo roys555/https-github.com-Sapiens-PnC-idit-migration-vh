@@ -174,7 +174,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  v.POL_POLICEN_NR AS POLICE,  v.VER_VERTRAG_NR AS VERTRAG &#13;&#10;, min(v.POL_GUELTIG_AB) as policyStartDate, max(v.VER_UNGUELTIG_AB) as policyEndDate&#13;&#10;FROM SEV.VERTRAG v &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.POLICY_MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;+ &quot; group by v.POL_POLICEN_NR, v.VER_VERTRAG_NR &quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  v.POL_POLICEN_NR AS POLICE,  v.VER_VERTRAG_NR AS VERTRAG &#13;&#10;, min(v.POL_GUELTIG_AB) as policyStartDate, max(v.VER_UNGUELTIG_AB) as policyEndDate&#13;&#10;FROM SEV.VERTRAG v &#13;&#10;where v.VER_ZUSTAND = 'lebend' AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.POLICY_MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;+ &quot; group by v.POL_POLICEN_NR, v.VER_VERTRAG_NR &quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -854,7 +854,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH VERSIONS AS&#13;&#10;&#9;(SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;&#9;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;&#9;v.VER_UNGUELTIG_AB AS V_END_DATE&#13;&#10;&#9;FROM SEV.VERTRAG v &#13;&#10;&#9;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.POLICY_MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&#13;&#10;&#9;)&#9;&#13;&#10;&#9;SELECT POLICE, VERTRAG, V_START_DATE, V_END_DATE  &#13;&#10;&#9;,DENSE_RANK() OVER(partition BY POLICE, VERTRAG ORDER BY V_START_DATE) AS POLICY_VERSION &#13;&#10;&#9;FROM VERSIONS &#13;&#10;&#9;ORDER BY POLICE, VERTRAG, V_START_DATE &quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH VERSIONS AS&#13;&#10;&#9;(SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;&#9;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;&#9;v.VER_UNGUELTIG_AB AS V_END_DATE&#13;&#10;&#9;FROM SEV.VERTRAG v &#13;&#10;    where v.VER_ZUSTAND = 'lebend' AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.POLICY_MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&#13;&#10;&#9;)&#9;&#13;&#10;&#9;SELECT POLICE, VERTRAG, V_START_DATE, V_END_DATE  &#13;&#10;&#9;,DENSE_RANK() OVER(partition BY POLICE, VERTRAG ORDER BY V_START_DATE) AS POLICY_VERSION &#13;&#10;&#9;FROM VERSIONS &#13;&#10;&#9;ORDER BY POLICE, VERTRAG, V_START_DATE &quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -963,6 +963,43 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="640" posY="576">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="true"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="false"/>
+    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
+    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" value="false"/>
+    <elementParameter field="TABLE" name="LENGTHS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_START_DATE"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_END_DATE"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="LABEL" value="pversion"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POLICY_VERSION_SELECTION" name="tLogRow_1">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tHSQLDbOutput_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="policyEndDate"/>
@@ -1031,6 +1068,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
+  <connection connectorName="FLOW" label="row7" lineStyle="0" metaname="tHSQLDbOutput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_3" target="tLogRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row7"/>
+  </connection>
   <note opaque="true" posX="-64" posY="32" sizeHeight="64" sizeWidth="641" text="CUSTOMER DATA:"/>
   <note opaque="true" posX="1440" posY="32" sizeHeight="64" sizeWidth="385" text="TECHNICAL:"/>
   <subjob>
@@ -1068,13 +1109,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8a3e6c12-267f-4ab6-bb54-48925b985afb"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>5jMXewA6oP4QSxz6lVCbFTa63x0biGxIQF0IdVGtiFN+gFqTBIA0jR7iW0NO7zvisOTF1+9Tp9LS&#13;
-dlI9LBNhXA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_4b0a355f-3126-43df-9788-c7807af5a739"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>2xhalhDw5evIMjovikdGpkuOHv1VgPSShC7d2VBXCQMXxmx0rdOEoVaCPwI6Rpsm7icAkGxRi/wV&#13;
-3/kZ6thAEw==</DigestValue></Reference></SignedInfo><SignatureValue>eS3v7dOORlgf/Qdlvmwud+2EL9G3cL1RiEi/unkCV15ri2FToyfW+9Ucse+xJJPc37OUU+i0xVkr&#13;
-v6KKgQe6In4HytItOmMfi68+f4aI03klmhHypVW5B8/55qWLZ8BXc5R+WEAllmG0xI6kE0k036a0&#13;
-Z0pqduAovgbDKgJJESMny+FKGjn2ulcAfJ8NOztZ/UFq4hGUor7RKY45g77pmW8YMb8qnzVuKzky&#13;
-bnG8xce7T6yyCiT3uA5W0kJrNdmrp0Bzl0qoDS+qWXUSpqqCignkx5cIrTjr3g70r9yXzdYndLG1&#13;
-9a6loUjMJ3dK9qe8H7sjFGla8vQvieormqHtOQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c30b4d05-3abf-458f-a61c-8861f6a4f206"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ciaHnfNQsc3wD0ts1xQGMT6shdG38cc+tTo8ueFWpNOMCI6l/xc8fzjZTQpohnmdDr3D98Gke69A&#13;
+Dsxbt+LDCg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ec759ea2-8521-4dfa-89ca-ae9df1a905f4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Mf3VwyxR1TH9X3/ZdXIdycHFsOJvJzDb1XYHT9oi6lGmnQ/9fUSqzoHPHF/8rzOq3gbbhfeKBBux&#13;
+Mykc/pa/2w==</DigestValue></Reference></SignedInfo><SignatureValue>UZSjqb26V7BimEOytpBYjsq6xGEco0ej+3Bas3TguMWCwlOngAUyUDYGaWmPy9Mhx2mMXml3JaxO&#13;
+SpddMzCURZwzGmdMAt/6vHrO397/e79DyhaWPkFRgIU/SNmFmXShiQdWtOYmq5G6jeov7VvtzCu4&#13;
+5JDubV8VT/PuM9e5OJWRATj7TpjquJmFnbRzb/olcJTWqTj+faUs8VAMWXELXKETeEgpTex3a6oA&#13;
+IMis6ix1b6nmMTuZZOeRbXJRdXkVwN9wm9ry71tN7/6rV6wFdAmZRiGKknoFitwXX7CiVoGcs7ws&#13;
+tNcUSM6htwrOfaq8/I1UYkLeClAYDV8yO06mQQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1096,4 +1137,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_4b0a355f-3126-43df-9788-c7807af5a739" Target="#_8a3e6c12-267f-4ab6-bb54-48925b985afb"><Timestamp>2023-08-02 14:19:19</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ec759ea2-8521-4dfa-89ca-ae9df1a905f4" Target="#_c30b4d05-3abf-458f-a61c-8861f6a4f206"><Timestamp>2023-08-02 14:48:10</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
