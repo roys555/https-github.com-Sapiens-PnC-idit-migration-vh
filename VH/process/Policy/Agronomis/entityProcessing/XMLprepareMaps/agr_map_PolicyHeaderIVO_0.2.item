@@ -142,7 +142,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT POLICY_CONTRACT_SELECTION.POLICE, &#10;&#9;&#9;POLICY_CONTRACT_SELECTION.VERTRAG &#10;FROM&#9;POLICY_CONTRACT_SELECTION &#13;&#10;WHERE POLICY_CONTRACT_SELECTION.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND POLICY_CONTRACT_SELECTION.VERTRAG = &quot;+context.p_id"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT POLICY_CONTRACT_SELECTION.POLICE,&#10;&#9;&#9;POLICY_CONTRACT_SELECTION.VERTRAG,&#10;&#9;&#9;POLICY_CONTRACT_SELECTION.policyStartDate,&#10;&#9;&#9;POLICY_CONTRACT_SELECTION.policyEndDate&#10;FROM&#9;POLICY_CONTRACT_SELECTION &#13;&#10;WHERE POLICY_CONTRACT_SELECTION.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND POLICY_CONTRACT_SELECTION.VERTRAG = &quot;+context.p_id"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -150,12 +150,18 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyStartDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyEndDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="&quot;POLICY_CONTRACT_SELECTION&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_CONTRACT_SELECTION" name="tHSQLDbInput_1">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyStartDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyEndDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="416" posY="96">
@@ -215,35 +221,37 @@
         <mapperTableEntries expression="true " name="consolidatedBillingFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="cropGroupRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="" name="cropGroupRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="currencyVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="currencyVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="externalHeaderNumber" nullable="true" type="id_String"/>
-        <mapperTableEntries name="isHealthUmbrellaPolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries name="isMasterPolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries name="mainRenewalDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="multiplePayersFlag" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries name="paidByAgentFlag" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries name="policyEndDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="policyProposalDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="policyStartDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="processingStatusVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="processingStatusVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="productVersionVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="productVersionVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="productVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="productVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="sales1" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="sales1Date" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="statusCodeVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="statusCodeVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="statusCollDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="statusDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="trackCoverBalancePerEndors" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries name="updateTotFlag" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="(long)1" name="currencyVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;EUR&quot;" name="currencyVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="String.valueOf(row1.POLICE)+&quot;/&quot;+String.valueOf(row1.VERTRAG) " name="externalHeaderNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="false" name="isHealthUmbrellaPolicy" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="true" name="isMasterPolicy" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="" name="mainRenewalDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="false" name="multiplePayersFlag" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="false" name="paidByAgentFlag" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="row1.policyEndDate " name="policyEndDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="TalendDate.getCurrentDate()" name="policyProposalDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row1.policyStartDate " name="policyStartDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="(long)10000" name="processingStatusVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;Available for the processing&quot;" name="processingStatusVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(long)1000000" name="productVersionVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;1000000&quot;" name="productVersionVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(long)1000000" name="productVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;Agriculture&quot;" name="productVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(long)1" name="sales1" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row1.policyStartDate " name="sales1Date" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="(long)20" name="statusCodeVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;Policy&quot;" name="statusCodeVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row1.policyStartDate " name="statusCollDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row1.policyStartDate " name="statusDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="false" name="trackCoverBalancePerEndors" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="false" name="updateTotFlag" nullable="true" type="id_Boolean"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
         <mapperTableEntries name="VERTRAG" type="id_Integer"/>
+        <mapperTableEntries name="policyStartDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="policyEndDate" nullable="true" type="id_Date"/>
       </inputTables>
     </nodeData>
   </node>
@@ -632,13 +640,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_d19921b9-3a5f-4b47-a130-be4315e44a52"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qsY9oMsucrZS96UoxJ8BsmGXraVSW2y7QdnwUug5UJAOx501PyMH+lA5kLLPhBhxjv2xrOsXC8p5&#13;
-lSKGxc+t+g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_4f1e447e-a5a0-440b-98ae-7fad5c93faae"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>JFSOCi29YhzW5C0bcWjw5NDkVp+b2MnE/ESkqI3jZEJ5SrB0ktshUtdc2LbfE7bB4MgyAHaKIHx2&#13;
-rMFk2CWKjQ==</DigestValue></Reference></SignedInfo><SignatureValue>hEn0wMFR/Uc+J1knriE5BU8XAbIIsoMdacU8LI8J0QmlfSgxYGYg7e/WsIuOqhB5u1ZBvjmOOhtI&#13;
-Eex/1gUwR+ZcWrTpFQk1QLaaWTH6Te5GaRuMXUPmKf3uthwTX0XL+ZYtxWBT+mdRyqrArtUzdRSd&#13;
-QmsFB6GJ+xwOrou8X+swp/MlRdQtYfBl2RxpP/lJXQkz607FKFoiTu7NLCr5tV3d/sygdT83sRtA&#13;
-YBa0jwKlfLc385nUvZl1bnoEtH8J/9/bxbU0TS6RUS49quRv3I3XwT9wj4fDyX3wW8n9iBHeLvGa&#13;
-Y8RW7m4Wu74MR8zLOJaI6KtaPTsfCZwmL0YOlQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3a9c6991-e46a-4715-bcf6-5d1ce2da7351"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>PDAoncVXv3gGHxD3jIIHOSa4Ukh/rkpSjCKkkI8KbqTXCm+8rD6YCq85BMgeVWxbdTG7ZfYchPrL&#13;
+/vXKnf2DDg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_23fbc7dc-769c-40b9-ac2f-6601886a046d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>43V26OOX6KXNJQItwKi/s+9lQqV1s4sZwwHdEqWVyzh9fYXZS2hd/J1GfTXuqdm+r83g2Acpnx6h&#13;
+5iYhbwynrg==</DigestValue></Reference></SignedInfo><SignatureValue>PmVBUDX91CJlZY60zna4HESZDHYXLnkqPvOQTa9nx8nMOgnX328QYKFyBXWAdxqyO81xG25eD5YJ&#13;
+6j6x84XJXp+0TQdN7alcLsALzfYke7EZX2nI7UJtrqK3fKMDz2R7H2u8gEa4v8blsY+lfjEfA02y&#13;
+oAuxRhtuFPUksWiijOCuu6JVOs+6l49ZgB4VMk2RA5/cE09Zb0w2oIIHM5RHhEhU8yDslYKBgQmD&#13;
+OermggQZMOWLuMMv+MD0RU/1o2zk5VnHKqEbjhFsuvY4hdwkWx2FImN5YQfj7Qxl0JQjFaHOX1M5&#13;
+uiSI2lIB+PYAelv4flYwjVRubOwDc37DNgiDwg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -660,4 +668,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_4f1e447e-a5a0-440b-98ae-7fad5c93faae" Target="#_d19921b9-3a5f-4b47-a130-be4315e44a52"><Timestamp>2023-08-02 07:35:56</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_23fbc7dc-769c-40b9-ac2f-6601886a046d" Target="#_3a9c6991-e46a-4715-bcf6-5d1ce2da7351"><Timestamp>2023-08-02 08:11:57</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
