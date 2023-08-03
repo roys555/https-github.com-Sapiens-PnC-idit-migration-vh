@@ -276,6 +276,7 @@
     <elementParameter field="RADIO" name="INCONNECTIONS_SYNCED" show="false" value="true"/>
     <elementParameter field="RADIO" name="OUTCONNECTIONS_SYNCED" show="false" value="true"/>
     <elementParameter field="TEXT" name="INCONNECTIONS_ORDER" show="false" value="policyHeader,policyIVO"/>
+    <elementParameter field="TEXT" name="INCONNECTIONS_REMOVED" show="false" value=""/>
     <elementParameter field="TEXT" name="OUTCONNECTIONS_REMOVED" show="false" value=""/>
     <elementParameter field="TEXT" name="HMAP_VAR_PATH" value="&quot;&quot;"/>
     <elementParameter field="HMAP_VAR_USED_MAPS" name="HMAP_VAR_USED_MAPS" value="&quot;&quot;"/>
@@ -299,7 +300,7 @@
   </node>
   <node componentName="tFileOutputRaw" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="864" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileOutputRaw_1"/>
-    <elementParameter field="FILE" name="FILENAME" value="context.PATH_contactXMLOutputDirectory + &quot;/&quot;+context.migrationID + &quot;/AGR_policy_&quot;+context.externalPolicyNumber +&quot;_&quot;+ (context.addFileNameSuffix?context.migrationID:&quot;&quot;)+&quot;.xml&quot; "/>
+    <elementParameter field="FILE" name="FILENAME" value="context.PATH_contactXMLOutputDirectory + &quot;\\&quot;+context.migrationID + &quot;\\AGR_policy_&quot;+context.externalPolicyNumber +&quot;_&quot;+ (context.addFileNameSuffix?context.migrationID:&quot;&quot;)+&quot;.xml&quot; "/>
     <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;UTF-8&quot;"/>
     <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="UTF-8"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
@@ -486,6 +487,13 @@
       <column comment="" key="false" length="-1" name="subUnitPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="64" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="context.externalPolicyNumber = context.externalPolicyNumber.replace(&quot;/&quot;,&quot;_&quot;);"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tJava_1"/>
+  </node>
   <connection connectorName="FLOW" label="policyHeader" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tHMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policyHeader"/>
@@ -506,18 +514,26 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policyIVO"/>
   </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ba59e3af-2c99-4c95-be08-478f8dd6ab46"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>OTA/X5Xt4xQlUqiBEoaASy35KFP8okg0fCtr9Z3OeilFXMG1QT0zv0sCayad3EWemTaOx7eDG44K&#13;
-Yoqtw7HFvA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_63560c88-6f11-439b-b39b-f349a0743bb3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Il9KxFgusFig22zGs9ggzJLXmF3Y0Vkm/GdwtEx9vcTEIPxfZh1KeGoGpB/CdF9Juo7UID1iZMiW&#13;
-DIUMOcF/qg==</DigestValue></Reference></SignedInfo><SignatureValue>BPVGaUppa9pL9ad/p/yPmgX78cB7X2gcK/ReYDaaJqfzOeHMgqsDsjXaCZNN0iMgGsm1cFPBSK3J&#13;
-91KNLt8XoUT3X9X/MhqGsmFUfuRadQtZVKMTFXREahNbZrgVDXOwIldNuoE0kMUdp+ifPac0qXHU&#13;
-3bmN3Fm8LalT3zfgnCkHlS+jX95GWnhFoN7ecyZcGNj8BAvQ+0RGYWF2dv5tVVux2VsWrLtVK4Rq&#13;
-DNxOvMZOAda35BoS7Y8BMrCGkGspATfUQCRkcXbSnZx/v9Yy75y2SJTxN/kyPV5pRzX6jjwAhBMu&#13;
-njkMkf0KRzx83T91CRVIZGb8cY1t3xiymcZ38A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bbe1d288-0508-4055-aa78-6d43571419ff"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>nAtSeAoq9EgTWN80kHR1kgiq6ka0UXeBhN46afgAk73BO3JE/bTlgZmX4uWYeH+oRgXptAFNYGli&#13;
+VoPXZwAzuQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_6d6cf0b0-ad34-4f26-9b9e-3b992c2a4cdd"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>la0zVWGCxcihJr7008JabasysZqdgcPp74T7bz3iYzLkaMjp9wnpFMl3v9MJU1GzOvWWtRm/l6YZ&#13;
+pXTEdW2NcA==</DigestValue></Reference></SignedInfo><SignatureValue>ceUFzL7bxCL/Al905BNGfKokc/K+ma/j53WgPYiDSDu4hYf5HqEcDrJNuJhbERraP7yrcj2iWzYf&#13;
+x5/V8uCqYGoFBTJpambiOdRlNPx+U4srAepQTAbGiJCq/eTgE9LvVSQniF2MlwSysBpf1EVW2L7Y&#13;
+HFkHkkuJq6Lchp4TtgAEUTx1rfAFynAY0f/ihpV3SQGMkcYMIkNoXRmpMAQRH7Gn/Nd22vj+3JMu&#13;
+61VHx58NLFXGK0o3fe1ewqhUUxNUNF2e/+FYBf0Fyts0o5wPT29SUzP4xpO5iohKA5nftZz8CHMh&#13;
+5oY2XNjeaI4OKW2qmVyUIDOrcyGrEJBNAT1GXw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -539,4 +555,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_63560c88-6f11-439b-b39b-f349a0743bb3" Target="#_ba59e3af-2c99-4c95-be08-478f8dd6ab46"><Timestamp>2023-08-03 11:24:36</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_6d6cf0b0-ad34-4f26-9b9e-3b992c2a4cdd" Target="#_bbe1d288-0508-4055-aa78-6d43571419ff"><Timestamp>2023-08-03 11:53:57</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
