@@ -3300,7 +3300,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT PAR_PARTNER_NR, PRE_ROLLE AS rolle, PRE_AEN_DATUM AS effective_date  &#13;&#10;FROM sev.PARTNER_ROLLE pr &#13;&#10;where PRE_ROLLE is not null &#13;&#10;AND EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = pr.PAR_PARTNER_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100 &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR' &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT PAR_PARTNER_NR, PRE_ROLLE AS rolle, PRE_AEN_DATUM AS effective_date  &#13;&#10;FROM sev.PARTNER_ROLLE pr &#13;&#10;where PRE_ROLLE is not null &#13;&#10;AND EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = pr.PAR_PARTNER_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100 &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR' &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)  &#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -3351,17 +3351,15 @@
       <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="role" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables name="role" sizeState="INTERMEDIATE">
+      <outputTables activateExpressionFilter="true" expressionFilter="role_lookup.tContactRoleVORefDesc != null" name="role" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="agr_partner_role.PARTNER_NR" name="PARTNER_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="agr_partner_role.EFFECTIVE_DATE" name="EFFECTIVE_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(long)role_lookup.tContactRoleVORefID" name="tContactRoleVORefid" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="role_lookup.tContactRoleVORefDesc" name="tContactRoleVORefdESC" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="agr_partner_role.ROLLE " name="role" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="agr_partner_role" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PARTNER_NR" nullable="true" type="id_Long"/>
@@ -3375,10 +3373,8 @@
       </inputTables>
     </nodeData>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="672" posY="1728">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="608" posY="1728">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_17"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="CHECK" name="DUMMY" show="false" value="true"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
@@ -3391,6 +3387,8 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGR_PARTNER_ROLE&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_6Osq8DIHEe6EUYr1L7x86g - AGR_PARTNER_ROLE"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -3420,11 +3418,6 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="role"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="AGR_PARTNER_ROLE"/>
@@ -3434,14 +3427,12 @@
       <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="role" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="AGR_PARTNER_ROLE" name="REJECT">
       <column comment="" key="true" length="10" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="role" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -3470,43 +3461,6 @@
       <column comment="" key="false" length="50" name="stg_Role" nullable="false" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tContactRoleVORefID" nullable="false" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tContactRoleVORefDesc" nullable="false" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="832" posY="1728">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_3"/>
-    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
-    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
-    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
-    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
-    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
-    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
-    <elementParameter field="TABLE" name="LENGTHS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_NR"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="EFFECTIVE_DATE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="tContactRoleVORefid"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="tContactRoleVORefdESC"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="role"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
-    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
-    <elementParameter field="TEXT" name="LABEL" value="partner_role"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="AGR_PARTNER_ROLE" name="tLogRow_3">
-      <column comment="" key="true" length="10" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="role" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tHSQLDbOutput_1">
@@ -3686,10 +3640,6 @@
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="role"/>
-  </connection>
-  <connection connectorName="FLOW" label="row19" lineStyle="0" metaname="tHSQLDbOutput_17" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_17" target="tLogRow_3">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row19"/>
   </connection>
   <connection connectorName="FLOW" label="role_lookup" lineStyle="8" metaname="tFixedFlowInput_3" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_3" target="tMap_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -3872,13 +3822,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_acdb0190-7db6-4318-887e-e0e520c4ba66"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>48AnOmDNOb++8tSQRBUdmtQH78W3cEN/XzSySEVNELImwjxmTCE1Z5t5hdZce9ZkO5WT2m/Z7YJO&#13;
-55n4D49E3g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8934332f-2cc1-44c8-9f3e-500d76418c6b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>7Txvtxv7Pn26nniGEGZx/CxyNyhE0HCXcpzMLIbn8C0BP6Kmz7uFSMhkGrY2UP0r3j3qLolO8Pgy&#13;
-Z1Ky4FZm7w==</DigestValue></Reference></SignedInfo><SignatureValue>X0mU4lHY/vjQbq9ImlHonNsIFrSzxhdDTsucN7ZwgQlTUQojJyNS6tAOk71GK3LhdlKP+H+g+WYZ&#13;
-v3/j1nRpLjra0iF+C3eXOFyAJXZ6H2QkcuUWTUX1T4xm/60IzJT0F39dobahqJHFHPhk4Em/9c4J&#13;
-+/3JV89NDpP+WYTuUKrgBZl2yfH/IL2OXJ8ZNy1LRF22CzbgHFvvSIa4qW9t3ZGZmG4yqNIdsZNK&#13;
-oMVt41vtIgKbc4aNwoOa0z/5kgsSy7aHQnSFmRs3Q4x63fezI8UemfRR/UAAGrTqWeOKa/xDPnhq&#13;
-yxE0TtehnOGnLD5euMJ6SMoUNHwtQxSRxeovDg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3429d9dc-4ce8-475b-a91a-87b761f15fed"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>kwX5mhNvy4V/Afxwh6zgGrGhTXbIB1vD5n73krQ7xb8r9Zz2hQMfYuuK64HmY8H/PF7lpBO5F+5W&#13;
+R/ffZJO/GA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9fffe114-57d3-4297-b719-1fa64f7c0b63"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>M8zD0/x5+dTyVeJuBg2/k6ZcPZbxgzAccc8rnYKnSsSeK5gVYU838F8TnalXITwcmQMXlMirF+0I&#13;
+rRZjuZ0r1w==</DigestValue></Reference></SignedInfo><SignatureValue>mZsrx49c95a4aRYYz2zwkKFkyWbSr1PX3Gd5fnjwrER4UZj2kkuT6VU7nTOsC/tCPOcXJbcRezXX&#13;
+OHdwAFpveWCOVQYHbmqx8ro7c+I/rTEiYa4K6Jl0rqkFphbhFHkh8lTa1n+ZwsCAbpUG069e2STN&#13;
+trXV/M7F3lAzh7JhSHFcCLPPHHHJaG1XzSpcwcIBTeix/B6s0xdJrKIAYQkYwhjAAqE9geaUoYwX&#13;
+607X5OnVX1RVq26xLypblZoIhZxqoVCh7QgKnCg8stzbZYgPPx7nBliwNCme9AZt9ZBvtrggvQX/&#13;
+VjCO2lpWCcZ/L10RlTSiM1HH6N2y/qIZDawZxg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -3900,4 +3850,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8934332f-2cc1-44c8-9f3e-500d76418c6b" Target="#_acdb0190-7db6-4318-887e-e0e520c4ba66"><Timestamp>2023-08-03 14:34:53</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9fffe114-57d3-4297-b719-1fa64f7c0b63" Target="#_3429d9dc-4ce8-475b-a91a-87b761f15fed"><Timestamp>2023-08-04 08:43:06</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
