@@ -140,7 +140,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT AGRONOMIS_RELATIONSHIP.PARTNERID,&#10;&#9;&#9;AGRONOMIS_RELATIONSHIP.RELATEDCONTACTEXTNUM,&#10;&#9;&#9;AGRONOMIS_RELATIONSHIP.RELATIONSHIPTYPEVOREF,&#10;&#9;&#9;AGRONOMIS_RELATIONSHIP.RELATIONSHIPTYPEVOREFVALUE,&#10;&#9;&#9;AGRONOMIS_RELATIONSHIP.PAR_ANL_DATUM&#10;FROM&#9;AGRONOMIS_RELATIONSHIP&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT AGRONOMIS_RELATIONSHIP.PAR_PARTNER_NR,&#10;&#9;&#9;AGRONOMIS_RELATIONSHIP.RELATEDCONTACTEXTNUM,&#10;&#9;&#9;AGRONOMIS_RELATIONSHIP.RELATION_DATE,&#10;&#9;&#9;AGRONOMIS_RELATIONSHIP.relationshipVoRefID,&#10;&#9;&#9;AGRONOMIS_RELATIONSHIP.relationshipVoRefDesc&#10;FROM&#9;AGRONOMIS_RELATIONSHIP &#13;&#10;where PAR_PARTNER_NR =&quot; + context.LegacyID"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -179,22 +179,22 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLContactRelationshipList" name="main">
+    <metadata comment="" label="XMLContactRelationshipList" name="main">
       <column comment="" key="false" length="-1" name="legacyID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relatedContactExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relationshipTypeVOREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_bH3BoNOHEe2cEoLV_YM8qg - XMLContactRelationshipList" name="main" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.LegacyID" name="legacyID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="String.valueOf(row1.RELATEDCONTACTEXTNUM) " name="relatedContactExtNum" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row1.RELATIONSHIPTYPEVOREF " name="relationshipTypeVORefID" nullable="true" type="id_Integer"/>
-        <mapperTableEntries expression="row1.RELATIONSHIPTYPEVOREFVALUE " name="relationshipTypeVOREFDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row1.PAR_ANL_DATUM " name="effectiveDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row1.relationshipVoRefID " name="relationshipTypeVORefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="row1.relationshipVoRefDesc " name="relationshipTypeVOREFDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row1.RELATION_DATE " name="effectiveDate" nullable="true" type="id_Date"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
@@ -264,14 +264,14 @@
       <column comment="" key="false" length="100" name="relatedContactExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relationshipTypeVOREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLContactRelationshipList" name="REJECT">
       <column comment="" key="false" length="-1" name="legacyID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relatedContactExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relationshipTypeVOREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -307,7 +307,7 @@
       <column comment="" key="false" length="100" name="relatedContactExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relationshipTypeVOREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="544" posY="224">
@@ -411,14 +411,14 @@
       <column comment="" key="false" length="100" name="relatedContactExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relationshipTypeVOREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLContactRelationshipList" name="REJECT">
       <column comment="" key="false" length="-1" name="legacyID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relatedContactExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="relationshipTypeVOREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="effectiveDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -451,13 +451,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c364d5e5-1b6c-46e7-8311-048805ec6718"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>nLQIJ+DTBOg4qdbioqe3pKm8L02MdbbW9uCi79R1k41Mba3S5jxh2czyjHqX1zRPjml0X7Q+1f0l&#13;
-pZqfv1JtWw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_512dcb51-1742-425b-86f0-7c18144c7402"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ZVxeqnYoyMe+YTvqiK+AdmQ7OdcIVTHgdqo96ArMBhrJm5USZy9ljwfDKZdg0NxnMlk2kGU8bmbr&#13;
-QfSoPyOSgw==</DigestValue></Reference></SignedInfo><SignatureValue>eoIjWfyAhXEos//QXyNLIa3qjqewLlNpHctDvhH8BBPf7BfFo7ugDKHdh/m7s/NHMFndOMKW+mOk&#13;
-XY9JfcVCOCdXpVS9hzNEQskGRVsgTVmEUYj23ICSj9PObi1i2xyHsXRoZIKUsFUuP+HIun6w4c7N&#13;
-gvPkAIXFGi1S4ycB+Ah4fmE73YC64DOwIpOnAKzZ7RVqYECcUi+VPzxDWXCWU1iWGcxY249NoPMi&#13;
-JX5pjaFEhPbwdApoCeKOGVBqgxu32Clm9TbbqulvBQopi7ehjkx54LEXyzjoyLRvURRUChzrWROl&#13;
-aoIPdKB6tXYahA7VOkFnnwd6N+5kw2TZ6H8Wlw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_daf205e4-376a-4d81-9c56-b8f508a4987e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>X+i+0Tb9+YfAuVmhE4ygu1qNDIJwOBFtH2OBlJYQFJa11EWp44XPyVjelZvQJb9TZgX0CY6GCfsg&#13;
+XruWXUE2Vg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_7c4b36ab-623c-46d1-8b04-8742216cd4a3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RN0zPWVKh3zLRZpJYAWGBvGZdsIp3Z6siiIKUzFTe150FGEcPpCHpHGcmKp+VYza9s30UeeHjqWP&#13;
+qGI24L9qlg==</DigestValue></Reference></SignedInfo><SignatureValue>EjeMYoNAJH35kI7D7Cj9e0d7hf4ATmtO+1QvRQtkHek2shR47mPkmVU2IxSqcDNVc/Q3rZSPBthD&#13;
+/VULf7ebgybwipdCKpbFstbUqTykNVjaTxtNzX6ZJU/ix3k0axcMJtGlTPAeAddW3Bq+Rgk+mqEF&#13;
+QSM84WYcq1b2lqBlAWgutlLmZHZPZmbsbB973qt5CTGyEg6q2nmMuctv830qti6IKwNsJF3kQMsp&#13;
+zMwJIt3Ch2n7xjmH+tPGCEIEUN9Xe/EqL7hYpa79n/4JrGdpbKDSgYxstZ/22uNPXydPpygm0Net&#13;
+CFxp+182+xIjmYdTmaGODpo03XmNri8bKe6tqw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -479,4 +479,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_512dcb51-1742-425b-86f0-7c18144c7402" Target="#_c364d5e5-1b6c-46e7-8311-048805ec6718"><Timestamp>2023-08-10 18:58:54</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_7c4b36ab-623c-46d1-8b04-8742216cd4a3" Target="#_daf205e4-376a-4d81-9c56-b8f508a4987e"><Timestamp>2023-08-10 19:03:28</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
