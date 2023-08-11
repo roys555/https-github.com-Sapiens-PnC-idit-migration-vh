@@ -139,7 +139,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT MOJEVH_P_LEGACY_SELECTION.PARTNERID,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.CONTACTID,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.PARTNER_NUMBER,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.ID_PARTNER_TYPE,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.LABEL,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.NAME_FIRST,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.NAME_LAST,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.BIRTHDAY,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.NAME_FIRST_SECOND,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.ID_SUBSIDY_TYPE,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.ID__MY_GLOBAL__ADDITIONAL_INFO,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.TYP&#10;FROM&#9;MOJEVH_P_LEGACY_SELECTION&#13;&#10;WHERE MOJEVH_P_LEGACY_SELECTION.PARTNERID = &quot; + context.LegacyID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT MOJEVH_P_LEGACY_SELECTION.PARTNERID,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.CONTACTID,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.PARTNER_NUMBER,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.ID_PARTNER_TYPE,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.LABEL,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.NAME_FIRST,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.NAME_LAST,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.BIRTHDAY,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.NAME_FIRST_SECOND,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.ID_SUBSIDY_TYPE,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.ID__MY_GLOBAL__ADDITIONAL_INFO,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.TYP,&#10;&#9;&#9;MOJEVH_P_LEGACY_SELECTION.company_size&#10;FROM&#9;MOJEVH_P_LEGACY_SELECTION &#13;&#10;WHERE MOJEVH_P_LEGACY_SELECTION.PARTNERID = &quot; + context.LegacyID"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -201,7 +201,7 @@
     <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="true"/>
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
-    <elementParameter field="TEXT" name="LABEL" value="map_ContactIVO"/>
+    <elementParameter field="TEXT" name="LABEL" value="setting_EntityType"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="mainEnriched">
       <column comment="" defaultValue="" key="false" length="38" name="PARTNERID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -218,9 +218,10 @@
       <column comment="" key="false" length="255" name="NAME_FIRST_SECOND" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ID_SUBSIDY_TYPE" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ID__MY_GLOBAL__ADDITIONAL_INFO" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="company_size" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="ContactProcessingVHP.returnEntityTypeVORef(row1.ID_PARTNER_TYPE).getId() " name="EntityTypeVORefID" type="id_Integer"/>
         <mapperTableEntries expression="ContactProcessingVHP.returnEntityTypeVORef(row1.ID_PARTNER_TYPE).getContent() " name="EntityTypeVORefContent" type="id_String"/>
@@ -241,6 +242,7 @@
         <mapperTableEntries expression="row1.NAME_FIRST_SECOND " name="NAME_FIRST_SECOND" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row1.ID_SUBSIDY_TYPE " name="ID_SUBSIDY_TYPE" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="row1.ID__MY_GLOBAL__ADDITIONAL_INFO " name="ID__MY_GLOBAL__ADDITIONAL_INFO" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="company_size" nullable="true" type="id_Integer"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PARTNERID" type="id_Long"/>
@@ -261,7 +263,7 @@
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="480" posY="160">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#10;output_row.PARTNERID = input_row.PARTNERID;&#10;output_row.CONTACTID = input_row.CONTACTID;&#10;output_row.PARTNER_NUMBER = input_row.PARTNER_NUMBER;&#10;output_row.ID_PARTNER_TYPE = input_row.ID_PARTNER_TYPE;&#10;output_row.LABEL = input_row.LABEL;&#10;output_row.NAME_FIRST = input_row.NAME_FIRST;&#10;output_row.NAME_LAST = input_row.NAME_LAST;&#10;output_row.BIRTHDAY = input_row.BIRTHDAY;&#10;output_row.EntityTypeVORefID = input_row.EntityTypeVORefID;&#10;output_row.EntityTypeVORefContent = input_row.EntityTypeVORefContent;&#10;output_row.externalContactNumber = input_row.externalContactNumber;&#10;output_row.NAME_FIRST_SECOND = input_row.NAME_FIRST_SECOND;&#10;&#10;EntitySubTypeVoREF entity = ContactProcessingVHP.returnEntitySubTypeVoRef(input_row.ID_PARTNER_TYPE,input_row.EntityTypeVORefID,input_row.EntityTypeVORefContent);&#10;output_row.entitySubTypeID = entity.getId();&#10;output_row.entitySubTypeContent = entity.getContent();&#10;&#13;&#10;output_row.ID_SUBSIDY_TYPE = input_row.ID_SUBSIDY_TYPE;&#13;&#10;output_row.ID__MY_GLOBAL__ADDITIONAL_INFO = input_row.ID__MY_GLOBAL__ADDITIONAL_INFO;&#13;&#10;&#13;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#10;output_row.PARTNERID = input_row.PARTNERID;&#10;output_row.CONTACTID = input_row.CONTACTID;&#10;output_row.PARTNER_NUMBER = input_row.PARTNER_NUMBER;&#10;output_row.ID_PARTNER_TYPE = input_row.ID_PARTNER_TYPE;&#10;output_row.LABEL = input_row.LABEL;&#10;output_row.NAME_FIRST = input_row.NAME_FIRST;&#10;output_row.NAME_LAST = input_row.NAME_LAST;&#10;output_row.BIRTHDAY = input_row.BIRTHDAY;&#10;output_row.EntityTypeVORefID = input_row.EntityTypeVORefID;&#10;output_row.EntityTypeVORefContent = input_row.EntityTypeVORefContent;&#10;output_row.externalContactNumber = input_row.externalContactNumber;&#10;output_row.NAME_FIRST_SECOND = input_row.NAME_FIRST_SECOND;&#10;&#10;EntitySubTypeVoREF entity = ContactProcessingVHP.returnEntitySubTypeVoRef(input_row.ID_PARTNER_TYPE,input_row.EntityTypeVORefID,input_row.EntityTypeVORefContent);&#10;output_row.entitySubTypeID = entity.getId();&#10;output_row.entitySubTypeContent = entity.getContent();&#10;&#13;&#10;output_row.ID_SUBSIDY_TYPE = input_row.ID_SUBSIDY_TYPE;&#13;&#10;output_row.ID__MY_GLOBAL__ADDITIONAL_INFO = input_row.ID__MY_GLOBAL__ADDITIONAL_INFO;&#13;&#10;&#10;output_row.companySize = input_row.company_size;&#13;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;&#10;import routines.EntitySubTypeVoREF;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJavaRow_1">
@@ -281,6 +283,7 @@
       <column comment="" key="false" length="50" name="entitySubTypeContent" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ID_SUBSIDY_TYPE" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ID__MY_GLOBAL__ADDITIONAL_INFO" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="companySize" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="704" posY="224">
@@ -298,7 +301,7 @@
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_ContactIVO"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLContactIVO" name="main">
+    <metadata comment="" label="XMLContactIVO" name="main">
       <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="ID_PARTNER" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="masterEntityID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -326,6 +329,8 @@
       <column comment="" key="false" length="-1" name="subsidyEligibility" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="permitAgriculture" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="agriculturalProducer" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="companySizeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="companySizeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="rejectedEntityTypes">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -356,7 +361,7 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row2.EntityTypeVORefID == 1?row2.NAME_LAST:row2.LABEL " name="name" type="id_String"/>
         <mapperTableEntries expression="row2.EntityTypeVORefID != 101?ContactProcessingVHP.firstWord(row2.NAME_FIRST):null " name="firstName" type="id_String"/>
@@ -390,6 +395,8 @@
         <mapperTableEntries expression="(long)((row2.ID_SUBSIDY_TYPE==1)?1:0 ) " name="subsidyEligibility" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(long)0" name="permitAgriculture" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.ID__MY_GLOBAL__ADDITIONAL_INFO!= null?((row2.ID__MY_GLOBAL__ADDITIONAL_INFO==1)?1:0):0 " name="agriculturalProducer" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="companySize_lookup.companySizeVoRefID " name="companySizeVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="companySize_lookup.companySizeVoRefDesc " name="companySizeVoRefDesc" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" columnNameFilter="" expressionFilter="row2.EntityTypeVORefID == -1  " name="rejectedEntityTypes" reject="true" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -436,6 +443,12 @@
         <mapperTableEntries name="entitySubTypeContent" nullable="true" type="id_String"/>
         <mapperTableEntries name="ID_SUBSIDY_TYPE" nullable="true" type="id_Integer"/>
         <mapperTableEntries name="ID__MY_GLOBAL__ADDITIONAL_INFO" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="companySize" nullable="true" type="id_Integer"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="companySize_lookup" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row2.companySize " name="companySize" nullable="true" operator="=" type="id_Integer"/>
+        <mapperTableEntries name="companySizeVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="companySizeVoRefDesc" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -839,6 +852,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="companySizeVoRefID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="companySizeVoRefDesc"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="contactIVO"/>
@@ -871,6 +894,8 @@
       <column comment="" key="false" length="-1" name="subsidyEligibility" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="permitAgriculture" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="agriculturalProducer" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="companySizeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="companySizeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLContactIVO" name="REJECT">
       <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -900,8 +925,152 @@
       <column comment="" key="false" length="-1" name="subsidyEligibility" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="permitAgriculture" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="agriculturalProducer" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="companySizeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="companySizeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="704" posY="96">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="companySize"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="companySizeVoRefID"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="companySizeVoRefDesc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="companySize" value="3"/>
+      <elementValue elementRef="companySizeVoRefID" value="1000052"/>
+      <elementValue elementRef="companySizeVoRefDesc" value="&quot;Small and medium-sized Enterprise (SME)&quot;"/>
+      <elementValue elementRef="companySize" value="5"/>
+      <elementValue elementRef="companySizeVoRefID" value="1000053"/>
+      <elementValue elementRef="companySizeVoRefDesc" value="&quot;Large Enterprise&quot;"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="companySize_lookup"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_1">
+      <column comment="" key="false" length="-1" name="companySize" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="companySizeVoRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="companySizeVoRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1248" posY="96">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
+    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
+    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
+    <elementParameter field="TABLE" name="LENGTHS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID_CONTACT"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID_PARTNER"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="masterEntityID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="name"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="firstName"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="middleName"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="activityRemark"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="externalContactNumber"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="headOfFamily"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="residentFlag"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="entityTypeVORefID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="entityTypeVORefContent"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="languageRefID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="languageRefContent"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefContent"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="dateOfBirth"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="entitySubTypeID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="entitySubTypeContent"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="foreignEntityRefID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="foreignEntityRefContent"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="memberStatusIdRefId"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="memberStatusIdRefDesc"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="sourceOfContact"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="subsidyEligibility"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="permitAgriculture"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="agriculturalProducer"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="companySizeVoRefID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="companySizeVoRefDesc"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="LABEL" value="contactIVO"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="XMLContactIVO" name="tLogRow_1">
+      <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="ID_PARTNER" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="masterEntityID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="255" name="name" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="255" name="firstName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="255" name="middleName" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="255" name="activityRemark" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="externalContactNumber" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="headOfFamily" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="residentFlag" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="entityTypeVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="entityTypeVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="languageRefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="languageRefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="processingStatusVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="processingStatusVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="dateOfBirth" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="entitySubTypeID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="entitySubTypeContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="foreignEntityRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="foreignEntityRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="memberStatusIdRefId" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="memberStatusIdRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="sourceOfContact" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subsidyEligibility" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="permitAgriculture" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="agriculturalProducer" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="companySizeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="companySizeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_2">
@@ -917,6 +1086,9 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="ID__MY_GLOBAL__ADDITIONAL_INFO"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="company_size"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -935,6 +1107,15 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="ID__MY_GLOBAL__ADDITIONAL_INFO"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="companySizeVoRefID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="companySizeVoRefDesc"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="companySize"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -958,18 +1139,26 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="rejectedEntityName"/>
   </connection>
+  <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
+  </connection>
+  <connection connectorName="FLOW" label="companySize_lookup" lineStyle="8" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="companySize_lookup"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_15d0b1f9-5499-4d27-ba71-2263092abb95"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>lj9qu7Sl7QL/VM3uKE8wp3pRvLxq1UJdoAgBGdLXXnwzD9d0CXRwft4RGHqhIsJ9RFfWQaNFWihW&#13;
-/GjN/Gkmjg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ebb6356e-3531-43a4-9e83-6fc03feb84bb"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3PgpQRuSjxKu2NzgytKVC4JgdSv9qWpQdRj/BHe4ItWGVk2S9hHbPIla5R2yLwHmK8hh6k/zrE4D&#13;
-r5m7BZngDQ==</DigestValue></Reference></SignedInfo><SignatureValue>EIT3iVfMId0E0cpCN6eBkNq64izT4GNqpGBIAbiA9RiOdqV4YxcpYZtId3UoDJHNpy1ZOwG75X1c&#13;
-9LUerDdHgrIo96m8oIxv9G+zVvnPr4gkbH1mxT7e1OXm/XUSyGb5foa5bvJwB+TH0JOhAvad86Cv&#13;
-XQxtRQpCfop3d3JthUqJ1F4J7g0SdV0o/WU1syuthpdneomfTMGBjuDc43VNg44aYXyAAzIkdmo9&#13;
-oGz4zbLelyJdD1JoD03DadVE/CI6V0XR7yd7LP2vGC8/Inv3YL0sSYOW6+8v26D7QV7t9YXfFGoP&#13;
-bKcbd3rqpUHKX21JYzk660YxR0Jx+trwvOm9VQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_edae11b5-931e-43ef-b485-5df21b8ca98a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RKHUJR+btsFkNEdHtpUp7YjBbVv0CJZEnAB4XKfKG/pBK6C3Wn0Ea/cr8HiMrSDbnUseDhBxikt9&#13;
+evvkJ/gEXQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_99af34fd-5f7d-44dd-b6a5-fdede413cfb8"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NNsXUjegHWHkRnMjTS2E051FUaLLtkaKsXac94W/tAbpP0tKzcQcSR8YikI/JoT2iJwoNX0DdKD/&#13;
+nrDAxFJYOA==</DigestValue></Reference></SignedInfo><SignatureValue>W1NUGz+cjWdrMFnsdpcaCYsGeZMUrN+ISXO26usu4gK+NVIUpAQ8WB9heVJnm3BNDN38PkDoh91j&#13;
+myxIgy1z7LlXzPv/MtqUFGA1VQFRNpo9oKW8yJE/TrsC6X+p3J2nsBfcK2FqSqN0jN4refknbt5t&#13;
+GntEksauQHc6x4ckDvRH6WURojak9OVT0aypt/EchInsGtmiNrKkUocxUj0j878v7VeibAIp1zMK&#13;
+wWX5kpxtBhqOnggQ1LROUFWZHkOz/wMAwh3i2XztGpGvcIejuyTGpIFIF1zNvF+cQYwCoTWSroXi&#13;
+TrmjpbhnABCZ3HdcY8uMdmCsA82iPGyS7o2Ssg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -991,4 +1180,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ebb6356e-3531-43a4-9e83-6fc03feb84bb" Target="#_15d0b1f9-5499-4d27-ba71-2263092abb95"><Timestamp>2023-08-11 07:20:06</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_99af34fd-5f7d-44dd-b6a5-fdede413cfb8" Target="#_edae11b5-931e-43ef-b485-5df21b8ca98a"><Timestamp>2023-08-11 10:11:52</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
