@@ -174,7 +174,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH p_info AS (SELECT id_Partner, max(ID__MY_GLOBAL__ADDITIONAL_INFO) AS add_info &#13;&#10;&#9;&#9;&#9;FROM MY_PARTNER.PARTNER_ADDITIONAL_INFO&#13;&#10;&#9;&#9;&#9;where ID__MY_GLOBAL__ADDITIONAL_INFO in (3,5)&#13;&#10;&#9;&#9;&#9;group by id_Partner)&#13;&#10;SELECT &#13;&#10;&#9;&#9; p.ID AS partnerID&#13;&#10;&#9;&#9;,c.ID AS ContactID&#13;&#10;&#9;&#9;,p.PARTNER_NUMBER&#13;&#10;&#9;    ,p.ID_PARTNER_TYPE&#13;&#10;&#9;&#9;,p.LABEL&#13;&#10;&#9;&#9;,c.NAME_FIRST&#13;&#10;&#9;&#9;,c.NAME_LAST&#13;&#10;&#9;&#9;,c.BIRTHDAY&#13;&#10;&#9;    ,c.NAME_FIRST_SECOND&#13;&#10;&#9;    ,ps.ID_SUBSIDY_TYPE &#13;&#10;&#9;    ,pai.add_info &#13;&#10;&#9;&#9;,p.TYP &#13;&#10;FROM MY_PARTNER.PARTNER p&#13;&#10;INNER JOIN MY_PARTNER.CONTACT c ON &#13;&#10;&#9;&#9;c.ID_PARTNER = p.ID AND c.ID_CONTACT_TYPE = 1&#13;&#10;LEFT JOIN MY_PARTNER.PARTNER_SUBSIDY ps ON ps.ID_PARTNER = p.ID &#13;&#10;LEFT JOIN p_info pai ON pai.ID_PARTNER = p.ID &#13;&#10;WHERE EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = p.ID &#13;&#10;&#9;&#9;&#9;  &#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID = &quot; + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH p_info AS (SELECT id_Partner, min(ID__MY_GLOBAL__ADDITIONAL_INFO) AS add_info &#13;&#10;&#9;&#9;&#9;FROM MY_PARTNER.PARTNER_ADDITIONAL_INFO&#13;&#10;&#9;&#9;&#9;where ID__MY_GLOBAL__ADDITIONAL_INFO =1&#13;&#10;&#9;&#9;&#9;group by id_Partner),&#13;&#10;&#9;company_size AS (SELECT id_Partner, max(ID__MY_GLOBAL__ADDITIONAL_INFO) AS company_size &#13;&#10;&#9;&#9;&#9;FROM MY_PARTNER.PARTNER_ADDITIONAL_INFO&#13;&#10;&#9;&#9;&#9;where ID__MY_GLOBAL__ADDITIONAL_INFO IN (3,5)&#13;&#10;&#9;&#9;&#9;group by id_Partner)&#13;&#10;SELECT &#13;&#10;&#9;&#9; p.ID AS partnerID&#13;&#10;&#9;&#9;,c.ID AS ContactID&#13;&#10;&#9;&#9;,p.PARTNER_NUMBER&#13;&#10;&#9;    ,p.ID_PARTNER_TYPE&#13;&#10;&#9;&#9;,p.LABEL&#13;&#10;&#9;&#9;,c.NAME_FIRST&#13;&#10;&#9;&#9;,c.NAME_LAST&#13;&#10;&#9;&#9;,c.BIRTHDAY&#13;&#10;&#9;    ,c.NAME_FIRST_SECOND&#13;&#10;&#9;    ,ps.ID_SUBSIDY_TYPE &#13;&#10;&#9;    ,pai.add_info &#13;&#10;&#9;&#9;,p.TYP  &#13;&#10;&#9;&#9;,pai2.company_size  &#13;&#10;FROM MY_PARTNER.PARTNER p&#13;&#10;INNER JOIN MY_PARTNER.CONTACT c ON &#13;&#10;&#9;&#9;c.ID_PARTNER = p.ID AND c.ID_CONTACT_TYPE = 1&#13;&#10;LEFT JOIN MY_PARTNER.PARTNER_SUBSIDY ps ON ps.ID_PARTNER = p.ID &#13;&#10;LEFT JOIN p_info pai ON pai.ID_PARTNER = p.ID &#13;&#10;LEFT JOIN company_size pai2 ON pai2.ID_PARTNER = p.ID &#13;&#10;WHERE EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = p.ID &#13;&#10;&#9;&#9;&#9;  &#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID = &quot; + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -213,6 +213,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="TYP"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="company_size"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -231,6 +233,7 @@
       <column comment="" defaultValue="" key="false" length="-1" name="ID_SUBSIDY_TYPE" nullable="true" originalLength="38" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="ID__MY_GLOBAL__ADDITIONAL_INFO" nullable="true" originalLength="38" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="TYP" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="company_size" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="224" posY="320">
@@ -318,6 +321,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="company_size"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="MOJEVH_P_LEGACY_SELECTION"/>
@@ -335,6 +343,7 @@
       <column comment="" key="false" length="-1" name="ID_SUBSIDY_TYPE" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ID__MY_GLOBAL__ADDITIONAL_INFO" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="TYP" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="company_size" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="MOJEVH_P_LEGACY_SELECTION" name="REJECT">
       <column comment="" defaultValue="" key="false" length="38" name="PARTNERID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -349,6 +358,7 @@
       <column comment="" key="false" length="-1" name="ID_SUBSIDY_TYPE" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ID__MY_GLOBAL__ADDITIONAL_INFO" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="TYP" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="company_size" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2062,6 +2072,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="TYP"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="company_size"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -2168,14 +2181,14 @@
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_9" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_9" target="tRunJob_2">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk10"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tFixedFlowInput_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
-  </connection>
   <connection connectorName="FLOW" label="row16" lineStyle="0" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row16"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tFixedFlowInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
   </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tHSQLDbOutput_10">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -2297,13 +2310,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bbde6a87-817a-44bc-92e3-d356e8f5034a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>UPAR8m2VFv5tpnrEfc/G8LcYbbYOA8zjiTTSTq8ig694/JkjqVbqTwhrXli1fFTnuqchegLm9ae8&#13;
-NJUpecGggQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c5cfbdb0-f003-407b-bf1e-095afa79d662"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>l63V1isKSCDso0MqnX9aHziDBQ29+PnJonqOqFH0tOeVVSoicEiHjOwdcSa14CsrR0k4pIOzjJ9p&#13;
-0HfwYd6grQ==</DigestValue></Reference></SignedInfo><SignatureValue>aAb07wD1At27RXr2ve46b8bPVxMxFD5Rzk60qTgdK7zQmCZcTFbbTRNpRFlqADKE3Y2PEgE424c2&#13;
-w+KgWi1uEUjgcIUQ5dF5/K5wNEk8zlGN9IniruSKmFto0SBvtdQdxMWvTZ+EYbadBGEDUfhIBodJ&#13;
-5/5ye91qcxpQP04zWfzWuptsBKFqwxEjebCIhTo07bHREjWWkRBBBQtOkUrx5p/GUVrkjZNSxX8d&#13;
-i7GPwSHAxykjAQxzvJbAfMaTvjwLQ85co8Hr7JA3Rb71uhudmNjEjbEtfxeEKqZ9NVTNfERfFAZf&#13;
-ATbzsDP2jdqE78lp160km7Cd3TTkmads0jjriQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_45bc8688-1057-4090-8a41-e190afb5ccef"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>oJ1jDG3bHpkx/vKAsiWkTgfxrOeG3Em5/DW18wDSQkBgInipsrGu0b+i6AScVcn5/L1PgzMtZ3j8&#13;
+R5P/QeCCKA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ba67a920-b60f-4b93-ba52-fa34926f15d0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RwVLnIbmTDtiwLsJeuMIPpojpiBiIG/eNqtGxBB/jCUxegtrooBNt9jZzpiP9MxMup1H1RmqnfPM&#13;
+pvjREXk5tw==</DigestValue></Reference></SignedInfo><SignatureValue>jEreKG91tq5mdNtfRXARTzzOL60B3OxxYkDE+QNM0gcSZHh2fl6FKfLGFiSbKYFz/GQ9B543B0Zb&#13;
+9oIqx0DZurUP02E/gntVKkFECuvaM2SGr/sI9/kLl9hdvUeIeJjPzO9G5EbbBs7SY0CLyDs+nVIz&#13;
+/LbnHVt68qtj19Rv9BeuARvNCNgo3MQUJa+9swAFmkv/Y8gH1gMTGyp9U9ZepvO2vLWQGUJG8GRr&#13;
++TVqWNXazOj4nWagJyE9PdxfyWWIBLQVjBpgCrMtA/B4rWHue6YtkcBM+Xr0bp/jiBbOOa8SnzP/&#13;
+yLiyKaH+EuQUdZZN0Ta482YjD0upoUwZAfXeKQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2325,4 +2338,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c5cfbdb0-f003-407b-bf1e-095afa79d662" Target="#_bbde6a87-817a-44bc-92e3-d356e8f5034a"><Timestamp>2023-08-11 07:05:07</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ba67a920-b60f-4b93-ba52-fa34926f15d0" Target="#_45bc8688-1057-4090-8a41-e190afb5ccef"><Timestamp>2023-08-11 07:22:17</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
