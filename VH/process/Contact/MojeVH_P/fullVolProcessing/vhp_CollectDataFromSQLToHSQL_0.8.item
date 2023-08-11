@@ -174,7 +174,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH p_info AS (SELECT id_Partner, min(ID__MY_GLOBAL__ADDITIONAL_INFO) AS add_info &#13;&#10;&#9;&#9;&#9;FROM MY_PARTNER.PARTNER_ADDITIONAL_INFO&#13;&#10;&#9;&#9;&#9;GROUP BY id_Partner)&#13;&#10;SELECT &#13;&#10;&#9;&#9; p.ID AS partnerID&#13;&#10;&#9;&#9;,c.ID AS ContactID&#13;&#10;&#9;&#9;,p.PARTNER_NUMBER&#13;&#10;&#9;    ,p.ID_PARTNER_TYPE&#13;&#10;&#9;&#9;,p.LABEL&#13;&#10;&#9;&#9;,c.NAME_FIRST&#13;&#10;&#9;&#9;,c.NAME_LAST&#13;&#10;&#9;&#9;,c.BIRTHDAY&#13;&#10;&#9;    ,c.NAME_FIRST_SECOND&#13;&#10;&#9;    ,ps.ID_SUBSIDY_TYPE &#13;&#10;&#9;    ,pai.add_info &#13;&#10;&#9;&#9;,p.TYP &#13;&#10;FROM MY_PARTNER.PARTNER p&#13;&#10;INNER JOIN MY_PARTNER.CONTACT c ON &#13;&#10;&#9;&#9;c.ID_PARTNER = p.ID AND c.ID_CONTACT_TYPE = 1&#13;&#10;LEFT JOIN MY_PARTNER.PARTNER_SUBSIDY ps ON ps.ID_PARTNER = p.ID &#13;&#10;LEFT JOIN p_info pai ON pai.ID_PARTNER = p.ID &#13;&#10;WHERE EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = p.ID &#13;&#10;&#9;&#9;&#9;  &#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID = &quot; + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH p_info AS (SELECT id_Partner, max(ID__MY_GLOBAL__ADDITIONAL_INFO) AS add_info &#13;&#10;&#9;&#9;&#9;FROM MY_PARTNER.PARTNER_ADDITIONAL_INFO&#13;&#10;&#9;&#9;&#9;where ID__MY_GLOBAL__ADDITIONAL_INFO in (3,5)&#13;&#10;&#9;&#9;&#9;group by id_Partner)&#13;&#10;SELECT &#13;&#10;&#9;&#9; p.ID AS partnerID&#13;&#10;&#9;&#9;,c.ID AS ContactID&#13;&#10;&#9;&#9;,p.PARTNER_NUMBER&#13;&#10;&#9;    ,p.ID_PARTNER_TYPE&#13;&#10;&#9;&#9;,p.LABEL&#13;&#10;&#9;&#9;,c.NAME_FIRST&#13;&#10;&#9;&#9;,c.NAME_LAST&#13;&#10;&#9;&#9;,c.BIRTHDAY&#13;&#10;&#9;    ,c.NAME_FIRST_SECOND&#13;&#10;&#9;    ,ps.ID_SUBSIDY_TYPE &#13;&#10;&#9;    ,pai.add_info &#13;&#10;&#9;&#9;,p.TYP &#13;&#10;FROM MY_PARTNER.PARTNER p&#13;&#10;INNER JOIN MY_PARTNER.CONTACT c ON &#13;&#10;&#9;&#9;c.ID_PARTNER = p.ID AND c.ID_CONTACT_TYPE = 1&#13;&#10;LEFT JOIN MY_PARTNER.PARTNER_SUBSIDY ps ON ps.ID_PARTNER = p.ID &#13;&#10;LEFT JOIN p_info pai ON pai.ID_PARTNER = p.ID &#13;&#10;WHERE EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = p.ID &#13;&#10;&#9;&#9;&#9;  &#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID = &quot; + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2168,14 +2168,14 @@
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_9" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_9" target="tRunJob_2">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk10"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tFixedFlowInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
+  </connection>
   <connection connectorName="FLOW" label="row16" lineStyle="0" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row16"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tFixedFlowInput_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
   </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tHSQLDbOutput_10">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -2297,13 +2297,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_593d32b5-f0ad-4c1b-bf5d-e838fff315c6"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>z2a+omM17YTSHUmQn0HT+YE9y4tDqZcsAL4UPxpbLziROXaAk6GVdsmuJeO3fG+IuVTO7prU721P&#13;
-wW6//HG7Pg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_30934233-e9da-4e99-96cd-e2d8e200a830"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>4/BuAWvlwOgphh1jsTDmYAj1yM5k92sNaNZgg/pBiyB9SLMtGE6vBOoukbzI/6zh9zg+N/fRc+5P&#13;
-jZlN6q8tyg==</DigestValue></Reference></SignedInfo><SignatureValue>j5oOO3ZzlcKT9s2Ed/m6Mvt8wydwS0w2lGxJ6jbVZeaI5MjkKIVdAP2nkRTm1W7HchvE7hHiHJ+M&#13;
-Quis42Dly+v8ftzjOCmmRUnnFOEDZxldvs7Vq2Y2iGhfGCUWKzALsOy4dOJN4r3XtbvRRs+2/XbE&#13;
-1/vea9MFL4mmgFclXKimmOOfvHrZVL9S2JyHZBKlLN6TQk2VPGotKF0vqkKerGmLW4J9ewVb1u2l&#13;
-JufiV1qSDBOp9fjGfWTqPsm8gWY7Pm0M+tEDkpc4S94gVo3CTt+t+zfu/5IH02ZOhq9BcfJqXQha&#13;
-MiYAwm8ARQINYH2ENOOOPzqNsZtzl9zs75rrEg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bbde6a87-817a-44bc-92e3-d356e8f5034a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>UPAR8m2VFv5tpnrEfc/G8LcYbbYOA8zjiTTSTq8ig694/JkjqVbqTwhrXli1fFTnuqchegLm9ae8&#13;
+NJUpecGggQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c5cfbdb0-f003-407b-bf1e-095afa79d662"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>l63V1isKSCDso0MqnX9aHziDBQ29+PnJonqOqFH0tOeVVSoicEiHjOwdcSa14CsrR0k4pIOzjJ9p&#13;
+0HfwYd6grQ==</DigestValue></Reference></SignedInfo><SignatureValue>aAb07wD1At27RXr2ve46b8bPVxMxFD5Rzk60qTgdK7zQmCZcTFbbTRNpRFlqADKE3Y2PEgE424c2&#13;
+w+KgWi1uEUjgcIUQ5dF5/K5wNEk8zlGN9IniruSKmFto0SBvtdQdxMWvTZ+EYbadBGEDUfhIBodJ&#13;
+5/5ye91qcxpQP04zWfzWuptsBKFqwxEjebCIhTo07bHREjWWkRBBBQtOkUrx5p/GUVrkjZNSxX8d&#13;
+i7GPwSHAxykjAQxzvJbAfMaTvjwLQ85co8Hr7JA3Rb71uhudmNjEjbEtfxeEKqZ9NVTNfERfFAZf&#13;
+ATbzsDP2jdqE78lp160km7Cd3TTkmads0jjriQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2325,4 +2325,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_30934233-e9da-4e99-96cd-e2d8e200a830" Target="#_593d32b5-f0ad-4c1b-bf5d-e838fff315c6"><Timestamp>2023-08-10 19:49:16</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c5cfbdb0-f003-407b-bf1e-095afa79d662" Target="#_bbde6a87-817a-44bc-92e3-d356e8f5034a"><Timestamp>2023-08-11 07:05:07</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
