@@ -251,7 +251,7 @@
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_AddressIVO"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="contactAddressList" name="mainOut">
+    <metadata comment="" label="contactAddressList" name="mainOut">
       <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="PARTNER_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="languageRefId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -273,13 +273,17 @@
       <column comment="" key="false" length="50" name="districtName" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="municipalityCode" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="pob" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="boxNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLatitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLongitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables activateCondensedTool="true" activateExpressionFilter="true" id="_8-nSQM-5Ee2M9_himD71ag - contactAddressList" name="mainOut" sizeState="INTERMEDIATE">
+      <uiProperties shellMaximized="true"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="functionLibrary.ifNull(address.PAN_ART,&quot;&quot;).equals(&quot;*&quot;)?true:false " name="IsStandardAddress" type="id_Boolean"/>
+        <mapperTableEntries expression="" name="addRule" type="id_Boolean"/>
+      </varTables>
+      <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="!Var.IsStandardAddress || " id="_8-nSQM-5Ee2M9_himD71ag - contactAddressList" name="mainOut" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ID_CONTACT" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="address.PAR_PARTNER_NR " name="PARTNER_ID" type="id_Long"/>
         <mapperTableEntries expression="contactIVO.languageRefID == null?null:contactIVO.languageRefID " name="languageRefId" nullable="true" type="id_Long"/>
@@ -295,12 +299,13 @@
         <mapperTableEntries expression="address.ANS_HAUSNUMMERNZUSATZ " name="apartmentNr" nullable="true" type="id_String"/>
         <mapperTableEntries expression="address.ANS_HAUSNUMMER " name="houseNr" nullable="true" type="id_String"/>
         <mapperTableEntries expression="address.ANS_STRASSE " name="streetName" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="(functionLibrary.ifNull(address.PAN_ART,&quot;&quot;).equals(&quot;*&quot;)&amp;&amp;(contactIVO.entityTypeVORefID==1|| contactIVO.entityTypeVORefID==101))?(long)1000000:(long)10000 " name="addressTypeVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="(functionLibrary.ifNull(address.PAN_ART,&quot;&quot;).equals(&quot;*&quot;)&amp;&amp;(contactIVO.entityTypeVORefID==1|| contactIVO.entityTypeVORefID==101))?&quot;Standard address&quot;:&quot;Other&quot; " name="addressTypeVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="Var.IsStandardAddress?(long)1000000:(long)10000 " name="addressTypeVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="Var.IsStandardAddress?&quot;Standard address&quot;:&quot;Other&quot; " name="addressTypeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;ContactAddressIVO&quot;" name="attrType" nullable="true" type="id_String"/>
         <mapperTableEntries expression="address.ANS_ADRESSEN_ZUSATZ " name="districtName" nullable="true" type="id_String"/>
         <mapperTableEntries expression="address.ANS_GEMEINDEKENNZIFFER " name="municipalityCode" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="address.ANS_POSTFACH " name="pob" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="address.ANS_POSTFACH_PLZ " name="pob" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="address.ANS_POSTFACH " name="boxNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="address.ANS_KOORDINATE_BREITE " name="geoLatitude" nullable="true" type="id_Double"/>
         <mapperTableEntries expression="address.ANS_KOORDINATE_LAENGE " name="geoLongitude" nullable="true" type="id_Double"/>
       </outputTables>
@@ -650,6 +655,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="boxNumber"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="geoLatitude"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -686,6 +696,7 @@
       <column comment="" key="false" length="50" name="districtName" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="municipalityCode" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="pob" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="boxNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLatitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLongitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
@@ -711,6 +722,7 @@
       <column comment="" key="false" length="50" name="districtName" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="municipalityCode" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="pob" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="boxNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLatitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLongitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1025,6 +1037,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="pob"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="boxNumber"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="geoLatitude"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="geoLongitude"/>
@@ -1053,6 +1067,7 @@
       <column comment="" key="false" length="50" name="districtName" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="municipalityCode" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="pob" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="boxNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLatitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLongitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
@@ -1114,6 +1129,8 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="pob"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="boxNumber"/>
+      <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="geoLatitude"/>
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="geoLongitude"/>
@@ -1144,6 +1161,7 @@
       <column comment="" key="false" length="50" name="districtName" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="municipalityCode" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="pob" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="boxNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLatitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="geoLongitude" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
@@ -1424,13 +1442,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9c3c3a4b-e015-42f9-9ec8-7f3072f29a96"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>tKXCBZepjLBAS/qEM//yOTLWWkF+YVEx9KsKKuYWVPAm67ikueiYRyZld48zr0KDquab7P320tgE&#13;
-DynsHfvJfg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5c067eb7-6b62-4777-b0a2-780171d723b3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>bf5DLfr0scftnNb4Iaz/N4uc2g0FiT7QAivaHIQrawawaDguj7iwFFs2+SpoQvu52WKrBfQU7Zm1&#13;
-KW3hNPTxvA==</DigestValue></Reference></SignedInfo><SignatureValue>SWaJyji1LSwl6WEqIrcRxBJUUr7UXCHjqWq6f8nNPigti28luUOvSN1tlCGywuzJ0t7zXQbibGSM&#13;
-ypiEW3LAk6asxvR8TxicRLYDdGm8Z2HHlD+NiWs5Dt2hoPgLGWQa/L9tgd+CNWHuathxe+YDxt1L&#13;
-1T6rdOkqLHrtKekIppguxxvksH05IVjdIU7Y085l1iQwEuFqUdKnc51uo/isM2RK7vzgvG1BHSL/&#13;
-mRCS3A/rj5EANSb7xENJEizktmEwqjJqSbTbI16MmQaw9HC6GGZYmHKomYkNl48DXmvHqFBGVeaQ&#13;
-vvpDg5vLR1RgG2fd5NZInVg7vBGzZA63K03Mfw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8f3e22a8-c841-45d0-866e-6f6683b2bb8e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3lqBYgZKtyLnbAY1LtIeIN8TKg7UVCLgn7TFVGmYtc3gTh9mGbRWkmeFDrYPpG643oFt2D2pnbyI&#13;
+vR9QBMaLEw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_56103dc2-4879-4b8f-9e74-4e83b12ba2bb"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mUVtK3Agzbb7GpvtWGskSer+0MZIVxbzHeeaNAGl1ky+Tj+tvjgH/L4qikKVN91dWUVzf3wb/2sV&#13;
+n4z6NEf+IQ==</DigestValue></Reference></SignedInfo><SignatureValue>gh0a4DoziVqUj5la8C5QyZJ9MAorKKwwLiRSiglgv0dQDOEYcyQdn38L64Ipb4gBL4PU147LcUef&#13;
+G2SkAl47LSnWYD0+vyP4MCXFPa11dhYAmt6PjK2eZM06xzUICymJXUWfx+uJmrMt3VR/045EvZ6v&#13;
+kfzFHWcB1XOYLLK8bT/3VXOzlhclMa7xxy5vsxQinlKDGqBORIr4NGgsdXT88Zp4IfehixUjufqX&#13;
+6iXUQfEAr5fwbeoujcrPaG6uz0EkLq2VI6dG+p9G4nuNv3PqLMYKFvJqRgoH3xMFA+EGJr3ROUAi&#13;
+TYe5KNhg81CjiK5gGHZ3C0fw5Zv44VXWIl3icg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1452,4 +1470,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5c067eb7-6b62-4777-b0a2-780171d723b3" Target="#_9c3c3a4b-e015-42f9-9ec8-7f3072f29a96"><Timestamp>2023-08-04 13:02:47</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_56103dc2-4879-4b8f-9e74-4e83b12ba2bb" Target="#_8f3e22a8-c841-45d0-866e-6f6683b2bb8e"><Timestamp>2023-08-17 11:50:15</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
