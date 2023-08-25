@@ -356,7 +356,7 @@
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="896" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;&#13;&#10;//String s = new sun.misc.BASE64Encoder().encode(input_row.content);&#10;//output_row.content = s;&#10;String encodeBytes = Base64.getEncoder().encodeToString(input_row.content);&#10;output_row.content = encodeBytes;&#10;output_row.LegacyID = context.LegacyID;&#10;output_row.fileName = context.fileName;&#10;&#10;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;&#13;&#10;//String s = new sun.misc.BASE64Encoder().encode(input_row.content);&#10;//output_row.content = s;&#10;String encodeBytes = Base64.getEncoder().encodeToString(input_row.content);&#10;output_row.content = encodeBytes;&#10;output_row.LegacyID = context.LegacyID;&#10;output_row.fileName = context.fileName;&#10;&#10;String fileExt;&#10;Integer ind = .lastIndexOf(&quot;.&quot;);&#10;if (ind != -1) {&#10;&#9;fileExt = context.fileName.substring(ind+1);&#10;&#9;} else {&#10;&#9;fileExt = &quot;other&quot;;&#10;&#9;}&#10;output_row.file_ext = fileExt.toLowerCase();&#10;System.out.println(&quot;Extension = &quot;+output_row.file_ext);&#10;&#10;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;&#10;//import org.apache.commons.codec.binary.Base64;&#10;import java.util.Base64;&#10;&#10;"/>
     <elementParameter field="TEXT" name="LABEL" value="convertToBase64"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -364,6 +364,7 @@
       <column comment="" key="false" length="-1" name="LegacyID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="fileName" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column key="false" length="-1" name="content" nullable="true" originalLength="4000" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="file_ext" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1024" posY="192">
@@ -386,7 +387,7 @@
       <column comment="" key="false" length="-1" name="ComPhysicalFileBlob64Base" nullable="true" pattern="" precision="0" sourceType="OBJECT" type="id_Object" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tComComStatusVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tComComStatusDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tFileTypeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="documentTypeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -401,8 +402,8 @@
         <mapperTableEntries expression="base64File.content " name="ComPhysicalFileBlob64Base" nullable="true" type="id_Object"/>
         <mapperTableEntries expression="10001" name="tComComStatusVoRefID" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="&quot;Complete&quot;" name="tComComStatusDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="tFileTypeVoRefID" nullable="true" type="id_Integer"/>
-        <mapperTableEntries name="tFileTypeVoRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(iditFileType.ID == null)?(long)99:iditFileType.ID " name="tFileTypeVoRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="(iditFileType.ID == null)?&quot;other&quot;:iditFileType.DESCRIPTION " name="tFileTypeVoRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(Date)globalMap.get(&quot;varCreationDate&quot;) " name="creationDate" nullable="true" type="id_Date"/>
         <mapperTableEntries name="documentTypeRefID" nullable="true" type="id_Integer"/>
         <mapperTableEntries name="documentTypeRefDesc" nullable="true" type="id_String"/>
@@ -411,6 +412,12 @@
         <mapperTableEntries name="LegacyID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="fileName" nullable="true" type="id_String"/>
         <mapperTableEntries name="content" nullable="true" type="id_String"/>
+        <mapperTableEntries name="file_ext" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="iditFileType" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ID" type="id_Long"/>
+        <mapperTableEntries expression="base64File.file_ext " name="FILE_EXTANTION" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="DESCRIPTION" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -499,7 +506,7 @@
       <column comment="" key="false" length="-1" name="ComPhysicalFileBlob64Base" nullable="true" pattern="" precision="0" sourceType="OBJECT" type="id_Object" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tComComStatusVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tComComStatusDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tFileTypeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="documentTypeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -511,13 +518,51 @@
       <column comment="" key="false" length="-1" name="ComPhysicalFileBlob64Base" nullable="true" pattern="" precision="0" sourceType="OBJECT" type="id_Object" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tComComStatusVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tComComStatusDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tFileTypeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="documentTypeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="documentTypeRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1024" posY="64">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:EZwOR5JKDeY/5JutRF2gHZjXgsZmXOALzCA5tBlc"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_5QmLUEMbEe6dLKKgkjSqmg - hsql_idit_file_type"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;hsql_idit_file_type&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT hsql_idit_file_type.\&quot;ID\&quot;,&#10;&#9;&#9;hsql_idit_file_type.FILE_EXTANTION,&#10;&#9;&#9;hsql_idit_file_type.DESCRIPTION&#10;FROM&#9;hsql_idit_file_type&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="FILE_EXTANTION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DESCRIPTION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="hsql_idit_file_type"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="hsql_idit_file_type" name="tHSQLDbInput_4">
+      <column comment="" key="true" length="19" name="ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="FILE_EXTANTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="500" name="DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="320">
@@ -561,7 +606,7 @@
       <column comment="" key="false" length="-1" name="ComPhysicalFileBlob64Base" nullable="true" pattern="" precision="0" sourceType="OBJECT" type="id_Object" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tComComStatusVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tComComStatusDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tFileTypeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="documentTypeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -653,7 +698,7 @@
       <column comment="" key="false" length="-1" name="ComPhysicalFileBlob64Base" nullable="true" pattern="" precision="0" sourceType="OBJECT" type="id_Object" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tComComStatusVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tComComStatusDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tFileTypeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="documentTypeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -665,7 +710,7 @@
       <column comment="" key="false" length="-1" name="ComPhysicalFileBlob64Base" nullable="true" pattern="" precision="0" sourceType="OBJECT" type="id_Object" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tComComStatusVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tComComStatusDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tFileTypeVoRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="tFileTypeVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="documentTypeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -951,6 +996,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="fileName"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="file_ext"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="base64File"/>
@@ -984,6 +1032,10 @@
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tJava_2">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
+  </connection>
+  <connection connectorName="FLOW" label="iditFileType" lineStyle="8" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tMap_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="iditFileType"/>
   </connection>
   <connection connectorName="FLOW" label="row7" lineStyle="0" metaname="tFixedFlowInput_4" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_4" target="tHSQLDbOutput_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1061,13 +1113,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_47134862-a98d-4e4a-a28c-0b326a337b8b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vES2s3rolHQWbN/hSR76U+tRhSBWfX/CYLLqNuLks0A4/c50asql27/oBH8ezftXzOHLJxNQ7RCu&#13;
-NXNSw84QsQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_82e1c5b8-d387-46ae-922e-a5a8e1a7d5ab"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NHMrOJQe5NZvs6cQ/YUrsqmj5sYiGZl8HlBYzr/jw7nJjrxdr9sCMGmWMlgpTlHdR1aCJbM35MaV&#13;
-jwBoz+IAaw==</DigestValue></Reference></SignedInfo><SignatureValue>Xwm2KMOalKCpzCXik8SK5LMLiT/VtNyOkLFsHl73AMUD8WKS8nIKdcjS6m6sAWqhE8z/nS3VbJzc&#13;
-8vYn5P3tPxPIkHzdV1Z7xRKDcb2Vv6oMt3AkKOxWG6EFDC9V5ek56Og8zmU2HCsGZhS980EDiDzi&#13;
-LeClsAf8ZcRs7GxXi5ogcXTU2Js4ePLtgJEi2Z0ZksX5ZKlc7604rzQV3MJC5K1dCZk1O48EWZv9&#13;
-KOsXAgTGxaef+4RtrShon8Zl+dLx1ig5RFB2tICPj8LG/S4uhZmzmDcbeZmHI8yFxdNJncwnpMmN&#13;
-12KNNaCM1ddSs+V0UzOIvcjLxeZmXTQdC1s7Qg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_1d28847e-29ee-4761-9599-d6a4bd25f29e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>PupuvQUKHCsiEcHRBso0+Z0f5bKWwHZ3NvPccVLUy6BCKh88dEASBE1Dw/2SN1KZWy09As0v+hWP&#13;
+cRozXpTBbA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b9160c29-f9d3-43e5-bf66-6cd6f45bc342"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QoQlWlWC3c1O0rxS8VcBoMxQPcXMUmVF37O8Di69OEzVI8GgTALK/pGi2jsoRxQdIqPHvcJrTwM0&#13;
+y0J6hvpxEQ==</DigestValue></Reference></SignedInfo><SignatureValue>V0meqqLltKY5/77s03mk7EswhP14HhkQFi3gn9lTyg7F3TVkclEKrDQnbM3ETiClXog4Zvsvl++A&#13;
+NOY2XPRpGsl2JTjzIJd4Rrkw5kesSgKjgtedXDKdHMn1TXYom7NB/IH3jNRQC5/rO9PdMxNxAi1D&#13;
+pWUSBonpLeCZWy0ATB6OlVrE7vCKDmTNaOQnn3swhAPmFFEaea9Z3LpfelLdvbSbcvwFkhBxCMO8&#13;
+ckYpTa6CDNNhn3Hgd07Zc05sygsvb7NUbtKT4/G/8qpJnnxXLeFHI9DwvESyiYRyVNDXhjnqHWix&#13;
+BUosDcFCEtmOQRuaATLSlVebAwPsWInolvTbMg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1089,4 +1141,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_82e1c5b8-d387-46ae-922e-a5a8e1a7d5ab" Target="#_47134862-a98d-4e4a-a28c-0b326a337b8b"><Timestamp>2023-08-25 06:32:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b9160c29-f9d3-43e5-bf66-6cd6f45bc342" Target="#_1d28847e-29ee-4761-9599-d6a4bd25f29e"><Timestamp>2023-08-25 10:23:24</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
