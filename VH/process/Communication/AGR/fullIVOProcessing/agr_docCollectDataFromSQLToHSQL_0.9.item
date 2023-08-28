@@ -375,7 +375,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.KOR_ANL_DATUM  ,kd.KDA_DATEINAME, cms.FILE_RELPATH   &#13;&#10;, k.KOR_BESCHREIBUNG, kd.KDA_BARCODE , cms.PARTNER_ID, cms.LEGACY_SOURCE, cms.ENTITY_ID &#13;&#10;from SEV.KORRESPONDENZ k  &#13;&#10;inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;inner join K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms ON cms.LEGACY_DOC_ID = k.KOR_KORRESPONDENZ_NR and cms.legacy_source = 'AGR_DOC'  &#13;&#10;WHERE cms.MIGRATION_STATUS = 100 &#13;&#10;and cms.MIGRATION_ID = &quot; +context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.KOR_ANL_DATUM  ,kd.KDA_DATEINAME, cms.FILE_RELPATH  , KOR_DOKUMENTENTYP&#13;&#10;, k.KOR_BESCHREIBUNG, kd.KDA_BARCODE , cms.PARTNER_ID, cms.LEGACY_SOURCE, cms.ENTITY_ID &#13;&#10;from SEV.KORRESPONDENZ k  &#13;&#10;inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;inner join K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms ON cms.LEGACY_DOC_ID = k.KOR_KORRESPONDENZ_NR and cms.legacy_source = 'AGR_DOC'  &#13;&#10;WHERE cms.MIGRATION_STATUS = 100 &#13;&#10;and cms.MIGRATION_ID = &quot; +context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -398,6 +398,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="FILE_RELPATH"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="KOR_DOKUMENTENTYP"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="KOR_BESCHREIBUNG"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="KDA_BARCODE"/>
@@ -418,6 +420,7 @@
       <column comment="" key="false" length="0" name="KOR_ANL_DATUM" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:dd&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="120" name="KDA_DATEINAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="KOR_BESCHREIBUNG" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="8" name="KDA_BARCODE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="PARTNER_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -439,12 +442,13 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="UNIV_DOC_ALL_DATA" name="out2">
+    <metadata comment="" label="agr_UNIV_DOC_ALL_DATA" name="out2">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="commName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -454,7 +458,7 @@
       <column comment="" key="false" length="100" name="remarks" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_IlaoMEAGEe6ZrY51_VjSJg - agr_UNIV_DOC_ALL_DATA" name="out2" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Numeric.sequence(&quot;doc_seq&quot;,1,1) " name="ID" type="id_Integer"/>
@@ -462,6 +466,7 @@
         <mapperTableEntries expression="row5.LEGACY_SOURCE " name="LEGACY_SOURCE" type="id_String"/>
         <mapperTableEntries expression="row5.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries expression="row5.PARTNER_ID " name="PARTNER_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row5.KOR_DOKUMENTENTYP " name="KOR_DOKUMENTENTYP" nullable="true" type="id_String"/>
         <mapperTableEntries name="RZC_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row5.FILE_RELPATH " name="FILE_RELPATH" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(row5.KOR_BESCHREIBUNG!=null)?row5.KOR_BESCHREIBUNG:row5.ENTITY_ID " name="commName" nullable="true" type="id_String"/>
@@ -475,6 +480,7 @@
         <mapperTableEntries name="KOR_ANL_DATUM" nullable="true" type="id_Date"/>
         <mapperTableEntries name="KDA_DATEINAME" nullable="true" type="id_String"/>
         <mapperTableEntries name="FILE_RELPATH" nullable="true" type="id_String"/>
+        <mapperTableEntries name="KOR_DOKUMENTENTYP" nullable="true" type="id_String"/>
         <mapperTableEntries name="KOR_BESCHREIBUNG" nullable="true" type="id_String"/>
         <mapperTableEntries name="KDA_BARCODE" nullable="true" type="id_Long"/>
         <mapperTableEntries name="PARTNER_ID" nullable="true" type="id_Long"/>
@@ -497,6 +503,8 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;agr_UNIV_DOC_ALL_DATA&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_IlaoMEAGEe6ZrY51_VjSJg - agr_UNIV_DOC_ALL_DATA"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -527,6 +535,11 @@
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="KOR_DOKUMENTENTYP"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -576,6 +589,7 @@
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="commName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -590,6 +604,7 @@
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="commName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1161,17 +1176,39 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="out" name="out"/>
+    <metadata comment="" label="hsql_idit_docType_sysModule" name="out">
+      <column comment="" key="false" length="30" name="agr_doc_type" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="true" length="-1" name="DOC_TYPE_NR" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="150" name="doc_type_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="system_module_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="system_module_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="FLOW" label="reject_out" name="reject_out">
+      <column comment="" key="false" length="30" name="agr_doc_type" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="type_id" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="comment" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables name="out" sizeState="INTERMEDIATE"/>
+      <outputTables activateCondensedTool="true" id="_ue48QEWMEe6KtfgRIKaNZg - hsql_idit_docType_sysModule" name="out" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="transforRule.agr_doc_type " name="agr_doc_type" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="idit_dict.DOC_TYPE_NR " name="DOC_TYPE_NR" type="id_Integer"/>
+        <mapperTableEntries expression="idit_dict.doc_type_desc" name="doc_type_desc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="idit_dict.system_module_id" name="system_module_id" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="idit_dict.system_module_desc" name="system_module_desc" nullable="true" type="id_String"/>
+      </outputTables>
+      <outputTables activateCondensedTool="true" name="reject_out" rejectInnerJoin="true" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="transforRule.agr_doc_type " name="agr_doc_type" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="transforRule.type_id " name="type_id" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="&quot;No IDIT lookup value for specific doc type" name="comment" nullable="true" type="id_String"/>
+      </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="transforRule" sizeState="INTERMEDIATE">
         <mapperTableEntries name="agr_doc_type" nullable="true" type="id_String"/>
         <mapperTableEntries name="type_id" nullable="true" type="id_Integer"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="ALL_ROWS" name="idit_dict" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="DOC_TYPE_NR" type="id_Integer"/>
+      <inputTables activateCondensedTool="true" innerJoin="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="idit_dict" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="transforRule.type_id " name="DOC_TYPE_NR" operator="=" type="id_Integer"/>
         <mapperTableEntries name="doc_type_desc" nullable="true" type="id_String"/>
         <mapperTableEntries name="system_module_id" nullable="true" type="id_Integer"/>
         <mapperTableEntries name="system_module_desc" nullable="true" type="id_String"/>
@@ -1242,8 +1279,6 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;hsql_idit_docType_sysModule&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_ue48QEWMEe6KtfgRIKaNZg - hsql_idit_docType_sysModule"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -1284,19 +1319,50 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="hsql_idit_docType_sysModule" name="tHSQLDbOutput_4">
       <column comment="" key="false" length="30" name="agr_doc_type" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="true" length="19" name="DOC_TYPE_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="true" length="-1" name="DOC_TYPE_NR" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="150" name="doc_type_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="system_module_id" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="system_module_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="system_module_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="hsql_idit_docType_sysModule" name="REJECT">
       <column comment="" key="false" length="30" name="agr_doc_type" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="true" length="19" name="DOC_TYPE_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="true" length="-1" name="DOC_TYPE_NR" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="150" name="doc_type_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="system_module_id" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="system_module_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="system_module_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1440" posY="448">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
+    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
+    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
+    <elementParameter field="TABLE" name="LENGTHS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="agr_doc_type"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="type_id"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="comment"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="LABEL" value="doc_type_rejects"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="reject_out" name="tLogRow_1">
+      <column comment="" key="false" length="30" name="agr_doc_type" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="type_id" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="comment" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row12" lineStyle="0" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tHSQLDbOutput_9">
@@ -1309,6 +1375,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk10"/>
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tMap_3">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="KOR_DOKUMENTENTYP"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
@@ -1391,8 +1462,18 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="transforRule"/>
   </connection>
-  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" source="tMap_5" target="tHSQLDbOutput_4">
+  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_5" target="tHSQLDbOutput_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out"/>
+  </connection>
+  <connection connectorName="FLOW" label="reject_out" lineStyle="0" metaname="reject_out" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_5" target="tLogRow_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="comment"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="reject_out"/>
   </connection>
   <connection connectorName="FLOW" label="idit_dict" lineStyle="8" metaname="tDBInput_6" offsetLabelX="0" offsetLabelY="0" source="tDBInput_6" target="tMap_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1458,18 +1539,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-  <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_4"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
-    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
-  </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_391f043d-0af6-40ec-bb9a-16f4a2a81a14"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>yADgcbrpK7cJiumOCn/JVofhDnsVe7ngOqcgxRA9+ThjUILpwLorhD9hS58fCjG2N+dBsb7+LbxN&#13;
-yZRgwac8Pw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9d737c53-0f35-4fe8-a68b-03af96c0e01b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>gb7kA7O50yFco8rhcBd6yXmEgi1G5LE7iB9/OEgIzNvirN+IorhdCmUHFCVGdUBoXjyMVkMoQ/2I&#13;
-+EQqAGd1Ig==</DigestValue></Reference></SignedInfo><SignatureValue>TZcMAbZRZKEnznvbaCabWTs7tABcHIFRcf8yWyrlejlrQTBE7KztyifbqfZAiuSTeqHIkgJTkAS4&#13;
-O/ayrSr0DPYUfjffjEpR+XtaIY9bOKzJpCJYIVIbTY4j0ufDMil7/SqIL6Rc3Y+lg6Kr3uYw0V+S&#13;
-W8XVdF5z9ZUJPtyJ7+ZTTgMQODgVBsGU7FU7ZgXIIvAyWR1EwGDYMrVaK+xBsb4UJLatf5XsKoy4&#13;
-lQXJn7iwcoTQX69v+k6cGcLGLESOQBPIuXOr1AYjaIzMXVUYhBceauKseTnREh1L5+imumYbK3no&#13;
-38l+BLUtaQ+YfnZODrtc6WsSExPapkjdgexPUA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_1f774327-f1fe-41c8-9db9-444d14112bd9"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qJyY3LqDHi9wIKGAuyzQZXpKt9RJEhW27zkGEdSxaV5iEEMnb62Apz3rEa9RgFtKLlgsiEp54GV1&#13;
+jKSUcuNdKg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_dd9386b1-c0ef-4766-96d6-b5b62bb24937"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>5EBto2rGBXNq5jZi5e7uDgAAJgW3ThQ3C7BuudrXSL8srIdPpJSzCaYuQP6bsKtU2U/bVEn5xrRF&#13;
+a5LwAVy7IQ==</DigestValue></Reference></SignedInfo><SignatureValue>YKyjvo5cqItrPvlmFGUFiDQ0QVO+tVSgK2trre+yI0TAwLRAT7r67I42+wUr1Tinx1zANhXCCkEt&#13;
+cjQta83qVS56UELGKaOfYciXMdYBL0i92wlhV6bpjU5A+rsdO8vbFeboSmqd/xVUvOeTHmZGEjhw&#13;
+Opj2CIrqWSRGfSkva0b+Dc+SDJmHUnJoEGtFs+PjadzbT+vqzZYYZ80L8DfaXvPd/2jf4H9KRpci&#13;
+ukf/a3WGriISnKfWtWfCymMZzPjFIQks0sfMp9m0iJrQSKCCmDG17wyDD2HmxoHLqUIg7oCaCkKU&#13;
+4LDsEoS2lEfkzGU1ndD/8z7bmYYYJ4D2V6ZnNg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1491,4 +1567,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9d737c53-0f35-4fe8-a68b-03af96c0e01b" Target="#_391f043d-0af6-40ec-bb9a-16f4a2a81a14"><Timestamp>2023-08-28 10:57:31</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_dd9386b1-c0ef-4766-96d6-b5b62bb24937" Target="#_1f774327-f1fe-41c8-9db9-444d14112bd9"><Timestamp>2023-08-28 11:16:30</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
