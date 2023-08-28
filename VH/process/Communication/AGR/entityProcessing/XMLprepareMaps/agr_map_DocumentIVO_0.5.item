@@ -233,7 +233,7 @@
         <mapperTableEntries expression="row2.ENTITY_ID " name="externalDocNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.commName " name="commName" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.creationDate " name="creationDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="(long)14" name="documentType" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="(long)doc_type_lookup.DOC_TYPE_NR " name="documentType" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.inOutTypes " name="inOutTypes" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="11" name="tComStatusVoRefID" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="&quot;cataloged&quot;" name="tComStatusVoRefDesc" nullable="true" type="id_String"/>
@@ -242,10 +242,10 @@
         <mapperTableEntries expression="row2.commEntityID " name="entityID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(long)310" name="entityNumber" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.remarks " name="remarks" nullable="true" type="id_String"/>
-        <mapperTableEntries name="tSystemModuleVoRefID" nullable="true" type="id_Integer"/>
-        <mapperTableEntries name="tSystemModuleVoRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="docTypeRefID" nullable="true" type="id_Integer"/>
-        <mapperTableEntries name="docTypeRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="doc_type_lookup.system_module_id " name="tSystemModuleVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="doc_type_lookup.system_module_desc " name="tSystemModuleVoRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="doc_type_lookup.DOC_TYPE_NR " name="docTypeRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="doc_type_lookup.doc_type_desc " name="docTypeRefDesc" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ID" type="id_Integer"/>
@@ -261,6 +261,13 @@
         <mapperTableEntries name="creationDate" type="id_Date"/>
         <mapperTableEntries name="commEntityID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="remarks" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="doc_type_lookup" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row2.KOR_DOKUMENTENTYP " name="agr_doc_type" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="DOC_TYPE_NR" type="id_Integer"/>
+        <mapperTableEntries name="doc_type_desc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="system_module_id" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="system_module_desc" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -412,6 +419,50 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="416" posY="256">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:qDCo3Q6hZfgxQHRrN4+Pbg1jIpTvjhKgr7XktVJP"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_ue48QEWMEe6KtfgRIKaNZg - hsql_idit_docType_sysModule"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;hsql_idit_docType_sysModule&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT hsql_idit_docType_sysModule.agr_doc_type,&#10;&#9;&#9;hsql_idit_docType_sysModule.DOC_TYPE_NR,&#10;&#9;&#9;hsql_idit_docType_sysModule.doc_type_desc,&#10;&#9;&#9;hsql_idit_docType_sysModule.system_module_id,&#10;&#9;&#9;hsql_idit_docType_sysModule.system_module_desc&#10;FROM&#9;hsql_idit_docType_sysModule&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="agr_doc_type"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DOC_TYPE_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="doc_type_desc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="system_module_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="system_module_desc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="hsql_idit_docType_sysModule"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="hsql_idit_docType_sysModule" name="tHSQLDbInput_2">
+      <column comment="" key="false" length="30" name="agr_doc_type" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="true" length="-1" name="DOC_TYPE_NR" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="150" name="doc_type_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="system_module_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="system_module_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
@@ -470,18 +521,22 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="main"/>
   </connection>
+  <connection connectorName="FLOW" label="doc_type_lookup" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="doc_type_lookup"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_55b80919-b615-47fe-9188-7fd7d005cd0b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ICquwSP7UMSOl5rnDjWnpr0GPHbtQ3qrXrCxV0M4aSHM7drglLdo9xmxFwLVUFE8kP2N3bGogfEm&#13;
-QT3LyoUjiA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b37767f2-c8fd-4646-a5e9-d2437bc8d3f9"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>kOf/tFIQC+YAcAxJVLD8C+KeME/cUjvcFkbmcVX2G6e61aO4J9J9PgTLI7go/fAsC8kE5W+DcL05&#13;
-xl+jhaKgvQ==</DigestValue></Reference></SignedInfo><SignatureValue>e3frzvEWRLo8l2wXDAnziejN5jJOP9gxyxkEhzLvu+GtqA1AcRLN7r+G5ooewSE0USdgtcLjEC7z&#13;
-Uuzz/phlDgZ2dq0Bl+c2+b8DE2eq4yNaBi3d72kEIgg6vG7ODKRlBBJUQ9BRaT8fhcJoZmFId5tJ&#13;
-KzcUl96YNyMN4+JCfeE0u4bG0rZYIHF8V9Xw9ebkGapi6HG6SaQSPplZfXxnMPnczesuTRbB13yb&#13;
-Nfnz0dCr4XzrC3SNgN91j8QJus87sCVrYm+ofTnJ2vswwsF9dRMl7KcgA/3UzGcE/ztrmzhyN1Oj&#13;
-QIqYkZiGNcr1pHD6wv6P7HeH4fEYy5r6UhU2sg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_fea6aa87-26e5-4922-a717-46721e2e35ca"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>jYMd4SnXh/7aFo3n1eXJ3ffqZR30qXopEpZNxiQSVaf5rXajEt6urFkj00+daz9rO95a8/aNCrc8&#13;
+0TSN0KXl3g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_7680dd4a-f542-4a3c-b28d-723e4c67b331"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vXRFpWDze+HhMSCLBu/+4Q8kYWg5kptgStnTPO8GavOrF74mj1V2sIhvbv+q8zH+dKgJHPplb4a5&#13;
+daPqPtlDlA==</DigestValue></Reference></SignedInfo><SignatureValue>lKa4rQnxYfQFschwVXgegPHsNJTHXWUwf2NtJc2Ep0FUf0gAWeSr4UyDbSlYBgZ5QuHvyUKkX0dC&#13;
+UJ48xDZyy29ziT6/AQdZCLYjoYU/V9sEkjkQxADTw7q/4Dv0P6KfpYks/C6vtaG1d12vhpoG05mc&#13;
+4dvdAyDZ4EYzq1JyepdGjec1PVFarlJb9P/5c8r0UnU33Ks35w1PCqPY2/7FPdFtJrzryNYs3Mhe&#13;
+gZCs27Pj8LyROntah8nJen1gty5QPzHZ94dsqusj0P1pAWrTx8WJnYXSI4w1Baop+Z2Hk4IAqEAf&#13;
+geyQxV7jKQIaBY2meRnixxFH4eY1xuymKGp9kw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -503,4 +558,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b37767f2-c8fd-4646-a5e9-d2437bc8d3f9" Target="#_55b80919-b615-47fe-9188-7fd7d005cd0b"><Timestamp>2023-08-28 11:20:16</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_7680dd4a-f542-4a3c-b28d-723e4c67b331" Target="#_fea6aa87-26e5-4922-a717-46721e2e35ca"><Timestamp>2023-08-28 11:28:20</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
