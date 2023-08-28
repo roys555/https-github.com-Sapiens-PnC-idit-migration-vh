@@ -395,7 +395,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLPhysicalFileIVO" name="out">
+    <metadata comment="" label="XMLPhysicalFileIVO" name="out">
       <column comment="" key="false" length="-1" name="LegacyID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="fileName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ComPhysicalFileBlob64Base" nullable="true" pattern="" precision="0" sourceType="OBJECT" type="id_Object" usefulColumn="true"/>
@@ -408,7 +408,7 @@
       <column comment="" key="false" length="50" name="documentTypeRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_90fbEEJcEe6nj4u-0Q3zeA - XMLPhysicalFileIVO" name="out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="base64File.LegacyID" name="LegacyID" nullable="true" type="id_Long"/>
@@ -419,8 +419,8 @@
         <mapperTableEntries expression="(iditFileType.DESCRIPTION == null)?(long)99:iditFileType.ID " name="tFileTypeVoRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(iditFileType.DESCRIPTION==null)?&quot;other&quot;:iditFileType.FILE_EXTANTION " name="tFileTypeVoRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(Date)globalMap.get(&quot;varCreationDate&quot;) " name="creationDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="documentTypeRefID" nullable="true" type="id_Integer"/>
-        <mapperTableEntries expression="" name="documentTypeRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(Integer)globalMap.get(&quot;varDocTypeId&quot;) " name="documentTypeRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="(String)globalMap.get(&quot;varDocTypeDesc&quot;) " name="documentTypeRefDesc" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="base64File" sizeState="INTERMEDIATE">
         <mapperTableEntries name="LegacyID" nullable="true" type="id_Long"/>
@@ -912,22 +912,28 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT agr_XMLComCommunicationIVO.creationDate&#10;FROM&#9;agr_XMLComCommunicationIVO&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT agr_XMLComCommunicationIVO.creationDate,&#10;&#9;&#9;agr_XMLComCommunicationIVO.docTypeRefID,&#10;&#9;&#9;agr_XMLComCommunicationIVO.docTypeRefDesc&#10;FROM&#9;agr_XMLComCommunicationIVO&quot;"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="creationDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="docTypeRefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="docTypeRefDesc"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="agr_XMLCommunicationIVO"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="agr_XMLComCommunicationIVO" name="tHSQLDbInput_3">
       <column comment="" key="false" length="-1" name="creationDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:dd&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="docTypeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="docTypeRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="288" posY="64">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_2"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="// code sample:&#10;//&#10;// multiply by 2 the row identifier&#10;// output_row.id = input_row.id * 2;&#10;//&#10;// lowercase the name&#10;// output_row.name = input_row.name.toLowerCase();&#10;&#10;globalMap.put(&quot;varCreationDate&quot;, input_row.creationDate);"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="// code sample:&#10;//&#10;// multiply by 2 the row identifier&#10;// output_row.id = input_row.id * 2;&#10;//&#10;// lowercase the name&#10;// output_row.name = input_row.name.toLowerCase();&#10;&#10;globalMap.put(&quot;varCreationDate&quot;, input_row.creationDate);&#10;globalMap.put(&quot;varDocTypeId&quot;, input_row.docTypeRefID);&#10;globalMap.put(&quot;varDocTypeDesc&quot;, input_row.docTypeRefDesc);&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJavaRow_2"/>
@@ -1123,17 +1129,17 @@
   <subjob>
     <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
-    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="Setting creationDate as globalVar"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="Setting some globalVars"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b835d430-54fc-4ed0-884b-7a90b4b99416"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QvRT9LA639StGvswV6THW+niPDtQWhbWWZkqd6EerWioQHzrL7+KJuF1+U70gF1tmPoxUK+Dqhd8&#13;
-TmEDuy7tdw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f1c0c6ea-c82a-4b8d-83f6-441b511b434a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vZohZqI71DPMSeFQLYwt0VFKVqRxwDl6DCjt2TnV7WNddIFS+Arl8OVg31eRYootDWBHjkdX8Qqg&#13;
-jH87Y7fMeA==</DigestValue></Reference></SignedInfo><SignatureValue>pHJnGFxTZDNmZyWnQAjr7XhfLn+NEA4v8LtO+oeCOa6iomTz1sjPX2ZrC58jDc3Esbnequgio8FX&#13;
-XOFifm5mYBHn9wtLoSGW1RaT5vJpZAs5OditvbCc6Odzchp1OcfvVUozkusgMgLLl5fUooJR+R9q&#13;
-GH7nILdA948D7lSwW8DkY7oDutnfPF6EhBpZuGOCrjjuPbsaMZx3jipeuirjccUKRBUrfv9a8gJk&#13;
-1+FjeRL/K280s38+IUZSoxrlj8vV6UClgO4XvEzdDyznph+5Og0WdAhw+5Pev1J2NneIk702tPCR&#13;
-dTAg/B1cW6IR/Zf4w572sq9+GfUlH0P7ujtAcA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_130b2ef8-ad9d-4e6b-99e9-122acfb40d26"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ZY0+2NC0vdaAbOQ6nfa0l2on9oVaxhghkQA/ugT5XwODcoR0rSOI7lzqGaESeO+uRdPXocsK1PMh&#13;
+BM/JZfcVRQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_96f95a1e-e984-470f-bd89-5454010c91f9"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pDDFnMg/qMaRkZXrluNquOHpS94U7gsLbZ3ZM8WNr+jZOXfK+5ECwlAthF5KdtdC4SZcm/JXRpxz&#13;
+J+5Y0l9h1w==</DigestValue></Reference></SignedInfo><SignatureValue>ln/3fvcffF/hwBNivuv7Fslqrn/swXwfji//8Sj+SL8Nf0CiQGLfzBpfGsD0aknSj/dU/0XXDdRY&#13;
+juNMtpRRQi0t+x93vY8L9DHPbJ2R7kYeyduUDk2cLHR1tismfy6AqvHUmJumATzpkKPWRBuT9dgQ&#13;
+tpYRHgr7FwLcmSBT+JYt5ZZqGOTYFE2h0qh16QPvs5eUeCwIF3aFDdV1BUCP1Azod1yzP20SHsLI&#13;
+UIoHIZF97HuHUtwBvgB2+eKkEQDp2KBZlwaYPPSD/7veOL901IhpQ3fcsgWWLfJzG9XjoFCF4z0x&#13;
+/0vtq5LcqBr6Bo/pxRGYdP4T1F5L0007hC95kg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1155,4 +1161,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f1c0c6ea-c82a-4b8d-83f6-441b511b434a" Target="#_b835d430-54fc-4ed0-884b-7a90b4b99416"><Timestamp>2023-08-28 11:20:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_96f95a1e-e984-470f-bd89-5454010c91f9" Target="#_130b2ef8-ad9d-4e6b-99e9-122acfb40d26"><Timestamp>2023-08-28 12:28:03</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
