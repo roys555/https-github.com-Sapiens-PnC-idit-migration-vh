@@ -318,9 +318,9 @@
     <elementParameter field="CHECK" name="FORMAT_FILEPATH_TO_SLASH" value="false"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
-  <node componentName="tFileInputRaw" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="256" posY="320">
+  <node componentName="tFileInputRaw" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="288" posY="320">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileInputRaw_1"/>
-    <elementParameter field="FILE" name="FILENAME" value="((String)globalMap.get(&quot;tFileList_1_CURRENT_FILE&quot;))"/>
+    <elementParameter field="FILE" name="FILENAME" value="((String)globalMap.get(&quot;tFileList_1_CURRENT_FILEDIRECTORY&quot;))+((String)globalMap.get(&quot;tFileList_1_CURRENT_FILE&quot;))"/>
     <elementParameter field="RADIO" name="AS_STRING" value="false"/>
     <elementParameter field="RADIO" name="AS_BYTEARRAY" value="true"/>
     <elementParameter field="RADIO" name="AS_INPUTSTREAM" value="false"/>
@@ -328,15 +328,53 @@
     <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" show="false" value="ISO-8859-15"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tFileInputRaw_1"/>
+    <metadata connector="FLOW" name="tFileInputRaw_1">
+      <column comment="" key="false" length="-1" name="LegacyID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="fileName" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column key="false" length="-1" name="content" nullable="true" originalLength="4000" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="file_ext" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="448" posY="320">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;&#13;&#10;//String s = new sun.misc.BASE64Encoder().encode(input_row.content);&#10;//output_row.content = s;&#10;String encodeBytes = Base64.getEncoder().encodeToString(input_row.content);&#10;output_row.content = encodeBytes;&#10;output_row.LegacyID = context.LegacyID;&#10;output_row.fileName = context.fileName;&#10;&#10;String fileExt;&#10;Integer ind = context.fileName.lastIndexOf(&quot;.&quot;);&#10;if (ind != -1) {&#10;&#9;fileExt = context.fileName.substring(ind+1);&#10;&#9;} else {&#10;&#9;fileExt = &quot;other&quot;;&#10;&#9;}&#10;output_row.file_ext = fileExt.toLowerCase();&#10;//System.out.println(&quot;Extension = &quot;+output_row.file_ext);&#10;&#10;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;&#13;&#10;//String s = new sun.misc.BASE64Encoder().encode(input_row.content);&#10;//output_row.content = s;&#10;String encodeBytes = Base64.getEncoder().encodeToString(input_row.content);&#10;output_row.content = encodeBytes;&#10;output_row.LegacyID = context.LegacyID;&#10;output_row.fileName = context.fileName;&#10;System.out.println(&quot;Extension = &quot;+((String)globalMap.get(&quot;tFileList_1_CURRENT_FILEEXTENSION&quot;));"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;&#10;//import org.apache.commons.codec.binary.Base64;&#10;import java.util.Base64;&#10;&#10;"/>
     <elementParameter field="TEXT" name="LABEL" value="convertToBase64"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJavaRow_1">
+      <column comment="" key="false" length="-1" name="LegacyID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="fileName" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column key="false" length="-1" name="content" nullable="true" originalLength="4000" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="file_ext" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="576" posY="320">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="true"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="false"/>
+    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
+    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" value="false"/>
+    <elementParameter field="TABLE" name="LENGTHS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="LegacyID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="fileName"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="content"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="file_ext"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tLogRow_1">
       <column comment="" key="false" length="-1" name="LegacyID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="fileName" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column key="false" length="-1" name="content" nullable="true" originalLength="4000" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
@@ -364,6 +402,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
+  <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tJavaRow_1" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_1" target="tLogRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -384,13 +426,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_4954193a-add6-4854-8dce-c90c737d6fa7"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>FxdBn2ZHn5Mvn3NpfSp9ssJbPxXgZfj+N/ysakI0/ep4906dinuvJ22sbbIjztWiIGXVifzvS41y&#13;
-fWOT0k5cRw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_91ba3100-e088-424e-8f9c-76fe43cdadcc"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pVXjwMz+YMZIOVqUsuHleCRDlCOt3HmRRAphR3eCVb9RtEU1U0BXqNNdf4uzZIHzqk8QtIJ8hJnj&#13;
-t0ZHAunF/Q==</DigestValue></Reference></SignedInfo><SignatureValue>X7M16zLDHJrYKcVgiZU4MmU7NLK39W3padRQOuMDfIAPypBIfqWpMLrPlnYNq/8fzR5WDvPXzfl0&#13;
-SSz1HEuK8NVqwjABohEwr9oRAwKPOrg9+cf/A1yp9p5P1by6tUV0zr60i/rVrLoNbbzaZc6xPvQ+&#13;
-r23LqDwVJU17G/tqVuZyGP7j1srozaBH93KwH94mgK2X8B+HuAo2MjjIVzhW0jtZzuq10OfhQtjb&#13;
-gwoWlRjrj9DTA98pxS3z69EUr6SabtrlZpGE1pOG7HrnOBn/qp0zs7z55RyduVX5ldPEZgE0FQ7l&#13;
-OyYMepwgY5/+IlkW+IxIEeXbx6fJpeMTzkiqLw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_6753e967-8135-4f20-bb25-3f63a85baf83"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>esXztQo28ZDwpVz9EdA4iU8Sg82EpDQ9SdLEqHKG4ZffVliaZ5Rlg6+4Q4OCTLNwLoEKKnkiEK56&#13;
+JNTWO7cvmg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0d0d3337-7c75-46cf-824f-084156d829d1"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pL0EjYk/g1jVcuvuMmxMC7bLN7lybeUrviz1Iiq4XH6ENJvQzAFFB1CDXm97OG8jD7PEAyPa5uZp&#13;
+FyBdK2PFbg==</DigestValue></Reference></SignedInfo><SignatureValue>a+2w1R1rlFvagD6peHD+aEIr7ZsdadaiWAAC2kbDB4f1aqVsQyuy/adu0OYrQEp+faf4mylc5MDo&#13;
+SX8LcfTTTKqzM0o2y045vWRDyDuzAkrJNOKekO4oPc/l0OXgvNEn3A8M51o94adMpGkYtMrXTunS&#13;
+XyXr/vm1MOGjW1jSSeV+myNR+0uV6Z94MYgDlmXZyEgwYlVPud/fV2kTsX17VM7ZJQra3ZMeOGdN&#13;
+Bxfpt5G+SlV1o8sBIB/me7Qr1Bakva/cq48aG68ARiPfksSIvN7e8FAWGt5LbwfherXoRJKMLOK6&#13;
+dsIjV+XK/8rNL5IBdai34kCzt+gjd0B5q7X98A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -412,4 +454,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_91ba3100-e088-424e-8f9c-76fe43cdadcc" Target="#_4954193a-add6-4854-8dce-c90c737d6fa7"><Timestamp>2023-09-04 13:39:21</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0d0d3337-7c75-46cf-824f-084156d829d1" Target="#_6753e967-8135-4f20-bb25-3f63a85baf83"><Timestamp>2023-09-04 13:43:44</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
