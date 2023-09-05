@@ -1,0 +1,70 @@
+package routines;
+
+import java.time.LocalDate;
+import java.util.Random;
+
+public class PeselGenerator {
+
+
+//	    public static void main(String[] args) {
+//	        LocalDate dateOfBirth = LocalDate.of(1990, 1, 1); // Przykładowa data urodzenia
+//	        Gender gender = Gender.MALE; // Przykładowa płeć (MALE dla mężczyzny, FEMALE dla kobiety)
+//
+//	        String pesel = generatePESEL(dateOfBirth, gender);
+//	        System.out.println("Wygenerowany PESEL: " + pesel);
+//	    }
+
+	    public static String generatePESEL(LocalDate dateOfBirth, Gender gender) {
+	        Random random = new Random();
+	        int month = dateOfBirth.getMonthValue();
+	        int year = dateOfBirth.getYear() % 100;
+	        int day = dateOfBirth.getDayOfMonth();
+
+	        int centuryIdentifier = dateOfBirth.getYear() / 100;
+
+	        int genderDigit = gender == Gender.MALE ? random.nextInt(5) * 2 + 1 : random.nextInt(5) * 2;
+
+	        int controlDigit = generateControlDigit(year, month, day, genderDigit);
+
+	        StringBuilder peselBuilder = new StringBuilder();
+	        peselBuilder.append(centuryIdentifier);
+	        peselBuilder.append(String.format("%02d", year));
+	        peselBuilder.append(String.format("%02d", month));
+	        peselBuilder.append(String.format("%02d", day));
+	        peselBuilder.append(String.format("%02d", genderDigit));
+	        peselBuilder.append(String.format("%01d", controlDigit));
+
+	        return peselBuilder.toString();
+	    }
+
+	    private static int generateControlDigit(int year, int month, int day, int genderDigit) {
+	        int[] weights = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
+	        int[] digits = new int[10];
+
+	        digits[0] = year / 10;
+	        digits[1] = year % 10;
+	        digits[2] = month / 10;
+	        digits[3] = month % 10;
+	        digits[4] = day / 10;
+	        digits[5] = day % 10;
+	        digits[6] = genderDigit / 10;
+	        digits[7] = genderDigit % 10;
+
+	        int sum = 0;
+	        for (int i = 0; i < 10; i++) {
+	            sum += digits[i] * weights[i];
+	        }
+
+	        int controlDigit = 10 - (sum % 10);
+	        if (controlDigit == 10) {
+	            controlDigit = 0;
+	        }
+
+	        return controlDigit;
+	    }
+	}
+
+	enum Gender {
+	    MALE,
+	    FEMALE
+	}
