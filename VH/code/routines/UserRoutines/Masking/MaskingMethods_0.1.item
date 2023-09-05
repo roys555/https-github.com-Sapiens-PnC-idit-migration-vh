@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.sql.*;
+import routines.PeselValidator;
 
 import static java.lang.Character.isDigit;
 import static java.lang.Character.isLetter;
@@ -85,25 +86,44 @@ public static String ChangeDayAndMonth(String params) {
 //=============================================
 public static String maskPeselNumber(String params) {		
 	String[] args = params.split("\\;");
-	String result = "";
+	String result;
 	String entityID = args[2]; 
+	String pesel_value = args[3]; 
 	String dictDbName = args[4];
+	String dictTableName = args[5];
+	String dictColName = args[6];
+	ArrayList<String> entityResult = new ArrayList<>();
+	
+	System.out.println(dictDbName);
 	try(
 			   Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
 			   Statement stmtEntity= connEntity.createStatement(); 
 			 ){
-			      String strSelectEntity = "SELECT dateOfBirth FROM XMLContactIVO";	    	 
+			      String strSelectEntity = "SELECT " + dictColName+ " FROM " +dictTableName + " WHERE idTypeRefID = 6";   
+			      System.out.println("Query: "+ strSelectEntity);
 			      ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	
+			      
+			      //String value = rsetEntity.getString(dictColName);
+			      while(rsetEntity.next()) {
+			            String value = rsetEntity.getString(dictColName);
+			            entityResult.add(value);  
+			            System.out.println("Oryginalna data : "+ value);
+			         }
 		          
-			      String value = rsetEntity.getString("dateOfBirth");
-			      result = value;  	   
+			      System.out.println("Oryginalna data urodzenia: "+ entityResult);
 		          
 		          connEntity.close();
 		          
 		  }catch(SQLException ex) {
 	 	         ex.printStackTrace();
 	 	  } 	
-	return result;
+	
+	System.out.println(pesel_value);
+	PeselValidator myObj = new PeselValidator(pesel_value);
+	String birthDate = myObj.getBirthDate();
+	System.out.println(birthDate);
+	result = birthDate;  	
+return result;
     
    }	
 // =============================================
