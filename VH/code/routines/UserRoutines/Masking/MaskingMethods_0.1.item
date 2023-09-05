@@ -76,6 +76,36 @@ public static String ChangeDayAndMonth(String params) {
   private static int randBetween(int start, int end) {
         return start + (int)Math.round(Math.random() * (end - start));
     }
+//=============================================
+//Author:		Tomek K
+//Create date: 2023-09-05
+//Description:	maskPeselNumber(<String TableName, String ColumnName, String EntityID, String currentValue>)
+//	 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
+//				Method take date of birth from contactXML and generates appropriate PESEL number
+//=============================================
+public static String maskPeselNumber(String params) {		
+	String[] args = params.split("\\;");
+	String result = "";
+	String entityID = args[2]; 
+	String dictDbName = args[4];
+	try(
+			   Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
+			   Statement stmtEntity= connEntity.createStatement(); 
+			 ){
+			      String strSelectEntity = "SELECT dateOfBirth FROM XMLContactIVO";	    	 
+			      ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	
+		          
+			      String value = rsetEntity.getString("dateOfBirth");
+			      result = value;  	   
+		          
+		          connEntity.close();
+		          
+		  }catch(SQLException ex) {
+	 	         ex.printStackTrace();
+	 	  } 	
+	return result;
+    
+   }	
 // =============================================
 // Author:		Piotr K
 // Create date: 2023-04-17
