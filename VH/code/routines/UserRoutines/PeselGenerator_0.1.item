@@ -3,68 +3,165 @@ package routines;
 import java.time.LocalDate;
 import java.util.Random;
 
+
+import static java.time.temporal.ChronoUnit.DAYS;
+
+
 public class PeselGenerator {
 
-
-//	    public static void main(String[] args) {
-//	        LocalDate dateOfBirth = LocalDate.of(1990, 1, 1); // Przykładowa data urodzenia
-//	        Gender gender = Gender.MALE; // Przykładowa płeć (MALE dla mężczyzny, FEMALE dla kobiety)
+//    public static void main(String[] args) {
 //
-//	        String pesel = generatePESEL(dateOfBirth, gender);
-//	        System.out.println("Wygenerowany PESEL: " + pesel);
-//	    }
+//        // LocalDate dateOfBirth = LocalDate.of(1972, 1, 1); // Przykładowa data
+//        // urodzenia
+//        // Gender gender = Gender.MALE; // Przykładowa płeć (MALE dla mężczyzny, FEMALE
+//        // dla kobiety)
+//
+//        String pesel = generatePesel(LocalDate.of(1972, 1, 2),Gender.MALE);
+//        System.out.println("Wygenerowany PESEL: " + pesel);
+//    }
+    /**
+     * Digits weights for calculating the control digit of the PESEL.
+     */
+    private static final int[] CONTROL_WEIGHTS = new int[]{1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
+    /**
+     * A random number generator used for generating PESEL numbers.
+     */
+    private static final Random RANDOM = new Random();
 
-	    public static String generatePESEL(LocalDate dateOfBirth, Gender gender) {
-	        Random random = new Random();
-	        int month = dateOfBirth.getMonthValue();
-	        int year = dateOfBirth.getYear() % 100;
-	        int day = dateOfBirth.getDayOfMonth();
+  
+    /**
+     * Creates a new instance of the {@code PeselGenerator} class with the specified {@code PeselGeneratorParams}.
+     *
+     * @param params the {@code PeselGeneratorParams} object that specifies the parameters for generating the PESEL numbers.
+     */
+    public static String generatePesel(LocalDate birthDate, Gender gender) {
+        String birthDateDigits = encodeBirthDate(birthDate);
+        String randomSerialDigits = getRandomSerialDigits();
+        String genderDigit = getGenderDigit(gender);
+        String controlDigit = getControlDigit(birthDateDigits, randomSerialDigits, genderDigit);
+        return birthDateDigits + randomSerialDigits + genderDigit + controlDigit;
+    }
 
-	        int centuryIdentifier = dateOfBirth.getYear() / 100;
+        /**
+     * Encodes a birth date as a PESEL birth date part.
+     *
+     * @param birthDate the date of birth as a LocalDate object
+     * @return the encoded PESEL birth date as a String
+     */
+    private static String encodeBirthDate(LocalDate birthDate) {
+        int year = birthDate.getYear();
+        int month = birthDate.getMonthValue();
+        int day = birthDate.getDayOfMonth();
 
-	        int genderDigit = gender == Gender.MALE ? random.nextInt(5) * 2 + 1 : random.nextInt(5) * 2;
+        switch (year / 100) {
+            case 18 : month += 80;
+            case 20 : month += 20;
+            case 21 : month += 40;
+            case 22 : month += 60;
+        }
 
-	        int controlDigit = generateControlDigit(year, month, day, genderDigit);
+        String encodedBirthDate = "";
+        if (String.valueOf(year % 100).length() == 1) {
+            encodedBirthDate += "0" + year % 100;
+        } else {
+            encodedBirthDate += year % 100;
+        }
+        if (String.valueOf(month).length() == 1) {
+            encodedBirthDate += "0" + month;
+        } else {
+            encodedBirthDate += month;
+        }
+        if (String.valueOf(day).length() == 1) {
+            encodedBirthDate += "0" + day;
+        } else {
+            encodedBirthDate += day;
+        }
+        return encodedBirthDate;
+    }
 
-	        StringBuilder peselBuilder = new StringBuilder();
-	        peselBuilder.append(centuryIdentifier);
-	        peselBuilder.append(String.format("%02d", year));
-	        peselBuilder.append(String.format("%02d", month));
-	        peselBuilder.append(String.format("%02d", day));
-	        peselBuilder.append(String.format("%02d", genderDigit));
-	        peselBuilder.append(String.format("%01d", controlDigit));
+    /**
+     * Generates a random string of three digits to represent the serial number in the PESEL number.
+     *
+     * @return a randomly generated three-digit string
+     */
+    private static String getRandomSerialDigits() {
+        return String.valueOf(RANDOM.nextInt(10)) + RANDOM.nextInt(10) + RANDOM.nextInt(10);
+    }
 
-	        return peselBuilder.toString();
-	    }
 
-	    private static int generateControlDigit(int year, int month, int day, int genderDigit) {
-	        int[] weights = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
-	        int[] digits = new int[10];
+    /**
+     * Generates a random digit to represent the gender in the PESEL number. If a gender is specified,
+     * the PESEL will be generated with that gender. If no gender is specified, the generated gender will be random.
+     * Once a gender is generated, it is set to null so that it will be randomized on the next call to this method.
+     *
+     * @return the generated gender digit of the PESEL number as a string
+     */
+    private static String getGenderDigit(Gender gender_in) {
+        Gender gender2 = gender_in;
+        String genderDigit = checkGenderAndEncodeDigit(gender2);
+        return genderDigit;
+        
+    }
 
-	        digits[0] = year / 10;
-	        digits[1] = year % 10;
-	        digits[2] = month / 10;
-	        digits[3] = month % 10;
-	        digits[4] = day / 10;
-	        digits[5] = day % 10;
-	        digits[6] = genderDigit / 10;
-	        digits[7] = genderDigit % 10;
+    
+    /**
+     * Checks the gender and calls the appropriate method to generate a random gender digit.
+     *
+     * @return the generated gender digit of the PESEL number as a string
+     */
+    private static String checkGenderAndEncodeDigit(Gender gender_in) {
+        if (gender_in.equals(Gender.FEMALE)) {
+            return encodeRandomFemaleDigit();
+        } else {
+            return encodeRandomMaleDigit();
+        }
+    }
 
-	        int sum = 0;
-	        for (int i = 0; i < 10; i++) {
-	            sum += digits[i] * weights[i];
-	        }
+    /**
+     * Encodes a random female digit.
+     *
+     * @return the encoded random female digit as a String
+     */
+    private static String encodeRandomFemaleDigit() {
+        return String.valueOf(RANDOM.nextInt(5) * 2);
+    }
 
-	        int controlDigit = 10 - (sum % 10);
-	        if (controlDigit == 10) {
-	            controlDigit = 0;
-	        }
+    /**
+     * Encodes a random male digit.
+     *
+     * @return the encoded random male digit as a String
+     */
+    private static String encodeRandomMaleDigit() {
+        return String.valueOf(RANDOM.nextInt(5) * 2 + 1);
+    }
 
-	        return controlDigit;
-	    }
-	}
-
-	enum Gender {
-	    MALE,
-	    FEMALE
-	}
+    /**
+     * Calculates and returns the correct control digit for a generated PESEL number.
+     *
+     * @param birthDateDigits    the birth date digits of the PESEL as a string
+     * @param randomSerialDigits the random serial digits of the PESEL as a string
+     * @param genderDigit        the gender digit of the PESEL as a string
+     * @return the calculated control digit of the PESEL as a string
+     */
+    private static String getControlDigit(String birthDateDigits, String randomSerialDigits, String genderDigit) {
+        String pesel = birthDateDigits + randomSerialDigits + genderDigit;
+        int controlSum = 0;
+        for (int i = 0; i < 10; i++) {
+            int multipliedNumber = CONTROL_WEIGHTS[i] * Character.getNumericValue(pesel.charAt(i));
+            if (multipliedNumber >= 10) {
+                controlSum += Character.getNumericValue(String.valueOf(multipliedNumber).charAt(1));
+            } else {
+                controlSum += multipliedNumber;
+            }
+        }
+        controlSum %= 10;
+        if (controlSum == 0) {
+            return "0";
+        } else {
+            return String.valueOf(10 - controlSum);
+        }
+    }
+    
+}
+enum Gender {
+	  FEMALE, MALE}
