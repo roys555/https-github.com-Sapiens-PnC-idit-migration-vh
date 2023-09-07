@@ -120,72 +120,76 @@ public static String ChangeDayAndMonth(String params) {
 //=============================================
 //Author:		Tomek K
 //Create date: 2023-09-05
-//Description:	maskPeselNumber(<String TableName, String ColumnName, String EntityID, String currentValue>)
+//Description:	maskIdentifierNumber(<String TableName, String ColumnName, String EntityID, String currentValue>
+//DBname, tableName and ColName for establishing IdTypeRef  , IdTypeRef in IDIT that points out to PESEL)
 //	 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
-//				Method take date of birth from contactXML and generates appropriate PESEL number
+//				Method takes out  birth date and gender from PESEL filed in contactXML and generates new birth date and appropriate PESEL number. Gender remains the same.
+// Method requires to deliver additional parameter which matches correct IdTypeRef for PESEL number. Every other identifier is masked using randomWord method 
+//(replaces letters and digits accordingly
 //=============================================
-public static String maskPeselNumber(String params) {		
-	String[] args = params.split("\\;");
-	String result;
-	String entityID = args[2]; 
-	String identifierValue = args[3]; 
-	String dictDbName = args[4];
-	String dictTableName = args[5];
-	String dictColName = args[6];
-	ArrayList<String> entityResult = new ArrayList<>();
-	String value = "";
-	//System.out.println(dictDbName);
-	try(
-			   Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
-			   Statement stmtEntity= connEntity.createStatement(); 
-			 ){
-			      String strSelectEntity = "SELECT " + dictColName+ " FROM " +dictTableName;   
-			      //System.out.println("Query: "+ strSelectEntity);
-			      ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	
-			      
-			      //String value = rsetEntity.getString(dictColName);
-			      while(rsetEntity.next()) {
-			            value = rsetEntity.getString(dictColName);
-			            entityResult.add(value);  
-			            System.out.println("IdRefType : "+ value);
-			         }
-		          
-			      System.out.println("idRefTypeID array: "+ entityResult);
-		          
-		          connEntity.close();
-		          
-		  }catch(SQLException ex) {
-	 	         ex.printStackTrace();
-	 	  } 	
-	
-	System.out.println("Identifier type: "+value);
-	System.out.println("Identifier from table: "+identifierValue);
-	
-	if (value.equals("6")) {
-		PeselValidator myObj = new PeselValidator(identifierValue);
-		String birthDate = myObj.getBirthDate();
-		
-		//Gender gender = new Gender();
-		Gender gender_id = (myObj.getSexId()==1)?Gender.FEMALE:Gender.MALE;
-		System.out.println("Birthdate based on PESEL: "+birthDate);
-		System.out.println("Gender based on PESEL: "+gender_id);
-		result = birthDate;
-		
-		String changedDate = MaskingMethods.ChangeDayAndMonth(";;;"+birthDate+";");
-		System.out.println("Zmieniona data urodzenia: "+changedDate);
-		LocalDate newDate = LocalDate.parse(changedDate);
-		
-		//generating new PESEL: based on new birtDdate and the same gender
-		String newPesel = PeselGenerator.generatePesel(newDate, gender_id);
-		result = newPesel;
-		System.out.println("Zmieniony PESEL: "+newPesel);
-	} else {
-	result = MaskingMethods.randomizeWord(";;;"+identifierValue+";");
-	}  	
-	System.out.println("Result: "+result);
-	return result;
-    
-   }	
+  public static String maskIdentifierNumber(String params) {		
+	  String[] args = params.split("\\;");
+	  String result;
+	  String entityID = args[2]; 
+	  String identifierValue = args[3]; 
+	  String dictDbName = args[4];
+	  String dictTableName = args[5];
+	  String dictColName = args[6];
+	  String idType = args[7];
+	  ArrayList<String> entityResult = new ArrayList<>();
+	  String value = "";
+	  //System.out.println(dictDbName);
+	  try(
+			  Connection connEntity = DriverManager.getConnection("jdbc:hsqldb:mem:"+dictDbName+entityID,"SA",""); 
+			  Statement stmtEntity= connEntity.createStatement(); 
+			  ){
+		  String strSelectEntity = "SELECT " + dictColName+ " FROM " +dictTableName;   
+		  //System.out.println("Query: "+ strSelectEntity);
+		  ResultSet rsetEntity = stmtEntity.executeQuery(strSelectEntity);	
+
+		  //String value = rsetEntity.getString(dictColName);
+		  while(rsetEntity.next()) {
+			  value = rsetEntity.getString(dictColName);
+			  entityResult.add(value);  
+			  System.out.println("IdRefType : "+ value);
+		  }
+
+		  System.out.println("idRefTypeID array: "+ entityResult);
+
+		  connEntity.close();
+
+	  }catch(SQLException ex) {
+		  ex.printStackTrace();
+	  } 	
+
+	  System.out.println("Identifier type: "+value);
+	  System.out.println("Identifier from table: "+identifierValue);
+
+	  if (value.equals(idType)) {
+		  PeselValidator myObj = new PeselValidator(identifierValue);
+		  String birthDate = myObj.getBirthDate();
+
+		  //Gender gender = new Gender();
+		  Gender gender_id = (myObj.getSexId()==1)?Gender.FEMALE:Gender.MALE;
+		  System.out.println("Birthdate based on PESEL: "+birthDate);
+		  System.out.println("Gender based on PESEL: "+gender_id);
+		  result = birthDate;
+
+		  String changedDate = MaskingMethods.ChangeDayAndMonth(";;;"+birthDate+";");
+		  System.out.println("Zmieniona data urodzenia: "+changedDate);
+		  LocalDate newDate = LocalDate.parse(changedDate);
+
+		  //generating new PESEL: based on new birtDdate and the same gender
+		  String newPesel = PeselGenerator.generatePesel(newDate, gender_id);
+		  result = newPesel;
+		  System.out.println("Zmieniony PESEL: "+newPesel);
+	  } else {
+		  result = MaskingMethods.randomizeWord(";;;"+identifierValue+";");
+	  }  	
+	  System.out.println("Result: "+result);
+	  return result;
+
+  }	
 // =============================================
 // Author:		Piotr K
 // Create date: 2023-04-17
