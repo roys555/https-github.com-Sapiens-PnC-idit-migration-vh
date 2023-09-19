@@ -174,7 +174,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT v.PAR_PARTNER_NR , v.VMR_VERMITTLER_NR, v.VMR_HANDELREGISTER , v.VMR_VERTRIEBSFORM &#13;&#10;FROM sev.VM v &#13;&#10;where  EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE V.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT v.PAR_PARTNER_NR , v.VMR_VERMITTLER_NR, v.VMR_HANDELREGISTER , v.VMR_VERTRIEBSFORM , v.VMR_ABLAUF_ZU_ARBEIT, VMR_BEGINN_ZU_ARBEIT &#13;&#10;FROM sev.VM v &#13;&#10;where  EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE V.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -193,6 +193,14 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERMITTLER_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_HANDELREGISTER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERTIEBSFORM"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_ABLAUF_ZU_ARBEIT"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_BEGINN_ZU_ARBEIT"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
@@ -203,6 +211,8 @@
       <column comment="" defaultValue="" key="false" length="38" name="VMR_VERMITTLER_NR" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="VMR_HANDELREGISTER" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="VMR_VERTIEBSFORM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VMR_ABLAUF_ZU_ARBEIT" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="320">
@@ -250,6 +260,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_ABLAUF_ZU_ARBEIT"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_BEGINN_ZU_ARBEIT"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="AGRONOMIS_INTERMEDIARY_SELECTION"/>
@@ -259,12 +279,16 @@
       <column comment="" defaultValue="" key="false" length="-1" name="VMR_VERMITTLER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="VMR_HANDELREGISTER" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="VMR_VERTIEBSFORM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VMR_ABLAUF_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="AGRONOMIS_INTERMEDIARY_SELECTION" name="REJECT">
       <column comment="" defaultValue="" key="false" length="-1" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="VMR_VERMITTLER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="VMR_HANDELREGISTER" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="VMR_VERTIEBSFORM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VMR_ABLAUF_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -758,6 +782,12 @@
       <elementValue elementRef="TRACE_COLUMN" value="VMR_HANDELREGISTER"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="VMR_ABLAUF_ZU_ARBEIT"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="VMR_BEGINN_ZU_ARBEIT"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -826,13 +856,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_4d84243a-192c-4f3d-b307-13416a25efa5"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>kDiGftHYN0ehd+Sf21YqJK+DTL1vkQbrVI8JyDf5pA0YL9YWhYW3avIOQSRPQeYHcpV3CYbdMndd&#13;
-x84PRLvB1w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_743d7fcd-76a8-49e8-a410-86908699b52b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>N4EVeuWT5vjpt9hJs2tZMg36Yir++2zkSXmYNCJ+/QKOhbvqJIysvTeRnr4qxGXsPlsV2U2JX22v&#13;
-LN4Qpbr3/g==</DigestValue></Reference></SignedInfo><SignatureValue>NSn5l3pOAJZxClwkVJfOwLxficPmQ4dSfZMVuAXcEaZWd9P4zFk6TKHxehpvVb4qQs8IPOFznmzW&#13;
-NIAtT6CHmvvTxUke7o4SNDKuvqEwmb7DXRNB02EkOXRt3B10CxgqNmfy0STJ5LBdMYl6vDtyadOf&#13;
-S4p8V0944O5g0YNKtWduwLCsJLrVlmBeukKRmAvQE1AgVFr1MPKS7hga4ay55F+fGBOtFocbpH2k&#13;
-u3CnpgyDOzskCol7x6Sp/qY5oDAd80PkpNJ/QzY//3qsdKACRirPlZJaVQrTyN3oA7IHBx1Alz+D&#13;
-AUH+Ggzds9hNkZCWIFC88BVZTgaHon4ru3GttQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_04b4ac3f-bee6-47d9-a835-3bd9e5583e17"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>T+EfCK6g1Wwis3le0iUSdoBQsZQP1Iw2/JJD3CijnBN8vsgprkya+qDcbL3qSqjWa8riH5KWujeK&#13;
+04DQkdsgjw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d6ef8fb1-dbc2-42b2-a9dc-cf827b4d50c0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>KelZScsSJW5sLIP4IamAcRDCkTrjgf1JMBuJKJ7HSRRS2TFDymaqHa69oFIV3CRSbv7/I44njQUK&#13;
+Nwf2r2WQDg==</DigestValue></Reference></SignedInfo><SignatureValue>YIiohB4qYjxF/LbiuO6voBhp0ErjmuD/cmErz0CsGtvG8mL/g/Znd9Y/dgPQW4Ep1i0NK334u9cJ&#13;
+jy/eurW/fs2wL67Ohmj/MXyzTuDDsg57ugqSjBebCD5+XluMFy23qb29HIJTFyNJXasLx1IyqlAr&#13;
+uu3l/IkMdpC7HekLMBBsKUs9ejikyr5eXbbC0nqfOSH9pG9mkPUwg71VgggO3gqfTutNCGOev+BW&#13;
+mkDHjzIYgdzDpKxmomuyJV2Yyoz9jF9gIvrKkQOi3G0ss22iX3unEj1JJafZfhsOY4H/eNO+JKOU&#13;
+umTGJzVLY2GZHdBXd3u4Gsgdk2fRktJL2OmLAg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -854,4 +884,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_743d7fcd-76a8-49e8-a410-86908699b52b" Target="#_4d84243a-192c-4f3d-b307-13416a25efa5"><Timestamp>2023-09-19 13:33:07</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d6ef8fb1-dbc2-42b2-a9dc-cf827b4d50c0" Target="#_04b4ac3f-bee6-47d9-a835-3bd9e5583e17"><Timestamp>2023-09-19 13:50:36</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
