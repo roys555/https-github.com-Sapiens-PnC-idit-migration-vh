@@ -141,7 +141,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT AGRONOMIS_INTERMEDIARY_SELECTION.PAR_PARTNER_NR,&#10;&#9;&#9;AGRONOMIS_INTERMEDIARY_SELECTION.VMR_VERMITTLER_NR&#10;FROM&#9;AGRONOMIS_INTERMEDIARY_SELECTION&#13;&#10;where PAR_PARTNER_NR =&quot; + context.LegacyID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT AGRONOMIS_INTERMEDIARY_SELECTION.PAR_PARTNER_NR,&#10;&#9;&#9;AGRONOMIS_INTERMEDIARY_SELECTION.VMR_VERMITTLER_NR,&#10;&#9;&#9;AGRONOMIS_INTERMEDIARY_SELECTION.VMR_HANDELREGISTER,&#10;&#9;&#9;AGRONOMIS_INTERMEDIARY_SELECTION.VMR_VERTIEBSFORM&#10;FROM&#9;AGRONOMIS_INTERMEDIARY_SELECTION &#13;&#10;where PAR_PARTNER_NR =&quot; + context.LegacyID"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -177,24 +177,51 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="accountAgentDetailsIVO" name="out">
+    <metadata comment="" label="accountAgentDetailsIVO" name="out">
       <column comment="" key="false" length="-1" name="defaultCollectionMethodVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="defaultCollectionMethodVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="useProductCollectionMethods" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="agentNumber" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="ihkNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="intermediaryCategoryVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="intermediaryCategoryVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="stateVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="stateVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="typeOfDistributionRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="typeOfDistributionRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <metadata name="noCategory">
+      <column comment="" key="false" length="100" name="message" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables name="out" sizeState="INTERMEDIATE">
+      <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="categoryLookup.CategoryRefID != null" id="_RHfV4FbOEe6CoJWGS4xveA - accountAgentDetailsIVO" name="out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="2" name="defaultCollectionMethodVoRefID" nullable="true" type="id_Integer"/>
         <mapperTableEntries name="defaultCollectionMethodVoRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="true" name="useProductCollectionMethods" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="row1.PAR_PARTNER_NR " name="agentNumber" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row1.VMR_HANDELREGISTER " name="ihkNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="categoryLookup.CategoryRefID " name="intermediaryCategoryVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="categoryLookup.CategoryRefDesc " name="intermediaryCategoryVoRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="2" name="stateVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="stateVoRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="typeOfDistributionRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="typeOfDistributionRefDesc" nullable="true" type="id_String"/>
+      </outputTables>
+      <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="categoryLookup.CategoryRefID == null" name="noCategory" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="&quot;No CategoryRef found in lookup for VERTIEBSFORM: &quot;+  row1.VMR_VERTIEBSFORM " name="message" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
         <mapperTableEntries name="VMR_VERMITTLER_NR" type="id_Long"/>
         <mapperTableEntries name="VMR_HANDELREGISTER" nullable="true" type="id_String"/>
         <mapperTableEntries name="VMR_VERTIEBSFORM" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="categoryLookup" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row1.VMR_VERTIEBSFORM " name="VERTIEBSFORM" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="CategoryRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="CategoryRefDesc" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -212,8 +239,6 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;accountAgentDetailsIVO&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="CREATE_IF_NOT_EXISTS"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_RHfV4FbOEe6CoJWGS4xveA - accountAgentDetailsIVO"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -311,26 +336,82 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="512" posY="288">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTIEBSFORM"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CategoryRefID"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CategoryRefDesc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
+    <elementParameter field="TABLE" name="INTABLE" show="false"/>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;^&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" value="Betreuer^1000172^Supervisor&#13;&#10;Betreuer / Tippgeber^1000172^Supervisor&#13;&#13;&#10;Tippgeber^1000171^Tipster&#13;&#10;HauptAgt^1000167^Fulltime Agency&#13;&#10;Makler^1000168^Broker&#13;&#10;MehrfachAgt^1000169^Multi-company Agency&#13;&#13;&#10;NebenAgt^1000170^Part-time Agency"/>
+    <elementParameter field="TEXT" name="LABEL" value="intermediaryCategory lookup"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_1">
+      <column comment="" key="false" length="30" name="VERTIEBSFORM" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="CategoryRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CategoryRefDesc" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tMap_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
   <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tHSQLDbOutput_4">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="ihkNumber"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="typeOfDistributionRefDesc"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="intermediaryCategoryVoRefID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="stateVoRefDesc"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="agentNumber"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="intermediaryCategoryVoRefDesc"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="stateVoRefID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="typeOfDistributionRefID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out"/>
+  </connection>
+  <connection connectorName="FLOW" label="categoryLookup" lineStyle="8" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tMap_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="categoryLookup"/>
   </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_f80bba6e-ddde-44ea-8565-eb099be86e6d"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>DaPwq3b2ceQaniLRMYFlA5IW1/EuySSde1pQTgnLKdLPgHrduRXGaVDyXZh8ucNHCfnI3Mm/JQe5&#13;
-/S04LGsWKw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_22234998-57b9-42aa-9822-5390f08efa7a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8/MJkmjP8l0L1dh/AwJ1WHa+wvrB2/TrMvASkAhJcPYa+Xk1uhGhub/pelPWNlGEykVvu1Hm7Mnh&#13;
-VI4+zx3B/A==</DigestValue></Reference></SignedInfo><SignatureValue>OkfHnnAt+QxQh34ibgCTF+tOM0/kxHzDpx8HnbEz9OE+nuiIYR3vfFdJKivaOVxxM91JZ0m5DA9N&#13;
-Ygxjpxcp+Nk/bOUpi5HA0BR1mTnfdsjUyWXvmt2xxs5ip99NcxA0qiyPvNJqxuwqMGuzklUmKrEY&#13;
-OmN8omcL3f7U5kJ840d6rsEDM3sIG8tbrA/GmF9RKnZfuG7VKKWTwaqXn2zUvWFBRF+YKZzP8Nvg&#13;
-xOyZ6enscf8Yr1Fk40x7XYpHb4arKOdNDVHzTBpGzEoCBOM/u27bovOXz8H/yuyMFHeOT00JukcH&#13;
-H0LyfMmJHruDfFF84iYilovAONCWyFWe0bOECA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_56cfb279-ef0a-4aa7-927d-3c112ad43e9c"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>C3K5jVzvpbx8EdNQ9EePsL0yDGRPuec05NfsU0S5BliwPRymRKlYulZL20c6Wa+csHGLfo6yRms4&#13;
+8EW/gyYj2g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_1b67caab-74f6-4fae-9cf3-ad487aed5359"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>IUFX1T1AqAXjGL211HindIhQHukKam39YTHTBuzf2axGa+lWhVRNI+hqcxxO/wHazeAIqc4pFWp7&#13;
++e6aBFBskg==</DigestValue></Reference></SignedInfo><SignatureValue>QMZLCKcvG+FVOhM6lfmsfrkZQelh4OiKrDLMcCcrSqi1HGmq3rp424L4k7uR7LzAtIhKdwPLJFYw&#13;
+Z5DY7ML3gokMeyUSBSmC8HDWOtvZOouqc12bPJCRO3uxX3eM6omGSvKlLrCsXVT2loeyrE0RQv+F&#13;
+SqGKzXBAOr0G4uJ6Jv7C/zhw4Vj0Ws0hC5ooSVwGxRsXGbir/i6Sih4GuKpCDLPV529pk9wvvPQk&#13;
+DLtp0bXdd6JGw5bLiZx0i0S7uA0XOVWwrNuYg0x0BOWfDVItV4Rtak+wbwSJOiR+YGYzqnbHPYtu&#13;
+AbaFjKn/Dbs42zwGiYQFtdgzDQiOnVmTxKwupQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -352,4 +433,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_22234998-57b9-42aa-9822-5390f08efa7a" Target="#_f80bba6e-ddde-44ea-8565-eb099be86e6d"><Timestamp>2023-09-19 12:52:14</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_1b67caab-74f6-4fae-9cf3-ad487aed5359" Target="#_56cfb279-ef0a-4aa7-927d-3c112ad43e9c"><Timestamp>2023-09-19 13:06:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
