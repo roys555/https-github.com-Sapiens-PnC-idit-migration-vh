@@ -174,7 +174,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT v.PAR_PARTNER_NR , v.VMR_VERMITTLER_NR, v.VMR_HANDELREGISTER , v.VMR_VERTRIEBSFORM , v.VMR_ABLAUF_ZU_ARBEIT, VMR_BEGINN_ZU_ARBEIT &#13;&#10;FROM sev.VM v &#13;&#10;where  EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE V.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH role_ivo AS ( &#13;&#10;SELECT p.ID , rp.DATE_END  FROM MY_PARTNER.PARTNER p &#13;&#10;LEFT JOIN MY_PARTNER.CONTACT c ON c.ID_PARTNER  = p.ID &#13;&#10;LEFT JOIN MY_PERMISSION.ROLE_PERMISSION rp ON rp.ID  = c.ID &#13;&#10;WHERE rp.DATE_END IS NOT null &#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.id = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;) &#13;&#10;) &#13;&#10;SELECT p.id as partner_id, p.partner_aen_datum, p.id_partner_type , (SELECT DATE_end FROM role_ivo ri WHERE ri.id = p.id) as permission_date_end  &#13;&#10;FROM my_partner.partner p &#13;&#10;--join my_partner.contact c on c.id_partner = p.id&#13;&#10;where  EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.id = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -189,17 +189,13 @@
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_id"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERMITTLER_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_aen_datum"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_HANDELREGISTER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="id_partner_type"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERTIEBSFORM"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_ABLAUF_ZU_ARBEIT"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_BEGINN_ZU_ARBEIT"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="permission_date_end"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
@@ -207,12 +203,10 @@
     <elementParameter field="TEXT" name="LABEL" value="stg_VHP_INTERMEDIARY_SELECTION"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_1">
-      <column comment="" defaultValue="" key="false" length="38" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="VMR_VERMITTLER_NR" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="VMR_HANDELREGISTER" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="VMR_VERTIEBSFORM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_ABLAUF_ZU_ARBEIT" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="38" name="partner_id" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="partner_aen_datum" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="id_partner_type" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="permission_date_end" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="320">
@@ -226,11 +220,11 @@
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:TQDh/i7rvOgrFR3LOQPDzxtUSY7Epv6GT8p19+92"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_INTERMEDIARY_SELECTION&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;vhp_hsql_main_selection&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
     <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_StfHwFYoEe62tuT8uefyRA - AGRONOMIS_INTERMEDIARY_SELECTION"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_fabiUGNLEe6ELpLgEFGMQw - vhp_hsql_main_selection"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -240,55 +234,41 @@
     <elementParameter field="TABLE" name="ADD_COLS"/>
     <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_id"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERMITTLER_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_aen_datum"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_HANDELREGISTER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="id_partner_type"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERTIEBSFORM"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_ABLAUF_ZU_ARBEIT"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_BEGINN_ZU_ARBEIT"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="permission_date_end"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="AGRONOMIS_INTERMEDIARY_SELECTION"/>
+    <elementParameter field="TEXT" name="LABEL" value="VHP_INTERMEDIARY_SELECTION"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="AGRONOMIS_INTERMEDIARY_SELECTION" name="tHSQLDbOutput_1">
-      <column comment="" defaultValue="" key="false" length="-1" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="VMR_VERMITTLER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="VMR_HANDELREGISTER" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="VMR_VERTIEBSFORM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_ABLAUF_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    <metadata connector="FLOW" label="vhp_hsql_main_selection" name="tHSQLDbOutput_1">
+      <column comment="" key="false" length="-1" name="partner_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="partner_aen_datum" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="id_partner_type" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="permission_date_end" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
-    <metadata connector="REJECT" label="AGRONOMIS_INTERMEDIARY_SELECTION" name="REJECT">
-      <column comment="" defaultValue="" key="false" length="-1" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="VMR_VERMITTLER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="VMR_HANDELREGISTER" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="VMR_VERTIEBSFORM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_ABLAUF_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    <metadata connector="REJECT" label="vhp_hsql_main_selection" name="REJECT">
+      <column comment="" key="false" length="-1" name="partner_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="partner_aen_datum" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="id_partner_type" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="permission_date_end" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -309,7 +289,7 @@
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX AGRONOMIS_INTERMEDIARY_SELECTION_ic1&#13;&#10;ON AGRONOMIS_INTERMEDIARY_SELECTION   (par_partner_nr);&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX VHP_INTERMEDIARY_SELECTION_ic1&#13;&#10;ON vhp_hsql_main_selection   (partner_id);&quot;"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="PROPAGATE_RECORD_SET" value="false"/>
@@ -537,7 +517,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT v.PAR_PARTNER_NR , v.VMR_VERMITTLER_NR  , v.VMR_BEGINN_ZU_ARBEIT&#13;&#10;FROM sev.VM v &#13;&#10;WHERE 1=1 -- v.VMR_BEGINN_ZU_ARBEIT is not null &#13;&#10;AND EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE V.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.id as partner_id, c.date_start as contact_date_start &#13;&#10;FROM my_partner.partner p &#13;&#10;join my_partner.contact c on c.id_partner = p.id&#13;&#10;WHERE 1=1 -- v.VMR_BEGINN_ZU_ARBEIT is not null &#13;&#10;AND EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.id = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -552,11 +532,9 @@
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_id"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERMITTLER_NR"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_BEGINN_ZU_ARBEIT"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="contact_date_start"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
@@ -564,9 +542,8 @@
     <elementParameter field="TEXT" name="LABEL" value="stg_VHP_AgentAccountGroup_selection"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_2">
-      <column comment="" defaultValue="" key="false" length="38" name="PAR_PARTNER_NR" nullable="false" originalLength="38" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="VMR_VERMITTLER_NR" nullable="false" originalLength="38" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="38" name="partner_id" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="contact_date_start" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="448">
@@ -580,11 +557,11 @@
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:umTEhx2urhgdHgfp7nyTuutnOJwz1tNSGbABUxBc"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;HSQL_AgentAccountGroup&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;vhp_hsql_agentAccountGroup&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
     <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_Mq8mMFbbEe6CoJWGS4xveA - HSQL_AgentAccountGroup"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_6Zzl8GNjEe6ELpLgEFGMQw - vhp_hsql_agentAccountGroup"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -594,34 +571,27 @@
     <elementParameter field="TABLE" name="ADD_COLS"/>
     <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_id"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERMITTLER_NR"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_BEGINN_ZU_ARBEIT"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="contact_date_start"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="&quot;HSQL_AgentAccountGroup&quot;"/>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;vhp_hsql_agentAccountGroup&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="HSQL_AgentAccountGroup" name="tHSQLDbOutput_2">
-      <column comment="" defaultValue="" key="false" length="38" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="VMR_VERMITTLER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    <metadata connector="FLOW" label="vhp_hsql_agentAccountGroup" name="tHSQLDbOutput_2">
+      <column comment="" key="false" length="-1" name="partner_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="contact_date_start" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
-    <metadata connector="REJECT" label="HSQL_AgentAccountGroup" name="REJECT">
-      <column comment="" defaultValue="" key="false" length="38" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="VMR_VERMITTLER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="VMR_BEGINN_ZU_ARBEIT" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    <metadata connector="REJECT" label="vhp_hsql_agentAccountGroup" name="REJECT">
+      <column comment="" key="false" length="-1" name="partner_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="contact_date_start" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -642,7 +612,7 @@
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX HSQL_AgentAccountGroup_ic2&#13;&#10;ON HSQL_AgentAccountGroup   (par_partner_nr);&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX vhp_AgentAccountGroup_ic2&#13;&#10;ON vhp_hsql_agentAccountGroup   (partner_id);&quot;"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="PROPAGATE_RECORD_SET" value="false"/>
@@ -661,6 +631,7 @@
   </node>
   <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="896" posY="352">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_3"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
@@ -710,6 +681,7 @@
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1184" posY="352">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_3"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
@@ -783,14 +755,12 @@
     <elementParameter field="TEXT" name="USER" value="&quot;system&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:nvPrCARpcGXfyLkkxFkegjyiBRcF6V4Sl/2v4lICIcctH99z9344Pw=="/>
     <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_A6HZMFebEe6kb_DboWCOxg - HSQL_paramList_selection"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.ID as par_parner_nr, 1000002 AS param_type , 500000  AS param_value FROM my_partner.PARTNER p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.ID = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100 &#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)  &#13;&#10;UNION &#13;&#10;SELECT p.ID as par_parner_nr, 1000003 AS param_type , 122 AS param_value FROM my_partner.PARTNER p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.ID = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100 &#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)  &#13;&#10;UNION &#13;&#10;SELECT p.ID as par_parner_nr, 1000004 AS param_type , 163 AS param_value FROM my_partner.PARTNER p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.ID = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100 &#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;) &#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.ID as partner_id, 1000002 AS param_type , 500000  AS param_value FROM my_partner.PARTNER p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.ID = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100 &#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)  &#13;&#10;UNION &#13;&#10;SELECT p.ID as partner_id, 1000003 AS param_type , 122 AS param_value FROM my_partner.PARTNER p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.ID = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100 &#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)  &#13;&#10;UNION &#13;&#10;SELECT p.ID as partner_id, 1000004 AS param_type , 163 AS param_value FROM my_partner.PARTNER p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.INTERMEDIARY_MIGRATION_STATUS cms &#13;&#10;                WHERE p.ID = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100 &#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;) &#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -805,7 +775,7 @@
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_id"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARAM_TYPE"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -817,7 +787,7 @@
     <elementParameter field="TEXT" name="LABEL" value="stg_VHP_IC_paramsList_selection"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="HSQL_paramList_selection" name="tDBInput_4">
-      <column comment="" defaultValue="" key="false" length="36" name="PAR_PARTNER_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="38" name="partner_id" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARAM_TYPE" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARAM_VALUE" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
@@ -837,7 +807,7 @@
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
     <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_A6HZMFebEe6kb_DboWCOxg - HSQL_paramList_selection"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_ki1AsGNlEe6ELpLgEFGMQw - HSQL_paramList_selection"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -847,7 +817,7 @@
     <elementParameter field="TABLE" name="ADD_COLS"/>
     <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="partner_id"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -867,12 +837,12 @@
     <elementParameter field="TEXT" name="LABEL" value="&quot;HSQL_paramList_selection&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="HSQL_paramList_selection" name="tHSQLDbOutput_4">
-      <column comment="" defaultValue="" key="false" length="36" name="PAR_PARTNER_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="38" name="partner_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARAM_TYPE" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARAM_VALUE" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="HSQL_paramList_selection" name="REJECT">
-      <column comment="" defaultValue="" key="false" length="36" name="PAR_PARTNER_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="38" name="partner_id" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARAM_TYPE" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARAM_VALUE" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -895,7 +865,7 @@
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX paramList_selection_ic1&#13;&#10;ON HSQL_paramList_selection   (par_partner_nr);&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX paramList_selection_ic1&#13;&#10;ON HSQL_paramList_selection   (partner_id);&quot;"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="PROPAGATE_RECORD_SET" value="false"/>
@@ -935,6 +905,12 @@
       <elementValue elementRef="TRACE_COLUMN" value="VMR_BEGINN_ZU_ARBEIT"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="id_partner_type"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="permission_date_end"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -950,6 +926,14 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk12"/>
   </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tHSQLDbOutput_2">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="contact_date_start"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="partner_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
@@ -958,6 +942,7 @@
   </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tHSQLDbOutput_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_4" offsetLabelX="0" offsetLabelY="0" source="tDBInput_4" target="tHSQLDbOutput_4">
@@ -1020,13 +1005,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_05dbb993-71f2-407c-a35b-b8f1bb6518dd"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RyOy9osYxWnqyovBbsgKLUNH2TUUvVe5xKhy5E0QQ0pOIcfjNHRJg8L1nFrJCXV6iH0BD+vuguZX&#13;
-jqAFRMEeGw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_45627a30-7dec-40c9-be4c-513b10428be4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>lsanZ5IBRCMZ6GCYIiuh0AYp2ie23sSEQS7pskxwqcsP2YR/GzI2F1/W3b5cDqTejEUIsAei1B08&#13;
-//HIRCbBDQ==</DigestValue></Reference></SignedInfo><SignatureValue>cKY83Xivkh2RhiiXlzFZNedBgEKIX/ukl9SXerMNMRcggP2bFMpiMAhu2ab7jQvqArMYaeU4eyWz&#13;
-yU3q2tql0SA7D9scaQg0ieNyJIhPsy/Kc7VA92y3jeuOA67PZVuIU2NR+Mgm9mBHuy1NW+EdQOrb&#13;
-EQ7CAdF/Fg+gk66ynOQy7ck0qMPYTrHhmit6bZOPcHLzi82OwwPKbqz09zGqzTVfPIS5Sx5NoUY0&#13;
-DAS6Fzrd64AjddD4Lni/+o4b/a2hBnA9Qx8Cy/bWCstjuT1Wr1q/i09LTeiy2D8fnRbpOFUwhPNj&#13;
-lxIQvZ5tnzim5SWhxqs8EQNLqNTupd0wQOT74w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_18d6d96b-ad32-47c7-9f10-5a8a5c9e8f8c"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3WdXv76HcpS6b0iiz6RhKw24V3Xmz/2TXIuoHmQHpFU8CzrrE2nFyn2r3AimsWMFas+4o4GEhHey&#13;
+g1ftHq9Kkw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_aa81a875-3015-44ea-9ef2-1e97b518f88a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>tOZc4VV2o5Pdxa0hZi516Zq8Y6l3Cr7IMMBmIV/D1QoJmHJ339NvKr1wHSAnatHzNdVfXheG5ORx&#13;
+rXyP23IRZg==</DigestValue></Reference></SignedInfo><SignatureValue>FzJxsRCW7QvWQQYYiuEKmRaf7sHFmZHbjKMYM6J4uESzioQh9OUgFU5RxeKwzqh8gMAuUtyxRJPP&#13;
+lBzqI06zEa3XT+ZSUv9CupGt7CoLyCk6Nb+CAR3vBQEuw+TGVxo43kWnM0HWUM2MDehQ7J5tgOv3&#13;
+P0hJa+8qLR4O+ywUDn6tM/m1UwoMqBWEIKrP1K4D6IulK651D70hfQfGzpiMa9zGj/z42FIdVpvi&#13;
+D5X7i0PyqzQU/TOdfVNyhhkbBQHivxtPXK0DvhpP8mfJb/50RFS0682MaLHvHC/oz0HGdQa0iIAx&#13;
+So4fqWoUgktqYuiMBCL82FF5GgKWF8kflo2NxQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1048,4 +1033,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_45627a30-7dec-40c9-be4c-513b10428be4" Target="#_05dbb993-71f2-407c-a35b-b8f1bb6518dd"><Timestamp>2023-10-03 12:13:08</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_aa81a875-3015-44ea-9ef2-1e97b518f88a" Target="#_18d6d96b-ad32-47c7-9f10-5a8a5c9e8f8c"><Timestamp>2023-10-05 10:38:21</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
