@@ -1435,7 +1435,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;&#9; c.ID_PARTNER AS partnerId&#13;&#10;&#9; ,c.id AS contactId&#13;&#10;&#9;,trim(c.PHONE_NUMBER_1) AS PHONE&#13;&#10;&#9;,1 AS numberGroup&#13;&#10;FROM MY_PARTNER.CONTACT c&#13;&#10;WHERE  c.PHONE_NUMBER_1 IS NOT NULL &#13;&#10;&#9;&#9;AND EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = c.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID =&quot; +context.migrationID+&quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;&#9; c.ID_PARTNER AS partnerId&#13;&#10;&#9; ,c.id AS contactId&#13;&#10;&#9;,trim(replace(c.PHONE_NUMBER_1,' ','')) AS PHONE&#13;&#10;&#9;,1 AS numberGroup&#13;&#10;FROM MY_PARTNER.CONTACT c&#13;&#10;WHERE  c.PHONE_NUMBER_1 IS NOT NULL &#13;&#10;&#9;&#9;AND EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = c.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID =&quot; +context.migrationID+&quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1565,7 +1565,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;&#9; c.ID_PARTNER AS partnerId&#13;&#10;&#9; ,c.id AS contactId&#13;&#10;&#9; ,trim(c.PHONE_NUMBER_2)  as PHONE&#13;&#10;&#9; , 2  AS numberGroup&#13;&#10;FROM MY_PARTNER.CONTACT c&#13;&#10;WHERE  c.PHONE_NUMBER_2 IS NOT NULL &#13;&#10;&#9;&#9;AND EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = c.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID =&quot; +context.migrationID+&quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;&#9; c.ID_PARTNER AS partnerId&#13;&#10;&#9; ,c.id AS contactId&#13;&#10;&#9; ,trim(replace( c.PHONE_NUMBER_2,' ',''))  as PHONE&#13;&#10;&#9; , 2  AS numberGroup&#13;&#10;FROM MY_PARTNER.CONTACT c&#13;&#10;WHERE  c.PHONE_NUMBER_2 IS NOT NULL &#13;&#10;&#9;&#9;AND EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = c.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID =&quot; +context.migrationID+&quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2276,14 +2276,14 @@
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_9" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_9" target="tRunJob_2">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk10"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tFixedFlowInput_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
-  </connection>
   <connection connectorName="FLOW" label="row16" lineStyle="0" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row16"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tFixedFlowInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
   </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tHSQLDbOutput_10">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -2422,13 +2422,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a4938e4d-76fe-44d7-8442-90ca35207b4a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>lTJEkheNV2NTxDvNn6mcjG1jTtFbxOcOHlHstkrDPlVI5Bm8GbCi51+DZ+s/gTkeMXhLqj0/z6l9&#13;
-69cZjONKPg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_2e4e6f05-967c-4bbf-81f2-678bd0749675"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>g96nNF/ZV9ra9h29bfDsKxOISI2oQorr/cppFCneuxOjyuYrexHySQPbCsd1Vu2K8MQ7CgUqFtrl&#13;
-nUbbDeVlLQ==</DigestValue></Reference></SignedInfo><SignatureValue>let0kDAC+5usDjvJIjxED9Ivr9o6H2V9DTjyJWuC5ZeEjhaewwcYDSr/ZblDKNKp6KNUS/kaW9KJ&#13;
-qOKILc+zjhJGQaxEoGLja+F2Z2LcslCY4RiLWaq1bi+t9fgdMgG+W6Kh7iT0wk0FJG+0Esr8pzX/&#13;
-sm4+uB9TosmLi43laSOPWymGIVpqoxvSEV4bZ/LM4kzEZ5z73c7TaO0XdH1t37ju8M9ZCVkyAMUT&#13;
-uGon3HfU7IOtDj9zUvzGBytafDZ6cd7M013pzbNamj/iAQjkMysuj5W8DSNbZ+WFJBOOFB/Eg9B5&#13;
-URUREGhBOAj5WjxPdqBqjCy1FSUJovANsiOjBw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ce83199c-a442-4405-bd88-820320c5223b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>DLx7/Uu470oc+zQe1x2LuS10ATbKglrzkTpgpMR5qVRarZJB6Q0Xv9yrzRULY2+un9YKkJXJ+4Xg&#13;
+vXoT0tn9pg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_105fa610-72ed-469d-b123-633430fcc23a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>kMNYV9vplc+7otmyNtXz93ajnCnLTVAEvQI2LOfRYzB62o/UpI5R1bqOGiKZp0CvWrjJiJcZb3DV&#13;
+Sn4cpDY+1w==</DigestValue></Reference></SignedInfo><SignatureValue>i4uqlM/GrTc++Ku0vDWE9QIYOsVZcoETdu3abTCN9HQ+ar2E647dPaAT7mRfIStNeIzD+Aqr4REx&#13;
+RAPaGInaxnPbvC2h7AhAOU6AhdmfUIEHqA06jz59R2V/fHVKPYlZPqFlGY97fM9MOhNhJe4WAYT/&#13;
+tyE/1fg36gXJxrdKLHlOR0eIth0uFAVJk2KkMz09uV0Jsry7HOHbZ6bcLcMdI9v2GW2kZLzEPCWo&#13;
+WApdBS+ejnzx0pjKSkCAZ9QvOk2NF91zdq1ew1Bu3qc9OnX9r1jFHVXy2njJW7Mlyv+2GgOg+b9v&#13;
+tVECsqfuayJQ1DAkPHMeizzLQYdBsc9Jrl0HPA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2450,4 +2450,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_2e4e6f05-967c-4bbf-81f2-678bd0749675" Target="#_a4938e4d-76fe-44d7-8442-90ca35207b4a"><Timestamp>2023-10-12 08:21:48</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_105fa610-72ed-469d-b123-633430fcc23a" Target="#_ce83199c-a442-4405-bd88-820320c5223b"><Timestamp>2023-10-12 10:00:48</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
