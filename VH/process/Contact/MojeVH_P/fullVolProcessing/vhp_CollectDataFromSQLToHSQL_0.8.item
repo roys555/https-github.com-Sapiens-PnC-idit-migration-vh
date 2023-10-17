@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:xmi="http://www.omg.org/XMI" defaultContext="Default" jobType="Standard" xmi:version="2.0">
-  <context confirmationNeeded="false" name="Default">
-    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="1000"/>
+  <context confirmationNeeded="false" hide="false" name="Default">
+    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="910"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;VHP&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;projVHP&quot;"/>
   </context>
@@ -556,7 +556,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT   &#13;&#10;  pnt.ID AS identifierID&#13;&#10; ,pnt.ID_PARTNER AS partnerID&#13;&#10; ,pnt.NUMBER_VALUE&#13;&#10; ,pnt.ID_NUMBER_TYPE&#13;&#10; ,pnt.DATE_START&#13;&#10; ,pnt.DATE_END &#13;&#10;FROM MY_PARTNER.PARTNER_NUMBER_TYPE pnt &#13;&#10;WHERE  pnt.ID_NUMBER_TYPE IN (1,2)&#13;&#10;AND EXISTS (&#13;&#10;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;WHERE cms.PARTNER_ID = pnt.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;AND cms.MIGRATION_ID = &quot; + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT   &#13;&#10;  pnt.ID AS identifierID&#13;&#10; ,pnt.ID_PARTNER AS partnerID&#13;&#10; ,pnt.NUMBER_VALUE&#13;&#10; ,pnt.ID_NUMBER_TYPE&#13;&#10; ,pnt.DATE_START&#13;&#10; ,pnt.DATE_END &#13;&#10;FROM MY_PARTNER.PARTNER_NUMBER_TYPE pnt &#13;&#10;WHERE  pnt.ID_NUMBER_TYPE IN (1,2)&#13;&#10;and pnt.NUMBER_VALUE is not null &#13;&#10;AND EXISTS (&#13;&#10;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;WHERE cms.PARTNER_ID = pnt.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;AND cms.MIGRATION_ID = &quot; + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1435,7 +1435,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;&#9; c.ID_PARTNER AS partnerId&#13;&#10;&#9; ,c.id AS contactId&#13;&#10;&#9;,trim(c.PHONE_NUMBER_1) AS PHONE&#13;&#10;&#9;,1 AS numberGroup&#13;&#10;FROM MY_PARTNER.CONTACT c&#13;&#10;WHERE  c.PHONE_NUMBER_1 IS NOT NULL &#13;&#10;&#9;&#9;AND EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = c.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID =&quot; +context.migrationID+&quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;&#9; c.ID_PARTNER AS partnerId&#13;&#10;&#9; ,c.id AS contactId&#13;&#10;&#9;,trim(replace(c.PHONE_NUMBER_1,' ','')) AS PHONE&#13;&#10;&#9;,1 AS numberGroup&#13;&#10;FROM MY_PARTNER.CONTACT c&#13;&#10;WHERE  c.PHONE_NUMBER_1 IS NOT NULL &#13;&#10;&#9;&#9;AND EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = c.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID =&quot; +context.migrationID+&quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1565,7 +1565,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;&#9; c.ID_PARTNER AS partnerId&#13;&#10;&#9; ,c.id AS contactId&#13;&#10;&#9; ,trim(c.PHONE_NUMBER_2)  as PHONE&#13;&#10;&#9; , 2  AS numberGroup&#13;&#10;FROM MY_PARTNER.CONTACT c&#13;&#10;WHERE  c.PHONE_NUMBER_2 IS NOT NULL &#13;&#10;&#9;&#9;AND EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = c.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID =&quot; +context.migrationID+&quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;&#9; c.ID_PARTNER AS partnerId&#13;&#10;&#9; ,c.id AS contactId&#13;&#10;&#9; ,trim(replace( c.PHONE_NUMBER_2,' ',''))  as PHONE&#13;&#10;&#9; , 2  AS numberGroup&#13;&#10;FROM MY_PARTNER.CONTACT c&#13;&#10;WHERE  c.PHONE_NUMBER_2 IS NOT NULL &#13;&#10;&#9;&#9;AND EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = c.ID_PARTNER &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID =&quot; +context.migrationID+&quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2422,13 +2422,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9ddfcf11-a131-4d44-b6c6-79ceb5afe233"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QStAas6VdAvQcuBZ3e+2QVna+WXu+TXzwubwTGd/Q8R4LATFstJIPKUjQ+ROxsozrYtsTNXZL9MT&#13;
-s2b0KSNJrA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_6a564521-1996-4ebe-bdd0-1cb62f90d6f0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ajib75wOmwa0pdZPMn/h3Ot4mpiGsIkAMr/12SRQ1NmiZ4Kv2JNX0w4q+tPYb+dJv/r3d38EjTHL&#13;
-9puwFPbgdA==</DigestValue></Reference></SignedInfo><SignatureValue>C1Hyz5g8YSDiwUhka2Ot+wQXFgKtyUpf4WO7mjkxQUxOQdmdWLHpxU7bloxF3xYTzKXhBMSxXA8u&#13;
-ZQXpmM1Gn3IwRld8nmLW8R3HzTLaunsHnqYx2yCwfMIi2voHJPNGLqaCbKRt7BB/9Vwofgo4nMBr&#13;
-92ZybQGogb/9po8B5dTeqdhv9XOjHM2RgTQh5UsWZufAmyAPkmpwyMgUJ8NjCT9gpCBH2PHwujBW&#13;
-euCc5GslNebeZyy6NXsvMPoA3XIUokjiBG01+mxlhJUREPL/ARtTE0Mw7sbTpJ6mO0eMVPjmNeVH&#13;
-2wwoofRRj4GOMUypT3z4cOlFf+bxxZ05Tu6JHQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_691c9047-8e9f-44d1-800f-a63cdb520f76"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Fv8Pl3+SHDTs+WXHZLOdwvnPA+Z1a770kxyOhlBXHVzQsWjXANe+njVMqvDKvC/gTjAyIaKpYh8t&#13;
+cIiImIhc6g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_070b0129-bf44-4220-891f-04f13159605e"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>2Om11/dmKD5ctHaRjbPIJErEvi2jP952z6psy2sVc2zAcRUHk+6UZOKRA+QyemNRzIIsXZkh9gQJ&#13;
+pvvjUMnBzw==</DigestValue></Reference></SignedInfo><SignatureValue>EmyXC+FDP0vrKn3AawIlUdo58Iiq+dEpCQpSb3lGz/4LiEiyK3mQC7YLsq7nzijbjlfWimfXskEz&#13;
++62mO2OaDnXlWcza7X6mCdjDw06ORsE/ruDm76n9RG2efAQ2Le7S0W8zT6ZMarKt3DMpIHFw7vso&#13;
+Wbn1M/QQuuiiZz84P/iQtkRevEUltoE7C6aMnAiOobTMIpMjGTg94okFzobr9Lm9MfxZ2i/flzDS&#13;
+RHp4NiHfnGoHKkaVx3LcJRoa60PJJpg7j09CyC7fBw/ZnCyaxc+nwmJipQ+mvgA+ZepbAnDwkWZw&#13;
++7HgBVGLgZnCHZqE5oR3PWdrkQW08Dv0CYpf2Q==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2450,4 +2450,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_6a564521-1996-4ebe-bdd0-1cb62f90d6f0" Target="#_9ddfcf11-a131-4d44-b6c6-79ceb5afe233"><Timestamp>2023-09-08 09:46:20</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_070b0129-bf44-4220-891f-04f13159605e" Target="#_691c9047-8e9f-44d1-800f-a63cdb520f76"><Timestamp>2023-10-13 11:58:03</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
