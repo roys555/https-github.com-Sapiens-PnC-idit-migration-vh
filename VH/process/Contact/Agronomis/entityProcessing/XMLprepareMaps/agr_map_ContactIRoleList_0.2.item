@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:xmi="http://www.omg.org/XMI" defaultContext="Default" jobType="Standard" xmi:version="2.0">
-  <context confirmationNeeded="false" name="Default">
+  <context confirmationNeeded="false" hide="false" name="Default">
     <contextParameter comment="" internalId="_RZNDQMcLEe2DoJT7zYL8TA" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value=""/>
     <contextParameter comment="" internalId="_RZNDQccLEe2DoJT7zYL8TA" name="LegacyID" prompt="LegacyID?" promptNeeded="false" repositoryContextId="built-in" type="id_Long" value=""/>
     <contextParameter comment="" internalId="_RZNDQscLEe2DoJT7zYL8TA" name="EntityID" prompt="EntityID?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
@@ -140,13 +140,15 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT AGR_PARTNER_ROLE.PARTNER_NR,&#10;&#9;&#9;AGR_PARTNER_ROLE.EFFECTIVE_DATE,&#10;&#9;&#9;AGR_PARTNER_ROLE.tContactRoleVORefid,&#10;&#9;&#9;AGR_PARTNER_ROLE.tContactRoleVORefdESC&#10;FROM&#9;AGR_PARTNER_ROLE &#13;&#10;where PARTNER_NR =&quot; + context.LegacyID "/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT AGR_PARTNER_ROLE.PARTNER_NR,&#10;&#9;&#9;AGR_PARTNER_ROLE.EFFECTIVE_DATE,&#10;&#9;&#9;AGR_PARTNER_ROLE.discontinueDate,&#10;&#9;&#9;AGR_PARTNER_ROLE.tContactRoleVORefid,&#10;&#9;&#9;AGR_PARTNER_ROLE.tContactRoleVORefdESC&#10;FROM&#9;AGR_PARTNER_ROLE&#13;&#10;where PARTNER_NR =&quot; + context.LegacyID "/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="EFFECTIVE_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="discontinueDate"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="tContactRoleVORefid"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -157,9 +159,10 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="AGR_PARTNER_ROLE" name="tHSQLDbInput_1">
       <column comment="" key="false" length="10" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="discontinueDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="544" posY="160">
@@ -197,6 +200,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="discontinueDate"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="tContactRoleVORefid"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -211,17 +219,19 @@
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="XMLContactRoleList"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="XMLContactRoleList" name="tHSQLDbOutput_1">
+    <metadata connector="FLOW" label="AGR_PARTNER_ROLE" name="tHSQLDbOutput_1">
       <column comment="" key="false" length="10" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="discontinueDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
-    <metadata connector="REJECT" label="XMLContactRoleList" name="REJECT">
+    <metadata connector="REJECT" label="AGR_PARTNER_ROLE" name="REJECT">
       <column comment="" key="false" length="10" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="discontinueDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -235,13 +245,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a1993080-6331-4a3d-be91-26997d348fe8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>AQjA356pGaXtwUFO4w5T3OKrCojlIoI4e2F9ol2jvH1zb4fRmhMRcaRVacWuYYnJUWeFzhst5y/u&#13;
-8jsjMcLt+g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0637a59e-a051-49fd-bfda-19c54089e456"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ee34nYka0XZRKk1ZZeTUoY5fdS/M1231TWikVRGdP5I+OjYIyMMWH/U3AswpA74WysASBJhF/W8t&#13;
-P/i1uw8z0Q==</DigestValue></Reference></SignedInfo><SignatureValue>axvCA2AtNlQ7l2qu4OsssoFG+UUT5owu7VHjir5nfqy2EGonxnolAUI8k9R8gargRDoOKo5mHNka&#13;
-tIDmANOryGiRh9E9zbAowk6b7rPGH0qvevJ1wMyVApov++VzY+XE3wZjBIoEPnmYTn1PcA1U4Y1e&#13;
-uftnEWlQr99YYsKror+l6GqAjtFBKyYqPdZt6sS7ZnMKCTPyBm7AlQAIoYXRbKUNpS9Eotz/oGaI&#13;
-7L0c2h8rapTdvFRwtX8qgF0O3gDE3t5qdlcUwERwob4zl3hVw/a8NoIPlwjFFGTXqfY3j/ApifL2&#13;
-vZxIf9jtCk9NTDMnJ9P00nVG1N5Eg5kkTK5reQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_33fa66fb-c65b-4a3a-8c3b-5ad802c70352"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>FuxX/ziQ05iTdMcuLutv84aqx2YwdOs75Kww6jic7q/GhDCgbzq8Rv8EUMu2//Wq7ruT9qfzbOjV&#13;
+TxYlbDEJ4g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9f39cba6-abf2-4422-bd35-71fde47ec7aa"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>rnpM/XVgqy9ICpBjIa8x4720HWc+km6rsnlf+vtCJ8N/ucuRhk4ZahUydLaMIRN55ic3qSl7B1mV&#13;
+r8NZ9l+wpw==</DigestValue></Reference></SignedInfo><SignatureValue>f7yZ/k3SqEYVFLSwXnypRNVau6xdeuWPpSuuY1mHELpqcGS4RgwFupuCypZw0ESgbJSAlgILGvAF&#13;
+YxxLC5kHKTaoRIc2uW8jWcLNirR1hZkujZiuupfyafHd1i00MWLHvAWuOkvEW29MO/ej/2hPJFq2&#13;
+hECbzPHJMzc3mYKglWyHwH4uWpXrD0XIGj9ZB8jFe49qbXh+v5idCIcXD+on4josjxvMRdZa5gRP&#13;
+/zIQUIsCouHkGs3f+KbQ3PcUdR0SXCldLfOkmJ1eDglAR+qHnKmQYVE79T+USLf2WJIkmn3E8Usu&#13;
+LgBIEZnBofeiMcOPN1MtB7s79aT/Hb6UWBxSSw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -263,4 +273,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0637a59e-a051-49fd-bfda-19c54089e456" Target="#_a1993080-6331-4a3d-be91-26997d348fe8"><Timestamp>2023-08-04 10:52:19</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9f39cba6-abf2-4422-bd35-71fde47ec7aa" Target="#_33fa66fb-c65b-4a3a-8c3b-5ad802c70352"><Timestamp>2023-10-17 14:18:55</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
