@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="926"/>
+    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="929"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;proj&quot;"/>
   </context>
@@ -174,7 +174,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.par_partner_nr,&#13;&#10;       p.PAR_ZUS_ANREDE,&#13;&#10;       p.PAR_NAME,&#13;&#10;       p.PAR_GEBURTSDATUM,&#13;&#10;       p.PAR_GRUENDUNGSTAG, &#13;&#10;       p.PAR_VORNAME,&#13;&#10;       p.PAR_NAME2,&#13;&#10;       p.PAR_BETRIEBSFLAECHE,&#13;&#10;       p.PAR_BEZIRKSVEREIN_NR,&#13;&#10;       p.par_amtsgericht,&#13;&#10;     p.par_gf_vorstand,&#13;&#10;&#9;p.par_handelsregister_nr,&#13;&#10;&#9;p.par_titel,&#13;&#10;&#9;p.PAR_WIRTSCHAFTSZWEIG,&#13;&#10;&#9;p.PAR_AKAD_TITEL&#13;&#10;FROM Sev.partner p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE P.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.par_partner_nr,&#13;&#10;       p.PAR_ZUS_ANREDE,&#13;&#10;       regexp_replace(p.PAR_NAME,'[-!?\&quot;,&amp;@`´‘’(+&gt;]',' ') ,&#13;&#10;       p.PAR_GEBURTSDATUM,&#13;&#10;       p.PAR_GRUENDUNGSTAG, &#13;&#10;       regexp_replace(p.PAR_VORNAME, '[-!?\&quot;,&amp;@`´‘’(+&gt;]',' ') ,&#13;&#10;       regexp_replace(p.PAR_NAME2,'[-!?\&quot;,&amp;@`´‘’(+&gt;]',' ') ,&#13;&#10;       p.PAR_BETRIEBSFLAECHE,&#13;&#10;       p.PAR_BEZIRKSVEREIN_NR,&#13;&#10;       p.par_amtsgericht,&#13;&#10;     p.par_gf_vorstand,&#13;&#10;&#9;p.par_handelsregister_nr,&#13;&#10;&#9;p.par_titel,&#13;&#10;&#9;p.PAR_WIRTSCHAFTSZWEIG,&#13;&#10;&#9;p.PAR_AKAD_TITEL&#13;&#10;FROM Sev.partner p &#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE P.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -3504,7 +3504,7 @@
       <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="vermittler_role" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row20.PARTNER_NR " name="PARTNER_NR" nullable="true" type="id_Long"/>
@@ -3683,7 +3683,7 @@
       <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="role" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="agr_partner_role.PARTNER_NR" name="PARTNER_NR" nullable="true" type="id_Long"/>
@@ -3915,14 +3915,14 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="refData"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_15" offsetLabelX="0" offsetLabelY="0" source="tDBInput_15" target="tFixedFlowInput_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
-  </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tDBInput_15" offsetLabelX="0" offsetLabelY="0" source="tDBInput_15" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row15"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_15" offsetLabelX="0" offsetLabelY="0" source="tDBInput_15" target="tFixedFlowInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row16" lineStyle="0" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tHSQLDbOutput_9">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -3994,6 +3994,7 @@
   <note opaque="true" posX="800" posY="224" sizeHeight="64" sizeWidth="641" text="DICTIONARIES:"/>
   <note opaque="true" posX="1536" posY="224" sizeHeight="64" sizeWidth="385" text="TECHNICAL:"/>
   <note opaque="true" posX="832" posY="1632" sizeHeight="64" sizeWidth="449" text="Partner role temporarrly set not correctly for s2s reason"/>
+  <note opaque="true" posX="-32" posY="128" sizeHeight="64" sizeWidth="769" text="some cleansing added for names , vornames fileds without VH confirmation"/>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_4"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -4173,13 +4174,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_f35d27a1-c687-48a6-aa04-e52e6f5565a5"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>KYlqJ5nUY8BKvTb+d3chtcK7NFCDcU2/vK006i6J5LJA1xnrqupkiVvIirdofdDlvGZ8ZV7rE9Xb&#13;
-nQynDG6cYQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f88f8905-1493-4927-a05e-9986be493429"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>c9Top22KjHFhqCZkM+bmRzd+PkkqYdlYQ3B0fnikyMhAkOPzQjQ3iKg7CxaXzqRb2FqEG+vtJRv+&#13;
-DZMFBa3i4w==</DigestValue></Reference></SignedInfo><SignatureValue>b18S59MVDdF4o2jH647oDkmYu1ZD0D37rptJX6mcCYKi6ii6bRMXrtw16cx/nA2DxxVTctmhvR8L&#13;
-WAHfvTMbUmR7tbyovWAlsSw53CmBhWrvtpmadWvAZ/nf28Gb/YPomclg9cacei16idjBxx/oDrwS&#13;
-yI+z76oc7yH1UzHooScnwefgoHCVDZhQ+eOX6+7wtz5YG23sYsqBrmLcQ99LPez1Bun3Ld8yFVb7&#13;
-VWpgCj1/FuBnBAftIUF19HVNaKFuB87PQmI2HEPyS0PlxLPjTNNEuv/mbtMW7ZukbweJ9zzakh0O&#13;
-B2r5dqGK/6azDqpyNGio01o8YB4gYRKfjOlhxA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_26f09eb9-dafe-4eac-af2f-f3b09fbfa20b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>cbBzqZOLJOQHr9NZ6TyVM1Dbbr2+qimqe4g/m8o66mknREHtq+q5zDYYden+J3alXPI3ymqnRGPs&#13;
+RwXYVdFbaA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_1919595d-8d6d-4447-a4f1-7527ed65025f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>oxLdnI3MGPY10YWU3gmNpmJu8AsEbqp+hqDI5fDOYuQMVUDTEHC/WagmV+IifLsbg3213pJHSfhA&#13;
+Ks7FWtchkw==</DigestValue></Reference></SignedInfo><SignatureValue>DTND8zYOwjRS9h3C3vdhqb5GrZwQQCIjR1QYAuzPi9TUF4CJh7I/j1R5SxJBUossqFS942rHr0Lc&#13;
+ilwdZctGIh5U8Ms/KSMVO4jNwFq8ljHIifz28zXzQQm/ilIsWEHZBtc5BgNkx1cPYbVaZ2gh8dq/&#13;
+Px1pX/i3nXgYeFRRj1kDMd1/0xx+ye/im7Y1YJkJrDsL/RfeGvaGUHszITeeS/mjYl3/6BpcH5xy&#13;
+RJdV7ilc/7slq9ROF9oTXQIYBLjHObfZoQWuAEybQVRJukV77iDP+fWXEC5y05M5UCj0LAXjH8W2&#13;
+VTp7q4tj0saT+qnfDlIXHg6XG1PHQdZLb7RZdw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4201,4 +4202,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f88f8905-1493-4927-a05e-9986be493429" Target="#_f35d27a1-c687-48a6-aa04-e52e6f5565a5"><Timestamp>2023-10-17 14:20:35</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_1919595d-8d6d-4447-a4f1-7527ed65025f" Target="#_26f09eb9-dafe-4eac-af2f-f3b09fbfa20b"><Timestamp>2023-10-18 07:18:38</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
