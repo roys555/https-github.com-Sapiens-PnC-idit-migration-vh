@@ -3,6 +3,7 @@
     <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="944"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;proj&quot;"/>
+    <contextParameter comment="" internalId="_zyPscG8yEe6s4NRAlgiHqQ" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
@@ -1894,7 +1895,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="AGRONOMIS_RELATIONSHIP" name="out">
+    <metadata comment="" label="AGRONOMIS_RELATIONSHIP" name="out">
       <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
@@ -1902,11 +1903,13 @@
       <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <uiProperties shellMaximized="true"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="context.isTestLoad?(&quot;_&quot;+context.migrationID):&quot;&quot;" name="addSufix" type="id_String"/>
+      </varTables>
       <outputTables activateCondensedTool="true" id="_UCR7gNOGEe2cEoLV_YM8qg - AGRONOMIS_RELATIONSHIP" name="out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row4.PAR_PARTNER_NR " name="PAR_PARTNER_NR" type="id_Long"/>
-        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row4.RELATEDCONTACTEXTNUM ) " name="RELATEDCONTACTEXTNUM" type="id_String"/>
+        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row4.RELATEDCONTACTEXTNUM ) +Var.addSufix" name="RELATEDCONTACTEXTNUM" type="id_String"/>
         <mapperTableEntries expression="row4.RELATION_DATE " name="RELATION_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="relation_lookup.RelationshipVoRefID " name="relationshipVoRefID" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="relation_lookup.RelationshipVoRefDesc " name="relationshipVoRefDesc" nullable="true" type="id_String"/>
@@ -2163,11 +2166,13 @@
       <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <uiProperties shellMaximized="true"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="context.isTestLoad?(&quot;_&quot;+context.migrationID):&quot;&quot; " name="addSufix" type="id_String"/>
+      </varTables>
       <outputTables name="rel_interm" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row23.PAR_PARTNER_NR" name="PAR_PARTNER_NR" type="id_Long"/>
-        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row23.RELATEDCONTACTEXTNUM)" name="RELATEDCONTACTEXTNUM" type="id_String"/>
+        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row23.RELATEDCONTACTEXTNUM)+Var.addSufix" name="RELATEDCONTACTEXTNUM" type="id_String"/>
         <mapperTableEntries expression="row23.RELATION_DATE" name="RELATION_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row23.relationshipVoRefID" name="relationshipVoRefID" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="row23.relationshipVoRefDesc" name="relationshipVoRefDesc" nullable="true" type="id_String"/>
@@ -2720,7 +2725,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT   ROW_NUMBER() OVER (PARTITION BY p.PAR_PARTNER_NR  ORDER BY ph.PAR_AEN_DATUM ) row_id , p.PAR_PARTNER_NR, &#13;&#10;ph.id, ph.PAR_AEN_DATUM, ph.par_fa_email, ph.PAR_PRIV_EMAIL &#13;&#10;FROM sev.PARTNER p &#13;&#10;INNER JOIN sev.PARTNER_HISTORIE ph ON p.PAR_PARTNER_NR =ph.PAR_PARTNER_NR&#13;&#10;WHERE p.par_partner_nr = 12477015 &#13;&#10;AND EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = p.PAR_PARTNER_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT   ROW_NUMBER() OVER (PARTITION BY p.PAR_PARTNER_NR  ORDER BY ph.PAR_AEN_DATUM ) row_id , p.PAR_PARTNER_NR, &#13;&#10;ph.id, ph.PAR_AEN_DATUM, ph.par_fa_email, ph.PAR_PRIV_EMAIL &#13;&#10;FROM sev.PARTNER p &#13;&#10;INNER JOIN sev.PARTNER_HISTORIE ph ON p.PAR_PARTNER_NR =ph.PAR_PARTNER_NR&#13;&#10;WHERE 1=1  &#13;&#10;AND EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = p.PAR_PARTNER_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -4319,14 +4324,14 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="refData"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_15" offsetLabelX="0" offsetLabelY="0" source="tDBInput_15" target="tFixedFlowInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
+  </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tDBInput_15" offsetLabelX="0" offsetLabelY="0" source="tDBInput_15" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row15"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_15" offsetLabelX="0" offsetLabelY="0" source="tDBInput_15" target="tFixedFlowInput_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row16" lineStyle="0" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tHSQLDbOutput_9">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -4615,13 +4620,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_87a0ed96-f160-4e86-b6db-ca6ee1be0d13"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>9enZcKYHl2pHlIBN0xPQIHkFP+qeVNZ/+rOb+9RPODswAZpHGROYwM0VtwRnXWUcJNnAQaeD5hfY&#13;
-2b6kJJqhDg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_af425c13-3716-482a-b7a2-2f92cad01ffd"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3nzOQT6Js9SEw7i6EXwIzYpqt327tQCpHeyLQ5lWvZvypxYAdRbq1hnYJbpYW0sCvpSDxPeNfjbS&#13;
-j6cugqD9Tg==</DigestValue></Reference></SignedInfo><SignatureValue>O3QM3dABIrvpsmbiF30fOoF9zPshwh2dvNQs+qT+/hte/E2CIQUUyr7J3xn41JcgdQGyJR4dJ18D&#13;
-kgSAVL+2JALSHOmtqwN1qiUMXrJSWxteALy86kQp6lcUHYr6aOpH3jto+6WmQi60gTtaPu9NavMO&#13;
-APBCHW/K1edzkf2mQv6JL8jzJSpRg2gQedwlt/XXon3fNc6JFhcng/howGLBR/N48fEHj7PhFzbc&#13;
-PTmnyHUybs9Dqyr6oEkENgFxpjddpHU13ZWdFY/kcCSwfAKoyycIryeQ5O7PGje94pCka16+ZWai&#13;
-aM5TQYq6u7rX3qQgCVXYdWHzwiU72R4wqA4MrQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_73752ca6-b710-4025-880c-b45bcdaa5b3c"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>tQ9fJA9ShstoM/t2xpD9tvsWSdgik6cbDE82W3bZst6aIBFWGsvA58lfM8E0Kpe3SThd4JaL4ei8&#13;
+7TQAbrZO+A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b7ff3dc6-1074-4552-b144-3eb7e4c60fd6"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>K+K7KvBte226N5grxlLvluCRFSMsczTO35e8Znn6rd5BpZfMI9DoD6USmd15X3F4tAXFRSbm9F9i&#13;
+K8UA5Sxwuw==</DigestValue></Reference></SignedInfo><SignatureValue>VnH//41keP9Ixx+DWpX34tsW43w3Mj+aO0vE968/JWUKmiNMAfOzdFCuJ8ZQ+CKSP4RvDNGlJp6V&#13;
+A8S4FkNTcRWr1N2k72sR23xYRlA4p28lFQYEVOBIVSeUIVf8dAxDgJGcgNBxzZOBoIaZt3IONZX6&#13;
+fH2giCv+UB6IfeTjrxhVL/BYbLdzaBSL6mFQHDDr7GijSTx3weMoqi2UVtk352Eg2KTf6G3UfPGD&#13;
+zO47pT6dWoWmaqCqhV8xrX8VqlVfcBD37MkcGTxWPLluXmhXPBijnPbnUzrw/UcbzJurf/8M+aK2&#13;
+UJ9J+RwJrTRmj6jskzJJodHUw1avskm7GclsPw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4643,4 +4648,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_af425c13-3716-482a-b7a2-2f92cad01ffd" Target="#_87a0ed96-f160-4e86-b6db-ca6ee1be0d13"><Timestamp>2023-10-20 09:52:13</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b7ff3dc6-1074-4552-b144-3eb7e4c60fd6" Target="#_73752ca6-b710-4025-880c-b45bcdaa5b3c"><Timestamp>2023-10-20 10:29:06</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
