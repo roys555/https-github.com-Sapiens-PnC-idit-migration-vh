@@ -2,7 +2,7 @@
   <context confirmationNeeded="false" hide="false" name="Default">
     <contextParameter comment="" internalId="_pzPgYGnGEe6DpaNow2NO5w" name="claim_last_id" prompt="claim_last_id?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="1000"/>
     <contextParameter comment="" internalId="_pzPgYWnGEe6DpaNow2NO5w" name="contact_last_id" prompt="contact_last_id?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="1000"/>
-    <contextParameter comment="" internalId="_V9zB4GzlEe6gm8wXTQW6DA" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="9001"/>
+    <contextParameter comment="" internalId="_V9zB4GzlEe6gm8wXTQW6DA" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="9101"/>
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
@@ -379,7 +379,7 @@
       <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="SEVERITY" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
-    <metadata connector="FLOW" name="STATUS_200">
+    <metadata connector="FLOW" name="STATUS_200_tmp">
       <column comment="" key="false" length="252" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="AREA_ID" nullable="true" originalLength="5" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -451,7 +451,7 @@
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="Var.REJECT_CONDITION_LOOKUP " name="ERROR_lookup_org" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="DE_SELECTION.MULTI_CLAIM_NR " name="ENTITY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="" name="POLICY_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(String)&quot;NA&quot;" name="POLICY_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.CROP_AREA " name="AREA_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.HARVEST_YEAR " name="HARVEST_YEAR" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.POLICYHOLDER " name="POLICYHOLDER" nullable="true" type="id_String"/>
@@ -462,9 +462,9 @@
         <mapperTableEntries expression="(String)&quot;lookup&quot;" name="ERROR_TYPE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(String)&quot;E&quot;" name="SEVERITY" nullable="true" type="id_String"/>
       </outputTables>
-      <outputTables activateExpressionFilter="true" expressionFilter="!Var.REJECT " name="STATUS_200" sizeState="INTERMEDIATE">
+      <outputTables activateExpressionFilter="true" expressionFilter="!Var.REJECT " name="STATUS_200_tmp" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="DE_SELECTION.MULTI_CLAIM_NR " name="ENTITY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="" name="POLICY_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(String)&quot;NA&quot;" name="POLICY_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.CROP_AREA " name="AREA_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.HARVEST_YEAR " name="HARVEST_YEAR" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.POLICYHOLDER " name="POLICYHOLDER" nullable="true" type="id_String"/>
@@ -477,7 +477,7 @@
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="Var.REJECT_CROP_AREA_NULL " name="ERROR_crop_area_null_value" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="DE_SELECTION.MULTI_CLAIM_NR " name="ENTITY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="" name="POLICY_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(String)&quot;NA&quot;" name="POLICY_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.CROP_AREA " name="AREA_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.HARVEST_YEAR " name="HARVEST_YEAR" nullable="true" type="id_String"/>
         <mapperTableEntries expression="DE_SELECTION.POLICYHOLDER " name="POLICYHOLDER" nullable="true" type="id_String"/>
@@ -682,7 +682,7 @@
     <elementParameter field="CLOSED_LIST" name="KEYS_MANAGEMENT" value="KEEP_ALL"/>
     <elementParameter field="CHECK" name="APPEND" value="false"/>
     <elementParameter field="CHECK" name="HASH_KEY_FROM_INPUT_CONNECTOR" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="STATUS_200"/>
+    <elementParameter field="TEXT" name="LABEL" value="STATUS_200_tmp"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tHashOutput_4">
       <column comment="" key="false" length="252" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -757,14 +757,14 @@
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
-  <node componentName="tOracleCommit" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="1120">
+  <node componentName="tOracleCommit" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="1440">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBCommit_1"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
     <elementParameter field="CHECK" name="CLOSE" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBCommit_1"/>
   </node>
-  <node componentName="tMSSqlCommit" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="128" posY="1088">
+  <node componentName="tMSSqlCommit" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="1536">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBCommit_2"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_2"/>
     <elementParameter field="CHECK" name="CLOSE" value="true"/>
@@ -1468,9 +1468,30 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tReplicate" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1152" posY="1504">
+  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="480" posY="896">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_2"/>
+    <elementParameter field="CHECK" name="LINK_WITH" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="LIST" value="tHashOutput_5"/>
+    <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
+    <elementParameter field="CHECK" name="RELEASE_CACHE" value="true"/>
+    <elementParameter field="TEXT" name="LABEL" value="ERR"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tHashInput_2">
+      <column comment="" key="false" length="252" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="AREA_ID" nullable="true" originalLength="5" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" originalLength="4" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="POLICYHOLDER" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="STATUS" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="IDIT_CONTACT_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" originalLength="12" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ERROR_MESSAGE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tReplicate" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="832" posY="896">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tReplicate_3"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tReplicate_3">
       <column comment="" key="false" length="252" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -1486,9 +1507,8 @@
       <column comment="" key="false" length="1" name="SEVERITY" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1344" posY="1504">
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1184" posY="992">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_3"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
@@ -1572,9 +1592,8 @@
       </inputTables>
     </nodeData>
   </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1344" posY="1408">
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1184" posY="896">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_4"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
@@ -1625,12 +1644,9 @@
       <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="20" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="STATUS_202" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Integer"/>
@@ -1645,7 +1661,6 @@
         <mapperTableEntries expression="IN_STATUS_202.ERROR_MESSAGE " name="MIGRATION_ERROR" nullable="true" type="id_String"/>
         <mapperTableEntries expression="IN_STATUS_202.ERROR_CODE " name="ERROR_CODE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="IN_STATUS_202.IDIT_CONTACT_ID " name="IDIT_CONTACTID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="RZC_ID" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="IN_STATUS_202" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -1662,9 +1677,8 @@
       </inputTables>
     </nodeData>
   </node>
-  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1632" posY="1408">
+  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1472" posY="896">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_5"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
@@ -1760,11 +1774,6 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="RZC_ID"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
@@ -1781,7 +1790,7 @@
     <elementParameter field="TEXT" name="LABEL" value="PLMULTICALIM_MIGRATION_STATUS_202"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="PLMULTICLAIM_MIGRATION_STATUS" name="tDBOutput_5">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
@@ -1802,7 +1811,7 @@
       <column comment="" key="false" length="50" name="POLICYHOLDER_EXT_NUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
@@ -1815,14 +1824,11 @@
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="20" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
     </metadata>
     <metadata connector="REJECT" label="PLMULTICLAIM_MIGRATION_STATUS" name="REJECT">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
@@ -1843,7 +1849,7 @@
       <column comment="" key="false" length="50" name="POLICYHOLDER_EXT_NUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
@@ -1856,18 +1862,14 @@
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="20" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1632" posY="1504">
+  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1472" posY="992">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_4"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
@@ -2059,362 +2061,6 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1504" posY="1216">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_2"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="EXTERNAL" name="MAP" value=""/>
-    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
-    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
-    <elementParameter field="IMAGE" name="PREVIEW" value="_bBcrEHJNEe6gm8wXTQW6DA-tMap_2-PREVIEW.bmp"/>
-    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
-    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
-    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
-    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
-    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
-    <elementParameter field="TEXT" name="LABEL" value="MigrationStatus_200"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="PLMULTICLAIM_MIGRATION_STATUS" name="Migration_Status">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="50" name="EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="5" name="AREA_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="50" name="POLICYHOLDER_EXT_NUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="2000" name="MIGRATION_ERROR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="20" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-    </metadata>
-    <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables name="Migration_Status" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="context.migrationID " name="MIGRATION_ID" type="id_Integer"/>
-        <mapperTableEntries expression="STATUS_200.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries expression="STATUS_200.ENTITY_ID " name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="STATUS_200.POLICY_NUMBER " name="POLICY_NUMBER" type="id_String"/>
-        <mapperTableEntries expression="STATUS_200.AREA_ID " name="AREA_ID" type="id_String"/>
-        <mapperTableEntries expression="STATUS_200.HARVEST_YEAR " name="HARVEST_YEAR" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="STATUS_200.POLICYHOLDER " name="POLICYHOLDER_EXT_NUM" type="id_String"/>
-        <mapperTableEntries expression="STATUS_200.STATUS " name="MIGRATION_STATUS" type="id_Integer"/>
-        <mapperTableEntries name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="STATUS_200.ERROR_MESSAGE " name="MIGRATION_ERROR" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="STATUS_200.ERROR_CODE " name="ERROR_CODE" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="STATUS_200.IDIT_CONTACT_IT " name="IDIT_CONTACTID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="RZC_ID" nullable="true" type="id_String"/>
-      </outputTables>
-    </nodeData>
-  </node>
-  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1696" posY="1280">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_3"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
-    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
-    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
-    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
-    <elementParameter field="CLOSED_LIST" name="DB_VERSION" show="false" value="ORACLE_18"/>
-    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.7&quot;"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1521&quot;"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
-    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;ORCL&quot;"/>
-    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
-    <elementParameter field="TEXT" name="TABLESCHEMA" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="USER" show="false" value="&quot;system&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:YmKEUt9ydWIuVVUgkLsQ3IzMaOONjHWthW4eCTNiOI919cGExggdig=="/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;K2V_DEV.PLMULTICLAIM_MIGRATION_STATUS&quot;"/>
-    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="NONE"/>
-    <elementParameter field="LABEL" name="NOTE" show="false" value="Warning : this component configuration will automatically generate a commit before data insert/update/delete"/>
-    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
-    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
-    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
-    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
-    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
-    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
-    <elementParameter field="LABEL" name="NOTE" show="false" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
-    <elementParameter field="CHECK" name="USE_ALTERNATE_SCHEMA" value="false"/>
-    <elementParameter field="TEXT" name="ALTERNATE_SCHEMA" show="false" value="&quot;&quot;"/>
-    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
-    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
-    <elementParameter field="TEXT" name="COMMIT_EVERY" show="false" value="10000"/>
-    <elementParameter field="TABLE" name="ADD_COLS"/>
-    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
-    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_ID"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="EXTERNAL_NUMBER"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_NUMBER"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="AREA_ID"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="HARVEST_YEAR"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICYHOLDER_EXT_NUM"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_STATUS"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_STATUS_TIMESTAMP"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_ERROR"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_CODE"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="IDIT_CONTACTID"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="RZC_ID"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
-    <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
-    <elementParameter field="CHECK" name="CONVERT_COLUMN_TABLE_TO_UPPERCASE" value="false"/>
-    <elementParameter field="CHECK" name="CONTAIN_BLOB_FROM_OTHER_DB" value="false"/>
-    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
-    <elementParameter field="CHECK" name="USE_BATCH_SIZE" show="false" value="true"/>
-    <elementParameter field="CHECK" name="USE_BATCH_AND_USE_CONN" value="false"/>
-    <elementParameter field="TEXT" name="BATCH_SIZE" show="false" value="10000"/>
-    <elementParameter field="CHECK" name="SUPPORT_NULL_WHERE" value="false"/>
-    <elementParameter field="CHECK" name="USE_TIMESTAMP_FOR_DATE_TYPE" value="true"/>
-    <elementParameter field="CHECK" name="TRIM_CHAR" value="true"/>
-    <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="PLMULTICLAIM_MIGRATION_STATUS" name="tDBOutput_3">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="50" name="EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="5" name="AREA_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="50" name="POLICYHOLDER_EXT_NUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="2000" name="MIGRATION_ERROR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="20" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-    </metadata>
-    <metadata connector="REJECT" label="PLMULTICLAIM_MIGRATION_STATUS" name="REJECT">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="50" name="EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="5" name="AREA_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="50" name="POLICYHOLDER_EXT_NUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="2000" name="MIGRATION_ERROR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="20" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="480" posY="896">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_2"/>
-    <elementParameter field="CHECK" name="LINK_WITH" value="true"/>
-    <elementParameter field="COMPONENT_LIST" name="LIST" value="tHashOutput_5"/>
-    <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
-    <elementParameter field="CHECK" name="RELEASE_CACHE" value="true"/>
-    <elementParameter field="TEXT" name="LABEL" value="ERR"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tHashInput_2">
-      <column comment="" key="false" length="252" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="5" name="AREA_ID" nullable="true" originalLength="5" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" originalLength="4" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="POLICYHOLDER" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="STATUS" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="IDIT_CONTACT_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" originalLength="12" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="ERROR_MESSAGE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="768" posY="896">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_3"/>
-    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
-    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
-    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
-    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
-    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
-    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
-    <elementParameter field="TABLE" name="LENGTHS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_NUMBER"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="AREA_ID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="HARVEST_YEAR"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICYHOLDER"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="STATUS"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="IDIT_CONTACT_ID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_CODE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_MESSAGE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_TYPE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="SEVERITY"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
-    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tLogRow_3">
-      <column comment="" key="false" length="252" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="5" name="AREA_ID" nullable="true" originalLength="5" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" originalLength="4" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="POLICYHOLDER" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="STATUS" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="IDIT_CONTACT_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" originalLength="12" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="ERROR_MESSAGE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
   <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="672" posY="704">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
     <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
@@ -2458,12 +2104,13 @@
       <column comment="" key="false" length="8" name="CROP_AREA" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="480" posY="992">
+  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="480" posY="1184">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_3"/>
     <elementParameter field="CHECK" name="LINK_WITH" value="true"/>
     <elementParameter field="COMPONENT_LIST" name="LIST" value="tHashOutput_2"/>
     <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
     <elementParameter field="CHECK" name="RELEASE_CACHE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="CLAIM_GROUP"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tHashInput_3">
       <column comment="" key="true" length="19" name="ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true">
@@ -2522,7 +2169,7 @@
       </column>
     </metadata>
   </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="768" posY="992">
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="768" posY="1184">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_5"/>
     <elementParameter field="RADIO" name="BASIC_MODE" value="true"/>
     <elementParameter field="RADIO" name="TABLE_PRINT" value="false"/>
@@ -2633,12 +2280,13 @@
       </column>
     </metadata>
   </node>
-  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="480" posY="1088">
+  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="480" posY="1280">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_4"/>
     <elementParameter field="CHECK" name="LINK_WITH" value="true"/>
     <elementParameter field="COMPONENT_LIST" name="LIST" value="tHashOutput_3"/>
     <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
     <elementParameter field="CHECK" name="RELEASE_CACHE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="CLAIM_CONTACT"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tHashInput_4">
       <column comment="" key="true" length="19" name="ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true">
@@ -2676,7 +2324,7 @@
       </column>
     </metadata>
   </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="768" posY="1088">
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="768" posY="1280">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_6"/>
     <elementParameter field="RADIO" name="BASIC_MODE" value="true"/>
     <elementParameter field="RADIO" name="TABLE_PRINT" value="false"/>
@@ -2752,12 +2400,13 @@
       </column>
     </metadata>
   </node>
-  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="480" posY="1184">
+  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="480" posY="1088">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_5"/>
     <elementParameter field="CHECK" name="LINK_WITH" value="true"/>
     <elementParameter field="COMPONENT_LIST" name="LIST" value="tHashOutput_4"/>
     <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
     <elementParameter field="CHECK" name="RELEASE_CACHE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="STATUS_200"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tHashInput_5">
       <column comment="" key="false" length="252" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -2773,71 +2422,287 @@
       <column comment="" key="false" length="1" name="SEVERITY" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="768" posY="1184">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_7"/>
-    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
-    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
-    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
-    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
-    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
-    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
-    <elementParameter field="TABLE" name="LENGTHS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_NUMBER"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="AREA_ID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="HARVEST_YEAR"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICYHOLDER"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="STATUS"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="IDIT_CONTACT_IT"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_CODE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_MESSAGE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_TYPE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="SEVERITY"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
-    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1184" posY="1088">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_2"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_bBcrEHJNEe6gm8wXTQW6DA-tMap_2-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="LABEL" value="MigrationStatus_200"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tLogRow_7">
-      <column comment="" key="false" length="252" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="5" name="AREA_ID" nullable="true" originalLength="5" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" originalLength="4" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="POLICYHOLDER" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="STATUS" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="IDIT_CONTACT_IT" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" originalLength="12" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="ERROR_MESSAGE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    <metadata connector="FLOW" label="PLMULTICLAIM_MIGRATION_STATUS" name="Migration_Status">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="50" name="EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="5" name="AREA_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="50" name="POLICYHOLDER_EXT_NUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="2000" name="MIGRATION_ERROR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties shellMaximized="true"/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables name="Migration_Status" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="context.migrationID " name="MIGRATION_ID" type="id_Integer"/>
+        <mapperTableEntries expression="STATUS_200.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="STATUS_200.ENTITY_ID " name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="STATUS_200.POLICY_NUMBER " name="POLICY_NUMBER" type="id_String"/>
+        <mapperTableEntries expression="STATUS_200.AREA_ID " name="AREA_ID" type="id_String"/>
+        <mapperTableEntries expression="STATUS_200.HARVEST_YEAR " name="HARVEST_YEAR" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="STATUS_200.POLICYHOLDER " name="POLICYHOLDER_EXT_NUM" type="id_String"/>
+        <mapperTableEntries expression="STATUS_200.STATUS " name="MIGRATION_STATUS" type="id_Integer"/>
+        <mapperTableEntries name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="STATUS_200.ERROR_MESSAGE " name="MIGRATION_ERROR" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="STATUS_200.ERROR_CODE " name="ERROR_CODE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="STATUS_200.IDIT_CONTACT_IT " name="IDIT_CONTACTID" nullable="true" type="id_Long"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="STATUS_200" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POLICY_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="AREA_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries name="HARVEST_YEAR" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POLICYHOLDER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="STATUS" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="IDIT_CONTACT_IT" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="ERROR_CODE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="ERROR_MESSAGE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="ERROR_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="SEVERITY" nullable="true" type="id_String"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1472" posY="1088">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_3"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
+    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" show="false" value="ORACLE_18"/>
+    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1521&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="TABLESCHEMA" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" show="false" value="&quot;system&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:YmKEUt9ydWIuVVUgkLsQ3IzMaOONjHWthW4eCTNiOI919cGExggdig=="/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;K2V_DEV.PLMULTICLAIM_MIGRATION_STATUS&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="NONE"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="Warning : this component configuration will automatically generate a commit before data insert/update/delete"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
+    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
+    <elementParameter field="CHECK" name="USE_ALTERNATE_SCHEMA" value="false"/>
+    <elementParameter field="TEXT" name="ALTERNATE_SCHEMA" show="false" value="&quot;&quot;"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" show="false" value="10000"/>
+    <elementParameter field="TABLE" name="ADD_COLS"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="EXTERNAL_NUMBER"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_NUMBER"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="AREA_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="HARVEST_YEAR"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICYHOLDER_EXT_NUM"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_STATUS"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_STATUS_TIMESTAMP"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_ERROR"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_CODE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="IDIT_CONTACTID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
+    <elementParameter field="CHECK" name="CONVERT_COLUMN_TABLE_TO_UPPERCASE" value="false"/>
+    <elementParameter field="CHECK" name="CONTAIN_BLOB_FROM_OTHER_DB" value="false"/>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
+    <elementParameter field="CHECK" name="USE_BATCH_SIZE" show="false" value="true"/>
+    <elementParameter field="CHECK" name="USE_BATCH_AND_USE_CONN" value="false"/>
+    <elementParameter field="TEXT" name="BATCH_SIZE" show="false" value="10000"/>
+    <elementParameter field="CHECK" name="SUPPORT_NULL_WHERE" value="false"/>
+    <elementParameter field="CHECK" name="USE_TIMESTAMP_FOR_DATE_TYPE" value="true"/>
+    <elementParameter field="CHECK" name="TRIM_CHAR" value="true"/>
+    <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="PLMULTICLAIM_MIGRATION_STATUS" name="tDBOutput_3">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="50" name="EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="5" name="AREA_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="50" name="POLICYHOLDER_EXT_NUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="2000" name="MIGRATION_ERROR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+    </metadata>
+    <metadata connector="REJECT" label="PLMULTICLAIM_MIGRATION_STATUS" name="REJECT">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="50" name="EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="5" name="AREA_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="4" name="HARVEST_YEAR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="50" name="POLICYHOLDER_EXT_NUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="2000" name="MIGRATION_ERROR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column comment="" key="false" length="-1" name="IDIT_CONTACTID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tReplicate_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tDBInput_1" target="tDBCommit_2">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tDBInput_1" target="tDBCommit_1">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" outputId="3" source="tDBInput_1" target="tHashInput_2">
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tHashInput_2">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
   </connection>
   <connection connectorName="FLOW" label="DE_SELECTION" lineStyle="0" metaname="tReplicate_1" offsetLabelX="-25" offsetLabelY="0" outputId="1" source="tReplicate_1" target="tMap_1">
@@ -2861,9 +2726,9 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="ERROR_lookup_org"/>
   </connection>
-  <connection connectorName="FLOW" label="STATUS_200" lineStyle="0" metaname="STATUS_200" offsetLabelX="0" offsetLabelY="0" outputId="4" source="tMap_1" target="tHashOutput_4">
+  <connection connectorName="FLOW" label="STATUS_200_tmp" lineStyle="0" metaname="STATUS_200_tmp" offsetLabelX="0" offsetLabelY="0" outputId="4" source="tMap_1" target="tHashOutput_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="STATUS_200"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="STATUS_200_tmp"/>
   </connection>
   <connection connectorName="FLOW" label="ERROR_crop_area_null_value" lineStyle="0" metaname="ERROR_crop_area_null_value" offsetLabelX="0" offsetLabelY="0" outputId="5" source="tMap_1" target="tHashOutput_7">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -2909,72 +2774,28 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row11"/>
   </connection>
-  <connection connectorName="FLOW" label="ERROR_lookup" lineStyle="0" metaname="tReplicate_3" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tReplicate_3" target="tMap_3">
+  <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tHashInput_2" offsetLabelX="0" offsetLabelY="0" source="tHashInput_2" target="tReplicate_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="ERROR_lookup"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
-  <connection connectorName="FLOW" label="IN_STATUS_202" lineStyle="0" metaname="tReplicate_3" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tReplicate_3" target="tMap_4">
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHashInput_2" offsetLabelX="0" offsetLabelY="0" source="tHashInput_2" target="tHashInput_5">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
+  </connection>
+  <connection connectorName="FLOW" label="IN_STATUS_202" lineStyle="0" metaname="tReplicate_3" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tReplicate_3" target="tMap_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="IN_STATUS_202"/>
+  </connection>
+  <connection connectorName="FLOW" label="ERROR_lookup" lineStyle="0" metaname="tReplicate_3" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tReplicate_3" target="tMap_3">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="ERROR_lookup"/>
   </connection>
   <connection connectorName="FLOW" label="TALEND_LOGS" lineStyle="0" metaname="TALEND_LOGS" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tDBOutput_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="TALEND_LOGS"/>
   </connection>
   <connection connectorName="FLOW" label="STATUS_202" lineStyle="0" metaname="STATUS_202" offsetLabelX="0" offsetLabelY="0" source="tMap_4" target="tDBOutput_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="STATUS_202"/>
-  </connection>
-  <connection connectorName="FLOW" label="Migration_Status" lineStyle="0" metaname="Migration_Status" offsetLabelX="50" offsetLabelY="50" source="tMap_2" target="tDBOutput_3">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="Migration_Status"/>
-  </connection>
-  <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tHashInput_2" offsetLabelX="0" offsetLabelY="0" source="tHashInput_2" target="tLogRow_3">
-    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
-      <elementValue elementRef="TRACE_COLUMN" value="AREA_ID"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="POLICY_NUMBER"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="STATUS"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="IDIT_CONTACT_ID"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="ERROR_TYPE"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="ENTITY_ID"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="ERROR_MESSAGE"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="POLICYHOLDER"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="HARVEST_YEAR"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="SEVERITY"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="ERROR_CODE"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHashInput_2" offsetLabelX="0" offsetLabelY="0" source="tHashInput_2" target="tHashInput_3">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tHashInput_3" offsetLabelX="0" offsetLabelY="0" source="tHashInput_3" target="tLogRow_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -3037,7 +2858,7 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHashInput_3" offsetLabelX="0" offsetLabelY="0" source="tHashInput_3" target="tHashInput_4">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk2"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tHashInput_4" offsetLabelX="0" offsetLabelY="0" source="tHashInput_4" target="tLogRow_6">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -3078,47 +2899,22 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHashInput_4" offsetLabelX="0" offsetLabelY="0" source="tHashInput_4" target="tHashInput_5">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHashInput_4" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tHashInput_4" target="tDBCommit_2">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
-  <connection connectorName="FLOW" label="row10" lineStyle="0" metaname="tHashInput_5" offsetLabelX="0" offsetLabelY="0" source="tHashInput_5" target="tLogRow_7">
-    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
-      <elementValue elementRef="TRACE_COLUMN" value="AREA_ID"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="POLICY_NUMBER"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="STATUS"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="IDIT_CONTACT_IT"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="ERROR_TYPE"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="ENTITY_ID"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="ERROR_MESSAGE"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="POLICYHOLDER"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="HARVEST_YEAR"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="SEVERITY"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="ERROR_CODE"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-    </elementParameter>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHashInput_4" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tHashInput_4" target="tDBCommit_1">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
+  </connection>
+  <connection connectorName="FLOW" label="STATUS_200" lineStyle="0" metaname="tHashInput_5" offsetLabelX="0" offsetLabelY="0" source="tHashInput_5" target="tMap_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row10"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="STATUS_200"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHashInput_5" offsetLabelX="0" offsetLabelY="0" source="tHashInput_5" target="tHashInput_3">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk2"/>
+  </connection>
+  <connection connectorName="FLOW" label="Migration_Status" lineStyle="0" metaname="Migration_Status" offsetLabelX="50" offsetLabelY="50" source="tMap_2" target="tDBOutput_3">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="Migration_Status"/>
   </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBConnection_1"/>
@@ -3197,16 +2993,6 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tReplicate_3"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
-    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
-  </subjob>
-  <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_2"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
-    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
-  </subjob>
-  <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_2"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
@@ -3231,13 +3017,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3d5f0895-3176-43cb-916c-7398751c65b5"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+5Wu6rNB+ofcnnD+JU8K3kY2rwoHpbjOoeupAlMtUbPyuaTKlZ4L7AFQ7qBZADloHGXCbZ7yIJ0p&#13;
-kltNx8qwTQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0c627388-bd70-4e30-9a1f-d8e7e40fca8e"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Ypek4F/Pq8qaZBOX1bF59pL0y4hWf086NjgeUXBppFfzQmXortBBa7ErDKFuV1IEEv7V2b4umtfQ&#13;
-ylM2SbYpog==</DigestValue></Reference></SignedInfo><SignatureValue>XQKkMGc8TSh4rxEDKVxEamlpC1vHGJom9fqxE4rc4qFFUZgx1f8a28D/L/vtZU37Duue9rh/GMPT&#13;
-K+7fCgrBrviq3eZkVXb3YNmkI8OyGOk1jcOrdmHANqjFrra/VjpZ87stRmo8YGkj3IYWJK34XU3j&#13;
-zbPqIbF0cuKY1C7XbJb9cedsZ8rC4hZzMITj9u3Pvswj0N68rBk9x2aXKTkeXEGRb3mjaFx/TBZw&#13;
-trhwObVybhnF4qRG4QSOIIRqQP9KxByVc9rX1iEO9FfRijdk9BCU/cnuu1rV+XMKQmWM3lgxUn0T&#13;
-Xh8q6zConjGTQQ0stFQsbWFWyhWPBZ/t79uTVA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_61bf97b1-30fb-4711-bee0-728f572e9086"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/T7QGACufeOtIga/NFhUxo4ZEDIpI+Rh+yaqJ9catyUWi72/50kbIEh06n7LipfrnJ6ytcXlxjk9&#13;
+luy91UTG2Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5424158a-bddb-4a9c-b994-c4c82a6236ff"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>yJx3PO1cfZq6qWkZJmoqh0n9Vj0desNHsKqBLcBAvp7AjMnbwSFLct3uroOBbuyYwwWLomcxJTjX&#13;
+VZuxNnEnMg==</DigestValue></Reference></SignedInfo><SignatureValue>Jtmya4gBZRqt2IZtE9TAney90kQs9/te4hybGXKuxWh8yAxIbbmStZQc17hhK5QUXLXpxZePXzhf&#13;
+cV+rgfKLXaOCN3/hsRQGEpd9Mno77CIo7X22MduC/BeZBN/vvYLduN0uUmj6a5eX2rTD199UIosN&#13;
+Wi+j9hu4dSADLbZ4Q+JsswHyYgT2dkU88IM0Rk8qpK+RhTLzDgsWDz2FbVDepRsfONX4MTEdtkL9&#13;
+gpDu38uSPcWKRWtCNQEvL+XwfvOJ3WRmd4PTcDYftGE+8Uq0n4Yp0xKjSJoWBIQ0kICFNnrB0KPi&#13;
+AMsNKkBySVEa0xVPtSqFkYnSnhwCaqXA3kJ/jg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -3259,4 +3045,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0c627388-bd70-4e30-9a1f-d8e7e40fca8e" Target="#_3d5f0895-3176-43cb-916c-7398751c65b5"><Timestamp>2023-10-25 13:25:54</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5424158a-bddb-4a9c-b994-c4c82a6236ff" Target="#_61bf97b1-30fb-4711-bee0-728f572e9086"><Timestamp>2023-10-25 14:48:00</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
