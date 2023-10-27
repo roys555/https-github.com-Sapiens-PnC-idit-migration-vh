@@ -2,7 +2,7 @@
   <context confirmationNeeded="false" hide="false" name="Default">
     <contextParameter comment="" internalId="_pzPgYGnGEe6DpaNow2NO5w" name="claim_last_id" prompt="claim_last_id?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="1000"/>
     <contextParameter comment="" internalId="_pzPgYWnGEe6DpaNow2NO5w" name="contact_last_id" prompt="contact_last_id?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="1000"/>
-    <contextParameter comment="" internalId="_V9zB4GzlEe6gm8wXTQW6DA" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="9130"/>
+    <contextParameter comment="" internalId="_V9zB4GzlEe6gm8wXTQW6DA" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="9132"/>
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
@@ -385,14 +385,14 @@
       <column comment="" key="false" length="1" name="SEVERITY" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Numeric.sequence(&quot;claim_id&quot;, context.claim_last_id+1, 1) " name="seq_claim_id" type="id_Integer"/>
         <mapperTableEntries expression="Numeric.sequence(&quot;contact_id&quot;, context.contact_last_id+1, 1) " name="seq_contact_id" type="id_Integer"/>
         <mapperTableEntries expression="TalendDate.getCurrentDate() " name="current_date" type="id_Date"/>
         <mapperTableEntries expression="72" name="update_user" type="id_Long"/>
       </varTables>
-      <outputTables activateExpressionFilter="true" expressionFilter="row4.external_contact_number !=null" minimized="true" name="C_CLAIM_GROUP" sizeState="INTERMEDIATE">
+      <outputTables activateExpressionFilter="true" expressionFilter="row4.external_contact_number !=null" name="C_CLAIM_GROUP" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Var.seq_claim_id " name="ID" type="id_Long"/>
         <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
@@ -408,9 +408,9 @@
         <mapperTableEntries expression="" name="LOCKED_BY_JOB_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="LOCATION_TYPE_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="LOCATION_NAME_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="GROUP_DESCRIPTION" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="CROP_AREA_ID.CROP_AREA_ID " name="GROUP_DESCRIPTION" nullable="true" type="id_String"/>
         <mapperTableEntries name="CLAIM_GROUP_SUB_TYPE_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="(String)&quot;{ \&quot;harvestYear\&quot;:&quot; +(String)row5.HARVEST_YEAR +  (String)&quot;,\&quot;cropArea\&quot;:\&quot;&quot; + (String)row5.AREA_ID +(String)&quot;\&quot;}&quot;; " name="EXT_DATA" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(String)&quot;{ \&quot;harvestYear\&quot;:&quot; +(String)row5.HARVEST_YEAR +  (String)&quot;,\&quot;cropArea\&quot;:&quot; + (String)CROP_AREA_ID.CROP_AREA_ID +(String)&quot;}&quot;; " name="EXT_DATA" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="row4.external_contact_number != null" minimized="true" name="C_CLAIM_GROUP_CONTACT" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Var.seq_contact_id " name="ID" type="id_Long"/>
@@ -463,6 +463,10 @@
         <mapperTableEntries expression="" name="id" type="id_Long"/>
         <mapperTableEntries expression="row5.POLICYHOLDER " name="external_contact_number" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="update_date" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="CROP_AREA_ID" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row5.AREA_ID " name="CROP_AREA" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="CROP_AREA_ID" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1845,6 +1849,42 @@
       </column>
     </metadata>
   </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="864" posY="352">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="5"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_AREA"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_AREA_ID"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="CROP_AREA" value=""/>
+      <elementValue elementRef="CROP_AREA_ID" value=""/>
+      <elementValue elementRef="CROP_AREA" value="&quot;R&quot;"/>
+      <elementValue elementRef="CROP_AREA_ID" value="&quot;1000008&quot;"/>
+      <elementValue elementRef="CROP_AREA" value="&quot;SW&quot;"/>
+      <elementValue elementRef="CROP_AREA_ID" value="&quot;1000001&quot;"/>
+      <elementValue elementRef="CROP_AREA" value="&quot;SO&quot;"/>
+      <elementValue elementRef="CROP_AREA_ID" value="&quot;1000004&quot;"/>
+      <elementValue elementRef="CROP_AREA" value="&quot;P&quot;"/>
+      <elementValue elementRef="CROP_AREA_ID" value="&quot;1000006&quot;"/>
+      <elementValue elementRef="CROP_AREA" value="&quot;ST&quot;"/>
+      <elementValue elementRef="CROP_AREA_ID" value="&quot;1000003&quot;"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="AREA_ID"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_1">
+      <column comment="" key="false" length="5" name="CROP_AREA" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="8" name="CROP_AREA_ID" nullable="true" originalLength="8" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tParallelize" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="64" posY="288">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tParallelize_1"/>
     <elementParameter field="CLOSED_LIST" name="WAIT_FOR" value="All"/>
@@ -2217,6 +2257,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row13"/>
   </connection>
+  <connection connectorName="FLOW" label="CROP_AREA_ID" lineStyle="8" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CROP_AREA_ID"/>
+  </connection>
   <connection connectorName="PARALLELIZE" label="Parallelize" lineStyle="13" metaname="tParallelize_1" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tParallelize_1" target="tDBConnection_2">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="Parallelize"/>
   </connection>
@@ -2312,13 +2356,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9e905190-112c-4f65-ac6f-b5251d41dc1b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>wakI3BUL/VlkpiEeaaJpQS0R1Pp5GWfLmuGfWt9a6/J58xO6nKh5UbVQM47KHHVVx4VMPcxq7bQv&#13;
-2z5a2U2vYg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_2d725463-9bc4-48d0-83ca-a16d851c1f3d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pzehvQJG+BnG9hzj5w2HwlHTe3o4x7Arz3KK93GGAbtgrmpIULR03W4FuRtoHV8Sc17RiNyxC6Mu&#13;
-JkrZimdV1g==</DigestValue></Reference></SignedInfo><SignatureValue>iqw/cLbqoCunJqEM/ZvqZoCciaPrSW3ZPzZrJg3LCft+z9l/N/rmn/ErXixk0LvtqxOsgyTegrue&#13;
-DCU9aadP0iJCu979g6FmKqRRtcc6O/gIWKnosrt8IHogKfhEjChbkNqpt22qj9MaHGbyMCWYd39H&#13;
-FBn4AHQWCZIhQdewmdtMgUsAWrKSEzGZumViKQUMKou+ok33eqI0hNX4pcnkrNDU2Oxk8pU7vRg9&#13;
-OKZaWHvT6ElOPVigsKDCIFo/N/57r5NaKV02piD5sFb4+UG/qYW3IsvZYScSPMNgQ3gph4QO/u0x&#13;
-7zbDO+tvJ/tzJk66AUDti1bNNIiHXBwl0Es1UQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c86b35a0-ab6b-48eb-9730-e71e500eeadf"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>WExPrUYt0R5jpgkXDOGFqt/5V7KrYp9LpU5S5HUCRwZyOnsDKLZBAXyivObysedGmqUDY43YYBGV&#13;
+m0S1gZYMbQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_24505a57-a78f-475f-b646-944115a07f20"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>r8TKidHkadAtRBX1FCD7kC65KvGNqxqAQldF5ujQYhi3IzdCTuVRf7t/yE5C4ZCtelHJtfggJM9s&#13;
+FxHQkpUxBw==</DigestValue></Reference></SignedInfo><SignatureValue>cnQvsGtVXaKXL9eaehxVK6Iq5STXHyyBXuDiFk7rLJfmYGUzSCQtlIBnICskIXzpdpeWzdsgU5DL&#13;
+vM5yk8WDC44dABl8GaAFG9EZsGVfdWPfI4746FdsvdzmO8KnhNHIg5M5uTeMkYaBrgOBTKwCtg68&#13;
+tDuj5dStvalUmzzrwxwdvSfOygk/CMD8eFzM2iBvkANIYcgSlqHz1IQbFRxIYOvAaK0t00JstdRt&#13;
+YqlwijOWCzFHYHfc4pXSt9WeQ+EwuUoz7b62cEGNQncmYtfRcxeW0iG14FiD5HFaba1D2SllYPI1&#13;
+hSDR8ud38vWKFC9kHR1VT4D7Ob91g4hx5oee7A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2340,4 +2384,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_2d725463-9bc4-48d0-83ca-a16d851c1f3d" Target="#_9e905190-112c-4f65-ac6f-b5251d41dc1b"><Timestamp>2023-10-27 10:29:09</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_24505a57-a78f-475f-b646-944115a07f20" Target="#_c86b35a0-ab6b-48eb-9730-e71e500eeadf"><Timestamp>2023-10-27 11:09:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
