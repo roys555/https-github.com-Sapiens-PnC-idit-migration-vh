@@ -386,6 +386,7 @@
   </node>
   <node componentName="tFileInputExcel" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="224">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileInputExcel_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="VERSION_2007" value="true"/>
     <elementParameter field="FILE" name="FILENAME" value="context.filePathPrefix+&quot;EXCEL_FILES/agent_additional_files.xlsx&quot;"/>
     <elementParameter field="PASSWORD" name="PASSWORD" value="enc:system.encryption.key.v1:CVXS765zWHzkuuVkUViAHAZDODPTvcI/xfUM5zVs"/>
@@ -456,6 +457,7 @@
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="320" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
@@ -521,8 +523,8 @@
         <mapperTableEntries expression="Long.valueOf(StringHandling.LEFT(row2.partner_nr,7)) " name="PARTNER_ID" type="id_Long"/>
         <mapperTableEntries expression="row2.doc_type_name.equals(&quot;Polisa OC&quot;)" name="isPolicyOC" type="id_Boolean"/>
         <mapperTableEntries expression="(row2.file_name != null)?&quot;EXCEL_FILES\\&quot;+row2.file_path.replace(&quot;:&quot;, &quot;&quot;):&quot;EXCEL_FILES\\&quot;+(row2.file_path.substring(0, row2.file_path.lastIndexOf(&quot;\\&quot;)).replace(&quot;:&quot;, &quot;&quot;) ) " name="FILE_RELPATH" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="Var.isPolicyOC?(&quot;_&quot;+StringHandling.RIGHT(Var.FILE_RELPATH,4)):&quot;&quot; " name="policyYear" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="Var.isPolicyOC?(Var.policyYear.matches(\\d{4})?Var.policyYear:&quot;_0000&quot;):&quot;&quot; " name="policyYearFinal" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="Var.isPolicyOC?(StringHandling.RIGHT(Var.FILE_RELPATH,4)):&quot;&quot; " name="policyYear" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="Var.isPolicyOC?(Var.policyYear.matches(&quot;\\d{4}&quot;)?(&quot;_&quot;+Var.policyYear):&quot;_0000&quot;):&quot;&quot; " name="policyYearFinal" nullable="true" type="id_String"/>
       </varTables>
       <outputTables activateExpressionFilter="true" expressionFilter="!row2.partner_nr.matches(&quot;\\d{8}&quot;)" minimized="true" name="wrong_PartnerNr" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="&quot;agent_XLS_&quot; + String.valueOf(Var.ID) " name="ENTITY_ID" type="id_String"/>
@@ -559,6 +561,7 @@
   </node>
   <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="320" posY="320">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_3"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
     <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
     <elementParameter field="RADIO" name="VERTICAL" value="false"/>
@@ -628,6 +631,7 @@
   </node>
   <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="608" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_5"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
@@ -907,7 +911,7 @@
       <column comment="" key="false" length="-1" name="INSERT_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Numeric.sequence(&quot;s2&quot;,1,1) " name="ID" type="id_Integer"/>
       </varTables>
@@ -925,7 +929,7 @@
         <mapperTableEntries expression="&quot;com_02&quot;" name="ERROR_CODE" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateExpressionFilter="true" expressionFilter="row3.identifier !=null" name="out3" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="&quot;Rzecz_XLS_&quot; + String.valueOf(Var.ID) " name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="row3.identifier+&quot;_&quot;+StringHandling.LEFT(row3.doc_type_name,2) " name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries name="PARTNER_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row3.identifier " name="RZC_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="Var.ID " name="LEGACY_DOC_ID" nullable="true" type="id_Long"/>
@@ -1199,6 +1203,7 @@
   </node>
   <node componentName="tOracleClose" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="640">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBClose_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
@@ -1212,7 +1217,6 @@
   </node>
   <node componentName="tFileList" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="512">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileList_1"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="DIRECTORY" name="DIRECTORY" value="context.filePathPrefix+&quot;STDL_FILES&quot;"/>
     <elementParameter field="CLOSED_LIST" name="LIST_MODE" value="FILES"/>
     <elementParameter field="CHECK" name="INCLUDSUBDIR" value="true"/>
@@ -1233,7 +1237,6 @@
   </node>
   <node componentName="tIterateToFlow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="384" posY="512">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tIterateToFlow_1"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TABLE" name="MAPPING">
       <elementValue elementRef="SCHEMA_COLUMN" value="fileName"/>
       <elementValue elementRef="VALUE" value="(String)globalMap.get(&quot;tFileList_1_CURRENT_FILE&quot;)"/>
@@ -1248,7 +1251,6 @@
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="544" posY="512">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.fileName = input_row.fileName;&#13;&#10;output_row.filePath = input_row.filePath;&#10;&#13;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -1259,7 +1261,6 @@
   </node>
   <node componentName="tSampleRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="704" posY="512">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tSampleRow_1"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="LABEL" name="INFO_RANGE" value="Range let you choose a list of line numbers and/or a list of ranges.&#10;&#10;- &quot;1,5&quot; : line 1 and 5&#10;- &quot;10..20&quot; : lines 10 to 20&#10;- &quot;23..45,48,50..54&quot; : lines 23 to 45, line 48 and lines 50 to 54&#10;- &quot;1..10&quot; : 10 first lines&#10;&#10;&#9;  "/>
     <elementParameter field="MEMO_JAVA" name="RANGE" value="context.range_val"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -1270,7 +1271,6 @@
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="832" posY="512">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_5"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
@@ -1327,7 +1327,6 @@
   </node>
   <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1056" posY="512">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_8"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
@@ -1493,6 +1492,7 @@
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tFileInputExcel_1" offsetLabelX="0" offsetLabelY="0" source="tFileInputExcel_1" target="tFileInputExcel_2">
@@ -1501,6 +1501,7 @@
   </connection>
   <connection connectorName="FLOW" label="wrong_PartnerNr" lineStyle="0" metaname="wrong_PartnerNr" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tLogRow_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="wrong_PartnerNr"/>
   </connection>
   <connection connectorName="FLOW" label="out2" lineStyle="0" metaname="out2" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tDBOutput_5">
@@ -1510,6 +1511,7 @@
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out2"/>
   </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tFileInputExcel_2" offsetLabelX="0" offsetLabelY="0" source="tFileInputExcel_2" target="tMap_3">
@@ -1551,7 +1553,6 @@
   <connection connectorName="ITERATE" label="Iterate" lineStyle="7" metaname="tFileList_1" offsetLabelX="0" offsetLabelY="0" source="tFileList_1" target="tIterateToFlow_1">
     <elementParameter field="CHECK" name="ENABLE_PARALLEL" value="false"/>
     <elementParameter field="TEXT" name="NUMBER_PARALLEL" show="false" value="2"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="iterate1"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tFileList_1" offsetLabelX="0" offsetLabelY="0" source="tFileList_1" target="tDBClose_1">
@@ -1560,17 +1561,14 @@
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tIterateToFlow_1" offsetLabelX="0" offsetLabelY="0" source="tIterateToFlow_1" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
   <connection connectorName="FLOW" label="row7" lineStyle="0" metaname="tJavaRow_1" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_1" target="tSampleRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row7"/>
   </connection>
   <connection connectorName="FLOW" label="row6" lineStyle="0" metaname="tSampleRow_1" offsetLabelX="0" offsetLabelY="0" source="tSampleRow_1" target="tMap_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row6"/>
   </connection>
   <connection connectorName="FLOW" label="out4" lineStyle="0" metaname="out4" offsetLabelX="0" offsetLabelY="0" source="tMap_5" target="tDBOutput_8">
@@ -1580,7 +1578,6 @@
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out4"/>
   </connection>
   <note opaque="true" posX="384" posY="-96" sizeHeight="64" sizeWidth="897" text="W pliku agent_additional_files.xls w zakładce Polisa_OC należy dostawić pustą kolumnę między A i B tak aby wszystkie Arkusze miały 4 kolumny"/>
@@ -1627,13 +1624,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b7dae245-fc19-458e-857e-99f24b81ccbf"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>GmbNZFdi0qnl26LKa7Kep51b46XySbkhBx4G6HFWoFsz5kGuoeZIRWlj7MVjUMbrlsYp1UQAF+8u&#13;
-aG78mZEDhA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_aec98d27-b043-4b4e-8a6a-66fbd59e0774"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>FNhdJJI3i+4HCQeIrt7M7sxuZOVmY38djVUcfVqldYbp6TFZcK4VbBsb8Gu079EcduSAHF56fOjf&#13;
-2BKr/2VXNg==</DigestValue></Reference></SignedInfo><SignatureValue>o5FMhDtuqCVoBiT3A19U/HuoSrZTepA0S5OZzF03a5MTc60oLhEb6HB/cVAsYD8ZnWQCLlL5xtHg&#13;
-eR38NI32MCpAttwBBIEZ8SmW5hiFDUt4UIwEwtPK18wmxel72MKqEqClhYVTmQSE1jSh0X41WdEk&#13;
-S1XXY2UpDbw5BJdmWzbTCe8PZpMJmLAS+GCwfRQb3h72069ROVDe4rMVfD+hy00voKhOcjTKYCFX&#13;
-LvXSHdB0bbE0fXwykDLlxcGIQTnJZ1RyjrmfoNYXU+NkOx4SWaEDadsioV2cxl8qRTsnDAKtSkgd&#13;
-uvVptdJwPxHu2PfNtqQ5MZYJ066ttJN8pmcS8g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_36e00395-e628-4e6c-82e6-c057bc5b250c"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QanCngs3ScCshGPnbMUQvIIB98LQT3w9qJVeQs8DpNk6rdylekV8/Lreh6V9j78/FrAzjjvpfGm7&#13;
+zbrjl/hIfg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a2221afa-1bc3-4ed5-a909-f4146a0e8407"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>HPgUmuMSHTRoJukESbFnrjfByl+snJ+CCxR4R7CY20WLm0YyJ19ix6F8MkG4Lyy9sCy465B/d9mM&#13;
+ovrYvovk/g==</DigestValue></Reference></SignedInfo><SignatureValue>gHMPVkS34SXB1VkkOG2AwEAd8nbuQzz96Z0eWGz+JqcbLVmI1sQOOdisr9SuMqO6KZNJzkgFt/Cf&#13;
+QCATFOs81VW670uOvK9Xitf3OHsBMtljmzMR8uuFcwFncL3hvWmM/X7VXkTGMjbSi+3YljRS+p15&#13;
+HWzN6IByDcVKLC8fIWHcQzn6gwXbFdfAFmE+P2J5y/OT3G1yyK3FiCX9Jaa58pACBApUYpU4ErLN&#13;
+cEaKbu+9MnVhpjhDLHROgSNeo6eXAcP7iRRUrEyNNr6dnEfO0HPUeeTcqMjbIp4l63XFuZE+AAfu&#13;
+muc1Pc8HYaJiJ/RP6QZxt4HwBJx751MXNIScOg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1655,4 +1652,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_aec98d27-b043-4b4e-8a6a-66fbd59e0774" Target="#_b7dae245-fc19-458e-857e-99f24b81ccbf"><Timestamp>2023-10-31 11:26:23</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a2221afa-1bc3-4ed5-a909-f4146a0e8407" Target="#_36e00395-e628-4e6c-82e6-c057bc5b250c"><Timestamp>2023-10-31 14:17:00</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
