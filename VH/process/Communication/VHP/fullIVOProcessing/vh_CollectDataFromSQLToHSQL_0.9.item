@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="897"/>
+    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="955"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;DOC&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;DOCproj&quot;"/>
   </context>
@@ -314,6 +314,7 @@
     <elementParameter field="TEXT" name="DYNAMIC_CONTEXT" show="false" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="USE_EXTRA_CLASSPATH" show="false" value="false"/>
     <elementParameter field="TEXT" name="EXTRA_CLASSPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="LOAD_CONTEXT_FROM_FILE" show="false" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="MaskingDictionaries"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tRunJob_2"/>
@@ -341,7 +342,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT dd.ID, vf.entity_id, vf.legacy_source, dd.ID__MY_PARTNER__PARTNER ,vf.PARTNER_ID ,vf.FILE_RELPATH, dd.NAME , dd.ANL_DATUM &#13;&#10;, dd.ID_DMS_DOCUMENT_GROUP &#13;&#10;FROM MY_DOCUMENT.DMS_DOCUMENT dd &#13;&#10;JOIN K2V_DEV.VHP_FILES vf ON vf.LEGACY_DOC_ID = dd.ID AND vf.LEGACY_SOURCE = 'DMS_DOC'  &#13;&#10;WHERE EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID    &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID = &quot; +context.migrationID + &quot;)&quot; &#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT dd.ID, cms.entity_id, cms.legacy_source, dd.ID__MY_PARTNER__PARTNER ,cms.PARTNER_ID , dd.NAME , dd.ANL_DATUM &#13;&#10;, dd.ID_DMS_DOCUMENT_GROUP &#13;&#10;FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms &#13;&#10;JOIN MY_DOCUMENT.DMS_DOCUMENT dd ON cms.LEGACY_DOC_ID = dd.ID AND cms.LEGACY_SOURCE = 'DMS_DOC'  &#13;&#10;WHERE cms.migration_status=100  &#13;&#10;and  cms.MIGRATION_ID = &quot; +context.migrationID  &#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -366,8 +367,6 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="FILE_RELPATH"/>
-      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="NAME"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ANL_DATUM"/>
@@ -385,7 +384,6 @@
       <column comment="" key="false" length="20" name="LEGACY_SOURCE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="ID__MY_PARTNER__PARTNER" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="PARTNER_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="NAME" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="ANL_DATUM" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ID_DMS_DOCUMENT_GROUP" nullable="false" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -396,8 +394,9 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="UNIV_DOC_ALL_DATA" name="tUnite_1">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -446,6 +445,11 @@
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_SOURCE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DOC_TYPE_NAME"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -506,8 +510,9 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="UNIV_DOC_ALL_DATA" name="tHSQLDbOutput_1">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -521,8 +526,9 @@
     </metadata>
     <metadata connector="REJECT" label="UNIV_DOC_ALL_DATA" name="REJECT">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -551,10 +557,11 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="UNIV_DOC_ALL_DATA" name="dms_out">
+    <metadata comment="" label="UNIV_DOC_ALL_DATA" name="dms_out">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -567,16 +574,17 @@
       <column comment="" key="false" length="-1" name="docType" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_ArLIsBmqEe6U1bb3f8uPKw - UNIV_DOC_ALL_DATA" name="dms_out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Numeric.sequence(&quot;doc_seq&quot;,1,1) " name="ID" type="id_Integer"/>
-        <mapperTableEntries expression="row1.ID " name="LEGACY_ID" type="id_Long"/>
+        <mapperTableEntries expression="row1.ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row1.LEGACY_SOURCE " name="LEGACY_SOURCE" type="id_String"/>
+        <mapperTableEntries name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row1.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries expression="row1.PARTNER_ID " name="PARTNER_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="RZC_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row1.FILE_RELPATH " name="FILE_RELPATH" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="FILE_RELPATH" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row1.NAME " name="commName" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)2" name="inOutTypes" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row1.ANL_DATUM " name="creationDate" type="id_Date"/>
@@ -590,7 +598,6 @@
         <mapperTableEntries name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries name="ID__MY_PARTNER__PARTNER" type="id_Long"/>
         <mapperTableEntries name="PARTNER_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="FILE_RELPATH" nullable="true" type="id_String"/>
         <mapperTableEntries name="NAME" type="id_String"/>
         <mapperTableEntries name="ANL_DATUM" type="id_Date"/>
         <mapperTableEntries name="ID_DMS_DOCUMENT_GROUP" type="id_Integer"/>
@@ -624,7 +631,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT vf.LEGACY_DOC_ID, vf.entity_id, vf.legacy_source, vf.PARTNER_ID ,vf.FILE_RELPATH, vf.rzc_id, vf.INSERT_DATE , vf.FILE_NAME &#13;&#10;, vf.XLS_DOC_TYPE  &#13;&#10;FROM K2V_DEV.VHP_FILES vf  &#13;&#10;WHERE  vf.LEGACY_SOURCE in ('Agent_XLSX', 'Rzecz_XLSX')&#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID   &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID = &quot; +context.migrationID+ &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT cms.LEGACY_DOC_ID, cms.entity_id, cms.legacy_source, cms.PARTNER_ID , cms.rzc_id, cms.MIGRATION_STATUS_TIMESTAMP , cms.DOC_TYPE_NAME  &#13;&#10;FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms &#13;&#10;WHERE  cms.LEGACY_SOURCE in ('Agent_XLSX', 'Rzecz_XLSX') &#13;&#10;and cms.migration_status=100    &#13;&#10;and cms.MIGRATION_ID = &quot; +context.migrationID "/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -647,13 +654,9 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="FILE_RELPATH"/>
-      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="RZC_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_STATUS_TIMESTAMP"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="FILE_NAME"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="DOC_TYPE_NAME"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -667,10 +670,8 @@
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="LEGACY_SOURCE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="PARTNER_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="RZC_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="500" name="FILE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" originalLength="200" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
@@ -688,10 +689,11 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="UNIV_DOC_ALL_DATA" name="xls_out">
+    <metadata comment="" label="UNIV_DOC_ALL_DATA" name="xls_out">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -704,17 +706,18 @@
       <column comment="" key="false" length="-1" name="docType" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_ArLIsBmqEe6U1bb3f8uPKw - UNIV_DOC_ALL_DATA" name="xls_out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Numeric.sequence(&quot;doc_seq&quot;,1,1) " name="ID" type="id_Integer"/>
-        <mapperTableEntries expression="row2.LEGACY_DOC_ID " name="LEGACY_ID" type="id_Long"/>
+        <mapperTableEntries expression="row2.LEGACY_DOC_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.LEGACY_SOURCE " name="LEGACY_SOURCE" type="id_String"/>
+        <mapperTableEntries expression="row2.DOC_TYPE_NAME " name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries expression="row2.PARTNER_ID " name="PARTNER_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.RZC_ID " name="RZC_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row2.FILE_RELPATH " name="FILE_RELPATH" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row2.FILE_NAME " name="commName" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="FILE_RELPATH" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="commName" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)2" name="inOutTypes" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.MIGRATION_STATUS_TIMESTAMP " name="creationDate" type="id_Date"/>
         <mapperTableEntries expression="row2.PARTNER_ID " name="commEntityID" nullable="true" type="id_Long"/>
@@ -726,10 +729,8 @@
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries name="PARTNER_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="FILE_RELPATH" nullable="true" type="id_String"/>
         <mapperTableEntries name="RZC_ID" nullable="true" type="id_String"/>
         <mapperTableEntries name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="FILE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="xlsDocTypeLookup" sizeState="INTERMEDIATE">
@@ -807,7 +808,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT vf.LEGACY_DOC_ID, vf.entity_id, vf.legacy_source, vf.PARTNER_ID ,vf.FILE_RELPATH, vf.rzc_id, vf.INSERT_DATE , vf.FILE_NAME &#13;&#10;FROM K2V_DEV.VHP_FILES vf  &#13;&#10;WHERE  vf.LEGACY_SOURCE = 'STDL_FILES'&#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID   &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID = &quot; +context.migrationID+ &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT cms.LEGACY_DOC_ID, cms.entity_id, cms.legacy_source, cms.PARTNER_ID , cms.migration_status_timestamp  &#13;&#10;FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms &#13;&#10;WHERE  cms.LEGACY_SOURCE = 'STDL_FILES'&#13;&#10;and cms.migration_status=100 &#13;&#10;and cms.MIGRATION_ID = &quot; +context.migrationID "/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -830,13 +831,7 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="FILE_RELPATH"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="RZC_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_STATUS_TIMESTAMP"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="FILE_NAME"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
@@ -848,15 +843,12 @@
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="LEGACY_SOURCE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="20" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="500" name="FILE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="192" posY="480">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.LEGACY_DOC_ID = input_row.LEGACY_DOC_ID;&#13;&#10;output_row.ENTITY_ID = input_row.ENTITY_ID;&#13;&#10;output_row.LEGACY_SOURCE = input_row.LEGACY_SOURCE;&#13;&#10;output_row.PARTNER_ID = input_row.PARTNER_ID;&#13;&#10;output_row.FILE_RELPATH = input_row.FILE_RELPATH;&#13;&#10;output_row.RZC_ID = input_row.RZC_ID;&#13;&#10;output_row.MIGRATION_STATUS_TIMESTAMP = input_row.MIGRATION_STATUS_TIMESTAMP;&#13;&#10;output_row.FILE_NAME = input_row.FILE_NAME;&#13;&#10;&#10;String fileName = input_row.FILE_NAME.toLowerCase().trim();&#10;String relPath = input_row.FILE_RELPATH.toLowerCase().trim();&#10;Integer docType;&#10;&#10;if (fileName.matches(&quot;2.?pismo.*&quot;)) {&#10;&#9;docType = 1000049;&#10;} else if (fileName.matches(&quot;2a.?pismo.*&quot;)) {&#10;&#9;docType = 1000050;&#10;} else if (fileName.matches(&quot;3.?zlecen.*&quot;)) {&#10;&#9;docType = 1000051;&#10;} else if (fileName.matches(&quot;7.?operat.*&quot;)) {&#10;&#9;docType = 1000052;&#10;} else if (fileName.matches(&quot;8.?decyz.*&quot;) || fileName.matches(&quot;decyz.*&quot;)) {&#10;&#9;docType = 1000053;&#10;} else if (fileName.matches(&quot;polisa_2000.*&quot;)) {&#10;&#9;docType = 1000054;&#10;} else if (fileName.matches(&quot;.*analiz.*&quot;) || relPath.matches(&quot;.*analiz.*&quot;)) {&#10;&#9;docType = 1000055;&#10;} else if (fileName.matches(&quot;.*protok.*&quot;) || relPath.matches(&quot;.*protok.*&quot;)) {&#10;&#9;docType = 1000056;&#10;} else if (relPath.replace(&quot;ę&quot;,&quot;e&quot;).matches(&quot;.*zdjeci.*&quot;)) {&#10;&#9;docType = 1000057;&#10;} else {&#10;&#9;docType = 1000058;&#10;}&#10;&#13;&#10;output_row.docType = docType;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.LEGACY_DOC_ID = input_row.LEGACY_DOC_ID;&#13;&#10;output_row.ENTITY_ID = input_row.ENTITY_ID;&#13;&#10;output_row.LEGACY_SOURCE = input_row.LEGACY_SOURCE;&#13;&#10;output_row.PARTNER_ID = input_row.PARTNER_ID;&#13;&#10;output_row.MIGRATION_STATUS_TIMESTAMP = input_row.MIGRATION_STATUS_TIMESTAMP;&#13;&#10;&#10;Integer docType=-1;&#10;/*&#10;if (fileName.matches(&quot;2.?pismo.*&quot;)) {&#10;&#9;docType = 1000049;&#10;} else if (fileName.matches(&quot;2a.?pismo.*&quot;)) {&#10;&#9;docType = 1000050;&#10;} else if (fileName.matches(&quot;3.?zlecen.*&quot;)) {&#10;&#9;docType = 1000051;&#10;} else if (fileName.matches(&quot;7.?operat.*&quot;)) {&#10;&#9;docType = 1000052;&#10;} else if (fileName.matches(&quot;8.?decyz.*&quot;) || fileName.matches(&quot;decyz.*&quot;)) {&#10;&#9;docType = 1000053;&#10;} else if (fileName.matches(&quot;polisa_2000.*&quot;)) {&#10;&#9;docType = 1000054;&#10;} else if (fileName.matches(&quot;.*analiz.*&quot;) || relPath.matches(&quot;.*analiz.*&quot;)) {&#10;&#9;docType = 1000055;&#10;} else if (fileName.matches(&quot;.*protok.*&quot;) || relPath.matches(&quot;.*protok.*&quot;)) {&#10;&#9;docType = 1000056;&#10;} else if (relPath.replace(&quot;ę&quot;,&quot;e&quot;).matches(&quot;.*zdjeci.*&quot;)) {&#10;&#9;docType = 1000057;&#10;} else {&#10;&#9;docType = 1000058;&#10;}&#10;*/&#13;&#10;output_row.docType = docType;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="LABEL" value="docType Processing"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -865,10 +857,7 @@
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="LEGACY_SOURCE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="20" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="500" name="FILE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="docType" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
@@ -886,10 +875,11 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="UNIV_DOC_ALL_DATA" name="stdl_out">
+    <metadata comment="" label="UNIV_DOC_ALL_DATA" name="stdl_out">
       <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -902,17 +892,18 @@
       <column comment="" key="false" length="-1" name="docType" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_ArLIsBmqEe6U1bb3f8uPKw - UNIV_DOC_ALL_DATA" name="stdl_out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Numeric.sequence(&quot;doc_seq&quot;,1,1) " name="ID" type="id_Integer"/>
-        <mapperTableEntries expression="row9.LEGACY_DOC_ID " name="LEGACY_ID" type="id_Long"/>
+        <mapperTableEntries expression="row9.LEGACY_DOC_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row9.LEGACY_SOURCE" name="LEGACY_SOURCE" type="id_String"/>
+        <mapperTableEntries name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row9.ENTITY_ID" name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries expression="row9.PARTNER_ID" name="PARTNER_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row9.RZC_ID" name="RZC_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row9.FILE_RELPATH" name="FILE_RELPATH" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row9.FILE_NAME " name="commName" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="RZC_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="FILE_RELPATH" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="commName" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)2" name="inOutTypes" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="TalendDate.getCurrentDate()" name="creationDate" type="id_Date"/>
         <mapperTableEntries name="commEntityID" nullable="true" type="id_Long"/>
@@ -924,13 +915,73 @@
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries name="PARTNER_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="FILE_RELPATH" nullable="true" type="id_String"/>
-        <mapperTableEntries name="RZC_ID" nullable="true" type="id_String"/>
         <mapperTableEntries name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="FILE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries name="docType" nullable="true" type="id_Integer"/>
       </inputTables>
     </nodeData>
+  </node>
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="992" posY="448">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_2"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
+    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
+    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
+    <elementParameter field="TABLE" name="LENGTHS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_SOURCE"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DOC_TYPE_NAME"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="RZC_ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="FILE_RELPATH"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="commName"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="inOutTypes"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="creationDate"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="commEntityID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="remarks"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="docType"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="UNIV_DOC_ALL_DATA" name="tLogRow_2">
+      <column comment="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="500" name="FILE_RELPATH" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="500" name="commName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="inOutTypes" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="creationDate" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="commEntityID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="remarks" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="docType" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+    </metadata>
   </node>
   <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1600" posY="320">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_2"/>
@@ -1192,7 +1243,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select vf.entity_id &#13;&#10;,SUBSTR(vf.FILE_RELPATH, INSTR(vf.FILE_RELPATH, '\\' ,15)+1 ,10)  as polkicy_id &#13;&#10;FROM K2V_DEV.VHP_FILES vf  &#13;&#10;WHERE vf.legacy_source = 'STDL_FILES' &#13;&#10;and 1=0 &#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID   &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID = &quot; +context.migrationID+ &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select cms.entity_id &#13;&#10;,substr(cms.entity_id,1,10)  as polkicy_id &#13;&#10;FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms&#13;&#10;WHERE cms.legacy_source = 'STDL_FILES' &#13;&#10;and cms.migration_status=100 &#13;&#10;and cms.MIGRATION_ID = &quot; +context.migrationID "/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1235,13 +1286,13 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="hsql_referal_list" name="policy_out">
+    <metadata comment="" label="hsql_referal_list" name="policy_out">
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="entityNumber" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="entityExtNum" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_R2BsYEdjEe6TxtejZgbAAQ - hsql_referal_list" name="policy_out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="policy_ref.ENTITY_ID" name="ENTITY_ID" type="id_String"/>
@@ -1343,7 +1394,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select vf.entity_id, SUBSTR(vf.FILE_RELPATH,INSTR(vf.FILE_RELPATH,'\\',15)+1,16) AS claim_id &#13;&#10;FROM K2V_DEV.VHP_FILES vf   &#13;&#10;WHERE vf.legacy_source = 'STDL_FILES'  &#13;&#10;and 1=0 &#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID   &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID = &quot;+context.migrationID+ &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select cms.entity_id,  cms.entity_id AS claim_id &#13;&#10;FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms &#13;&#10;WHERE cms.legacy_source = 'STDL_FILES'  &#13;&#10;and cms.migration_status=100 &#13;&#10;and cms.MIGRATION_ID = &quot;+context.migrationID "/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1428,7 +1479,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH pol AS (SELECT vf.entity_id, SUBSTR(vf.FILE_RELPATH,INSTR(vf.FILE_RELPATH,'\\',15)+1,10) AS policy_id  &#13;&#10;FROM K2V_DEV.VHP_FILES vf&#13;&#10;WHERE LEGACY_SOURCE  = 'STDL_FILES' &#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID   &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID = &quot; +context.migrationID+ &quot;)&#13;&#10;) &#13;&#10;SELECT pol.entity_id,   CAST(p.ID__MY_PARTNER__PARTNER AS varchar2(7)) AS partner_id &#13;&#10;FROM  pol &#13;&#10;INNER JOIN MY_POLICY.POLICY p ON p.id = pol.policy_id&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH pol AS (select cms.entity_id &#13;&#10;,substr(cms.entity_id,1,10)  as policy_id &#13;&#10;FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms&#13;&#10;WHERE cms.legacy_source = 'STDL_FILES' &#13;&#10;and cms.migration_status=100 &#13;&#10;and cms.MIGRATION_ID = &quot; +context.migrationID + &quot; &#13;&#10;) &#13;&#10;SELECT pol.entity_id,   CAST(p.ID__MY_PARTNER__PARTNER AS varchar2(7)) AS partner_id &#13;&#10;FROM  pol &#13;&#10;INNER JOIN MY_POLICY.POLICY p ON p.id = pol.policy_id&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1513,7 +1564,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT vf.entity_id, cast(dd.REF_ID as varchar2(10)) as policy_id &#13;&#10;FROM MY_DOCUMENT.DMS_DOCUMENT dd &#13;&#10;JOIN K2V_DEV.VHP_FILES vf ON vf.LEGACY_DOC_ID = dd.ID AND vf.LEGACY_SOURCE = 'DMS_DOC' &#13;&#10;WHERE dd.ID_DMS_DOCUMENT_GROUP = 3&#13;&#10;AND EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID   &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID =&quot; +context.migrationID +&quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT cms.entity_id, cast(dd.REF_ID as varchar2(10)) as policy_id &#13;&#10;FROM MY_DOCUMENT.DMS_DOCUMENT dd &#13;&#10;JOIN K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms ON cms.LEGACY_DOC_ID = dd.ID AND cms.LEGACY_SOURCE = 'DMS_DOC' &#13;&#10;WHERE dd.ID_DMS_DOCUMENT_GROUP = 3&#13;&#10;AND cms.migration_status=100 &#13;&#10;and cms.MIGRATION_ID =&quot; +context.migrationID "/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1598,7 +1649,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT vf.entity_id, cast(vf.partner_id as varchar2(8)) as partner_id &#13;&#10;FROM K2V_DEV.VHP_FILES vf &#13;&#10;WHERE vf.LEGACY_SOURCE = 'DMS_DOC' &#13;&#10;AND EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID   &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID =&quot; +context.migrationID +&quot;)&quot;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT cms.entity_id, cast(cms.partner_id as varchar2(8)) as partner_id &#13;&#10;FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms &#13;&#10;WHERE cms.LEGACY_SOURCE = 'DMS_DOC' &#13;&#10;AND cms.migration_status=100 &#13;&#10;and cms.MIGRATION_ID =&quot; +context.migrationID &#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1683,7 +1734,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT vf.entity_id, case when vf.legacy_source = 'Agent_XLSX' then 'MIG_MP-'||cast(vf.partner_id as varchar2(7)) &#13;&#10;when  vf.legacy_source = 'Rzecz_XLSX' then 'MIG_MR-'||vf.RZC_ID end as partner_id&#13;&#10;FROM K2V_DEV.VHP_FILES vf  &#13;&#10;WHERE vf.LEGACY_SOURCE in  ( 'Agent_XLSX', 'Rzecz_XLSX') &#13;&#10;AND EXISTS (SELECT 1 FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms WHERE cms.ENTITY_ID  = vf.ENTITY_ID   &#13;&#10;&#9;&#9;&#9;and cms.MIGRATION_ID =&quot; +context.migrationID +&quot;)&quot;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT cms.entity_id, case when cms.legacy_source = 'Agent_XLSX' then 'MIG_MP-'||cast(cms.partner_id as varchar2(7)) &#13;&#10;when  cms.legacy_source = 'Rzecz_XLSX' then 'MIG_MR-'||cms.RZC_ID end as partner_id&#13;&#10;FROM K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms &#13;&#10;WHERE cms.LEGACY_SOURCE in  ( 'Agent_XLSX', 'Rzecz_XLSX') &#13;&#10;AND cms.migration_status = 100 &#13;&#10;and cms.MIGRATION_ID =&quot; +context.migrationID &#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1747,17 +1798,17 @@
   </node>
   <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1024" posY="704">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
-    <elementParameter field="RADIO" name="BASIC_MODE" value="true"/>
-    <elementParameter field="RADIO" name="TABLE_PRINT" value="false"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
     <elementParameter field="RADIO" name="VERTICAL" value="false"/>
     <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
     <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
     <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;|&quot;"/>
-    <elementParameter field="CHECK" name="PRINT_HEADER" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_COLNAMES" value="false"/>
-    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
     <elementParameter field="TABLE" name="LENGTHS" show="false">
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="LENGTH" value="10"/>
@@ -1768,6 +1819,7 @@
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="LABEL" value="refferal_list"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="hsql_referal_list" name="tLogRow_1">
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1917,6 +1969,10 @@
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tUnite_1" offsetLabelX="0" offsetLabelY="0" source="tUnite_1" target="tHSQLDbOutput_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
+  </connection>
+  <connection connectorName="FLOW" label="row10" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row10"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
@@ -2188,13 +2244,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_871d8be2-71e5-43d4-bd0b-7fc2fc16aee7"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>uXKbAgp3YvSrtmrtmsf+Fk4OvsMDNBap/Ygfk9oaqgD1oL1r9V/FY1q3yQRqOsqpOseZcPQq6w0B&#13;
-4O+a7DMYHA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0c65360e-11a2-4771-ba4a-128cfd69095f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VRqaRqh/qjKDRLNEWLRJipEssk+ypuTHqTZNFzSK63sVvAwnm0GlOyU5goecngvnTMDDSAAETKLQ&#13;
-JFwiRKDDEA==</DigestValue></Reference></SignedInfo><SignatureValue>Ha38k1HqWR+0x8nYydd4aFyC3+ZoP4B/ncFisf/sq+Gvyp34509uwJDF4tt57kmPr3R4nw5u5TGF&#13;
-KwNckqdCqvsEbH+7bTNaY3ZF0WIcC0xPIwuOGvuH+XpOzuk85omBBdCJU6tsdmaXsfPcj39Bn8Xi&#13;
-TGgWDqJBYI5NCCqTAee2akdo+UFo0BB8poj1VTO35IYJI44hdEJXz/8REANzILFJ/rhHoCLurZ14&#13;
-DrS2M7ybxQhdEuv+wynCTBUDAtl3YSCK/iZCwLpX8Yrh1hJoADsPhRGEPoA9JnDrohbQ3N7YH2Wt&#13;
-li2JA+C/NbIW/47ZLwRlSewmNNdXyfRkLwTGCg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_4c963944-2394-4029-a3dd-f6c83e64deb4"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>hbDYSXSSRQonNM7X8S37H7uIDDOQ3MLCi0ZlvwXgMi9n9lh4/D1VH+BdsSqozRF3onVaOoJiD/oD&#13;
+8FLaamjNlA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_4a28ad4a-84ca-4365-b2a8-58c6eec14880"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>L63yfSmKjXD75sbfedhWBx5mx9InAFpk80QhsrcbqmrgHUNMWiUgw5mYpElZpXvmeAiqSIx/B9Vw&#13;
+mQHtxY4j5g==</DigestValue></Reference></SignedInfo><SignatureValue>hmFwvFTV2Su0704YPNTqNC/FrxdD+kAsmB0QpVSRFFmaYWqChoyuh+g+kLNnu5aGWEeC4zDXLzZa&#13;
+oQosGkD7W0ecpypNMcWnKH8MQeba4DGt4n3NKwY6F0zFN2px8WLZuPGx8kE+Afgv8pr7XhTC9O3O&#13;
+dvYGhuDN4bkETvx8cotxUWlXFt54SmRMJYcLXflMGH7DH+AtHcashoAxi+Fgqx2X6S94CmJIWbbq&#13;
+UsZcod+UrEOwgSSxKI6LGnmxWETLEXiDVD7ssf8rWqFJsMGbhkQjh2QEzS8eJBaNLhr8YYMEs3Qj&#13;
+t9qSinhG3ikXdR67GbYzUXEqJRmydRNWCkA7UQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2216,4 +2272,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0c65360e-11a2-4771-ba4a-128cfd69095f" Target="#_871d8be2-71e5-43d4-bd0b-7fc2fc16aee7"><Timestamp>2023-10-31 07:18:43</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_4a28ad4a-84ca-4365-b2a8-58c6eec14880" Target="#_4c963944-2394-4029-a3dd-f6c83e64deb4"><Timestamp>2023-11-09 13:59:44</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
