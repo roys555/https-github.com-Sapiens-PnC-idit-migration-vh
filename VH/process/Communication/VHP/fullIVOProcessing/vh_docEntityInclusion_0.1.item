@@ -902,7 +902,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#10;  ENTITY_ID, &#10;  PARTNER_ID, &#10;  RZC_ID, &#10;  LEGACY_SOURCE, &#10;  XLS_DOC_TYPE&#10;FROM K2V_DEV.VHP_FILES&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#10;  ENTITY_ID, &#10;  PARTNER_ID, &#10;  RZC_ID, &#10;  LEGACY_SOURCE, &#13;&#10;  LEGACY_DOC_ID,&#10;  XLS_DOC_TYPE&#10;FROM K2V_DEV.VHP_FILES&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -925,6 +925,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_SOURCE"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_DOC_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="XLS_DOC_TYPE"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
@@ -945,6 +947,7 @@
       <column comment="" key="false" length="20" name="LEGACY_SOURCE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
+      <column comment="" key="false" length="-1" name="LEGACY_DOC_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="200" name="XLS_DOC_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
@@ -969,6 +972,10 @@
       <elementValue elementRef="FUNCTION" value="count"/>
       <elementValue elementRef="INPUT_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="IGNORE_NULL" value="false"/>
+      <elementValue elementRef="OUTPUT_COLUMN" value="LEGACY_DOC_ID"/>
+      <elementValue elementRef="FUNCTION" value="max"/>
+      <elementValue elementRef="INPUT_COLUMN" value="LEGACY_DOC_ID"/>
+      <elementValue elementRef="IGNORE_NULL" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LIST_DELIMITER" value="&quot;,&quot;"/>
     <elementParameter field="CHECK" name="USE_FINANCIAL_PRECISION" value="true"/>
@@ -988,6 +995,7 @@
       <column comment="" key="false" length="20" name="LEGACY_SOURCE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
+      <column comment="" key="false" length="-1" name="LEGACY_DOC_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="200" name="XLS_DOC_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
@@ -1054,7 +1062,7 @@
         <mapperTableEntries name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row4.PARTNER_ID " name="PARTNER_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row4.RZC_ID " name="RZC_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="" name="LEGACY_DOC_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row4.LEGACY_SOURCE.equals(&quot;DMS_DOC&quot;)?(long)row4.LEGACY_DOC_ID:null " name="LEGACY_DOC_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row4.LEGACY_SOURCE " name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row4.XLS_DOC_TYPE " name="DOC_TYPE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Integer"/>
@@ -1069,6 +1077,7 @@
         <mapperTableEntries name="PARTNER_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="RZC_ID" nullable="true" type="id_String"/>
         <mapperTableEntries name="LEGACY_SOURCE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="LEGACY_DOC_ID" nullable="true" type="id_Integer"/>
         <mapperTableEntries name="XLS_DOC_TYPE" nullable="true" type="id_String"/>
         <mapperTableEntries name="files_count" nullable="true" type="id_Integer"/>
       </inputTables>
@@ -1302,6 +1311,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="copyOfout"/>
   </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tAggregateRow_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="LEGACY_DOC_ID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
@@ -1323,6 +1337,9 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="LEGACY_SOURCE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="LEGACY_DOC_ID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -1359,13 +1376,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_6667929e-0504-4564-a664-5cff2869a89a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>1/J7Tblzlj/T/JsbksXRC0XvqrvsaCaD8ZZW2xdJF4C6oPHyEs5vS6mfh63UxBp/D4iSqFhu6N3M&#13;
-gN7b7zgwzQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_e5d3dd1f-596a-487a-8f4a-4e6a8c92a51e"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>6NVjgj0WKqxdZlVT6nk5CsWpugPlD/austrVU6kCg9KnXgdhBfhj/cuJBpAxp2UFeIEjRcx/6Yof&#13;
-p0iYJawupg==</DigestValue></Reference></SignedInfo><SignatureValue>Ps4LnArhJt9bio1R0ZpTtuJB8ZJ/aLhFsCtS/4O2NRzO6eknp7AmxUoXNU+bX7wkKWRmnw5O8nzS&#13;
-hir58BrA2NLBEOyfdPAQIMQ92BM+lwEYZvPSpjVJa7QrjpBeJ+1wMJVR+CFYtHFa4FZhLnRYoXx5&#13;
-AmY0OUMYpSaHNMtNyidsGo3cC+63aH0o4gVS2C6wjgGvzSYERSMpcM8G3k2Z/F2UmNKDw+PbKmbF&#13;
-TOkv+QkugjYfDyzg3xeCF6LeNlz28cEWfguJqx8JUcoQSYsgeUDI4MRFDbo0TwF4oV4MA/g5wo8B&#13;
-kP+0HGiSbVJ4V8cDa4Ial05K4Ka5BGSlUFWjDg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b5af6607-d96d-489c-8f6c-e3bd313844f6"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>5/hhZTeDBSFo56ApNQ5MQ8o0Z7Kn0nYXHdOBbvMXMD52JsrWhlKURKY2PL9GkDZpx7dngn7CdW/e&#13;
+1AxmJd/Ajw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_dc3cd22b-f211-400c-a216-c3428ca28477"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>LC/6baFpWcsZ73p0yskM6WgM7bYCbVCAjUGDKHbD05Zx+4Ba5XpuCga5eoteuvXTJVEAId6F8c5K&#13;
+Ol4yw4D/TQ==</DigestValue></Reference></SignedInfo><SignatureValue>U/023su4vA3WM3gM6IONbHUOr4Rwcun5K9KLDEZWzEPa5hvd93rLiCC2qfNjkL8x9mHgTuQp3icL&#13;
+C0XWigoCR560ExMkkrDGAEHeCt5OInAmYHy7IdjTr5k2dnj5QDGeCy0lSoYfrkrqVVH0Nj7rBS+0&#13;
+0apONnp7/51FSijCW7TwjbMPyOQgCkl4X3paDKF/75+AFRG5ms/uw6JhYcV0GFLWslN5vAimrJ9/&#13;
+zYxG8ZNNloK4anDSlkftNuswnk81e92ICKDzgHdLoMsxDPQkqcTEa+27BYmb1cX38DIvrHr8sMwN&#13;
+VOAF+b5IKOogXvbvqHUYzsKLs6OdDY9AodlclA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1387,4 +1404,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_e5d3dd1f-596a-487a-8f4a-4e6a8c92a51e" Target="#_6667929e-0504-4564-a664-5cff2869a89a"><Timestamp>2023-11-09 08:47:26</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_dc3cd22b-f211-400c-a216-c3428ca28477" Target="#_b5af6607-d96d-489c-8f6c-e3bd313844f6"><Timestamp>2023-11-09 12:49:50</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
