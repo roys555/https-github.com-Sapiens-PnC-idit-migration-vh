@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="6032"/>
+    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="6046"/>
     <contextParameter comment="Path to directory where you want to save generated contact XMLs." internalId="_s-hx8cTFEe2kmaNIdZptpQ" name="PATH_contactXMLOutputDirectory" prompt="PATH_contactXMLOutputDirectory?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:/VHmigration/ClaimXMLs/PL_Claim&quot;"/>
     <contextParameter comment="Prefix used for identyfing migration scope" internalId="_s-hx8sTFEe2kmaNIdZptpQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
-    <contextParameter comment="Name for 'total' HSQLDB" internalId="_q44TEMTQEe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;projAGR&quot;"/>
+    <contextParameter comment="Name for 'total' HSQLDB" internalId="_q44TEMTQEe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;totalHSQLDB&quot;"/>
     <contextParameter comment="Set to true to add migrationID to externals and filename" internalId="_tqFAcMciEe2DoJT7zYL8TA" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
     <contextParameter comment="" internalId="_7XL4kNhYEe2V4YqPxc1dgg" name="addFileNameSuffix" prompt="addFileNameSuffix?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
     <contextParameter comment="" internalId="_y2EAINz6Ee2V84x0nDMnFw" name="maskFlag" prompt="maskFlag?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="false"/>
@@ -241,7 +241,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT UPPER(CLAIM_NUMBER ) as ENTITY_ID,&#13;&#10; UPPER(CLAIM_NUMBER ) as CLAIM_NUMBER, POLICY_NUMBER , CLAIM_DATE, RISK, CROP_TYPE_CODE,VOIVODESHIP,COUNTY, COMMUNE  &#13;&#10;FROM  K2V_dev.SRC_PL_CLAIM spc&#13;&#10; WHERE POLICY_NUMBER  ='2000015184'&#13;&#10; &quot; "/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  ENTITY_ID, LEGACY_ID, POLICY_NUMBER&#13;&#10;FROM  K2V_dev.CLAIM_MIGRATION_STATUS&#13;&#10; WHERE POLICY_NUMBER  ='2000015184'&#13;&#10;AND MIGRATION_STATUS =100&#13;&#10;AND MIGRATION_ID =&#13;&#10; &quot; + context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -312,7 +312,7 @@
     <elementParameter field="CHECK" name="TRANSMIT_WHOLE_CONTEXT" value="true"/>
     <elementParameter field="TABLE" name="CONTEXTPARAMS">
       <elementValue elementRef="PARAM_NAME_COLUMN" value="LegacyID"/>
-      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Long)globalMap.get(&quot;row1.PARTNER_ID&quot;))"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Long)globalMap.get(&quot;row1.LEGACY_ID&quot;))"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="migrationID"/>
       <elementValue elementRef="PARAM_VALUE_COLUMN" value="context.migrationID"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="EntityID"/>
@@ -741,8 +741,6 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="main"/>
   </connection>
-  <note opaque="true" posX="928" posY="128" sizeHeight="64" sizeWidth="449" text="Partner role temporarrly set not correctly for s2s reason"/>
-  <note opaque="true" posX="928" posY="64" sizeHeight="64" sizeWidth="449" text="First run agr_pre_jobs in fullIVOProcessing folder"/>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -768,13 +766,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a86f8fe5-4aad-410a-9c61-26f476c50dae"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>cBPORmCGU4Fbs9fEnaz9Cm7zl5CdT6oa3a+pJssniiC57iWfJVU2JR8TZX02mmcVHaUl3Dv2iwH4&#13;
-XKLj1o6wYA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8cfda5ae-fb10-4c01-824e-1ffc4ef40707"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>g82xmBGngzweBK8QPlAtNHAaUl8+HyCiLmLqgYKwLU5IEzZn7yr0nZB5IzeuBi7ZkFMFNbgmTpyf&#13;
-8q/vkL1+aQ==</DigestValue></Reference></SignedInfo><SignatureValue>HIWC8LsidReUb1Fp2w/RnsIDHxdqEZhXEoj9rQNU/OPh+vhliI61CVnB9gW6nbeSw+DCbPPrcVJe&#13;
-28myMZHSkZSmXf4rrXJpvtU/g0wxUXFAxiM6TLD46z9+70EORgBA9bk3UG4BQahXIRh7U8M/xZqj&#13;
-NigqBoIHhIQPxmFSGGp4ubPS2kywheDMdtDahN8w9HrGzI/I281HoQoFK5E/e43QvHceuuB+7CqM&#13;
-R8Alu0+sgu4rURGX90YfzL3eTyM/bID6ggT8woKifMFJrkNiw51hoYv+O0cXu2Bs9TNYpIkHm5VE&#13;
-bUWMTgY1Tl6iTfVt4yt6YjODqcF9frB97jHI6w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_fd02b00b-c675-403d-ac23-1a622195b22b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>DNkcQyars+RVasLkVTQf8E8ZvuDJbhZRPLqjawGqh8kSXQ79ow3Y0WyLNIJjgzmVOtvIoKfe+Pnl&#13;
+8is2TEgKtA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5e021aa3-3c3f-4488-a254-b2746798933b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>MQF0Lw3xudrWX5X58P5cIwXeT7ShH0zFVKyItPm8Hve6rPw08XfY1s+utVc+o2F3jAztUkZNabs4&#13;
+xG3zfXJ9yw==</DigestValue></Reference></SignedInfo><SignatureValue>makdwjBe2RgvuKpMfWUIUN5oz1DgASyeDAxerm3vUW9WBNnaK+5VR5lAR6D+a9v0mQlyOHRKoiFB&#13;
+8pdjjETIZQUtFI/gE70+LftNXQJdGn9ww8Qnf2YKDkkJJjteYWlg2xItfcsE5DehAgCdqZ1kua0r&#13;
+nXz73MGOg2lkI2sGYQnd8pwmZNq1D4XEZdb56jCzXz3qtALnS3HeVzxn6VbHBXxBAwO/Cw5w3gzR&#13;
+9rzbevLWhjbBc1pdf+tc3ezD2KzmSyaO/8gBur6qAeYml/d2DKUaCJ6nnT+632Kx2INAm3eootc5&#13;
+RhzYACUx4F+xOLJJg2xL+7R4iHbWv8t6CuX7GA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -796,4 +794,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8cfda5ae-fb10-4c01-824e-1ffc4ef40707" Target="#_a86f8fe5-4aad-410a-9c61-26f476c50dae"><Timestamp>2023-11-09 10:52:54</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5e021aa3-3c3f-4488-a254-b2746798933b" Target="#_fd02b00b-c675-403d-ac23-1a622195b22b"><Timestamp>2023-11-10 10:19:24</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
