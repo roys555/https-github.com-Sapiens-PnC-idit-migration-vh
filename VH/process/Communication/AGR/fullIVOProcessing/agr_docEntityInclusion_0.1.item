@@ -142,7 +142,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.PAR_PARTNER_NR ,null as KDA_DATEINAME  , null as KDA_VERZEICHNIS &#13;&#10;,k.KOR_ARCHIVIERUNG_ID &#13;&#10;from SEV.KORRESPONDENZ k &#13;&#10;--inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;&quot;+context.sql_query+&quot; &#13;&#10;and exists (select 1 from k2v_dev.agronomis_scope a where a.par_partner_nr = k. PAR_PARTNER_NR)  &#13;&#10;and exists (select 1 from K2V_DEV.AGRONOMIS_FILES af where af.ARCHIWIRUNG_ID = k.KOR_ARCHIVIERUNG_ID) &#13;&#10;and k.KOR_EMAIL_ABSENDER IS  NULL&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;select k.KOR_KORRESPONDENZ_NR, k.PAR_PARTNER_NR ,null as KDA_DATEINAME  , null as KDA_VERZEICHNIS &#13;&#10;,k.KOR_ARCHIVIERUNG_ID , (select count(1) from K2V_DEV.AGRONOMIS_FILES fs where fs.ARCHIWIRUNG_ID = k.KOR_ARCHIVIERUNG_ID) as no_files &#13;&#10;from SEV.KORRESPONDENZ k &#13;&#10;--inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;&quot;+context.sql_query+&quot; &#13;&#10;and exists (select 1 from k2v_dev.agronomis_scope a where a.par_partner_nr = k. PAR_PARTNER_NR)  &#13;&#10;and exists (select 1 from K2V_DEV.AGRONOMIS_FILES af where af.ARCHIWIRUNG_ID = k.KOR_ARCHIVIERUNG_ID) &#13;&#10;and k.KOR_EMAIL_ABSENDER IS  NULL&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -167,6 +167,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="KOR_ARCHIVIERUNG_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="no_files"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -178,6 +180,7 @@
       <column comment="" key="false" length="120" name="KDA_DATEINAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="128" name="KDA_VERZEICHNIS" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="KOR_ARCHIVIERUNG_ID" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="no_files" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="288" posY="64">
@@ -195,7 +198,7 @@
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_Inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="COMMUNICATION_MIGRATION_STATUS" name="copyOfout_1" type="TABLE">
+    <metadata comment="" label="COMMUNICATION_MIGRATION_STATUS" name="copyOfout_1" type="TABLE">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
@@ -243,7 +246,7 @@
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_tTaV8LnGEe2a4PO8eXSf6g - COMMUNICATION_MIGRATION_STATUS" name="copyOfout_1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Long"/>
@@ -259,7 +262,7 @@
         <mapperTableEntries name="MIGRATION_ERROR" nullable="true" type="id_String"/>
         <mapperTableEntries name="ERROR_CODE" nullable="true" type="id_String"/>
         <mapperTableEntries name="IDIT_DOCID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="NO_FILES" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="row4.no_files " name="NO_FILES" nullable="true" type="id_Integer"/>
         <mapperTableEntries name="NO_EMAILS" nullable="true" type="id_Integer"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row4" sizeState="INTERMEDIATE">
@@ -268,6 +271,7 @@
         <mapperTableEntries name="KDA_DATEINAME" nullable="true" type="id_String"/>
         <mapperTableEntries name="KDA_VERZEICHNIS" nullable="true" type="id_String"/>
         <mapperTableEntries name="KOR_ARCHIVIERUNG_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries name="no_files" nullable="true" type="id_Integer"/>
       </inputTables>
     </nodeData>
   </node>
@@ -343,7 +347,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.PAR_PARTNER_NR ,null as KDA_DATEINAME  , null as KDA_VERZEICHNIS &#13;&#10;,k.KOR_ARCHIVIERUNG_ID &#13;&#10;from SEV.KORRESPONDENZ k &#13;&#10;--inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;&quot;+context.sql_query+&quot; &#13;&#10;and exists (select 1 from k2v_dev.agronomis_scope a where a.par_partner_nr = k. PAR_PARTNER_NR)  &#13;&#10;and not exists (select 1 from K2V_DEV.AGRONOMIS_FILES af where af.ARCHIWIRUNG_ID = k.KOR_ARCHIVIERUNG_ID) &#13;&#10;and k.KOR_EMAIL_ABSENDER IS not  NULL&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.PAR_PARTNER_NR ,null as KDA_DATEINAME  , null as KDA_VERZEICHNIS &#13;&#10;,k.KOR_ARCHIVIERUNG_ID , '' as no_files&#13;&#10;from SEV.KORRESPONDENZ k &#13;&#10;--inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;&quot;+context.sql_query+&quot; &#13;&#10;and exists (select 1 from k2v_dev.agronomis_scope a where a.par_partner_nr = k. PAR_PARTNER_NR)  &#13;&#10;and not exists (select 1 from K2V_DEV.AGRONOMIS_FILES af where af.ARCHIWIRUNG_ID = k.KOR_ARCHIVIERUNG_ID) &#13;&#10;and k.KOR_EMAIL_ABSENDER IS not  NULL&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -368,6 +372,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="KOR_ARCHIVIERUNG_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="no_files"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -379,6 +385,7 @@
       <column comment="" key="false" length="120" name="KDA_DATEINAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="128" name="KDA_VERZEICHNIS" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="KOR_ARCHIVIERUNG_ID" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="no_files" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="288" posY="160">
@@ -396,7 +403,7 @@
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_Inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="COMMUNICATION_MIGRATION_STATUS" name="copyOfout_2" type="TABLE">
+    <metadata comment="" label="COMMUNICATION_MIGRATION_STATUS" name="copyOfout_2" type="TABLE">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
@@ -444,7 +451,7 @@
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_tTaV8LnGEe2a4PO8eXSf6g - COMMUNICATION_MIGRATION_STATUS" name="copyOfout_2" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Long"/>
@@ -469,6 +476,7 @@
         <mapperTableEntries name="KDA_DATEINAME" nullable="true" type="id_String"/>
         <mapperTableEntries name="KDA_VERZEICHNIS" nullable="true" type="id_String"/>
         <mapperTableEntries name="KOR_ARCHIVIERUNG_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries name="no_files" nullable="true" type="id_Integer"/>
       </inputTables>
     </nodeData>
   </node>
@@ -493,7 +501,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.PAR_PARTNER_NR ,null as KDA_DATEINAME  , null as KDA_VERZEICHNIS &#13;&#10;,k.KOR_ARCHIVIERUNG_ID &#13;&#10;from SEV.KORRESPONDENZ k &#13;&#10;--inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;&quot;+context.sql_query+&quot; &#13;&#10;and exists (select 1 from k2v_dev.agronomis_scope a where a.par_partner_nr = k. PAR_PARTNER_NR)  &#13;&#10;and exists (select 1 from K2V_DEV.AGRONOMIS_FILES af where af.ARCHIWIRUNG_ID = k.KOR_ARCHIVIERUNG_ID) &#13;&#10;and k.KOR_EMAIL_ABSENDER IS not  NULL&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.PAR_PARTNER_NR ,null as KDA_DATEINAME  , null as KDA_VERZEICHNIS &#13;&#10;,k.KOR_ARCHIVIERUNG_ID ,  (select count(1) from K2V_DEV.AGRONOMIS_FILES fs where fs.ARCHIWIRUNG_ID = k.KOR_ARCHIVIERUNG_ID) as no_files &#13;&#10;from SEV.KORRESPONDENZ k &#13;&#10;--inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;&quot;+context.sql_query+&quot; &#13;&#10;and exists (select 1 from k2v_dev.agronomis_scope a where a.par_partner_nr = k. PAR_PARTNER_NR)  &#13;&#10;and exists (select 1 from K2V_DEV.AGRONOMIS_FILES af where af.ARCHIWIRUNG_ID = k.KOR_ARCHIVIERUNG_ID) &#13;&#10;and k.KOR_EMAIL_ABSENDER IS not  NULL&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -518,6 +526,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="KOR_ARCHIVIERUNG_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="no_files"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -529,6 +539,7 @@
       <column comment="" key="false" length="120" name="KDA_DATEINAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="128" name="KDA_VERZEICHNIS" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="KOR_ARCHIVIERUNG_ID" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="no_files" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="288" posY="256">
@@ -546,7 +557,7 @@
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_Inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="COMMUNICATION_MIGRATION_STATUS" name="copyOfout_0" type="TABLE">
+    <metadata comment="" label="COMMUNICATION_MIGRATION_STATUS" name="copyOfout_0" type="TABLE">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
@@ -594,7 +605,7 @@
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_tTaV8LnGEe2a4PO8eXSf6g - COMMUNICATION_MIGRATION_STATUS" name="copyOfout_0" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Long"/>
@@ -610,7 +621,7 @@
         <mapperTableEntries name="MIGRATION_ERROR" nullable="true" type="id_String"/>
         <mapperTableEntries name="ERROR_CODE" nullable="true" type="id_String"/>
         <mapperTableEntries name="IDIT_DOCID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="NO_FILES" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="row2.no_files " name="NO_FILES" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="1" name="NO_EMAILS" nullable="true" type="id_Integer"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
@@ -619,6 +630,7 @@
         <mapperTableEntries name="KDA_DATEINAME" nullable="true" type="id_String"/>
         <mapperTableEntries name="KDA_VERZEICHNIS" nullable="true" type="id_String"/>
         <mapperTableEntries name="KOR_ARCHIVIERUNG_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries name="no_files" nullable="true" type="id_Integer"/>
       </inputTables>
     </nodeData>
   </node>
@@ -643,8 +655,6 @@
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="NONE"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="Warning : this component configuration will automatically generate a commit before data insert/update/delete"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g - COMMUNICATION_MIGRATION_STATUS"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -776,7 +786,7 @@
       <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="6" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
@@ -791,10 +801,10 @@
       <column comment="" key="false" length="-1" name="IDIT_DOCID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" defaultValue="0" key="false" length="-1" name="NO_FILES" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" defaultValue="0" key="false" length="-1" name="NO_FILES" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" defaultValue="0" key="false" length="-1" name="NO_EMAILS" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" defaultValue="0" key="false" length="-1" name="NO_EMAILS" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
     </metadata>
@@ -823,7 +833,7 @@
       <column comment="" key="false" length="200" name="DOC_TYPE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="6" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
@@ -838,10 +848,10 @@
       <column comment="" key="false" length="-1" name="IDIT_DOCID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" defaultValue="0" key="false" length="-1" name="NO_FILES" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" defaultValue="0" key="false" length="-1" name="NO_FILES" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" defaultValue="0" key="false" length="-1" name="NO_EMAILS" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" defaultValue="0" key="false" length="-1" name="NO_EMAILS" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -1237,6 +1247,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="KOR_ARCHIVIERUNG_ID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="no_files"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
@@ -1305,6 +1318,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tMap_5">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="no_files"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
@@ -1324,6 +1342,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="copyOfout_2"/>
   </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tMap_2">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="no_files"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
@@ -1386,13 +1409,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a49307b8-0c3d-41b0-adfb-d546493213c4"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Sjg19BZJ70WVpKInG3+trnNme4UZOFNL3qFWHxibfVt/5vjJfgk25fUrot0xaYw5V9NaVc1NneU8&#13;
-YcPauxHW2w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d3fb857d-f402-4286-89f0-b8562b5882a4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>y/MdH0wUkxWyA3FurvX5Q6OAzBmYxgUSBlmCArX8qhq4B9NNVt+Ce7gWCKWemnbI+weeleVECS4h&#13;
-RFAgHD5KDA==</DigestValue></Reference></SignedInfo><SignatureValue>Vq/ZWCdr+QO3Rf+qlwqIzN1V/qGfDmod2zVYEYD2CdWe1STFtBMS2N4/8HThqGVoyvRQkyIcAfSB&#13;
-CMrST+xqhiivi2JZWxSxLx5NPBs0g/uZ8VQfeTRNMZWh8s3rY+QBxumb2p8RxZvKbxe6bpetNuFF&#13;
-oNuIdk4QulMPvLKSuacFSbtC2G4chb+t22INLXMfyrIq89a1MOce1l+dApqiVxUjlFS/uASJRIx1&#13;
-YecYMZqifU+RUVbxB6dFCxtkxFXcBf1rt3NoYpecVLIjIne59qtVeJPMVQLsyvk35eQUz0wb+IyX&#13;
-olGsTQIIJVej6IfpWcgiL0xZL2duU3P/2U7g3w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_68fc8fa4-6714-403f-8c48-d0a251fa4dc3"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Vf9PS5q0rKDvt4tn6b1xeVvD5JxPrGBUd527lLHSRFHPWJ5VhOkZWUKzAHoghwhoRWV9oi0jLDOL&#13;
+5dedfgdr7Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0805ddb7-a06d-4775-aced-6d1b2674763a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>6flKradRjYKvFXpHgE1fgoKrPCqVnJ3o0x8/YFdVdMKZMIdbkKN13jJ4imr44UnEdsquS6KOXDA4&#13;
+hmn1xyfrkA==</DigestValue></Reference></SignedInfo><SignatureValue>bjKd6io7OnCo1iDOrRtHY+RZk+uqWyeo6GlXgFOMu+VA9UIPSaG9Q1RXfo9ZvUkNk+hpQNuvWRm5&#13;
+JvIv+w7h3NoXGwRvhgUhHkxPa8nHynD+DvGY/qchkeczZJzMV+FtczeXa+2a16cg4fWd3fLCuS+9&#13;
+8weEVG3xiQbfWoTxgGJhGHtH0KSdzp2t4jhbuxBtAQ8VVEdiVYEqSQdZvgFZbbV32b0uobmZ7aby&#13;
+Dwe6dTm9iZL3OJ/juNsAi2MM6lwec+OsIIOczHYNAMpIJ0W3Umc/wrnn0nyvHz4Qd6gdjcXuu6qL&#13;
+8Xv4WDzlvjrr4Ut9GZe0wP7/vvSC+LyU1Zq1TA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1414,4 +1437,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d3fb857d-f402-4286-89f0-b8562b5882a4" Target="#_a49307b8-0c3d-41b0-adfb-d546493213c4"><Timestamp>2023-11-16 10:09:28</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0805ddb7-a06d-4775-aced-6d1b2674763a" Target="#_68fc8fa4-6714-403f-8c48-d0a251fa4dc3"><Timestamp>2023-11-16 10:47:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
