@@ -1609,7 +1609,7 @@
       <column comment="" key="false" length="50" name="remarks" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row13.PARTNERID" name="PARTNERID" type="id_Long"/>
@@ -2213,7 +2213,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;Select ID as PARTNER_NR, AEN_DATUM as effectiveDate &#13;&#10;from MY_PARTNER.PARTNER p &#13;&#10;where p.ID_PARTNER_TYPE IN (3,4,6,7,8) &#13;&#10;and EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = p.ID &#13;&#10;&#9;&#9;&#9;  &#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID = &quot; + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;Select ID as PARTNER_NR, 5 as role_id, 'Intermediary' as role_description, ANL_DATUM as effectiveDate &#13;&#10;from MY_PARTNER.PARTNER p &#13;&#10;where p.ID_PARTNER_TYPE IN (3,4,6,7,8) &#13;&#10;and EXISTS (&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;SELECT 1 &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;WHERE cms.PARTNER_ID = p.ID &#13;&#10;&#9;&#9;&#9;  &#9;&#9;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID = &quot; + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2230,6 +2230,10 @@
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="role_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="role_description"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="EFFECTIVEDATE"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
@@ -2239,6 +2243,8 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_9">
       <column comment="" key="false" length="38" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="role_id" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="role_description" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="EFFECTIVEDATE" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
@@ -2272,6 +2278,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="role_id"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="role_description"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="EFFECTIVEDATE"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -2283,10 +2299,14 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="HSQLRoleSelection" name="tHSQLDbOutput_11">
       <column comment="" key="false" length="38" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="role_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="role_description" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="EFFECTIVEDATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="HSQLRoleSelection" name="REJECT">
       <column comment="" key="false" length="38" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="role_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="role_description" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="EFFECTIVEDATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -2337,6 +2357,7 @@
   <node componentName="tOracleClose" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="608" posY="64">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBClose_1"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tHSQLDbOutput_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -2478,14 +2499,14 @@
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_9" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_9" target="tRunJob_2">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk10"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tFixedFlowInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
+  </connection>
   <connection connectorName="FLOW" label="row16" lineStyle="0" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row16"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tFixedFlowInput_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
   </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tHSQLDbOutput_10">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -2493,6 +2514,14 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row15"/>
   </connection>
   <connection connectorName="FLOW" label="row10" lineStyle="0" metaname="tDBInput_9" offsetLabelX="0" offsetLabelY="0" source="tDBInput_9" target="tHSQLDbOutput_11">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="role_id"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="role_description"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row10"/>
   </connection>
@@ -2647,13 +2676,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_e35e4669-6856-4d4b-a9cb-7c6407db19fd"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>O3HWiEQgfEOCnBmhpPxT7A8ize2OgTcNnEWcVIFG82R8aV8e2ttZa5EdBVvlV5qEDFI2BCba1U+v&#13;
-1N5mjG8VVQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_11974fdd-3351-411b-b4c8-a8d348bd6d34"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>BSrCrJcrj86SBsW6raZg0vclir+OLxUaFnxqwtx3uQqokvRHFuDd5i7o69BPdJs+8C93Jo2Dgaoi&#13;
-vMA7z9FGcg==</DigestValue></Reference></SignedInfo><SignatureValue>VKmdEVO0hdAmonw5IB7g8uHZOqGqFIHPLECmf5V5egvBGMdPM0mkGxxvIGn+g6f8fyO3Db5AlypQ&#13;
-PMaY5NBDxMjTUUEMuznmfH7XlkBuEzDfJWZ3CRttZWy84z5SZ2/mliD/mvy7fxexVcBfqsM+OBUX&#13;
-l8FEGA5yQaj6g82GKhEksyuqFir6uNRbbhZS24eCsFdc38hCI+o/detggZHtDfyjvnSyu5MnbZpF&#13;
-CmtqLC2CEkjkq2y4vRy5mTY+5LObiK7FBegzFy3MeX9pa6dfHbMi//m8ENbPZ4VJV3VzJOU/AYgd&#13;
-ysfIFDdPXqvLEOO9Vm2jVBYsQluVmbOE62brqA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_2288116f-44e3-45fd-9077-10107d96b17c"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Q4tHVpCnBybA6MVCSj5yb698dPKETbNXlcTu9rixQz+VR7rWhOzCjojR+9fdZ5WjRxZird2qV5Rc&#13;
+zCB3cg+0qA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_72ecfc9c-9d04-4f84-9579-646671b1f192"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>T8+yUhVWAPMLDaW5ZGXC8A9p9ItsSVrs1KYkAGC2+wJXKoYwcuiLTpInM/fQxWKRLxBTICAmSW3A&#13;
+OAEIRYA1Tg==</DigestValue></Reference></SignedInfo><SignatureValue>Nfb2INrBJv+Hgpiar1VMaVutgC6Ebs6cgYtrFfVVj9nENQgF5OsQjgBhhyRViZxULEFmZ3KaiC6u&#13;
+ySK/19RmZPWbpyRscDaYmL1NtJlvCAw2T5VRmAENExl4Dv+9Xw4qnDEHy84+EMf+0HfOBp/G4Tro&#13;
+Gnc4vtHm2o80Hxd1YiFnYdKgfNU6AlptdvMl3n6QoT5I9G486NfJxYJIVYdb7+dEwFmLq/GF6Qng&#13;
+qMsYp46SxCW6HGPNILtHhV7b+7f6zVmeYQFhVH7U7kz+soN9x15ngWfCF8Plvfy2FJBcW5A1GQ0q&#13;
+p3vDbKxF8q8IyEZIjlnXLrDZT1vOI56jVS+pdQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2675,4 +2704,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_11974fdd-3351-411b-b4c8-a8d348bd6d34" Target="#_e35e4669-6856-4d4b-a9cb-7c6407db19fd"><Timestamp>2023-11-17 14:21:52</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_72ecfc9c-9d04-4f84-9579-646671b1f192" Target="#_2288116f-44e3-45fd-9077-10107d96b17c"><Timestamp>2023-11-17 14:40:03</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
