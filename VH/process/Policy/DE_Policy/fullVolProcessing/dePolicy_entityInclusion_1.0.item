@@ -138,7 +138,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT CLAIM_NUMBER,  POLICY_NUMBER&#13;&#10;FROM K2V_DEV.SRC_PL_CLAIM &quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT(pol.POL_POLICEN_NR) external_policy_number&#13;&#10;FROM sev.VERTRAG ver, sev.police pol&#13;&#10;WHERE ver.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;AND ver.VER_HISTORIE &lt;'HT'&#13;&#10;AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;  and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;  and pol.POL_HISTORIE = 'AN'&#13;&#10;  and pol.POL_POLICE_TYP in ('VH','KH')&#13;&#10;  --AND ver.pol_policen_nr ='1006006103'&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -153,9 +153,7 @@
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAIM_NUMBER"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_NUMBER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="EXTERNAL_POLICY_NUMBER"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
@@ -163,8 +161,7 @@
     <elementParameter field="TEXT" name="LABEL" value="Select inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_3">
-      <column comment="" key="false" length="20" name="CLAIM_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="EXTERNAL_POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_BigDecimal" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="384" posY="32">
@@ -172,7 +169,7 @@
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
-    <elementParameter field="IMAGE" name="PREVIEW" value="_RtlVkH7bEe6q2NhSAyHf6g-tMap_3-PREVIEW.bmp"/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_tgyEwISDEe6FjatyUK4Uyg-tMap_3-PREVIEW.bmp"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
     <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
     <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
@@ -182,8 +179,8 @@
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="CLAIM_MIGRATION_STATUS" name="CLAIM_MIGRATION_STATUS">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+    <metadata connector="FLOW" label="DE_POLICY_MIGRATION_STATUS" name="DE_POLICY_MIGRATION_STATUS">
+      <column comment="" key="false" length="10" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
@@ -195,10 +192,7 @@
       <column comment="" key="false" length="255" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+      <column comment="" key="false" length="10" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
@@ -210,28 +204,26 @@
       <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="-1" name="IDIT_ID" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+      <column comment="" key="false" length="10" name="IDIT_ID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables name="CLAIM_MIGRATION_STATUS" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Long"/>
-        <mapperTableEntries expression="row3.CLAIM_NUMBER " name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries expression="row3.CLAIM_NUMBER " name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row3.CLAIM_NUMBER " name="LEGACY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row3.POLICY_NUMBER " name="POLICY_NUMBER" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Long"/>
+      <outputTables name="DE_POLICY_MIGRATION_STATUS" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="context.migrationID " name="MIGRATION_ID" type="id_Long"/>
+        <mapperTableEntries expression="row3.EXTERNAL_POLICY_NUMBER " name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="row3.EXTERNAL_POLICY_NUMBER " name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row3.EXTERNAL_POLICY_NUMBER " name="LEGACY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(long)100" name="MIGRATION_STATUS" type="id_Long"/>
         <mapperTableEntries expression="TalendDate.getCurrentDate() " name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
         <mapperTableEntries name="MIGRATION_ERROR" nullable="true" type="id_String"/>
         <mapperTableEntries name="ERROR_CODE" nullable="true" type="id_String"/>
         <mapperTableEntries name="IDIT_ID" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row3" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="CLAIM_NUMBER" nullable="true" type="id_String"/>
-        <mapperTableEntries name="POLICY_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="EXTERNAL_POLICY_NUMBER" nullable="true" type="id_BigDecimal"/>
       </inputTables>
     </nodeData>
   </node>
@@ -252,10 +244,12 @@
     <elementParameter field="TEXT" name="TABLESCHEMA" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;system&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:7Oj5ehvpBDalwuYP1EHA+Tagl7lm3Z/TuWqpz0K5PyxQILGGwp6bFA=="/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;K2V_DEV.CLAIM_MIGRATION_STATUS&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;K2V_DEV.DE_POLICY_MIGRATION_STATUS&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="NONE"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="Warning : this component configuration will automatically generate a commit before data insert/update/delete"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g - DE_POLICY_MIGRATION_STATUS"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -288,11 +282,6 @@
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_NUMBER"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -337,8 +326,8 @@
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="CLAIM_MIGRATION_STATUS" name="tDBOutput_3">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+    <metadata connector="FLOW" label="DE_POLICY_MIGRATION_STATUS" name="tDBOutput_3">
+      <column comment="" key="false" length="10" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
@@ -350,10 +339,7 @@
       <column comment="" key="false" length="255" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+      <column comment="" key="false" length="10" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
@@ -365,12 +351,12 @@
       <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="-1" name="IDIT_ID" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+      <column comment="" key="false" length="10" name="IDIT_ID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
     </metadata>
-    <metadata connector="REJECT" label="CLAIM_MIGRATION_STATUS" name="REJECT">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+    <metadata connector="REJECT" label="DE_POLICY_MIGRATION_STATUS" name="REJECT">
+      <column comment="" key="false" length="10" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
@@ -382,10 +368,7 @@
       <column comment="" key="false" length="255" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
-        <additionalField key="Comment" value=""/>
-      </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+      <column comment="" key="false" length="10" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
@@ -397,7 +380,7 @@
       <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="-1" name="IDIT_ID" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true">
+      <column comment="" key="false" length="10" name="IDIT_ID" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -408,9 +391,9 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
-  <connection connectorName="FLOW" label="CLAIM_MIGRATION_STATUS" lineStyle="0" metaname="CLAIM_MIGRATION_STATUS" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tDBOutput_3">
+  <connection connectorName="FLOW" label="DE_POLICY_MIGRATION_STATUS" lineStyle="0" metaname="DE_POLICY_MIGRATION_STATUS" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tDBOutput_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CLAIM_MIGRATION_STATUS"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="DE_POLICY_MIGRATION_STATUS"/>
   </connection>
   <note opaque="true" posX="800" posY="0" sizeHeight="96" sizeWidth="128" text="S2S selection"/>
   <subjob>
@@ -418,13 +401,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ae25e57f-a669-4ebc-800e-7b7a9c72920a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/5y5/5FBuI+ZfgruE2ptawoGItcCNqLzFJzwXQyq3u451xWGOteG5zYZalt28MFvyHIWhjAyBocc&#13;
-2l3P/j5qNg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f264ccbe-5a03-4815-ace7-9d6cd49ac7d4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>rw8q1sY3eTbOtAWCc56orzLEZuLwG+uehWlz20Q2YZ3wtIhDrHgTh8rGHYOoexHDEdJWi+Rtr3W7&#13;
-4z05JbtVLQ==</DigestValue></Reference></SignedInfo><SignatureValue>lSeDzXwlDr9P7Ch+nd6nAop719Tv3izv9PtmZM/kq3VlvPFtr74cQ03lKQ+u0WUFaBNrLoBnlVjs&#13;
-PO8thZBVl9Fq3di2tN3JxmXaD7Sr8XuVaoV6bmQg0VnTpogJoyfpm2o1XwAqZ1qsc6sW+/j9l2iL&#13;
-/mtO2F5MtleYbBOyQPqyepfyzvbK558GqavCjYxHMq4bd6P4IHMNegwtjQKGjvoHbCvwaCbfDsxK&#13;
-zBSvpnuA/Z7MmfITOlhslugIT4WkCO3qPKxyXAOnVEoELPVUgSresFwsKDRsoM3U6Su7Kz4qqePn&#13;
-KgbyEuCmShzPP9lPLCmM7G+HJNdoKjYBG0YwjQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_1457f407-46cf-4262-9707-057db3bccb64"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>I6FWbfZlRo/YDyFR+G+ugP6xef9nKuekrz+ttw+E3+8rOoSBQ8OlK7kYmys9f8szA/wVAstZphJ6&#13;
+8z7v8CQnjw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_797da644-a9ec-4068-9947-c1624e808a50"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>sJnzPUIXDU6MjnSFmYP713pKYsS8TvN9qb3H98zopgogibz6Vu/ucvoVdFWwatZbB4adKDhnSG/M&#13;
+RU7U6p5t1w==</DigestValue></Reference></SignedInfo><SignatureValue>OJa3sJZu9z6pStHDmB5GWV/+DyNz81a59LKUx7rl5Xv2F1kNmzoj2BiiRj6G3Av+ON9Tisd+RVty&#13;
+PQa9KeLryWf5aiZeK0z1j2+3XmFiCaJ+phRooBbgO/O8MqW2qcMuoTE4Im6IdhEUA4EwKsI0VXiE&#13;
+pqLUgaXGT4gc7rZN/oevY71GUxEFTlQCyIn37OGk8It+O6vvxCHM55zKYi+SFFOuCyfXw1XrhoDS&#13;
+PQGf0QMr5XzjursoSI6Xc5DHYl6ElU8KjJ6PEFj4TViuVOzmGIcMsb3CDN5LULGYkwFG4fhx5U/c&#13;
+wbTRmqMVFDUujSbQNk79Yr3ZTLxyc7fBdoICCA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -446,4 +429,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f264ccbe-5a03-4815-ace7-9d6cd49ac7d4" Target="#_ae25e57f-a669-4ebc-800e-7b7a9c72920a"><Timestamp>2023-11-16 13:26:19</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_797da644-a9ec-4068-9947-c1624e808a50" Target="#_1457f407-46cf-4262-9707-057db3bccb64"><Timestamp>2023-11-16 14:55:07</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
