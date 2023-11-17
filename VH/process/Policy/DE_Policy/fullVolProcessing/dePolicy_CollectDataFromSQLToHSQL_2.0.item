@@ -710,7 +710,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;  SELECT A.ENTITY_ID, A.LEGACY_ID, B.POL_WIRTSCHAFTSWEISE&#13;&#10;FROM K2V_DEV.DE_POLICY_MIGRATION_STATUS A&#13;&#10;&#9;INNER JOIN SEV.POLICE B ON A.ENTITY_ID = B.POL_POLICEN_NR&#13;&#10;WHERE 1=1&#13;&#10;  AND B.POL_HISTORIE = 'AN'&#13;&#10;  AND B.POL_POLICE_TYP in ('VH','KH')&#13;&#10;  AND  A.MIGRATION_ID =&quot; + context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10; WITH inc AS (&#13;&#10;SELECT pol.POL_POLICEN_NR external_policy_number,&#13;&#10; min(pol.POL_GUELTIG_AB) start_date, max(pol.POL_GUELTIG_AB) latest_start&#13;&#10;FROM sev.VERTRAG ver, sev.police pol&#13;&#10;WHERE ver.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;AND ver.VER_HISTORIE &lt;'HT'&#13;&#10;AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;  and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;  and pol.POL_HISTORIE in ('AN', 'HN')&#13;&#10;  and pol.POL_POLICE_TYP in ('VH','KH')&#13;&#10;  AND ver.pol_policen_nr LIKE '10060%'&#13;&#10; GROUP BY pol.POL_POLICEN_NR &#13;&#10; ) &#13;&#10; SELECT a.entity_id, a.legacy_id, inc.start_date, inc.latest_start, b.POL_WIRTSCHAFTSWEISE&#13;&#10; FROM k2v_dev.de_policy_migration_status a&#13;&#10;    INNER JOIN inc ON a.legacy_id = inc.external_policy_number&#13;&#10;    LEFT JOIN sev.police B ON inc.external_policy_number = b.pol_policen_nr&#13;&#10; WHERE 1=1&#13;&#10; and b.POL_HISTORIE in ('AN', 'xxxxxxHN')&#13;&#10; and b.POL_POLICE_TYP in ('VH','KH')&#13;&#10; AND a.migration_id = &quot; + context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -729,6 +729,10 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LATEST_START"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POL_WIRTSCHAFTSWEISE"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
@@ -737,9 +741,11 @@
     <elementParameter field="TEXT" name="LABEL" value="stg_DE_POLICY_HEADER"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_6">
-      <column comment="" key="false" length="-1" name="ENTITY_ID" nullable="false" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="POL_WIRTSCHAFTSWEISE" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="LEGACY_ID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="LONG" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" originalLength="1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="192" posY="320">
@@ -759,6 +765,8 @@
     <metadata connector="FLOW" label="DE_POLICY_HEADER" name="DE_POLICY_HEADER">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
@@ -767,11 +775,15 @@
       <outputTables name="DE_POLICY_HEADER" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row5.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries expression="row5.LEGACY_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row5.START_DATE " name="START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row5.LATEST_START " name="LATEST_START" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row5.POL_WIRTSCHAFTSWEISE " name="POL_WIRTSCHAFTSWEISE" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row5" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries name="LEGACY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="LATEST_START" nullable="true" type="id_Date"/>
         <mapperTableEntries name="POL_WIRTSCHAFTSWEISE" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
@@ -811,6 +823,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LATEST_START"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POL_WIRTSCHAFTSWEISE"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -823,11 +845,15 @@
     <metadata connector="FLOW" label="DE_POLICY_HEADER" name="tHSQLDbOutput_6">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="DE_POLICY_HEADER" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -851,6 +877,10 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LATEST_START"/>
+      <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POL_WIRTSCHAFTSWEISE"/>
       <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
@@ -860,6 +890,8 @@
     <metadata connector="FLOW" label="DE_POLICY_HEADER" name="tLogRow_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
@@ -881,14 +913,14 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk12"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbRow_6">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
-  </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbOutput_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbRow_6">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_6" offsetLabelX="0" offsetLabelY="0" source="tDBInput_6" target="tMap_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -956,13 +988,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_71742050-2c25-43b0-914e-6d834d8aae3b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Biiel2MijAYKtiqNg4LpujUlVDxhNpJe78EyT1xkAQgzmZFjUp7bx50nN/hRPvmlpvdQoWbG1eXR&#13;
-JDVCgVQumg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3ad2e939-bb4b-477b-98be-048a3ca51fc9"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VZMMIpuVQbeOFkPmwhLACuQLE5p9Bpe4538Esosg5DV95hYQg4EFZR772cc07XhlT1Ald1gJFyHm&#13;
-4MYaj5hd1w==</DigestValue></Reference></SignedInfo><SignatureValue>lkCblGFg9yDT3HXy4AcevD2oyGLEM9wmytscJCxeJin/wJ0boWYGw5y/MB6ZNKQwxZSA2pGjODnN&#13;
-2De0MEfMnmp7Vl63eKQMR2TZ7T8mF4QC0SYrIc1hsJv+SETWZ4tP3Z8SzLhb2U7WC71wuppJAO9O&#13;
-TqVzKc8cXbcOOTBDsm7PIG+IEo9+hYMqwKVuhmtvitdPvhTHNXhWPifi8SlDUNi0Iu0dTNo5x48W&#13;
-dCBaxT8q9mK6/b+eTDcJUWrMJuN2pNtWst5TkX45OY8qb7693/IgS1JI8uV48hW0nwKGDzVFnuZB&#13;
-HLlGHvYmZe2hXCgVwKNJrRm2k28FnVU6+PizSA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bcdc24db-287d-4200-837f-307001642daf"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NMmC9p8xGosTGgDVoUUMw0rUz1SPgG6omU9wUQfwE43DCzACGkzXq6jpdtFlSMIWMopUzgHbA2T3&#13;
+rkJIZ8FcAQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_15de6076-867b-4402-8042-b79368464f23"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>z25r4qv72Rk+I5TAbAMBRXxpV7ixlrHBOgdzMnNRs5tH1dwp341ccjUOgD1Dgr+40y+/oqVfVWfI&#13;
+3c0Vnmtmqg==</DigestValue></Reference></SignedInfo><SignatureValue>MDKJS9Hk43ZumHHLe03brcOn/OSmWwbUDgakxxzbIhk9n+fMpOFVDz7spZPMXcj5gcnifM0Htfmo&#13;
++TXgcJK09a+3D3B42ZBSENvzJCqbtSzUkWyH5EH5QOuVeLHKvt6cT9RRdlgY9d3lFO115OsvKY+S&#13;
+PleIhWqKL4SU3XWMIPQzS0cY9QhLVF1sDBcs0PTc39GO64zFjvCd3HNApDyuyQe3xQKmiw7XFR3Q&#13;
+mM0QX3+CbOfZakNyltjLLLkMJ0AqE3bzpytDX6dXE+6R6GaQAw0DO+BbQOJTOvX8Rf/Fyov+ZCY9&#13;
+MPuQZa2hfdnr5HIo6TTS2NyjrRH8sZOSUb9OEw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -984,4 +1016,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3ad2e939-bb4b-477b-98be-048a3ca51fc9" Target="#_71742050-2c25-43b0-914e-6d834d8aae3b"><Timestamp>2023-11-17 10:57:10</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_15de6076-867b-4402-8042-b79368464f23" Target="#_bcdc24db-287d-4200-837f-307001642daf"><Timestamp>2023-11-17 13:51:37</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
