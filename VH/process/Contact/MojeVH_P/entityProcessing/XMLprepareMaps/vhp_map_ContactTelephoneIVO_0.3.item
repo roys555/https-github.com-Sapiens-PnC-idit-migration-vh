@@ -140,7 +140,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT MOJEVH_TELEPHONE_SELECTION.PARTNERID,&#10;&#9;&#9;MOJEVH_TELEPHONE_SELECTION.CONTACTID,&#10;&#9;&#9;MOJEVH_TELEPHONE_SELECTION.PHONE,&#10;&#9;&#9;MOJEVH_TELEPHONE_SELECTION.NUMBERGROUP&#10;FROM&#9;MOJEVH_TELEPHONE_SELECTION&#13;&#10;WHERE MOJEVH_TELEPHONE_SELECTION.PARTNERID = &quot; + context.LegacyID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT MOJEVH_TELEPHONE_SELECTION.PARTNERID,&#10;&#9;&#9;MOJEVH_TELEPHONE_SELECTION.CONTACTID,&#10;&#9;&#9;MOJEVH_TELEPHONE_SELECTION.PHONE,&#10;&#9;&#9;MOJEVH_TELEPHONE_SELECTION.NUMBERGROUP,&#10;&#9;&#9;MOJEVH_TELEPHONE_SELECTION.ID_CONTACT_TYPE,&#10;&#9;&#9;MOJEVH_TELEPHONE_SELECTION.remarks&#10;FROM&#9;MOJEVH_TELEPHONE_SELECTION &#13;&#10;WHERE MOJEVH_TELEPHONE_SELECTION.PARTNERID = &quot; + context.LegacyID"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -210,16 +210,22 @@
       <column comment="" key="false" length="255" name="PHONE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="0" name="NUMBERGROUP" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="entityTypeVORefID" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="phoneSeq" nullable="false" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="remarks" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <uiProperties shellMaximized="true"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="Numeric.sequence(row4.PHONE,1,1) " name="phoneSeq" type="id_Integer"/>
+      </varTables>
       <outputTables name="enriched" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row4.PARTNERID" name="PARTNERID" type="id_Long"/>
         <mapperTableEntries expression="row4.CONTACTID" name="CONTACTID" type="id_Long"/>
         <mapperTableEntries expression="row4.PHONE" name="PHONE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row4.NUMBERGROUP" name="NUMBERGROUP" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row3.entityTypeVORefID" name="entityTypeVORefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="Var.phoneSeq " name="phoneSeq" type="id_Integer"/>
+        <mapperTableEntries expression="row4.remarks " name="remarks" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row4" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PARTNERID" type="id_Long"/>
@@ -270,7 +276,7 @@
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="800" posY="224">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="output_row.ID_CONTACT = input_row.CONTACTID;&#10;output_row.id_partner = input_row.PARTNERID;&#10;output_row.ContactTelephoneIVOType_att = &quot;ContactTelephoneIVO&quot;;&#10;output_row.countryDialCodeRefId = 163;&#10;output_row.countryDialCodeRefContent = &quot;48&quot;;&#10;&#10;String PhoneNum = &quot;&quot;;&#10;if( (input_row.PHONE.length() &gt; 9) &amp;&amp; (input_row.PHONE.substring(0,2).equals(&quot;48&quot;))){&#10;PhoneNum = input_row.PHONE.substring(2);&#10;}&#10;else{&#10;PhoneNum = input_row.PHONE;&#10;}&#10;output_row.telephoneNumber = PhoneNum;&#10;&#10;&#10;output_row.telephoneTypeRefID = (input_row.entityTypeVORefID == 1)?1:2;&#10;output_row.telephoneTypeRefContent = (input_row.entityTypeVORefID == 1)?&quot;Private telephone&quot;:&quot;Work telephone&quot;;&#13;&#10;&#13;&#10;output_row.incorrectPhone  = (PhoneNum.length() &gt; 9) ? true : false;&#13;&#10;output_row.telephonePrefix = &quot;000&quot;;&#13;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="output_row.ID_CONTACT = input_row.CONTACTID;&#10;output_row.id_partner = input_row.PARTNERID;&#10;output_row.ContactTelephoneIVOType_att = &quot;ContactTelephoneIVO&quot;;&#10;output_row.countryDialCodeRefId = 163;&#10;output_row.countryDialCodeRefContent = &quot;48&quot;;&#10;output_row.remarks = input_row.remarks;&#10;&#10;String PhoneNum = &quot;&quot;;&#10;if( (input_row.PHONE.length() &gt; 9) &amp;&amp; (input_row.PHONE.substring(0,2).equals(&quot;48&quot;))){&#10;PhoneNum = input_row.PHONE.substring(2);&#10;}&#10;else{&#10;PhoneNum = input_row.PHONE;&#10;}&#10;output_row.telephoneNumber = PhoneNum;&#10;&#10;&#10;//output_row.telephoneTypeRefID = (input_row.entityTypeVORefID == 1)?1:2;&#10;//output_row.telephoneTypeRefContent = (input_row.entityTypeVORefID == 1)?&quot;Private telephone&quot;:&quot;Work telephone&quot;;&#13;&#10;&#13;&#10;output_row.incorrectPhone  = (PhoneNum.length() &gt; 9) ? true : false;&#13;&#10;output_row.telephonePrefix = &quot;000&quot;;&#10;&#10;System.out.println(input_row.phoneSeq);&#10;&#10;if (input_row.entityTypeVORefID == 101) {&#10;&#9;switch (input_row.phoneSeq) {&#10;&#9;case 1:&#9;output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;; break;&#10;&#9;case 2: output_row.telephoneTypeRefID=3; output_row.telephoneTypeRefContent = &quot;Home telephone&quot;; break;&#10;&#9;case 3: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;; break;&#10;&#9;case 4: output_row.telephoneTypeRefID=4; output_row.telephoneTypeRefContent = &quot;Mobie&quot;; break;&#10;&#9;default: output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;;&#10;&#9;}&#10;} else {&#10;&#9;switch (input_row.phoneSeq) {&#10;&#9;case 3:&#9;output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;; break;&#10;&#9;case 2: output_row.telephoneTypeRefID=3; output_row.telephoneTypeRefContent = &quot;Home telephone&quot;; break;&#10;&#9;case 1: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;; break;&#10;&#9;case 4: output_row.telephoneTypeRefID=4; output_row.telephoneTypeRefContent = &quot;Mobie&quot;; break;&#10;&#9;default: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;;&#10;&#9;}&#10;}&#13;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="XMLContactTelephoneIVO" name="tJavaRow_1">
@@ -284,6 +290,7 @@
       <column comment="" key="false" length="50" name="telephoneTypeRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="incorrectPhone" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="telephonePrefix" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="remarks" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1088" posY="224">
@@ -300,8 +307,6 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;XMLContactTelephoneIVO&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="CREATE_IF_NOT_EXISTS"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_b2XkIM36Ee2NJqgpNAtTZQ - XMLContactTelephoneIVO"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -361,6 +366,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="remarks"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;XMLContactTelephoneIVO&quot;"/>
@@ -376,6 +386,7 @@
       <column comment="" key="false" length="50" name="telephoneTypeRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="incorrectPhone" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="telephonePrefix" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="remarks" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLContactTelephoneIVO" name="REJECT">
       <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -388,8 +399,63 @@
       <column comment="" key="false" length="50" name="telephoneTypeRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="incorrectPhone" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="telephonePrefix" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="remarks" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1344" posY="256">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
+    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
+    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
+    <elementParameter field="TABLE" name="LENGTHS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID_CONTACT"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="id_partner"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ContactTelephoneIVOType_att"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="countryDialCodeRefId"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="countryDialCodeRefContent"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="telephoneNumber"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="telephoneTypeRefID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="telephoneTypeRefContent"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="incorrectPhone"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="telephonePrefix"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="remarks"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="XMLContactTelephoneIVO" name="tLogRow_1">
+      <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="id_partner" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="ContactTelephoneIVOType_att" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="countryDialCodeRefId" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="countryDialCodeRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="telephoneNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="telephoneTypeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="telephoneTypeRefContent" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="incorrectPhone" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="telephonePrefix" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="remarks" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tNormalize_1">
@@ -401,6 +467,14 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
   </connection>
   <connection connectorName="FLOW" label="enriched" lineStyle="0" metaname="enriched" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tJavaRow_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="phoneSeq"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="remarks"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="enriched"/>
   </connection>
@@ -409,21 +483,30 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tJavaRow_1" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_1" target="tHSQLDbOutput_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="remarks"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
+  </connection>
+  <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_2f33e17b-3ef8-4cf1-975b-71a1595d478b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>eoutbOqBX4ctFuTvN/cmQJnW9eRykvNKLksKX0Hmo0CfEygz7NTH1goPyI6uoqrFZB/fcKBf2PuP&#13;
-CAbSZCGSSw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_24bf3229-9082-42a1-bb47-ff4ec666dab5"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>HK5Dub5U+A5e6Kq5fiJOlkxUBhRhnc7YTghK/v/MjUEL97kvHFnYtPZ9CUoqauA4dGILyrVlnVzw&#13;
-CAh19wTVjQ==</DigestValue></Reference></SignedInfo><SignatureValue>bhDV3l4ACJM0t5ILTgkjl0O+FDm684L9GU36yES0BsR7wREQx/Ts363rs2O6fC/ufdLR2kNjOHc1&#13;
-gKNUpL27ZacEmeibFeQt+an6jZ4R9LFk3o0rsYVVhyMJK2pscvjQAiMrs37A+2y2jEgZHtxpqdU+&#13;
-ebU2eLwUy9AVHCc1XBK9u8xiHj25Kst5hu8t78/kht5HANiRwdR3RWf6d0y8fECkS8khZU82Wk3c&#13;
-fMfha3+or0L58IemsUVFtqqkvKMWEMiGlqGpeEbbmTxLb96bnoWfDYQ6Lyf3zj73+4p6J8qz8aQJ&#13;
-8WReIu6WgmSQiBXXgNpteMxo4ABxkkvM5BBZug==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a5915c01-2d26-4551-963b-7ec60cc49c89"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>PYupb98mRGN0/Vr0FiiWE4zYJcoxTBAp2+165LLKYlIcy496eNOUipoJcZPv94gz+MOD+tk6cQ+7&#13;
+Kb+JISRitQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_77c233c8-acab-4553-ac0a-b9575bca4292"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>unxaGHeDHGgCczHbJsoq4668r0P3QWYQWQ1xlADDslP6G6qLSwakjUKc83su6C2XhZIDSyYaDfxs&#13;
++g2T33a/7Q==</DigestValue></Reference></SignedInfo><SignatureValue>ACoWyCv5GZDklU6lc/XOLkwYPE//wmtJU/pQbONa5koLuhyl/a+noUP6ctd2J5OI531UBavHptN6&#13;
+0L/AcQTiDwZKIK3LRJbvdound1JC/mgKTbgIGDLA4687BhqpjiT9HQgcjNyd2Q6hJQGYyCMcyR9t&#13;
+2/u4aTPjisyu5FfsimBu7Rx8+OONmxUEnJOzCdVI5E8Tu7U6rDCf2SfDXdn4gFTmbkY7ePdot2m3&#13;
+ArKOeZvss5fvmnlYRyzcU/WK5qOQwE2SXeTg/SMdULkZ/suKM+Jjg4lmz/qtfDMnktZKYlL+Owxl&#13;
+WuEd4cya03BEOvZIApnDsAqwR7g1OuF8qTqhiw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -445,4 +528,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_24bf3229-9082-42a1-bb47-ff4ec666dab5" Target="#_2f33e17b-3ef8-4cf1-975b-71a1595d478b"><Timestamp>2023-11-17 13:40:13</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_77c233c8-acab-4553-ac0a-b9575bca4292" Target="#_a5915c01-2d26-4551-963b-7ec60cc49c89"><Timestamp>2023-11-17 14:23:32</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
