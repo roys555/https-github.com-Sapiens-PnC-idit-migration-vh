@@ -738,7 +738,7 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_6">
       <column comment="" key="false" length="-1" name="ENTITY_ID" nullable="false" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="LEGACY_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_WIRTSCHAFTSWEISE" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
@@ -758,7 +758,7 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="DE_POLICY_HEADER" name="DE_POLICY_HEADER">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
@@ -766,12 +766,12 @@
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="DE_POLICY_HEADER" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row5.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries expression="row5.LEGACY_ID " name="LEGACY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries name="POL_WIRTSCHAFTSWEISE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row5.LEGACY_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row5.POL_WIRTSCHAFTSWEISE " name="POL_WIRTSCHAFTSWEISE" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row5" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries name="LEGACY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries name="LEGACY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="POL_WIRTSCHAFTSWEISE" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
@@ -822,15 +822,45 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="DE_POLICY_HEADER" name="tHSQLDbOutput_6">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="DE_POLICY_HEADER" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="512" posY="480">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
+    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
+    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
+    <elementParameter field="TABLE" name="LENGTHS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POL_WIRTSCHAFTSWEISE"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="DE_POLICY_HEADER" name="tLogRow_1">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row6" lineStyle="0" metaname="tDBInput_4" offsetLabelX="0" offsetLabelY="0" source="tDBInput_4" target="tHSQLDbOutput_4">
@@ -851,14 +881,14 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk12"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbRow_6">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
+  </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbOutput_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbRow_6">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_6" offsetLabelX="0" offsetLabelY="0" source="tDBInput_6" target="tMap_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -867,6 +897,10 @@
   <connection connectorName="FLOW" label="DE_POLICY_HEADER" lineStyle="0" metaname="DE_POLICY_HEADER" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tHSQLDbOutput_6">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="DE_POLICY_HEADER"/>
+  </connection>
+  <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_6" target="tLogRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
   <note opaque="true" posX="-64" posY="224" sizeHeight="64" sizeWidth="641" text="CLAIM DATA:"/>
   <note opaque="true" posX="800" posY="224" sizeHeight="64" sizeWidth="641" text="DICTIONARIES:"/>
@@ -922,13 +956,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9d49415d-7e4a-4876-bd8b-74abb965d9a0"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NFH8UWg+Kxlt3jKNOmVAyLOc9MgQeJy8KDog8S538SEaQ67gUwzVUHF3ZO8myrxKgQopEyuGRmVW&#13;
-uf78TIgTxQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a99a48d5-c213-4f9b-8dfa-19916612b456"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Z6I/ChgT6QPrTnFHXgvubK2BeJsfElFwICW0U8F2XA6u8yPPKTnFp6JSccHobuF8SAik9UfZKwGj&#13;
-rvnf1UesmQ==</DigestValue></Reference></SignedInfo><SignatureValue>RE9Cgb/RRlN0yZgI7HVIoJdaITfUWcsLOKFHYJnjEXmC2VroXKd0J3zkbCcaKWcEyt3XzWcw/QP9&#13;
-onJnqlXYy9vNcmpzVrtR5f+n+BLBzPKnvvYNB7Tossdwj2wnRGFyhZ99H8xQOiqNk2pgy7jfEmBH&#13;
-/eogZ2pXDESHPtlBOYQPEMmI3fUOLeDMeEBopAZC81u1prC/I8H/ZEvp25SMQzDyUs/8hYZxiZxI&#13;
-PClatzAIC+2Zoi157/9RUvizFoh/hCVpaMW97JtVp6naOGjsvN/SwpITMLfzGL21UfOGKPr6ix9U&#13;
-InAiukGLO3392ldPhV3LiraimSiFfL0wfk9BSw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_71742050-2c25-43b0-914e-6d834d8aae3b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Biiel2MijAYKtiqNg4LpujUlVDxhNpJe78EyT1xkAQgzmZFjUp7bx50nN/hRPvmlpvdQoWbG1eXR&#13;
+JDVCgVQumg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3ad2e939-bb4b-477b-98be-048a3ca51fc9"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VZMMIpuVQbeOFkPmwhLACuQLE5p9Bpe4538Esosg5DV95hYQg4EFZR772cc07XhlT1Ald1gJFyHm&#13;
+4MYaj5hd1w==</DigestValue></Reference></SignedInfo><SignatureValue>lkCblGFg9yDT3HXy4AcevD2oyGLEM9wmytscJCxeJin/wJ0boWYGw5y/MB6ZNKQwxZSA2pGjODnN&#13;
+2De0MEfMnmp7Vl63eKQMR2TZ7T8mF4QC0SYrIc1hsJv+SETWZ4tP3Z8SzLhb2U7WC71wuppJAO9O&#13;
+TqVzKc8cXbcOOTBDsm7PIG+IEo9+hYMqwKVuhmtvitdPvhTHNXhWPifi8SlDUNi0Iu0dTNo5x48W&#13;
+dCBaxT8q9mK6/b+eTDcJUWrMJuN2pNtWst5TkX45OY8qb7693/IgS1JI8uV48hW0nwKGDzVFnuZB&#13;
+HLlGHvYmZe2hXCgVwKNJrRm2k28FnVU6+PizSA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -950,4 +984,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a99a48d5-c213-4f9b-8dfa-19916612b456" Target="#_9d49415d-7e4a-4876-bd8b-74abb965d9a0"><Timestamp>2023-11-16 15:20:30</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3ad2e939-bb4b-477b-98be-048a3ca51fc9" Target="#_71742050-2c25-43b0-914e-6d834d8aae3b"><Timestamp>2023-11-17 10:57:10</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
