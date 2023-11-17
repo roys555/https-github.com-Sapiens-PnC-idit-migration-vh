@@ -241,17 +241,17 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLContactIVO" name="contactIVO">
+    <metadata comment="" label="XMLContactIVO" name="contactIVO">
       <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="ID_PARTNER" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="masterEntityID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="name" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="firstName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="middleName" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="255" name="activityRemark" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="externalContactNumber" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="headOfFamily" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="residentFlag" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="masterEntityID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="name" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="firstName" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="middleName" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="activityRemark" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="externalContactNumber" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="headOfFamily" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="residentFlag" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="entityTypeVORefID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="50" name="entityTypeVORefContent" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="languageRefID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -284,10 +284,10 @@
       <column comment="" key="false" length="100" name="salutation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="partnerNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tDistrictOfficeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="ContactProcessingAGR.returnExternalContactNumber(legacy_2.PAR_PARTNER_NR, context.isTestLoad, context.migrationID) " name="external" type="id_String"/>
       </varTables>
@@ -333,8 +333,8 @@
         <mapperTableEntries expression="acadTitleLookup.academicTitleVoRefDesc " name="academicTitleRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="StringHandling.TRIM(functionLibrary.ifNull(titleVoRef.titleVoRefDesc, &quot;&quot;)+&quot; &quot;+functionLibrary.ifNull(acadTitleLookup.academicTitleVoRefDesc,&quot;&quot;)) " name="salutation" nullable="true" type="id_String"/>
         <mapperTableEntries expression="String.valueOf(legacy_2.PAR_PARTNER_NR) " name="partnerNumber" nullable="true" type="id_String"/>
-        <mapperTableEntries name="tDistrictOfficeRefID" nullable="true" type="id_Integer"/>
-        <mapperTableEntries name="tDistrictOfficeRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="district_office.ID " name="tDistrictOfficeRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="district_office.DESCRIPTION " name="tDistrictOfficeRefDesc" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="legacy_2" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
@@ -384,7 +384,245 @@
         <mapperTableEntries name="academicTitleVoRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="academicTitleVoRefDesc" nullable="true" type="id_String"/>
       </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="district_office" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ID" type="id_Integer"/>
+        <mapperTableEntries expression="legacy_2.PAR_BEZIRKSVEREIN_NR_STRING " name="EXTERNAL_CODE" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="DESCRIPTION" type="id_String"/>
+      </inputTables>
     </nodeData>
+  </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="416" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:lD3SJq54agu0YCRZnj9Lk6GvRRvbF3n9VNNAimUI"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_maJdINOmEe2V4YqPxc1dgg - AGRONOMIS_ADDITIONAL_INSURANCE"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_ADDITIONAL_INSURANCE&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT AGRONOMIS_ADDITIONAL_INSURANCE.PAR_PARTNER_NR,&#10;&#9;&#9;AGRONOMIS_ADDITIONAL_INSURANCE.KON_NOTIZ,&#10;&#9;&#9;AGRONOMIS_ADDITIONAL_INSURANCE.KON_ABLAUF,&#10;&#9;&#9;AGRONOMIS_ADDITIONAL_INSURANCE.KON_VERSICHERER&#10;FROM&#9;AGRONOMIS_ADDITIONAL_INSURANCE&#13;&#10;where PAR_PARTNER_NR =&quot; + context.LegacyID"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="KON_NOTIZ"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="KON_ABLAUF"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="KON_VERSICHERER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;AGRONOMIS_ADDITONAL_INSURANCE&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="AGRONOMIS_ADDITIONAL_INSURANCE" name="tHSQLDbInput_3">
+      <column comment="" defaultValue="" key="false" length="-1" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="250" name="KON_NOTIZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="KON_ABLAUF" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="KON_VERSICHERER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:R9n2s+LfaTvvDKaA/+OLl8d/UQq9kO3DC58Vo1zu"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_Kpwr0NUZEe2V4YqPxc1dgg - T_DISTRICT_CLUB"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;T_DISTRICT_CLUB&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  *&#10;FROM&#9;T_DISTRICT_CLUB&quot;&#13;&#10;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="EXTERNAL_CODE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DESCRIPTION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;T_DISTRICT_CLUB&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="T_DISTRICT_CLUB" name="tHSQLDbInput_4">
+      <column comment="" defaultValue="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="EXTERNAL_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="608" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="par_titel"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="titleVoRefID"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="titleVoRefDesc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="par_titel" value="&quot;1&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000002"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Baron (Freiherr)&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;2&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000003"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Count&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;3&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000004"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Baron (Baron)&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;4&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000005"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Prince (Prinz)&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;5&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000006"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Prince (Fürst)&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;6&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000007"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Baroness (Freifrau)&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;7&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000008"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Countess&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;8&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000009"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Princess (Prinzessin)&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;9&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000010"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Princess (Fürstin)&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;10&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000013"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Hereditary Count&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;11&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000014"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Baroness (Baronin)&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;12&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000011"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Duke&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;13&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000012"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Duchess&quot;"/>
+      <elementValue elementRef="par_titel" value="&quot;14&quot;"/>
+      <elementValue elementRef="titleVoRefID" value="1000001"/>
+      <elementValue elementRef="titleVoRefDesc" value="&quot;Count&quot;"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="titleVoRefDict"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_1">
+      <column comment="" key="false" length="30" name="par_titel" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="titleVoRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="titleVoRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="736" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_2"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_WIRTSCHAFTSZWEIG"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="economicFocusRefID"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="economicFocusRefDesc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Marktfruchtbetrieb&quot;"/>
+      <elementValue elementRef="economicFocusRefID" value="1000047"/>
+      <elementValue elementRef="economicFocusRefDesc" value="&quot;Fruit farming&quot;"/>
+      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Marktfr. + Tier. Veredlung&quot;"/>
+      <elementValue elementRef="economicFocusRefID" value="1000049"/>
+      <elementValue elementRef="economicFocusRefDesc" value="&quot;Crop &amp; livestock&quot;"/>
+      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Tierische Veredlung&quot;"/>
+      <elementValue elementRef="economicFocusRefID" value="1000050"/>
+      <elementValue elementRef="economicFocusRefDesc" value="&quot;Description = Refinement&quot;"/>
+      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Tier. Veredlung + Marktfr. + B&quot;"/>
+      <elementValue elementRef="economicFocusRefID" value="1000074"/>
+      <elementValue elementRef="economicFocusRefDesc" value="&quot;Crop &amp; livestock + biogas&quot;"/>
+      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Tier. Veredlung + Biogasanlage&quot;"/>
+      <elementValue elementRef="economicFocusRefID" value="1000175"/>
+      <elementValue elementRef="economicFocusRefDesc" value="&quot;Livestock + Biogas&quot;"/>
+      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Marktfr. + Biogasanlage&quot;"/>
+      <elementValue elementRef="economicFocusRefID" value="1000176"/>
+      <elementValue elementRef="economicFocusRefDesc" value="&quot;Crop + Biogas&quot;"/>
+      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Biogasanlage&quot;"/>
+      <elementValue elementRef="economicFocusRefID" value="1000177"/>
+      <elementValue elementRef="economicFocusRefDesc" value="&quot;Biogas&quot;"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="economicFocusRefDict"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_2">
+      <column comment="" key="false" length="30" name="PAR_WIRTSCHAFTSZWEIG" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="economicFocusRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="economicFocusRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="128" posY="288">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_3"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="academicTitleID"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="academicTitleVoRefID"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="academicTitleVoRefDesc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
+    <elementParameter field="TABLE" name="INTABLE" show="false"/>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;^&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" value="1^1000000^Dr. agrar&#13;&#10;2^1000001^Prof.&#13;&#10;3^1000002^Prof. Dr.&#13;&#10;4^1000003^Privatdozent&#13;&#10;5^1000004^Dipl.-Ing.&#13;&#10;6^1000005^Dipl.-Ing.agr.&#13;&#10;7^1000006^Dr.&#13;&#10;8^1000007^Agronomist&#13;&#10;9^1000008^Business Graduate (Dipl.Kfm.)&#13;&#10;10^1000009^Dr. Dr.&#13;&#10;11^1000010^Dr.h.c.&#13;&#10;12^1000011^Dr. jur.&#13;&#10;13^1000012^State Secretary&#13;&#10;14^1000013^Chamber Director (Kammerdirektor)&#13;&#10;15^1000014^Chamber President (Kammerprasident)&#13;&#10;16^1000015^President&#13;&#10;17^1000016^Department Director&#13;&#10;18^1000017^MdB&#13;&#10;19^1000018^Kreislandwirt&#13;&#10;20^1000019^Landw.Meister&#13;&#10;21^1000020^Gartnermeister&#13;&#10;22^1000021^Chairman&#13;&#10;23^1000022^Technician&#13;&#10;24^1000023^Agricultural Technician&#13;&#10;25^1000024^Dipl.-Ing.Agr (FH)&#13;&#10;26^1000025^Dipl.agr. Oec.&#13;&#10;27^1000026^Dipl.-Ing. Horticulture&#13;&#10;28^1000027^Agricultural Business (Agrarbetriebswirt)&#13;&#10;30^1000028^B.Sc.&#13;&#10;31^1000029^Dipl.Inform.&#13;&#10;32^1000030^Dipl.Betriebsw.&#13;&#10;33^1000031^Dipl.Volks.&#13;&#10;34^1000032^Dipl.Ing.GB&#13;&#10;35^1000033^Betriebsw. (FH/VWA)&#13;&#10;36^1000034^Staatl.gepr.BW&#13;&#10;37^1000035^Staatl.gepr.Wirtsch&#13;&#10;38^1000036^Staatl.gepr.LwL&#13;&#10;39^1000037^Dipl.-Betriebswirt&#13;&#10;40^1000038^Staatl.gepr.Techn.&#13;&#10;41^1000039^Agr.Techn.&#13;&#10;42^1000040^Obstbaumeister&#13;&#10;43^1000041^Ing. (grad.)&#13;&#10;44^1000042^Dres.&#13;&#10;45^1000043^B.Eng.&#13;&#10;46^1000044^LL.B.&#13;&#10;47^1000045^B.Ed.&#13;&#10;48^1000046^BBA&#13;&#10;49^1000047^BBI&#13;&#10;50^1000048^M.Sc.&#13;&#10;51^1000049^M.Eng.&#13;&#10;52^1000050^LL.M.&#13;&#10;53^1000051^M.Ed.&#13;&#10;54^1000052^MBA&#13;&#10;55^1000053^MBC&#13;&#10;56^1000054^MBM&#13;&#10;57^1000055^MEGA&#13;&#10;58^1000056^M.I.B.&#13;&#10;59^1000057^MLE&#13;&#10;60^1000058^MdL&#13;&#10;61^1000059^Dipl.-Techn.&#13;&#10;62^1000060^Dipl.-Forsting.&#13;&#10;63^1000061^Dipl.-Kffr.&#13;&#10;64^1000062^Dipl.-LW&#13;&#10;65^1000063^Dr. agr.&#13;&#10;66^1000064^Landwirtschaftsmeister&#13;&#10;67^1000065^Landesminister&#13;&#10;68^1000066^Bundesminister&#13;&#10;69^1000067^Staatl.gepr.Agrar-BW&#13;&#10;70^1000068^M.Sc.Agrar&#13;&#10;71^1000069^Okonomierat&#13;&#10;72^1000070^Okonomieratin&#13;&#10;73^1000071^Geschaftsfuhrer&#13;&#10;74^1000072^Bezirksgeschaftsfuhrer&#13;&#10;75^1000073^Kreisvorsitzender&#13;&#10;76^1000074^Bezirksdirektor&#13;&#10;77^1000075^Director&#13;&#10;"/>
+    <elementParameter field="TEXT" name="LABEL" value="academicTitleLookup"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_3">
+      <column comment="" key="false" length="-1" name="academicTitleID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="academicTitleVoRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="academicTitleVoRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="448" posY="288">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_2"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.academicTitleID = String.valueOf(input_row.academicTitleID);&#13;&#10;output_row.academicTitleVoRefID = Long.valueOf(input_row.academicTitleVoRefID);&#13;&#10;output_row.academicTitleVoRefDesc = input_row.academicTitleVoRefDesc;&#13;&#10;"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tJavaRow_2">
+      <column comment="" key="false" length="30" name="academicTitleID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="academicTitleVoRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="academicTitleVoRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="704" posY="160">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_1"/>
@@ -673,7 +911,7 @@
       <column comment="" key="false" length="100" name="salutation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="partnerNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tDistrictOfficeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLContactIVO" name="REJECT">
       <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -718,72 +956,31 @@
       <column comment="" key="false" length="100" name="salutation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="partnerNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tDistrictOfficeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="416" posY="32">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="576" posY="288">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:lD3SJq54agu0YCRZnj9Lk6GvRRvbF3n9VNNAimUI"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:i8uGNYAaE0DMOAfnkg8cYrmHPp+pTS8Rxqjgknxe"/>
     <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_maJdINOmEe2V4YqPxc1dgg - AGRONOMIS_ADDITIONAL_INSURANCE"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_ADDITIONAL_INSURANCE&quot;"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_fb6N0IUdEe6SIudIsWXVoQ - T_DISTRICT_OFFICE"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;T_DISTRICT_OFFICE&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT AGRONOMIS_ADDITIONAL_INSURANCE.PAR_PARTNER_NR,&#10;&#9;&#9;AGRONOMIS_ADDITIONAL_INSURANCE.KON_NOTIZ,&#10;&#9;&#9;AGRONOMIS_ADDITIONAL_INSURANCE.KON_ABLAUF,&#10;&#9;&#9;AGRONOMIS_ADDITIONAL_INSURANCE.KON_VERSICHERER&#10;FROM&#9;AGRONOMIS_ADDITIONAL_INSURANCE&#13;&#10;where PAR_PARTNER_NR =&quot; + context.LegacyID"/>
-    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_NOTIZ"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_ABLAUF"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_VERSICHERER"/>
-      <elementValue elementRef="TRIM" value="false"/>
-    </elementParameter>
-    <elementParameter field="TEXT" name="LABEL" value="&quot;AGRONOMIS_ADDITONAL_INSURANCE&quot;"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="AGRONOMIS_ADDITIONAL_INSURANCE" name="tHSQLDbInput_3">
-      <column comment="" defaultValue="" key="false" length="-1" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="250" name="KON_NOTIZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="KON_ABLAUF" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="KON_VERSICHERER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="32">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
-    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
-    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
-    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
-    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:R9n2s+LfaTvvDKaA/+OLl8d/UQq9kO3DC58Vo1zu"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_Kpwr0NUZEe2V4YqPxc1dgg - T_DISTRICT_CLUB"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;T_DISTRICT_CLUB&quot;"/>
-    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  *&#10;FROM&#9;T_DISTRICT_CLUB&quot;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select * from sysobjects &quot;"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -794,166 +991,12 @@
       <elementValue elementRef="SCHEMA_COLUMN" value="DESCRIPTION"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
-    <elementParameter field="TEXT" name="LABEL" value="&quot;T_DISTRICT_CLUB&quot;"/>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;T_DISTRICT_OFFICE&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="T_DISTRICT_CLUB" name="tHSQLDbInput_4">
-      <column comment="" defaultValue="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+    <metadata connector="FLOW" label="T_DISTRICT_OFFICE" name="tHSQLDbInput_2">
+      <column comment="" defaultValue="" key="false" length="-1" name="ID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="EXTERNAL_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="608" posY="32">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
-    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
-    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
-    <elementParameter field="TABLE" name="VALUES" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="par_titel"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="titleVoRefID"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="titleVoRefDesc"/>
-      <elementValue elementRef="VALUE" value=""/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
-    <elementParameter field="TABLE" name="INTABLE">
-      <elementValue elementRef="par_titel" value="&quot;1&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000002"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Baron (Freiherr)&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;2&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000003"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Count&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;3&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000004"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Baron (Baron)&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;4&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000005"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Prince (Prinz)&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;5&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000006"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Prince (Fürst)&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;6&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000007"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Baroness (Freifrau)&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;7&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000008"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Countess&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;8&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000009"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Princess (Prinzessin)&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;9&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000010"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Princess (Fürstin)&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;10&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000013"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Hereditary Count&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;11&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000014"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Baroness (Baronin)&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;12&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000011"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Duke&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;13&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000012"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Duchess&quot;"/>
-      <elementValue elementRef="par_titel" value="&quot;14&quot;"/>
-      <elementValue elementRef="titleVoRefID" value="1000001"/>
-      <elementValue elementRef="titleVoRefDesc" value="&quot;Count&quot;"/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
-    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
-    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
-    <elementParameter field="TEXT" name="LABEL" value="titleVoRefDict"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tFixedFlowInput_1">
-      <column comment="" key="false" length="30" name="par_titel" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="titleVoRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="titleVoRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="736" posY="32">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_2"/>
-    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
-    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
-    <elementParameter field="TABLE" name="VALUES" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_WIRTSCHAFTSZWEIG"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="economicFocusRefID"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="economicFocusRefDesc"/>
-      <elementValue elementRef="VALUE" value=""/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
-    <elementParameter field="TABLE" name="INTABLE">
-      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Marktfruchtbetrieb&quot;"/>
-      <elementValue elementRef="economicFocusRefID" value="1000047"/>
-      <elementValue elementRef="economicFocusRefDesc" value="&quot;Fruit farming&quot;"/>
-      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Marktfr. + Tier. Veredlung&quot;"/>
-      <elementValue elementRef="economicFocusRefID" value="1000049"/>
-      <elementValue elementRef="economicFocusRefDesc" value="&quot;Crop &amp; livestock&quot;"/>
-      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Tierische Veredlung&quot;"/>
-      <elementValue elementRef="economicFocusRefID" value="1000050"/>
-      <elementValue elementRef="economicFocusRefDesc" value="&quot;Description = Refinement&quot;"/>
-      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Tier. Veredlung + Marktfr. + B&quot;"/>
-      <elementValue elementRef="economicFocusRefID" value="1000074"/>
-      <elementValue elementRef="economicFocusRefDesc" value="&quot;Crop &amp; livestock + biogas&quot;"/>
-      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Tier. Veredlung + Biogasanlage&quot;"/>
-      <elementValue elementRef="economicFocusRefID" value="1000175"/>
-      <elementValue elementRef="economicFocusRefDesc" value="&quot;Livestock + Biogas&quot;"/>
-      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Marktfr. + Biogasanlage&quot;"/>
-      <elementValue elementRef="economicFocusRefID" value="1000176"/>
-      <elementValue elementRef="economicFocusRefDesc" value="&quot;Crop + Biogas&quot;"/>
-      <elementValue elementRef="PAR_WIRTSCHAFTSZWEIG" value="&quot;Biogasanlage&quot;"/>
-      <elementValue elementRef="economicFocusRefID" value="1000177"/>
-      <elementValue elementRef="economicFocusRefDesc" value="&quot;Biogas&quot;"/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
-    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
-    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
-    <elementParameter field="TEXT" name="LABEL" value="economicFocusRefDict"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tFixedFlowInput_2">
-      <column comment="" key="false" length="30" name="PAR_WIRTSCHAFTSZWEIG" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="economicFocusRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="economicFocusRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="128" posY="288">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_3"/>
-    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
-    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
-    <elementParameter field="TABLE" name="VALUES" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="academicTitleID"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="academicTitleVoRefID"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="academicTitleVoRefDesc"/>
-      <elementValue elementRef="VALUE" value=""/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
-    <elementParameter field="TABLE" name="INTABLE" show="false"/>
-    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
-    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;^&quot;"/>
-    <elementParameter field="MEMO" name="INLINECONTENT" value="1^1000000^Dr. agrar&#13;&#10;2^1000001^Prof.&#13;&#10;3^1000002^Prof. Dr.&#13;&#10;4^1000003^Privatdozent&#13;&#10;5^1000004^Dipl.-Ing.&#13;&#10;6^1000005^Dipl.-Ing.agr.&#13;&#10;7^1000006^Dr.&#13;&#10;8^1000007^Agronomist&#13;&#10;9^1000008^Business Graduate (Dipl.Kfm.)&#13;&#10;10^1000009^Dr. Dr.&#13;&#10;11^1000010^Dr.h.c.&#13;&#10;12^1000011^Dr. jur.&#13;&#10;13^1000012^State Secretary&#13;&#10;14^1000013^Chamber Director (Kammerdirektor)&#13;&#10;15^1000014^Chamber President (Kammerprasident)&#13;&#10;16^1000015^President&#13;&#10;17^1000016^Department Director&#13;&#10;18^1000017^MdB&#13;&#10;19^1000018^Kreislandwirt&#13;&#10;20^1000019^Landw.Meister&#13;&#10;21^1000020^Gartnermeister&#13;&#10;22^1000021^Chairman&#13;&#10;23^1000022^Technician&#13;&#10;24^1000023^Agricultural Technician&#13;&#10;25^1000024^Dipl.-Ing.Agr (FH)&#13;&#10;26^1000025^Dipl.agr. Oec.&#13;&#10;27^1000026^Dipl.-Ing. Horticulture&#13;&#10;28^1000027^Agricultural Business (Agrarbetriebswirt)&#13;&#10;30^1000028^B.Sc.&#13;&#10;31^1000029^Dipl.Inform.&#13;&#10;32^1000030^Dipl.Betriebsw.&#13;&#10;33^1000031^Dipl.Volks.&#13;&#10;34^1000032^Dipl.Ing.GB&#13;&#10;35^1000033^Betriebsw. (FH/VWA)&#13;&#10;36^1000034^Staatl.gepr.BW&#13;&#10;37^1000035^Staatl.gepr.Wirtsch&#13;&#10;38^1000036^Staatl.gepr.LwL&#13;&#10;39^1000037^Dipl.-Betriebswirt&#13;&#10;40^1000038^Staatl.gepr.Techn.&#13;&#10;41^1000039^Agr.Techn.&#13;&#10;42^1000040^Obstbaumeister&#13;&#10;43^1000041^Ing. (grad.)&#13;&#10;44^1000042^Dres.&#13;&#10;45^1000043^B.Eng.&#13;&#10;46^1000044^LL.B.&#13;&#10;47^1000045^B.Ed.&#13;&#10;48^1000046^BBA&#13;&#10;49^1000047^BBI&#13;&#10;50^1000048^M.Sc.&#13;&#10;51^1000049^M.Eng.&#13;&#10;52^1000050^LL.M.&#13;&#10;53^1000051^M.Ed.&#13;&#10;54^1000052^MBA&#13;&#10;55^1000053^MBC&#13;&#10;56^1000054^MBM&#13;&#10;57^1000055^MEGA&#13;&#10;58^1000056^M.I.B.&#13;&#10;59^1000057^MLE&#13;&#10;60^1000058^MdL&#13;&#10;61^1000059^Dipl.-Techn.&#13;&#10;62^1000060^Dipl.-Forsting.&#13;&#10;63^1000061^Dipl.-Kffr.&#13;&#10;64^1000062^Dipl.-LW&#13;&#10;65^1000063^Dr. agr.&#13;&#10;66^1000064^Landwirtschaftsmeister&#13;&#10;67^1000065^Landesminister&#13;&#10;68^1000066^Bundesminister&#13;&#10;69^1000067^Staatl.gepr.Agrar-BW&#13;&#10;70^1000068^M.Sc.Agrar&#13;&#10;71^1000069^Okonomierat&#13;&#10;72^1000070^Okonomieratin&#13;&#10;73^1000071^Geschaftsfuhrer&#13;&#10;74^1000072^Bezirksgeschaftsfuhrer&#13;&#10;75^1000073^Kreisvorsitzender&#13;&#10;76^1000074^Bezirksdirektor&#13;&#10;77^1000075^Director&#13;&#10;"/>
-    <elementParameter field="TEXT" name="LABEL" value="academicTitleLookup"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tFixedFlowInput_3">
-      <column comment="" key="false" length="-1" name="academicTitleID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="academicTitleVoRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="academicTitleVoRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="448" posY="288">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_2"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.academicTitleID = String.valueOf(input_row.academicTitleID);&#13;&#10;output_row.academicTitleVoRefID = Long.valueOf(input_row.academicTitleVoRefID);&#13;&#10;output_row.academicTitleVoRefDesc = input_row.academicTitleVoRefDesc;&#13;&#10;"/>
-    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tJavaRow_2">
-      <column comment="" key="false" length="30" name="academicTitleID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="academicTitleVoRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="academicTitleVoRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="DESCRIPTION" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="128" posY="416">
@@ -1051,7 +1094,7 @@
       <column comment="" key="false" length="100" name="salutation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="partnerNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tDistrictOfficeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties/>
@@ -1395,7 +1438,7 @@
       <column comment="" key="false" length="100" name="salutation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="partnerNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tDistrictOfficeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLContactIVO" name="REJECT">
       <column comment="" key="false" length="-1" name="ID_CONTACT" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1440,7 +1483,7 @@
       <column comment="" key="false" length="100" name="salutation" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="partnerNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="tDistrictOfficeRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tDistrictOfficeRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1507,6 +1550,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="acadTitleLookup"/>
   </connection>
+  <connection connectorName="FLOW" label="district_office" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="district_office"/>
+  </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tMap_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -1525,13 +1572,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_08e76354-80a4-4d38-b863-cc370e999d8e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qPTiudN0hAXbhJ2yjAfVzYQ3qqT7TnOsgNHPzECvfy05ZMUU2zXz7BBgzx1y819pr18wf8lGn8in&#13;
-69T7vQbJHA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_81434ef7-5316-4f53-a7a4-16ace22cfe85"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>aQWcjZCfrjH3CVryw4PyHfXj9yJynCLs+fnvu+p3pXKeemzyTLnL5F6QNlF0n5fu7qzza3Mkb4WR&#13;
-VlPfHzZe3g==</DigestValue></Reference></SignedInfo><SignatureValue>AY+wU4YcadAqu/E/BLI3w4zkvbF86/8jqCBHvycnIpIgCHlFzOa4RpaD0V2A8QO63Puv6uhMVRTD&#13;
-UldeWZEGuUS5PEYm/DUQhonR2wqXhGlWfDckPe9yMT0n/AhF+ewCGvBNSKdtIGmLxOl54Iav/kNu&#13;
-9id9nSMklph2NouyBQMIxydCbLnQwqGcwVhZHHgYTcJP6l+h5ROflS97MyIkvzjc1SQg/CY+zC0T&#13;
-qvQtXZQ4EVrnN7Hx4Rfk+X9Ax12LQN1ArEuOgbHjzfnVutSiEbnjUmCBmZugVtg3NlbDIM6OMNta&#13;
-3WNs5ugHWVgAH5yG3VgAlNh5UfRRJ8ZRxv7gcw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_6dd07b03-4652-4a61-816a-07a35ef8c390"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ZQket9po5h8mVtihxYJmZAvNXQhGIsI/lFiy5V9TA8kEP4clqusIX38wHCcYI4R/Rq/ADpc1voaw&#13;
+CJyB9R3SPw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_01418985-8944-4096-9d2e-8cd1c2df81c8"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>kf8bPZ0+3ZTs3RG03G2NUna5myQsOCozvGfj5TH6s+3K4QM/9uCy4dvo8uEUAy3sTkc8cUZwYZ0R&#13;
+Rvwy9D9AoQ==</DigestValue></Reference></SignedInfo><SignatureValue>CfgjWkd7y+b70COvkb47TAXDaXJ9N3HD6gumvxxu0HHTlq7a9Wa/Ce/fIUC6DIHjAyTxz6mRWSWW&#13;
+PZQpossL8bZuLkDy7ZpWaEHwg+Vo7v58u7qXSj3vgda80tlfex4DnoJqyFfet/ffYyWg1mUiyUVD&#13;
+9KD7j0wfBN8Hg9xROBN2N6uIAQnf9H3x3uTzzDCrinqPAzvme4OrzgLSLh+ag+3/Q2Ud8D8qetpB&#13;
+LSa50sLnQMFDhpYr9I3BjBI2Xvz9LmTz/axyt9wQNr4lwmi6kSL7TvD3e5qE5W31gqFodCvYhAxi&#13;
+jsF8xgrTyOd/qTU+fHqUCqN0nf4/8341GkYodg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1553,4 +1600,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_81434ef7-5316-4f53-a7a4-16ace22cfe85" Target="#_08e76354-80a4-4d38-b863-cc370e999d8e"><Timestamp>2023-11-17 07:31:09</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_01418985-8944-4096-9d2e-8cd1c2df81c8" Target="#_6dd07b03-4652-4a61-816a-07a35ef8c390"><Timestamp>2023-11-17 07:59:59</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
