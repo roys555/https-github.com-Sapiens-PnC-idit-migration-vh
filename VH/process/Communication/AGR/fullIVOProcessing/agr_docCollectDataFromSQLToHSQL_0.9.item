@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="998"/>
+    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="18"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;DOC&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;DOCproj&quot;"/>
   </context>
@@ -376,7 +376,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.KOR_ANL_DATUM  ,kd.KDA_DATEINAME,  k.KOR_DOKUMENTENTYP&#13;&#10;, k.KOR_BESCHREIBUNG, kd.KDA_BARCODE , kd.KDA_DATEIVORLAGE, k.BAT_BATCHDRUCK_NR, k.KOR_DRUCKART, k.KOR_EMAIL_ADRESSAT &#13;&#10;, cms.PARTNER_ID, cms.LEGACY_SOURCE, cms.ENTITY_ID &#13;&#10;from SEV.KORRESPONDENZ k  &#13;&#10;inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;inner join K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms ON cms.LEGACY_DOC_ID = k.KOR_KORRESPONDENZ_NR and cms.legacy_source = 'AGR_DOC'  &#13;&#10;WHERE cms.MIGRATION_STATUS = 100 &#13;&#10;and cms.MIGRATION_ID = &quot; +context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select k.KOR_KORRESPONDENZ_NR, k.KOR_ANL_DATUM  ,kd.KDA_DATEINAME,  k.KOR_DOKUMENTENTYP&#13;&#10;, k.KOR_BESCHREIBUNG, kd.KDA_BARCODE , kd.KDA_DATEIVORLAGE, k.BAT_BATCHDRUCK_NR, k.KOR_DRUCKART, k.KOR_EMAIL_ADRESSAT &#13;&#10;, cms.PARTNER_ID, cms.LEGACY_SOURCE, cms.ENTITY_ID , cms.ARCHIWIRUNG_ID &#13;&#10;from SEV.KORRESPONDENZ k  &#13;&#10;inner join SEV.KORRESPONDENZ_DATEI kd on k.KOR_KORRESPONDENZ_NR = kd.KOR_KORRESPONDENZ_NR &#13;&#10;inner join K2V_DEV.COMMUNICATION_MIGRATION_STATUS cms ON cms.LEGACY_DOC_ID = k.KOR_KORRESPONDENZ_NR and cms.legacy_source = 'AGR_DOC'  &#13;&#10;WHERE cms.MIGRATION_STATUS = 100 &#13;&#10;and cms.MIGRATION_ID = &quot; +context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -417,6 +417,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ARCHIWIRUNG_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -436,11 +438,12 @@
       <column comment="" defaultValue="" key="false" length="38" name="PARTNER_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="LEGACY_SOURCE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ARCHIWIRUNG_ID" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="288" posY="128">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.KOR_KORRESPONDENZ_NR = input_row.KOR_KORRESPONDENZ_NR;&#13;&#10;output_row.KOR_ANL_DATUM = input_row.KOR_ANL_DATUM;&#13;&#10;output_row.KDA_DATEINAME = input_row.KDA_DATEINAME;&#13;&#10;output_row.KOR_DOKUMENTENTYP = input_row.KOR_DOKUMENTENTYP;&#13;&#10;output_row.KOR_BESCHREIBUNG = input_row.KOR_BESCHREIBUNG;&#13;&#10;output_row.PARTNER_ID = input_row.PARTNER_ID;&#13;&#10;output_row.LEGACY_SOURCE = input_row.LEGACY_SOURCE;&#13;&#10;output_row.ENTITY_ID = input_row.ENTITY_ID;&#10;&#10;Integer inOut;&#10;List&lt;String&gt; list1 = Arrays.asList(&quot;Anbauverzeichnis&quot;,&quot;Angebot&quot;,&quot;Antrag-Förderung&quot;,&quot;Ausgangspost VN&quot;,&quot;AV_Mahnung&quot;,&quot;BE/VE Anlagen&quot;,&quot;Beitrittserklärung&quot;&#10;,&quot;Beratungsprotokoll&quot;,&quot;BLZ Anschreiben&quot;,&quot;Eingangspost VN&quot;,&quot;Eingangspost VN E-Mail&quot;,&quot;Förderung&quot;,&quot;Gartenbau&quot;,&quot;Haftpflicht-Nachweis&quot;,&quot;Mahnung&quot;,&quot;Mandat&quot;,&quot;MODIS&quot;&#10;,&quot;Monitoring&quot;,&quot;Personalbogen VV&quot;,&quot;Police&quot;,&quot;Rechnung&quot;,&quot;Rechnung beachten&quot;,&quot;Schaden&quot;,&quot;Schaden beachten&quot;,&quot;Scheck&quot;,&quot;Schriftwechsel&quot;,&quot;Sicherheitsbelehrungen&quot;,&quot;Sondervereinbarung&quot;&#10;,&quot;Trockenheit&quot;,&quot;Verlängerungserklärung (VE)&quot;,&quot;Vermittler&quot;,&quot;Vorausdeckung&quot;,&quot;Vorjahres-AV erweitert&quot;,&quot;Vorjahres-AV und VE&quot;&#10;,&quot;Web-AV&quot;,&quot;Web-AV (Mail)&quot;,&quot;BE&quot;,&quot;VE&quot;,&quot;Eingangspost/-email&quot;,&quot;Schaden beachten&quot;,&quot;Schriftwechsel&quot;);&#10;&#10;if (input_row.KDA_BARCODE != null || input_row.KDA_DATEINAME.equals(&quot;E-MAIL Archivierung&quot;)) {&#10;&#9;inOut = 2;&#10;&#9;} else if (input_row.KDA_DATEIVORLAGE != null || input_row.BAT_BATCHDRUCK_NR != null ||  input_row.KOR_DRUCKART != null || input_row.ENTITY_ID.equals(&quot;email&quot;) &#10;&#9;&#9;|| input_row.ENTITY_ID.equals(&quot;Batch_Emailversand_ohne_Dokument&quot;) || input_row.KOR_EMAIL_ADRESSAT != null) {&#10;&#9;inOut = 1;&#10;&#9;} else if (list1.contains(input_row.KOR_DOKUMENTENTYP)) {&#10;&#9;inOut = -1;&#10;&#9;} else {inOut = 3;}&#10;&#10;&#13;&#10;output_row.inOutType = inOut;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.KOR_KORRESPONDENZ_NR = input_row.KOR_KORRESPONDENZ_NR;&#13;&#10;output_row.KOR_ANL_DATUM = input_row.KOR_ANL_DATUM;&#13;&#10;output_row.KDA_DATEINAME = input_row.KDA_DATEINAME;&#13;&#10;output_row.KOR_DOKUMENTENTYP = input_row.KOR_DOKUMENTENTYP;&#13;&#10;output_row.KOR_BESCHREIBUNG = input_row.KOR_BESCHREIBUNG;&#13;&#10;output_row.PARTNER_ID = input_row.PARTNER_ID;&#13;&#10;output_row.LEGACY_SOURCE = input_row.LEGACY_SOURCE;&#13;&#10;output_row.ENTITY_ID = input_row.ENTITY_ID;&#10;output_row.ARCHIWIRUNG_ID = input_row.ARCHIWIRUNG_ID;&#10;&#10;Integer inOut;&#10;List&lt;String&gt; list1 = Arrays.asList(&quot;Anbauverzeichnis&quot;,&quot;Angebot&quot;,&quot;Antrag-Förderung&quot;,&quot;Ausgangspost VN&quot;,&quot;AV_Mahnung&quot;,&quot;BE/VE Anlagen&quot;,&quot;Beitrittserklärung&quot;&#10;,&quot;Beratungsprotokoll&quot;,&quot;BLZ Anschreiben&quot;,&quot;Eingangspost VN&quot;,&quot;Eingangspost VN E-Mail&quot;,&quot;Förderung&quot;,&quot;Gartenbau&quot;,&quot;Haftpflicht-Nachweis&quot;,&quot;Mahnung&quot;,&quot;Mandat&quot;,&quot;MODIS&quot;&#10;,&quot;Monitoring&quot;,&quot;Personalbogen VV&quot;,&quot;Police&quot;,&quot;Rechnung&quot;,&quot;Rechnung beachten&quot;,&quot;Schaden&quot;,&quot;Schaden beachten&quot;,&quot;Scheck&quot;,&quot;Schriftwechsel&quot;,&quot;Sicherheitsbelehrungen&quot;,&quot;Sondervereinbarung&quot;&#10;,&quot;Trockenheit&quot;,&quot;Verlängerungserklärung (VE)&quot;,&quot;Vermittler&quot;,&quot;Vorausdeckung&quot;,&quot;Vorjahres-AV erweitert&quot;,&quot;Vorjahres-AV und VE&quot;&#10;,&quot;Web-AV&quot;,&quot;Web-AV (Mail)&quot;,&quot;BE&quot;,&quot;VE&quot;,&quot;Eingangspost/-email&quot;,&quot;Schaden beachten&quot;,&quot;Schriftwechsel&quot;);&#10;&#10;if (input_row.KDA_BARCODE != null || input_row.KDA_DATEINAME.equals(&quot;E-MAIL Archivierung&quot;)) {&#10;&#9;inOut = 2;&#10;&#9;} else if (input_row.KDA_DATEIVORLAGE != null || input_row.BAT_BATCHDRUCK_NR != null ||  input_row.KOR_DRUCKART != null || input_row.ENTITY_ID.equals(&quot;email&quot;) &#10;&#9;&#9;|| input_row.ENTITY_ID.equals(&quot;Batch_Emailversand_ohne_Dokument&quot;) || input_row.KOR_EMAIL_ADRESSAT != null) {&#10;&#9;inOut = 1;&#10;&#9;} else if (list1.contains(input_row.KOR_DOKUMENTENTYP)) {&#10;&#9;inOut = -1;&#10;&#9;} else {inOut = 3;}&#10;&#10;&#13;&#10;output_row.inOutType = inOut;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;&#10;import java.util.Arrays;"/>
     <elementParameter field="TEXT" name="LABEL" value="inOutType rules"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -454,6 +457,7 @@
       <column comment="" key="false" length="20" name="LEGACY_SOURCE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="inOutType" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ARCHIWIRUNG_ID" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="416" posY="128">
@@ -475,6 +479,7 @@
       <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ARCHIWIRUNG_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -492,14 +497,15 @@
         <mapperTableEntries expression="row5.KOR_KORRESPONDENZ_NR " name="LEGACY_ID" type="id_Long"/>
         <mapperTableEntries expression="row5.LEGACY_SOURCE " name="LEGACY_SOURCE" type="id_String"/>
         <mapperTableEntries expression="row5.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="row5.ARCHIWIRUNG_ID " name="ARCHIWIRUNG_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row5.PARTNER_ID " name="PARTNER_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row5.KOR_DOKUMENTENTYP " name="KOR_DOKUMENTENTYP" nullable="true" type="id_String"/>
         <mapperTableEntries name="RZC_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="(row5.KOR_BESCHREIBUNG!=null)?row5.KOR_BESCHREIBUNG:row5.ENTITY_ID " name="commName" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(row5.KOR_BESCHREIBUNG!=null)?row5.KOR_BESCHREIBUNG:row5.ARCHIWIRUNG_ID " name="commName" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row5.inOutType != -1?row5.inOutType:  inOutLookup.outDocType " name="inOutTypes" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="row5.KOR_ANL_DATUM " name="creationDate" type="id_Date"/>
         <mapperTableEntries expression="row5.PARTNER_ID " name="commEntityID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="&quot;KOR_KORRESPONDENZ_NR: &quot;+row5.KOR_KORRESPONDENZ_NR+&quot;; KOR_ARCHIVIERUNG_ID: &quot;+row5.ENTITY_ID " name="remarks" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="remarks" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row5" sizeState="INTERMEDIATE">
         <mapperTableEntries name="KOR_KORRESPONDENZ_NR" type="id_Long"/>
@@ -511,6 +517,7 @@
         <mapperTableEntries name="LEGACY_SOURCE" nullable="true" type="id_String"/>
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries name="inOutType" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="ARCHIWIRUNG_ID" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="inOutLookup" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row5.KOR_DOKUMENTENTYP " name="stg_doc_type" nullable="true" operator="=" type="id_String"/>
@@ -556,6 +563,9 @@
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="KEY_ATTRIBUTE" value="true"/>
       <elementValue elementRef="CASE_SENSITIVE" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ARCHIWIRUNG_ID"/>
+      <elementValue elementRef="KEY_ATTRIBUTE" value="true"/>
+      <elementValue elementRef="CASE_SENSITIVE" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_ID"/>
       <elementValue elementRef="KEY_ATTRIBUTE" value="true"/>
       <elementValue elementRef="CASE_SENSITIVE" value="false"/>
@@ -592,6 +602,7 @@
       <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ARCHIWIRUNG_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -606,6 +617,7 @@
       <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ARCHIWIRUNG_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -620,6 +632,7 @@
       <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ARCHIWIRUNG_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -675,6 +688,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ARCHIWIRUNG_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_ID"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -724,6 +742,7 @@
       <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ARCHIWIRUNG_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -738,6 +757,7 @@
       <column comment="" defaultValue="" key="false" length="-1" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="LEGACY_SOURCE" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ARCHIWIRUNG_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PARTNER_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="KOR_DOKUMENTENTYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RZC_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1310,7 +1330,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" label="hsql_idit_docType_sysModule" name="out">
+    <metadata comment="" connector="FLOW" label="hsql_idit_docType_sysModule" name="out">
       <column comment="" key="false" length="30" name="agr_doc_type" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="DOC_TYPE_NR" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="150" name="doc_type_desc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1332,7 +1352,7 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_ue48QEWMEe6KtfgRIKaNZg - hsql_idit_docType_sysModule" name="out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="transforRule.agr_doc_type.toLowerCase() " name="agr_doc_type" nullable="true" type="id_String"/>
@@ -1775,6 +1795,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
   </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tJavaRow_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="ARCHIWIRUNG_ID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
@@ -1784,6 +1809,9 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="inOutType"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="ARCHIWIRUNG_ID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -1880,13 +1908,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="transforRule"/>
   </connection>
-  <connection connectorName="FLOW" label="docTypeRejects" lineStyle="0" metaname="docTypeRejects" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_5" target="tHSQLDbOutput_5">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="docTypeRejects"/>
-  </connection>
-  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_5" target="tHSQLDbOutput_4">
+  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_5" target="tHSQLDbOutput_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out"/>
+  </connection>
+  <connection connectorName="FLOW" label="docTypeRejects" lineStyle="0" metaname="docTypeRejects" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_5" target="tHSQLDbOutput_5">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="docTypeRejects"/>
   </connection>
   <connection connectorName="FLOW" label="idit_dict" lineStyle="8" metaname="tDBInput_6" offsetLabelX="0" offsetLabelY="0" source="tDBInput_6" target="tMap_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1968,13 +1996,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_37b7cb11-af91-44ee-acf0-d671f0a112dc"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>n0CCp+bRRef1U4BaABSSu8lryY1FacO8vBXaMjt5hH41+kUUtFjCvAkG2d8lHs7I3xE2WtB8M1ug&#13;
-oB8JWHRjOQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3af74569-e3cc-4199-a9c2-9730349a7972"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>m8haKvDMjHXRnlOqAWa+LEWwscEMYyVXTcm7fJZ9R8SMQdYqZoFxOWjjKKdeQYUC91TkK78XaC1m&#13;
-ayuVWvw9lA==</DigestValue></Reference></SignedInfo><SignatureValue>RDVdepSQGaaE56yHIjA3OE7M6bcsqjj2Il7shrLrCna3A/D0MargglgT6IaKLRUubSlEBts/MIJg&#13;
-SjFQa1/yQk4U7vpZWvdK+g/aGmAGCfRP+QllqOBUW3jEgThPtEZvPlsZtrB2r+HaIFhX85v9qZPi&#13;
-uE8zymtot7LGDz97ax+X10BJsvL7xqwBU+v0XBhLJf/8uBRKwMqo7Ef7FYk7nQG9ms/dD6F8umD9&#13;
-SHEEh7MC00lDWYPLUuqC8NeBoOv2J9RNjmyCoQUSfYwmYSzeTp609pdmewD0mst9QZRnL9GVI2SM&#13;
-iWCYtv/AVhCjJzZfTjMDPGCmY3Od4hFDzhqc3g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b8682f28-2e6d-43f6-bcb9-22746d7db91b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>HBQFlgtsY7swOY9anrPEdvrGEDndqqreCjbAFTaQoMitm3EqSGqw+G7AG+9AvDS0Bb0//aiNmuPB&#13;
+WgOZNaGjIg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_7e1862d2-099b-4eec-9dca-ec1be2a25fdf"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>t+Tx7lRDEW3PjYO9BTOpU7/9TAPhOTKfF9yth+j51XMlRJRCFBy/dSdka/Xno/9zUQ3vyRMYDGok&#13;
+N8juyWE+8A==</DigestValue></Reference></SignedInfo><SignatureValue>iNVUNEIxFDFAu8ndgBR5IzbUFa+RQbc+38rC38RUWU/fDTOPleeQs5+2hQp2vqJPR/bREynpHnvd&#13;
+08poT0SiGP0ju7saAoi440zS2oducAw8mugCoEN5STMi3ohMKcJv+CxM+m+J5m9YhN/K/5zHcBAo&#13;
+TTi1HsEo+uQhimK6mXXh4IPAbyxBOSGa31QssWjiWEXWp7PGtHX2VHj04b0/wL1rxRZ1pI+3Xxxg&#13;
+dReNJgNuIK2jTkBd9QgcW+QtxuQjB/I3em3VCZEPV2YHj3yL2RFI5SAUfEg84fWa2jqUDLoucydB&#13;
+uFbb3w0QZ+ST60t5JhbTwVXTLck8SmieUfZOoA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1996,4 +2024,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3af74569-e3cc-4199-a9c2-9730349a7972" Target="#_37b7cb11-af91-44ee-acf0-d671f0a112dc"><Timestamp>2023-11-16 13:00:01</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_7e1862d2-099b-4eec-9dca-ec1be2a25fdf" Target="#_b8682f28-2e6d-43f6-bcb9-22746d7db91b"><Timestamp>2023-11-20 15:04:22</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
