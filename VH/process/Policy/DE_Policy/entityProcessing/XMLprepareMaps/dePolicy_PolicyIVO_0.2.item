@@ -135,13 +135,13 @@
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:x1+7mPQHFLk7YRtJafWYyUWuvY2UDOlAnWukJTwJ"/>
     <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_HPHtYISTEe6FjatyUK4Uyg - DE_POLICY_HEADER"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;DE_POLICY_HEADER&quot;"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_5z01YIoCEe6-hOaZAw8M6g - BUNDLE_VERSIONS"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;BUNDLE_VERSIONS&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DE_POLICY_HEADER.ENTITY_ID,&#10;&#9;&#9;DE_POLICY_HEADER.LEGACY_ID,&#10;&#9;&#9;DE_POLICY_HEADER.START_DATE,&#10;&#9;&#9;DE_POLICY_HEADER.LATEST_START&#10;FROM&#9;DE_POLICY_HEADER&#13;&#10;where entity_id =&quot; +context.EntityID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT BUNDLE_VERSIONS.ENTITY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.LEGACY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.POLICY,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_START_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_END_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.ECONOMY_REF&#10;FROM&#9;BUNDLE_VERSIONS&#13;&#10;where entity_id = &quot; + context.EntityID&#13;&#10;"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -149,18 +149,24 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="LATEST_START"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ECONOMY_REF"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
-    <elementParameter field="TEXT" name="LABEL" value="DE_POLICY_HEADER"/>
+    <elementParameter field="TEXT" name="LABEL" value="BUNDLE_VERSIONS"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="DE_POLICY_HEADER" name="tHSQLDbInput_1">
+    <metadata connector="FLOW" label="BUNDLE_VERSIONS" name="tHSQLDbInput_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POLICY" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VER_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VER_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="ECONOMY_REF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="384" posY="288">
@@ -223,30 +229,30 @@
       <column comment="" key="false" length="-1" name="subUnitPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row1.START_DATE " name="policyStartDate" type="id_Date"/>
+        <mapperTableEntries expression="VERSIONS.VER_START_DATE " name="policyStartDate" type="id_Date"/>
       </varTables>
       <outputTables name="policyIVO" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries name="LEGACY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="VERSIONS.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="VERSIONS.LEGACY_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(long)1" name="billingTypeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(String)&quot;Direct Billing&quot;" name="billingTypeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="coefficientVersionNr" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(long)10006" name="collectionMethodId" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row3.policyEndDate " name="contractEnedDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="policyHeader.policyEndDate " name="contractEnedDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(long)1" name="contractPeriodVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(String)&quot;1 year to be confirmed&quot;" name="contractPeriodVORefContent" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row3.currencyVORefID " name="currencyVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row3.currencyVORefDesc " name="currencyVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="policyHeader.currencyVORefID " name="currencyVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="policyHeader.currencyVORefDesc " name="currencyVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)100" name="currentChannelVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(String)&quot;Company Employee Channel&quot;" name="currentChannelVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="customerDecisionVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(String)&quot;Confirm policy&quot;" name="customerDecisionVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row3.policyEndDate " name="endorsEndDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="policyHeader.policyEndDate " name="endorsEndDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(long)0" name="endorsNr" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row3.policyStartDate " name="endorsStartDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="row1.ENTITY_ID " name="externalPolicyNr" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="policyHeader.policyStartDate " name="endorsStartDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="VERSIONS.ENTITY_ID " name="externalPolicyNr" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="groupPolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="isOneInstForEndorsement" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="" name="migratedPolicyNumber" nullable="true" type="id_String"/>
@@ -272,14 +278,16 @@
         <mapperTableEntries name="statusDate" nullable="true" type="id_Date"/>
         <mapperTableEntries name="subUnitPolicy" nullable="true" type="id_Boolean"/>
       </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="VERSIONS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries name="LEGACY_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="LATEST_START" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="POLICY" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="VER_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="VER_END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="ECONOMY_REF" nullable="true" type="id_String"/>
       </inputTables>
-      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row3" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row1.ENTITY_ID " name="ENTITY_ID" operator="=" type="id_String"/>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyHeader" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="VERSIONS.ENTITY_ID " name="ENTITY_ID" operator="=" type="id_String"/>
         <mapperTableEntries name="LEGACY_ID" type="id_Long"/>
         <mapperTableEntries name="activePolicyId" nullable="true" type="id_Long"/>
         <mapperTableEntries name="bundlePolicy" nullable="true" type="id_Boolean"/>
@@ -311,6 +319,125 @@
         <mapperTableEntries name="updateTotFlag" nullable="true" type="id_Boolean"/>
       </inputTables>
     </nodeData>
+  </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name+context.EntityID"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:dhOaAzqWIOafBgBtX3pu408DqdF6RbtRQ2maen7J"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_6qZVYIU-Ee6FjatyUK4Uyg - XMLpolicyHeaderIVO"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;XMLpolicyHeaderIVO&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT XMLpolicyHeaderIVO.ENTITY_ID,&#10;&#9;&#9;XMLpolicyHeaderIVO.LEGACY_ID,&#10;&#9;&#9;XMLpolicyHeaderIVO.activePolicyId,&#10;&#9;&#9;XMLpolicyHeaderIVO.bundlePolicy,&#10;&#9;&#9;XMLpolicyHeaderIVO.consolidatedBillingFlag,&#10;&#9;&#9;XMLpolicyHeaderIVO.currencyVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.currencyVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.externalHeaderNumber,&#10;&#9;&#9;XMLpolicyHeaderIVO.isHealthUmbrellaPolicy,&#10;&#9;&#9;XMLpolicyHeaderIVO.isMasterPolicy,&#10;&#9;&#9;XMLpolicyHeaderIVO.mainRenewalDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.multiplePayersFlag,&#10;&#9;&#9;XMLpolicyHeaderIVO.paidByAgentFlag,&#10;&#9;&#9;XMLpolicyHeaderIVO.policyEndDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.policyProposalDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.policyStartDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.processingStatusVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.processingStatusVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.productVersionVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.productVersionVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.productVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.productVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.sales1,&#10;&#9;&#9;XMLpolicyHeaderIVO.sales1Date,&#10;&#9;&#9;XMLpolicyHeaderIVO.statusCodeVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.statusCodeVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.statusCollDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.statusDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.trackCoverBalancePerEndors,&#10;&#9;&#9;XMLpolicyHeaderIVO.updateTotFlag&#10;FROM&#9;XMLpolicyHeaderIVO&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="activePolicyId"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="bundlePolicy"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="consolidatedBillingFlag"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="currencyVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="currencyVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="externalHeaderNumber"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="isHealthUmbrellaPolicy"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="isMasterPolicy"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="mainRenewalDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="multiplePayersFlag"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paidByAgentFlag"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyEndDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyProposalDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyStartDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="productVersionVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="productVersionVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="productVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="productVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="sales1"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="sales1Date"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusCodeVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusCodeVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusCollDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="trackCoverBalancePerEndors"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="updateTotFlag"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="XMLpolicyHeaderIVO"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="XMLpolicyHeaderIVO" name="tHSQLDbInput_2">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="activePolicyId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="bundlePolicy" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="consolidatedBillingFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="currencyVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="currencyVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="externalHeaderNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="isHealthUmbrellaPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="isMasterPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="mainRenewalDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="multiplePayersFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="paidByAgentFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyEndDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyProposalDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyStartDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="processingStatusVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="processingStatusVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="productVersionVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="productVersionVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="productVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="productVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="sales1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="sales1Date" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="statusCodeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="statusCodeVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="statusCollDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="statusDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="trackCoverBalancePerEndors" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="updateTotFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+    </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="672" posY="288">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_1"/>
@@ -799,125 +926,6 @@
       <column comment="" key="false" length="-1" name="subUnitPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="32">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
-    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
-    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
-    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name+context.EntityID"/>
-    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:dhOaAzqWIOafBgBtX3pu408DqdF6RbtRQ2maen7J"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_6qZVYIU-Ee6FjatyUK4Uyg - XMLpolicyHeaderIVO"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;XMLpolicyHeaderIVO&quot;"/>
-    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT XMLpolicyHeaderIVO.ENTITY_ID,&#10;&#9;&#9;XMLpolicyHeaderIVO.LEGACY_ID,&#10;&#9;&#9;XMLpolicyHeaderIVO.activePolicyId,&#10;&#9;&#9;XMLpolicyHeaderIVO.bundlePolicy,&#10;&#9;&#9;XMLpolicyHeaderIVO.consolidatedBillingFlag,&#10;&#9;&#9;XMLpolicyHeaderIVO.currencyVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.currencyVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.externalHeaderNumber,&#10;&#9;&#9;XMLpolicyHeaderIVO.isHealthUmbrellaPolicy,&#10;&#9;&#9;XMLpolicyHeaderIVO.isMasterPolicy,&#10;&#9;&#9;XMLpolicyHeaderIVO.mainRenewalDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.multiplePayersFlag,&#10;&#9;&#9;XMLpolicyHeaderIVO.paidByAgentFlag,&#10;&#9;&#9;XMLpolicyHeaderIVO.policyEndDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.policyProposalDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.policyStartDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.processingStatusVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.processingStatusVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.productVersionVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.productVersionVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.productVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.productVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.sales1,&#10;&#9;&#9;XMLpolicyHeaderIVO.sales1Date,&#10;&#9;&#9;XMLpolicyHeaderIVO.statusCodeVORefID,&#10;&#9;&#9;XMLpolicyHeaderIVO.statusCodeVORefDesc,&#10;&#9;&#9;XMLpolicyHeaderIVO.statusCollDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.statusDate,&#10;&#9;&#9;XMLpolicyHeaderIVO.trackCoverBalancePerEndors,&#10;&#9;&#9;XMLpolicyHeaderIVO.updateTotFlag&#10;FROM&#9;XMLpolicyHeaderIVO&quot;"/>
-    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="activePolicyId"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="bundlePolicy"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="consolidatedBillingFlag"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="currencyVORefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="currencyVORefDesc"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="externalHeaderNumber"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="isHealthUmbrellaPolicy"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="isMasterPolicy"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="mainRenewalDate"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="multiplePayersFlag"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="paidByAgentFlag"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="policyEndDate"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="policyProposalDate"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="policyStartDate"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="processingStatusVORefDesc"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="productVersionVORefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="productVersionVORefDesc"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="productVORefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="productVORefDesc"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="sales1"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="sales1Date"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="statusCodeVORefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="statusCodeVORefDesc"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="statusCollDate"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="statusDate"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="trackCoverBalancePerEndors"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="updateTotFlag"/>
-      <elementValue elementRef="TRIM" value="false"/>
-    </elementParameter>
-    <elementParameter field="TEXT" name="LABEL" value="XMLpolicyHeaderIVO"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="XMLpolicyHeaderIVO" name="tHSQLDbInput_2">
-      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="LEGACY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="activePolicyId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="bundlePolicy" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="consolidatedBillingFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="currencyVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="currencyVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="externalHeaderNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="isHealthUmbrellaPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="isMasterPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="mainRenewalDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="multiplePayersFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="paidByAgentFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="policyEndDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="policyProposalDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="policyStartDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="processingStatusVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="processingStatusVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="productVersionVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="productVersionVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="productVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="100" name="productVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="sales1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="sales1Date" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="statusCodeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="statusCodeVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="statusCollDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="statusDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="trackCoverBalancePerEndors" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="updateTotFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
-    </metadata>
-  </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(&quot;Job : PolicyIVO&quot;);&#10;System.out.println(context.EntityID);"/>
@@ -925,21 +933,21 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_1"/>
   </node>
-  <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
+  <connection connectorName="FLOW" label="VERSIONS" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="VERSIONS"/>
   </connection>
   <connection connectorName="FLOW" label="policyIVO" lineStyle="0" metaname="policyIVO" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tHSQLDbOutput_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policyIVO"/>
   </connection>
+  <connection connectorName="FLOW" label="policyHeader" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policyHeader"/>
+  </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
-  </connection>
-  <connection connectorName="FLOW" label="row3" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
@@ -954,13 +962,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_62448ac6-3445-43df-8a50-3022e5e10803"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>cf/LiUM+4nBu0pKGQ8bD/vP6pYpFryb190lMqoURZaeFDu7IXfUNo+hMHEVLYfXV8YT7ZviXDVyn&#13;
-EWh6P0ej3A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_86df8f9a-2659-4815-b7a1-5fcf4ebf69f5"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QwDQbyvhYbQ+KZzeMGtQdp9EXmBZAgNeGN2AmpV61elWWn3wecmmVc4hL+hANLNYDICbVXYTyrzh&#13;
-XJN5/OHQEw==</DigestValue></Reference></SignedInfo><SignatureValue>Ju4A2B8HJEZ4rxK6xBa8EmsPvwybtyCOewzUWTCkhd9qrPFzdmgSGV8VHZ+BkPvjzFhQ9L+6shNA&#13;
-K7liZrxTg1Kiml2zcLqJSIo927A4b1zHoYTgtklfBHsYTDT6W0vwLrVCwtKlIMgy7zTep+vskZwW&#13;
-UHE7t1NCjokGPxlsLm3/hDrl95ZqA2ksHLwfnwgnIN/Pxu/cwZomoTbZvMZba2BrG9Za9CsncVKz&#13;
-4ij37vJb6tRrIaHq//Op/u7km3dMdhJ1fdqYjZaasvBAUGxivfCLQURMesgBE947orMhot2aHjM1&#13;
-RK6BpV5Ni4noUAjtP5xG4ercKDPkdJQnwOi4vA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c5ce1432-771a-4fcb-adbe-89cc054222aa"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>6W09uEkcK88T52DEENrBVvozx6Nh6HC/Mb2Wuu4tseSK5xvI1oAb+gJPuu91P1Eh4NkMMFBrsRQv&#13;
+D9Qet/jIgA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_697da6ab-9157-42b0-b56e-f17dd34f19c7"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>h76Rft9t0HP2zl+TDaYRypyQxF0iAQ5XNxmDVK55rNl3PppTCUjnXXS3cPuUWGWgH7pEKkwzwqPL&#13;
+sxbDkdLNwA==</DigestValue></Reference></SignedInfo><SignatureValue>K6xkAmHuBbijNeWg+p3au8im0pE/9XfB//FULXJGTIK9LgIdXFZYZAAqDkJ4j6sZWPj1xMb6deow&#13;
+LbaBXU+n9Ukg+p7TGeci1qGCczS6L8S3sBB3QT2v5z3T5SKJJm/R/3es2N3PS4xd0ymxi4crW8Bm&#13;
+RQpvfTJUHl924m5Z6fcB1sonL6kanhrPQP3bsGFF1b9b7DvQ/Lt7q2klMsfYVHImubEeWamgeNLz&#13;
+MVd1APFKRv2Xu2bGyft1OX9brYciWFbyrNMcYaQGGSaXy17rKi8lQUBPARruMXZTnsd3G741zLkq&#13;
+ZlAGYN5KkZU28wzJ6+5RRUQVD0ZS1TL6w7DeiA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -982,4 +990,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_86df8f9a-2659-4815-b7a1-5fcf4ebf69f5" Target="#_62448ac6-3445-43df-8a50-3022e5e10803"><Timestamp>2023-11-22 11:15:16</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_697da6ab-9157-42b0-b56e-f17dd34f19c7" Target="#_c5ce1432-771a-4fcb-adbe-89cc054222aa"><Timestamp>2023-11-23 14:35:46</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
