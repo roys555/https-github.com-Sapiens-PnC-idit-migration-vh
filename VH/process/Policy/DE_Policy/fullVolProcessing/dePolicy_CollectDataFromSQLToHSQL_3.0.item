@@ -969,7 +969,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH inc AS ( &#13;&#10; SELECT p.POL_POLICEN_NR external_policy_number, p.PAR_PARTNER_NR,  min(p.pol_gueltig_ab) start_date&#13;&#10;FROM sev.POLICE p&#13;&#10;WHERE EXISTS&#13;&#10;&#9;(SELECT 1 FROM sev.VERTRAG v&#13;&#10;&#9; WHERE v.POL_POLICEN_NR = p.POL_POLICEN_NR&#13;&#10;&#9;  AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9; AND v.VER_HISTORIE &lt;'HT'&#13;&#10;&#9; AND v.VER_ZUSTAND = 'lebend'&#13;&#10;&#9; AND p.POL_GUELTIG_AB &lt;= v.POL_GUELTIG_AB)&#13;&#10;AND p.POL_POLICE_TYP in ('VH','KH')&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT' AND POL_ZUSTAND = 'lebend'&#13;&#10;AND p.POL_UNGUELTIG_AB&gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;GROUP BY p.POL_POLICEN_NR, p.PAR_PARTNER_NR&#13;&#10;),&#13;&#10;ver AS &#13;&#10;&#9;(SELECT DISTINCT p.POL_POLICEN_NR AS POLICE,  &#9;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#9;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#9;p.POL_WIRTSCHAFTSWEISE economy_ref&#13;&#10;&#9;FROM sev.POLICE p  &#13;&#10;&#9;WHERE 1=1 &#13;&#10;    AND p.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;AND p.POL_ZUSTAND = 'lebend'&#13;&#10;&#9;AND p.POL_HISTORIE &lt;&gt; 'HT') &#13;&#10;&#13;&#10;SELECT a.entity_id, a.legacy_id, ver.police, ver.B_VER_START_DATE, ver.B_VER_END_DATE, ver.economy_ref&#13;&#10;FROM  k2v_dev.DE_POLICY_MIGRATION_STATUS a&#13;&#10;INNER JOIN ver ON A.LEGACY_ID = ver.police&#13;&#10;INNER JOIN inc ON ver.police = inc.external_policy_number AND ver.B_VER_START_DATE &gt;= inc.start_date&#13;&#10;WHERE 1=1&#13;&#10; AND a.migration_id = &quot;  + context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH inc AS ( &#13;&#10; SELECT p.POL_POLICEN_NR external_policy_number, p.PAR_PARTNER_NR,  min(p.pol_gueltig_ab) start_date&#13;&#10;FROM sev.POLICE p&#13;&#10;WHERE EXISTS&#13;&#10;&#9;(SELECT 1 FROM sev.VERTRAG v&#13;&#10;&#9; WHERE v.POL_POLICEN_NR = p.POL_POLICEN_NR&#13;&#10;&#9;  AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9; AND v.VER_HISTORIE &lt;'HT'&#13;&#10;&#9; AND v.VER_ZUSTAND = 'lebend'&#13;&#10;&#9; AND p.POL_GUELTIG_AB &lt;= v.POL_GUELTIG_AB)&#13;&#10;AND p.POL_POLICE_TYP in ('VH','KH')&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT' AND POL_ZUSTAND = 'lebend'&#13;&#10;AND p.POL_UNGUELTIG_AB&gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;GROUP BY p.POL_POLICEN_NR, p.PAR_PARTNER_NR&#13;&#10;),&#13;&#10;ver AS &#13;&#10;&#9;(SELECT DISTINCT p.POL_POLICEN_NR AS POLICE,  &#9;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#9;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#9;p.POL_WIRTSCHAFTSWEISE economy_ref&#13;&#10;&#9;FROM sev.POLICE p  &#13;&#10;&#9;WHERE 1=1 &#13;&#10;    AND p.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;AND p.POL_ZUSTAND = 'lebend'&#13;&#10;&#9;AND p.POL_HISTORIE &lt;&gt; 'HT') &#13;&#10;&#13;&#10;SELECT a.entity_id, a.legacy_id, ver.police, ver.B_VER_START_DATE, ver.B_VER_END_DATE, ver.economy_ref,&#13;&#10;&#9;DENSE_RANK() OVER(ORDER BY B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM  k2v_dev.DE_POLICY_MIGRATION_STATUS a&#13;&#10;INNER JOIN ver ON A.LEGACY_ID = ver.police&#13;&#10;INNER JOIN inc ON ver.police = inc.external_policy_number AND ver.B_VER_START_DATE &gt;= inc.start_date&#13;&#10;WHERE 1=1&#13;&#10; AND a.migration_id = &quot;  + context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -996,6 +996,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ECONOMY_REF"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_VERSION"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
@@ -1008,6 +1010,7 @@
       <column comment="" key="false" length="-1" name="B_VER_START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="B_VER_END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="ECONOMY_REF" nullable="true" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="224" posY="480">
@@ -1031,6 +1034,7 @@
       <column comment="" key="false" length="-1" name="VER_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VER_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="ECONOMY_REF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
@@ -1042,6 +1046,7 @@
         <mapperTableEntries expression="row2.B_VER_START_DATE " name="VER_START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row2.B_VER_END_DATE " name="VER_END_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row2.ECONOMY_REF " name="ECONOMY_REF" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row2.BUNDLE_VERSION " name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -1050,6 +1055,7 @@
         <mapperTableEntries name="B_VER_START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="B_VER_END_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="ECONOMY_REF" nullable="true" type="id_String"/>
+        <mapperTableEntries name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1108,6 +1114,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_VERSION"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="BUNDLE_VERSIONS"/>
@@ -1119,6 +1130,7 @@
       <column comment="" key="false" length="-1" name="VER_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VER_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="ECONOMY_REF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="BUNDLE_VERSIONS" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1127,6 +1139,7 @@
       <column comment="" key="false" length="-1" name="VER_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VER_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="ECONOMY_REF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1183,14 +1196,14 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk12"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbRow_6">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
+  </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbOutput_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbRow_6">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_6" offsetLabelX="0" offsetLabelY="0" source="tDBInput_6" target="tMap_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1200,15 +1213,20 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="DE_POLICY_HEADER"/>
   </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_6" target="tHSQLDbRow_3">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
-  </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_6" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_6" target="tHSQLDbRow_3">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
+  </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tMap_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="BUNDLE_VERSION"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
@@ -1289,13 +1307,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5d0fcf9b-0417-403e-a08a-8e63c0bf9765"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QiPVG+mmjz075QaySc0nPzE0CuaKVy5GquJsKUXQIcMfvHglYxRkbBmGA1qDPodi1zolzfgSWcwz&#13;
-Dg7KAA6KWg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8e29ac4b-6ea7-480c-a05b-2932ddb0bdf7"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>SpBCfM9epmVdrJmT9jpf31twdyv77ZkdsQcsSw0JGKCMyUy/e2GjSYoWl0QgIzXhZPDZAj0kL+AR&#13;
-xEmx+QMfPA==</DigestValue></Reference></SignedInfo><SignatureValue>l2cyNAWAKI80v4EDym8FZrwSYPKjOblzh2kGE8tlRJa6MZ1+XTwtcr4DFWqogOPsN8jTn725I9vS&#13;
-HfE5ZWWnzTMroezpCMOQkexmdqbRDmu84faxLywwa/nh5G+eYh8vB4tahq46ePblhKQhUQZinmEz&#13;
-n2zhHjJwzRVN6OmUqMZ7LAwK2H+bs/tAo+xrYgcSQ5eXJkEC90cMUAeqmf8g7ZdukSHRdKAYJHho&#13;
-U7UU5mI8VwN++lZMrDufW3TsmJXAkuDvw70DreYBMDcq0QUlMBDkqWwjbIp3LvpaTm+3hd815IsE&#13;
-nsV+4NUidI7ZwTQqU6ZuadQSkAypNSvHlzvlZg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_86b14f0a-7368-4c01-84b8-af5d21ef19f8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>I2ctOEmSmo25DbOgGz7yf7wcSaLpq9oiJqyNuRRG+N18jClRWye+Q1QZnHHabOJ9l06Fgiu0Szke&#13;
+VBEIUV3X5A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_251ba85f-6ff0-4002-9fbc-33916d986037"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NDTOB5N0jcGmQFG0pOPw++xBNhDhyq+GG7boPCd0POiZdzTmUTalA4cmor4a0BUmjWqq3+iMQB8H&#13;
+4q30XjKxGQ==</DigestValue></Reference></SignedInfo><SignatureValue>Cu/NNXSWeQTrd2qtsCzrodi2w95GaaUinrpYE8rQc3l0k0A0d7a5f1pm0/eB/gx+tzn/JgFPtABA&#13;
+i0THjErHCQhTesGrxOefECeQqXD6A18lw8ItW3FOvqQypkYyyi6PLSjhfBY/TiuUFWCoU77nYjKk&#13;
+UbMT44L3psBIa6nXY06pRks00SYOLOwFBpGEh86TvcewrWR3JQCZuq5x5uW/tDYH/Pn6wnmH3+QP&#13;
+H6/+3uGemB/LhXPR7wnTcCkNoSvjzwRdmKDOBzNTqNkcpLh30PmVGQNOoOz/P0HcKcaP6vmmwOnO&#13;
+FhZc1Y6LrxwNCZ4tErbRFZGswEuw6Xc/LWVX8Q==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1317,4 +1335,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8e29ac4b-6ea7-480c-a05b-2932ddb0bdf7" Target="#_5d0fcf9b-0417-403e-a08a-8e63c0bf9765"><Timestamp>2023-11-23 14:26:47</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_251ba85f-6ff0-4002-9fbc-33916d986037" Target="#_86b14f0a-7368-4c01-84b8-af5d21ef19f8"><Timestamp>2023-11-24 09:39:51</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
