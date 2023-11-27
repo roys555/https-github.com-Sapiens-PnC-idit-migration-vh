@@ -227,14 +227,17 @@
       <column comment="" key="false" length="-1" name="proposalValidation" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="rate" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="rateDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="renewalNumber" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="standaloneFleet" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="statusAttributeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="statusAttributeVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="statusCodeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="statusCodeVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="statusDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="subUnitPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.VER_START_DATE " name="policyStartDate" type="id_Date"/>
         <mapperTableEntries expression="(long)100" name="currentChannelIVORefID" type="id_Long"/>
@@ -283,7 +286,10 @@
         <mapperTableEntries expression="VERSIONS.VER_START_DATE " name="proposalValidation" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(double)1.0" name="rate" nullable="true" type="id_Double"/>
         <mapperTableEntries expression="Var.currentDate " name="rateDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="(long)0" name="renewalNumber" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="false" name="standaloneFleet" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="(long)10012" name="statusAttributeVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="(String)&quot;Final&quot;" name="statusAttributeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="policyHeader.statusCodeVORefID " name="statusCodeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="policyHeader.statusCodeVORefDesc " name="statusCodeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="Var.currentDate " name="statusDate" nullable="true" type="id_Date"/>
@@ -455,6 +461,44 @@
       <column comment="" key="false" length="-1" name="statusDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="trackCoverBalancePerEndors" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="updateTotFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="512" posY="128">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ECONOMY_REF"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="i_we"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="o_RefID"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="o_RefDesc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="ECONOMY_REF" value=""/>
+      <elementValue elementRef="i_we" value="&quot;k&quot;"/>
+      <elementValue elementRef="o_RefID" value="(long)1000201"/>
+      <elementValue elementRef="o_RefDesc" value="&quot;Conventional&quot;"/>
+      <elementValue elementRef="ECONOMY_REF" value=""/>
+      <elementValue elementRef="i_we" value="&quot;ö&quot;"/>
+      <elementValue elementRef="o_RefID" value="(long)1000200"/>
+      <elementValue elementRef="o_RefDesc" value="&quot;Ecological&quot;"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="trn_EcnonmyRef"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_1">
+      <column comment="" key="true" length="1" name="ECONOMY_REF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="i_we" nullable="true" originalLength="1" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="o_RefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="o_RefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="672" posY="288">
@@ -994,44 +1038,6 @@
       <column comment="" key="false" length="-1" name="subUnitPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="512" posY="128">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
-    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
-    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
-    <elementParameter field="TABLE" name="VALUES" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="ECONOMY_REF"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="i_we"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="o_RefID"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="o_RefDesc"/>
-      <elementValue elementRef="VALUE" value=""/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
-    <elementParameter field="TABLE" name="INTABLE">
-      <elementValue elementRef="ECONOMY_REF" value=""/>
-      <elementValue elementRef="i_we" value="&quot;k&quot;"/>
-      <elementValue elementRef="o_RefID" value="(long)1000201"/>
-      <elementValue elementRef="o_RefDesc" value="&quot;Conventional&quot;"/>
-      <elementValue elementRef="ECONOMY_REF" value=""/>
-      <elementValue elementRef="i_we" value="&quot;ö&quot;"/>
-      <elementValue elementRef="o_RefID" value="(long)1000200"/>
-      <elementValue elementRef="o_RefDesc" value="&quot;Ecological&quot;"/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
-    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
-    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
-    <elementParameter field="TEXT" name="LABEL" value="trn_EcnonmyRef"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tFixedFlowInput_1">
-      <column comment="" key="true" length="1" name="ECONOMY_REF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="1" name="i_we" nullable="true" originalLength="1" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="o_RefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="o_RefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(&quot;Job : PolicyIVO&quot;);&#10;System.out.println(context.EntityID);"/>
@@ -1051,10 +1057,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policyHeader"/>
   </connection>
-  <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
-  </connection>
   <connection connectorName="FLOW" label="trn_EconomyRef" lineStyle="8" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tMap_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ECONOMY_REF"/>
@@ -1063,6 +1065,10 @@
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_EconomyRef"/>
+  </connection>
+  <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
@@ -1077,13 +1083,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ccaaab4e-80aa-4e6c-b8d7-4ece42dd3cfc"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>flukzrjZEqaY/wCKw4L6LLLbaa4Tmpt5TeXQIFlb5YD5IJcZHnwpsLhWQyTy3uKZzC5WBMmYTXNh&#13;
-xyS0EKPJ/Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0f7e17bc-5d1f-4648-be63-c0a2645285f1"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>unAtN+f03oCw2kff+mrydDyZv8KlZC9v/4M+ujPGZjBSTwq7sp9ER2JH3JSiEepDh7zS6P6OQqrr&#13;
-UFctcaBLIw==</DigestValue></Reference></SignedInfo><SignatureValue>SXonTjSDS2GgE4u4NjyVD+F+hkRRvSsH9pvXB5FhgJ9HRy7lJw8sfbT68XSUkfNxrtXDTicZaQ4w&#13;
-+tqRXyh7wxNPZG8mNSBKqyOqhKhCHRvnWVR8cLc/vEMOrkIuUMTS/8UwBILbuU7BtmCxnJVm+Icj&#13;
-BmfrGGNLzT9MMAmCBBFQ2UIRBSTqbP+eEIL53mRrwtF2bc+wdbUi11ZytMa6rg+FEs9z5zrg+GkJ&#13;
-F4BtziDfaTnB+NUEQwFkouxyKU+faxjRsyT4j2skPc9vPLB7eM3eRtdJ3g2x5XnGMKCaUEgDlO9O&#13;
-pWIROcxtoO/b9S+fs3KZgQigZazLMIh8ADMI5w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8c5d4d20-158d-4175-9469-6b3ae30cce08"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ZfGr0vgaXH6SQewoWBui6KuSMzLycAzA4hEwFqyNHVuBrID9xmgM8gR42tGmcr0agQ9/b2MAnRsx&#13;
+3P+GiLnwpw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_bdd0f212-d5aa-408e-97af-04b5dfd7dc47"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>adgibZqPMWifSJWtucuaCt1KtUHxs17j2I+eqquAoLKuE1Q03eO7+6qm9goLNwPqx35fwSJQvV0I&#13;
+PXAxsp5DDQ==</DigestValue></Reference></SignedInfo><SignatureValue>bteyJ6CmyJEzkxnefrVJsu0jN8RwxAQk4GfPZmhXjPDFNA/bShKDOTD880qaiPFv7RCSuNcpjMTy&#13;
+irmbfJBfmnklHqjrOCSCqIPyIPU5Q7OYIS4RL92d08BTnlF79oIjSIv6occ5eQXXEKEdEe4w19Pv&#13;
+cmGX+hVffnW7aVypkQrEdlZjJGrYI6zmKMzgr20BUvRcCDlVsYVmecW08TZFttx36NJMTYt5kYIa&#13;
+AyAuNGrhXpI7NOT4Mq98sPpIx2GoYLplJZkRJCbP2JeoCI3cpnj/O1kUHLc/rB5MGoFuBIi4rRtu&#13;
+oFuWkHCHPNsHRcncObtUKrhEHfqHPkHZBHLjrg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1105,4 +1111,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0f7e17bc-5d1f-4648-be63-c0a2645285f1" Target="#_ccaaab4e-80aa-4e6c-b8d7-4ece42dd3cfc"><Timestamp>2023-11-27 12:48:25</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_bdd0f212-d5aa-408e-97af-04b5dfd7dc47" Target="#_8c5d4d20-158d-4175-9469-6b3ae30cce08"><Timestamp>2023-11-27 12:50:12</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
