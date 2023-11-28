@@ -176,7 +176,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.par_partner_nr,&#13;&#10;       p.PAR_ZUS_ANREDE,&#13;&#10;&#9;   p.PAR_ANREDE, &#13;&#10;       regexp_replace(replace(p.PAR_NAME,'&amp;amp',' '),'[-!?\&quot;,&amp;@`´‘’(+&gt;]',' ') ,&#13;&#10;       p.PAR_GEBURTSDATUM,&#13;&#10;       p.PAR_GRUENDUNGSTAG, &#13;&#10;       regexp_replace(replace(p.PAR_VORNAME,'&amp;amp',' '), '[-!?\&quot;,&amp;@`´‘’(+&gt;]',' ') ,&#13;&#10;       regexp_replace(replace(p.PAR_NAME2,'&amp;amp',' '),'[-!?\&quot;,&amp;@`´‘’(+&gt;]',' ') ,&#13;&#10;       p.PAR_BETRIEBSFLAECHE,&#13;&#10;       p.PAR_BEZIRKSVEREIN_NR,&#13;&#10;       p.par_amtsgericht,&#13;&#10;     p.par_gf_vorstand,&#13;&#10;&#9;p.par_handelsregister_nr,&#13;&#10;&#9;p.par_titel,&#13;&#10;&#9;p.PAR_WIRTSCHAFTSZWEIG,&#13;&#10;&#9;p.PAR_AKAD_TITEL, &#13;&#10;&#9;et.id as entity_type_id,&#13;&#10;&#9;p.PAR_BRIEFANREDE &#13;&#10;FROM Sev.partner p &#13;&#10;left join k2v_dev.agr_entity_type et on et.par_partner_nr = p.par_partner_nr&#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE P.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.par_partner_nr,&#13;&#10;       p.PAR_ZUS_ANREDE,&#13;&#10;&#9;   p.PAR_ANREDE, &#13;&#10;       p.PAR_NAME,&#13;&#10;       p.PAR_GEBURTSDATUM,&#13;&#10;       p.PAR_GRUENDUNGSTAG, &#13;&#10;       p.PAR_VORNAME,&#13;&#10;       p.PAR_NAME2, --'&amp;amp',' '),'[-!?\&quot;,&amp;@`´‘’(+&gt;]',' ') ,&#13;&#10;       p.PAR_BETRIEBSFLAECHE,&#13;&#10;       p.PAR_BEZIRKSVEREIN_NR,&#13;&#10;       p.par_amtsgericht,&#13;&#10;     p.par_gf_vorstand,&#13;&#10;&#9;p.par_handelsregister_nr,&#13;&#10;&#9;p.par_titel,&#13;&#10;&#9;p.PAR_WIRTSCHAFTSZWEIG,&#13;&#10;&#9;p.PAR_AKAD_TITEL, &#13;&#10;&#9;et.id as entity_type_id,&#13;&#10;&#9;p.PAR_BRIEFANREDE,&#13;&#10;&#9;p.PAR_PARTNER_NR_BD &#13;&#10;FROM Sev.partner p &#13;&#10;left join k2v_dev.agr_entity_type et on et.par_partner_nr = p.par_partner_nr&#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE P.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100&#13;&#10;                  AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -227,6 +227,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PAR_BRIEFANREDE"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR_BD"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
@@ -251,6 +253,7 @@
       <column comment="" key="false" length="30" name="PAR_AKAD_TITEL" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="entity_type_id" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="PAR_BRIEFANREDE" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="PAR_PARTNER_NR_BD" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="224" posY="320">
@@ -286,6 +289,7 @@
       <column comment="" key="false" length="30" name="PAR_AKAD_TITEL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="entity_type_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="PAR_BRIEFANREDE" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="PAR_PARTNER_NR_BD" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
@@ -309,6 +313,7 @@
         <mapperTableEntries expression="row1.PAR_AKAD_TITEL" name="PAR_AKAD_TITEL" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row1.entity_type_id==null?1:row1.entity_type_id " name="entity_type_id" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="row1.PAR_BRIEFANREDE " name="PAR_BRIEFANREDE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row1.PAR_PARTNER_NR_BD " name="PAR_PARTNER_NR_BD" nullable="true" type="id_Integer"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
@@ -329,6 +334,7 @@
         <mapperTableEntries name="PAR_AKAD_TITEL" nullable="true" type="id_String"/>
         <mapperTableEntries name="entity_type_id" nullable="true" type="id_Integer"/>
         <mapperTableEntries name="PAR_BRIEFANREDE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="PAR_PARTNER_NR_BD" nullable="true" type="id_Integer"/>
       </inputTables>
     </nodeData>
   </node>
@@ -447,6 +453,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR_BD"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="AGRONOMIS_CONTACT_SELECTION"/>
@@ -470,6 +481,7 @@
       <column comment="" key="false" length="30" name="PAR_AKAD_TITEL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="entity_type_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="PAR_BRIEFANREDE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="PAR_PARTNER_NR_BD" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="AGRONOMIS_CONTACT_SELECTION" name="REJECT">
       <column comment="" defaultValue="" key="false" length="-1" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -490,6 +502,7 @@
       <column comment="" key="false" length="30" name="PAR_AKAD_TITEL" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="entity_type_id" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="PAR_BRIEFANREDE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="PAR_PARTNER_NR_BD" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -3989,7 +4002,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select distinct tdcv.EXTERNAL_CODE as BezirksVerein, tdov.ID  as districtOfficeID, tdov.DESCRIPTION as districtOfficeDesc&#13;&#10;from T_DISTRICT_CLUB_VH tdcv &#13;&#10;inner join T_DISTRICT_OFFICE_VH tdov on tdov.ID  = tdcv.DISTRICT_OFFICE_ID &quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT cast(EXTERNAL_CODE as int) as external_code, ID, DESCRIPTION&#13;&#10;FROM VH_DEVMIG.dbo.T_DISTRICT_OFFICE_VH&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -4000,7 +4013,7 @@
     <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="BezirksVerein"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="external_code"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="districtOfficeID"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -4012,8 +4025,8 @@
     <elementParameter field="TEXT" name="LABEL" value="idit_T_DISTRICT_OFFICE"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_15">
-      <column comment="" key="false" length="255" name="BezirksVerein" nullable="false" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="districtOfficeID" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="external_code" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="districtOfficeID" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="districtOfficeDesc" nullable="false" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
@@ -4042,7 +4055,7 @@
     <elementParameter field="TABLE" name="ADD_COLS"/>
     <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="BezirksVerein"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="external_code"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -4062,12 +4075,12 @@
     <elementParameter field="TEXT" name="LABEL" value="&quot;T_DISTRICT_OFFICE&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="T_DISTRICT_OFFICE" name="tHSQLDbOutput_9">
-      <column comment="" key="false" length="255" name="BezirksVerein" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="-1" name="external_code" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="districtOfficeID" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="districtOfficeDesc" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="T_DISTRICT_OFFICE" name="REJECT">
-      <column comment="" key="false" length="255" name="BezirksVerein" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="-1" name="external_code" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="districtOfficeID" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="districtOfficeDesc" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -4149,6 +4162,7 @@
   </node>
   <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1408" posY="960">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_15"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
@@ -4409,6 +4423,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="PAR_ANREDE"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="PAR_PARTNER_NR_BD"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -4419,6 +4436,9 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="PAR_ANREDE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="PAR_PARTNER_NR_BD"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -4688,6 +4708,7 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row15"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_9" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_9" target="tHSQLDbRow_15">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk20"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tPrejob_1" offsetLabelX="0" offsetLabelY="0" source="tPrejob_1" target="tJava_1">
@@ -4944,13 +4965,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a9e33213-c412-4f19-a939-f805552ed539"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>uiM2m+y7YsKhaxOPbEQNuuza0XtUDLMvKg/yFZY+I9lcmxvNlsrTK/0qeJqBNBFXUNedbQisJe3f&#13;
-dF82JIiYVw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0a0d2505-9b66-4632-865b-353c7856cb16"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>YrpjzJwQrEidb7m1AZHJi2Lj5JYRBzPlUm1AYF9v7jEmpRkXBWV3oerQytM88n6GPexYoQn87dWT&#13;
-xdAELdWP7Q==</DigestValue></Reference></SignedInfo><SignatureValue>ie1gUVgs0epOA0EQ3TMIZrFG4r3saruP5PnBI3uZP1OVydNbu24F+mbOZutBzdiWmIUhHyg5XBSz&#13;
-UAZkxkyBnxF9V3EP5k2Fn3DF1D+fhUlTxbkOxEbFzM1rOzhySGc3jEliJQl4/lGyHtKddLodJ+YP&#13;
-TDqzE5CzIUtKBW07bCgLpXiizBFoIdlY7OyfgxFcVRG9ojaHPp7KC8UYtMEeWZcctDHfquYx5CUa&#13;
-XIBuLkqEa9by/rWmsC2SoJhxjApwIbzanl/07QSjqMu9mtjUxGOKS3qTf1fnXiProLgVEfvu+hL5&#13;
-mpfHWaLRafQaBoFshSv8AzrEck9kWU1zHDZNQg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_20f7d142-3dd1-45d4-bbbd-30c6922f0649"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>uA7nH4pgMWQ9OBKqgE3oB6yU0HyfjRsQiUbdolBKbmpuaygP7kaKMSTfjaLkZX/kdue5hZLbj/cI&#13;
+n/4TGKhFqA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ea9f88e5-4734-4e13-a246-fe39bd5a08c1"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pnKh2PdN2RmqlmVvPm8NbcX4FLHzSK3rnYjcApi4uoeO5+x4nRW2mBJGs/LO74N843FWh10i3LtC&#13;
+BM+9fvfBmA==</DigestValue></Reference></SignedInfo><SignatureValue>ehShiJGT9+N08Y6hfxcqHw1ZiStlehfQYNh9UBODA0q62NB9nlX8IDfCYvVeC156sXc+g6JRpEib&#13;
+hyb7iPHlRy6IC8tF6zEg0UHCKqNEEJe4NvkgbsvztTxU7Q2aLg5+tuEi+wTooAWIVpqAwQyYNWUo&#13;
+Hm3N3BNjgYz5MNsWpWeFHy6xzBtP5APImhF5SawyRuo3AAHKCQGKW84latc7Kx61oS3ikD6aOdWA&#13;
+seyXoIZk4LzIrlp9B/ZlnESw9jU/UMWnpP8ZMpJc64mdLpI+bVG/+yFOUF5qtceJC8TDi6k19At6&#13;
+Mq3l2S8LBr43nIGE9wvM9HUbKQhCBUFEhHJP2g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4972,4 +4993,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0a0d2505-9b66-4632-865b-353c7856cb16" Target="#_a9e33213-c412-4f19-a939-f805552ed539"><Timestamp>2023-11-27 14:53:54</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ea9f88e5-4734-4e13-a246-fe39bd5a08c1" Target="#_20f7d142-3dd1-45d4-bbbd-30c6922f0649"><Timestamp>2023-11-28 12:38:00</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
