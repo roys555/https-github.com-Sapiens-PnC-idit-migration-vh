@@ -141,7 +141,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DE_POLICY_HEADER.ENTITY_ID,&#10;&#9;&#9;DE_POLICY_HEADER.LEGACY_ID,&#10;&#9;&#9;DE_POLICY_HEADER.START_DATE,&#10;&#9;&#9;DE_POLICY_HEADER.LATEST_START&#10;FROM&#9;DE_POLICY_HEADER&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DE_POLICY_HEADER.ENTITY_ID,&#10;&#9;&#9;DE_POLICY_HEADER.LEGACY_ID,&#10;&#9;&#9;DE_POLICY_HEADER.START_DATE,&#10;&#9;&#9;DE_POLICY_HEADER.LATEST_START,&#10;&#9;&#9;DE_POLICY_HEADER.PAR_PARTNERNR&#10;FROM&#9;DE_POLICY_HEADER&#13;&#10;where entity_id =&quot; +context.EntityID"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -186,12 +186,14 @@
       <column comment="" key="false" length="50" name="policyContactRoleVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables name="Var" sizeState="INTERMEDIATE"/>
+      <uiProperties shellMaximized="true"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="&quot;MIG_AP_&quot;+String.valueOf(policyholder.PAR_PARTNERNR) " name="extContactNumber" type="id_String"/>
+      </varTables>
       <outputTables name="PolicyContactIVO" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="external_contact_number" nullable="true" type="id_String"/>
-        <mapperTableEntries name="policyContactRoleVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="policyContactRoleVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="Var.extContactNumber " name="external_contact_number" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(long)6" name="policyContactRoleVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="(String)&quot;Policyholder&quot;" name="policyContactRoleVORefDesc" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyholder" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -291,7 +293,7 @@
   </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(&quot;Job : PolicyIVO&quot;);&#10;System.out.println(context.EntityID);"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(&quot;Job : ContactPolicyIVO&quot;);&#10;System.out.println(context.EntityID);"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_1"/>
@@ -321,13 +323,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_830b2c67-d7b3-42ea-91d4-00fe12d68dd3"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+t8VvtddQyE9qlZVwKni8fQegJ+ALKPwXd3jdWSPSoWKX3qLPRz/k0gqFFNtA46vshuUibDvjIYs&#13;
-nz0UdldD2A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_966278b8-fae1-4df1-ab1b-b1b5a4d90ec3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+iUmzvs7qE9Hn3el8KuNsLiQ7tvQfxvPw5/rmPSP0soBHTubefQp0l+1ssQHqssSuCZ6W/QQb1EJ&#13;
-m4BzOqAGJA==</DigestValue></Reference></SignedInfo><SignatureValue>GOZgJbHxQ67KwB6su3TeFeZuC04u3+loODPEP0DrD3S2jCWeVip3R/SMLibvkVRIcyR9JP8o/Yxz&#13;
-rYIgUrmv4mBEd/5kFyV4oufcclEa7WCddBxvf0kEhcJR5uE6jDK5e75o2pKo2PUOdQKx8cOZ1y+S&#13;
-caXbamnhN3nh0AlS1s4WAfeuhbotgZV6U3StWuVKVoMxXdJXkjP6kWo/Z9bg0EjtPvQ7SKManA4K&#13;
-gHlo6+V6BaExK7T0gZMMEuDh/y/me3BhZsNicF8aiLdnSCkDZQWFqyQnUfIDwucc/JgR79GsjM32&#13;
-gRX6KDs31pocZvji3MIefW7QSAf8s5ao5BvHsQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_f43bf5d9-750c-4153-a811-74d0d7eb8f00"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>n4q88eM1Up4q+kqsD5QmYTyKffRIl9o8u7TOWaxNdnLDhlNlqqnXvAyLZvGpo8EQMBxsYeL+fBx2&#13;
+9fclZ3mGjQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_6555533c-80b0-4bd6-9a31-0fd96fd80304"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>sMw9MAOTZphEnyIZ9YpxujtuRHnhnTDyaeo0fSBpSPVQVEs3+f0lDA/y13cQPvHqQdoZawjw2w0v&#13;
+/d4XFqolQg==</DigestValue></Reference></SignedInfo><SignatureValue>jT3UdPNC0TIwMh4H7JHtyaPyedkpqYIeucixqLooIJj4C/8nKjh3YwoVfXdLaODOvYBCzVTlqWDH&#13;
+QaZ8Ik0YdNEm82neM2UPcyEG9bHTtDsqithXCqM87vEPOhweEKyR2lVYNIPvK+5frQrqPO0Xq7LT&#13;
+Vo3WtxyzOeSaAfQgzYJq5ZSqKjkb34Zs5NE4cg3jDaAzdlCiXLJgstKm+kh6i6FmXT2dcTN8DuhC&#13;
+b2Q5RF0E/oLyX8kYgkY0gTfmqlQgeio7KQAaU+W2VknZUytMeJRgwSFE3e4j43spf5LmlBWD/mqy&#13;
+0t97voaIU16W8TFbQGrMpiOoajqHoT7bQwdB/g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -349,4 +351,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_966278b8-fae1-4df1-ab1b-b1b5a4d90ec3" Target="#_830b2c67-d7b3-42ea-91d4-00fe12d68dd3"><Timestamp>2023-11-28 09:16:42</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_6555533c-80b0-4bd6-9a31-0fd96fd80304" Target="#_f43bf5d9-750c-4153-a811-74d0d7eb8f00"><Timestamp>2023-11-28 10:40:36</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
