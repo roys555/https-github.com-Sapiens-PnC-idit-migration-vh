@@ -292,7 +292,7 @@
       <column comment="" key="false" length="-1" name="PAR_PARTNER_NR_BD" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="out_contact" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.PAR_PARTNER_NR" name="PAR_PARTNER_NR" type="id_Long"/>
@@ -2107,7 +2107,7 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="AGRONOMIS_RELATIONSHIP" name="tHSQLDbOutput_18">
       <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="50" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="relationshipVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -2122,8 +2122,8 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="896" posY="1312">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_20"/>
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="896" posY="1408">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_21"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
@@ -2138,14 +2138,14 @@
     <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
     <elementParameter field="TEXT" name="SCHEMA_DB" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;system&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:IOYOnVsxRryzeqghFe2ErlTGjyrZGCuU0ws/du4myQc83r+ybumAbA=="/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:bUdS2IBsumVOqGdeXE3Nihs5ZPiRYPfZeq+xOfqPA8HgzwRosTnHmQ=="/>
     <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_RELATIONSHIP&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT  v.PAR_PARTNER_NR, &#13;&#10;v.VMR_HAUPT_VERMITTLER_NR as relatedContactExtNum,&#13;&#10;v.VMR_BEGINN_ZU_ARBEIT as RELATION_DATE, &#13;&#10;43 AS relationshipVoRefID, &#13;&#10;'Client managed by' as relationshipVoRefDesc&#13;&#10;FROM sev.VM v&#13;&#10;WHERE v.VMR_HIERARCHIE IN (1,2,3) &#13;&#10;and  v.VMR_HAUPT_VERMITTLER_NR IS NOT NULL &#13;&#10;and EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = v.PAR_PARTNER_NR&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT p.PAR_PARTNER_NR, p.PAR_PARTNER_NR_VM as relatedContactNumber, coalesce(vm.VMR_BEGINN_ZU_ARBEIT, vm.VMR_ANL_DATUM) as relationDate &#13;&#10;,45 as relationshipVoRefID, 'Client of subagent' as relationshipVoRefDesc&#13;&#10;FROM SEV.PARTNER p &#13;&#10;INNER JOIN sev.vm vm ON vm.PAR_PARTNER_NR = p.PAR_PARTNER_NR_VM  &#13;&#10;WHERE vm.VMR_HIERARCHIE =1 &#13;&#10;and EXISTS (SELECT 1  &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = p.PAR_PARTNER_NR&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2173,9 +2173,9 @@
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_AGR_Intermediary_RELATIONSHIP"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_Client_of_subagent"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tDBInput_20">
+    <metadata connector="FLOW" name="tDBInput_21">
       <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
@@ -2183,12 +2183,12 @@
       <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1152" posY="1312">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_6"/>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1088" posY="1408">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_9"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
-    <elementParameter field="IMAGE" name="PREVIEW" value="_mJyKcMyWEe2FTfrXPsoQ1g-tMap_6-PREVIEW.bmp"/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_mJyKcMyWEe2FTfrXPsoQ1g-tMap_9-PREVIEW.bmp"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
     <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
     <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
@@ -2197,7 +2197,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="AGRONOMIS_RELATIONSHIP" name="rel_interm">
+    <metadata connector="FLOW" label="AGRONOMIS_RELATIONSHIP" name="copyOfrel_interm">
       <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
@@ -2205,18 +2205,18 @@
       <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.isTestLoad?(&quot;_&quot;+context.migrationID):&quot;&quot; " name="addSufix" type="id_String"/>
       </varTables>
-      <outputTables name="rel_interm" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row23.PAR_PARTNER_NR" name="PAR_PARTNER_NR" type="id_Long"/>
-        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row23.RELATEDCONTACTEXTNUM)+Var.addSufix" name="RELATEDCONTACTEXTNUM" type="id_String"/>
-        <mapperTableEntries expression="row23.RELATION_DATE" name="RELATION_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="row23.relationshipVoRefID" name="relationshipVoRefID" nullable="true" type="id_Integer"/>
-        <mapperTableEntries expression="row23.relationshipVoRefDesc" name="relationshipVoRefDesc" nullable="true" type="id_String"/>
+      <outputTables name="copyOfrel_interm" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row24.PAR_PARTNER_NR " name="PAR_PARTNER_NR" type="id_Long"/>
+        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row24.RELATEDCONTACTEXTNUM)+Var.addSufix " name="RELATEDCONTACTEXTNUM" type="id_String"/>
+        <mapperTableEntries expression="row24.RELATION_DATE" name="RELATION_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row24.relationshipVoRefID" name="relationshipVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="row24.relationshipVoRefDesc" name="relationshipVoRefDesc" nullable="true" type="id_String"/>
       </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="ALL_ROWS" name="row23" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row24" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
         <mapperTableEntries name="RELATEDCONTACTEXTNUM" type="id_Long"/>
         <mapperTableEntries name="RELATION_DATE" nullable="true" type="id_Date"/>
@@ -2224,6 +2224,145 @@
         <mapperTableEntries name="relationshipVoRefDesc" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
+  </node>
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="896" posY="1504">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_22"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" show="false" value="tDBConnection_1"/>
+    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="ORACLE_18"/>
+    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="HOST" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="TEXT" name="PORT" value="&quot;1521&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;system&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:nxnQf2ONIAwXrlZnYi9t+A/z91/zuOCa5B7qU+d48egzFxTbhVAPjg=="/>
+    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_RELATIONSHIP&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH partn AS (&#13;&#10;SELECT DISTINCT PAR_PARTNER_NR , PAR_PARTNER_NR_VM &#13;&#10;FROM sev.PARTNER&#13;&#10;WHERE PAR_PARTNER_NR_VM IS NOT null&#13;&#10;)&#13;&#10;SELECT  pr.PAR_PARTNER_NR, v.VMR_HAUPT_VERMITTLER_NR, COALESCE(v.VMR_BEGINN_ZU_ARBEIT, v.VMR_ANL_DATUM) AS relation_date&#13;&#10;,43,'Client managed by'&#13;&#10;FROM sev.VM v &#13;&#10;JOIN partn pr ON pr.PAR_PARTNER_NR_VM = v.PAR_PARTNER_NR&#13;&#10;WHERE  v.VMR_HIERARCHIE in (2,3)&#13;&#10;AND v.VMR_HAUPT_VERMITTLER_NR IS NOT null&#13;&#10;and EXISTS (SELECT 1  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = pr.PAR_PARTNER_NR&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
+    <elementParameter field="CHECK" name="IS_CONVERT_XMLTYPE" value="false"/>
+    <elementParameter field="TABLE" name="CONVERT_XMLTYPE" show="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="USE_CURSOR" value="false"/>
+    <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="RELATEDCONTACTEXTNUM"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="RELATION_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
+    <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_Client managed by"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tDBInput_22">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="relationshipVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1088" posY="1504">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_10"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_mJyKcMyWEe2FTfrXPsoQ1g-tMap_10-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="AGRONOMIS_RELATIONSHIP" name="out4">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="relationshipVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties shellMaximized="true"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="context.isTestLoad?(&quot;_&quot;+context.migrationID):&quot;&quot; " name="addSufix" type="id_String"/>
+      </varTables>
+      <outputTables name="out4" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row25.PAR_PARTNER_NR " name="PAR_PARTNER_NR" type="id_Long"/>
+        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row25.RELATEDCONTACTEXTNUM)+Var.addSufix " name="RELATEDCONTACTEXTNUM" type="id_String"/>
+        <mapperTableEntries expression="row25.RELATION_DATE " name="RELATION_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="43" name="relationshipVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="&quot;Client managed by&quot;" name="relationshipVoRefDesc" nullable="true" type="id_String"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row25" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
+        <mapperTableEntries name="RELATEDCONTACTEXTNUM" type="id_Long"/>
+        <mapperTableEntries name="RELATION_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="relationshipVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="relationshipVoRefDesc" nullable="true" type="id_String"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1760" posY="1216">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
+    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
+    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
+    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
+    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
+    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
+    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
+    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
+    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
+    <elementParameter field="TABLE" name="LENGTHS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="RELATEDCONTACTEXTNUM"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="RELATION_DATE"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefDesc"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="AGRONOMIS_RELATIONSHIP" name="tLogRow_1">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="50" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="relationshipVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
   </node>
   <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="0" posY="1472">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_10"/>
@@ -3859,13 +3998,12 @@
       <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="768" posY="1408">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_21"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="2080">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_24"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
-    <elementParameter field="COMPONENT_LIST" name="CONNECTION" show="false" value="tDBConnection_1"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" show="false" value=""/>
     <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" value="ORACLE_SERVICE_NAME"/>
     <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="ORACLE_18"/>
     <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
@@ -3876,14 +4014,14 @@
     <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
     <elementParameter field="TEXT" name="SCHEMA_DB" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;system&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:bUdS2IBsumVOqGdeXE3Nihs5ZPiRYPfZeq+xOfqPA8HgzwRosTnHmQ=="/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:JDEHKpuatDcmWTPDzUiPsIZ30K/SL/sI9/rA64bsTnI4WRHb6oMQfw=="/>
     <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_RELATIONSHIP&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT  v.PAR_PARTNER_NR, &#13;&#10;v.PAR_PARTNER_NR as relatedContactExtNum, &#13;&#10;v.VMR_BEGINN_ZU_ARBEIT as RELATION_DATE ,&#13;&#10;42 AS relationshipVoRefID, &#13;&#10;'Account Manager of' as relationshipVoRefDesc&#13;&#10;FROM sev.VM v &#13;&#10;WHERE v.VMR_HIERARCHIE =1  &#13;&#10;and  v.PAR_PARTNER_NR IS NOT NULL &#13;&#10;and exists (select 1 from sev.partner p2 where p2.PAR_PARTNER_NR_VM = v.PAR_PARTNER_NR)  &#13;&#10;and EXISTS (SELECT 1  &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = v.PAR_PARTNER_NR&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select PAR_PARTNER_NR , null as rolle, coalesce(VMR_BEGINN_ZU_ARBEIT, VMR_ANL_DATUM) as effectiveDate, VMR_ABLAUF_ZU_ARBEIT  as discontinueDate &#13;&#10;from SEV.VM x &#13;&#10;where VMR_VERTRIEBSFORM IN ('Orga-Leiter','Oberinspektor','Bezirksvertreter','Bezirksdirektor')&#13;&#10;AND EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = x.PAR_PARTNER_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100 &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR' &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot; )&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -3896,92 +4034,66 @@
     <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
     <elementParameter field="CHECK" name="USE_CURSOR" value="false"/>
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="RELATEDCONTACTEXTNUM"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ROLLE"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="RELATION_DATE"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="EFFECTIVE_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefDesc"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="discontinuedate"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_AGR_Intermediary_to_policy_RELATIONSHIP"/>
+    <elementParameter field="TEXT" name="LABEL" value="Senior inspector"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tDBInput_21">
-      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="relationshipVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    <metadata connector="FLOW" name="tDBInput_24">
+      <column comment="" key="false" length="10" name="PARTNER_NR" nullable="true" originalLength="38" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ROLLE" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="discontinuedate" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="768" posY="1504">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_22"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
-    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
-    <elementParameter field="COMPONENT_LIST" name="CONNECTION" show="false" value="tDBConnection_1"/>
-    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" value="ORACLE_SERVICE_NAME"/>
-    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="ORACLE_18"/>
-    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
-    <elementParameter field="TEXT" name="HOST" value="&quot;10.86.77.7&quot;"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
-    <elementParameter field="TEXT" name="PORT" value="&quot;1521&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" value="&quot;ORCL&quot;"/>
-    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
-    <elementParameter field="TEXT" name="SCHEMA_DB" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="USER" value="&quot;system&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:nxnQf2ONIAwXrlZnYi9t+A/z91/zuOCa5B7qU+d48egzFxTbhVAPjg=="/>
-    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_RELATIONSHIP&quot;"/>
-    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT v.PAR_PARTNER_NR,&#13;&#10; v.VMR_HAUPT_VERMITTLER_NR as relatedContactExtNum,&#13;&#10; v.VMR_BEGINN_ZU_ARBEIT as relation_date , &#13;&#10;43 as relationshipVoRefID ,&#13;&#10;'Client managed by' as elationshipVoRefDesc&#13;&#10;FROM sev.VM v&#13;&#10;where v.VMR_HAUPT_VERMITTLER_NR is not null &#13;&#10;and  EXISTS (SELECT 1 from sev.partner p2 where p2.PAR_PARTNER_NR_VM = v.PAR_PARTNER_NR)&#13;&#10;and EXISTS (SELECT 1  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = v.PAR_PARTNER_NR&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&quot;"/>
-    <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
-    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
-    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
-    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
-    <elementParameter field="LABEL" name="NOTE" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
-    <elementParameter field="CHECK" name="IS_CONVERT_XMLTYPE" value="false"/>
-    <elementParameter field="TABLE" name="CONVERT_XMLTYPE" show="false"/>
-    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
-    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
-    <elementParameter field="CHECK" name="USE_CURSOR" value="false"/>
-    <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="RELATEDCONTACTEXTNUM"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="RELATION_DATE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefDesc"/>
-      <elementValue elementRef="TRIM" value="false"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
-    <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_AGR_PolicyHolder_to_AccountManager_RELATIONSHIP"/>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="320" posY="2080">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_8"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_mJyKcMyWEe2FTfrXPsoQ1g-tMap_8-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tDBInput_22">
-      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="relationshipVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    <metadata connector="FLOW" label="AGR_PARTNER_ROLE" name="out3">
+      <column comment="" key="false" length="10" name="PARTNER_NR" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="EFFECTIVE_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="discontinueDate" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="VARCHAR" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="tContactRoleVORefid" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="tContactRoleVORefdESC" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties shellMaximized="true"/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables name="out3" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row17.PARTNER_NR " name="PARTNER_NR" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row17.EFFECTIVE_DATE " name="EFFECTIVE_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row17.discontinuedate " name="discontinueDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="(long)1000008" name="tContactRoleVORefid" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;Account Manager Senior Inspector&quot;" name="tContactRoleVORefdESC" nullable="true" type="id_String"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row17" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="PARTNER_NR" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="ROLLE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="EFFECTIVE_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="discontinuedate" nullable="true" type="id_Date"/>
+      </inputTables>
+    </nodeData>
   </node>
   <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="992" posY="960">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_15"/>
@@ -4403,6 +4515,111 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="896" posY="1312">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_20"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" show="false" value="tDBConnection_1"/>
+    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="ORACLE_18"/>
+    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="HOST" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="TEXT" name="PORT" value="&quot;1521&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;system&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:IOYOnVsxRryzeqghFe2ErlTGjyrZGCuU0ws/du4myQc83r+ybumAbA=="/>
+    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_RELATIONSHIP&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT  v.PAR_PARTNER_NR, &#13;&#10;v.VMR_HAUPT_VERMITTLER_NR as relatedContactExtNum,&#13;&#10;v.VMR_BEGINN_ZU_ARBEIT as RELATION_DATE, &#13;&#10;43 AS relationshipVoRefID, &#13;&#10;'Client managed by' as relationshipVoRefDesc&#13;&#10;FROM sev.VM v&#13;&#10;WHERE v.VMR_HIERARCHIE IN (1,2,3) &#13;&#10;and  v.VMR_HAUPT_VERMITTLER_NR IS NOT NULL &#13;&#10;and EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = v.PAR_PARTNER_NR&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
+    <elementParameter field="CHECK" name="IS_CONVERT_XMLTYPE" value="false"/>
+    <elementParameter field="TABLE" name="CONVERT_XMLTYPE" show="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="USE_CURSOR" value="false"/>
+    <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="RELATEDCONTACTEXTNUM"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="RELATION_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipVoRefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
+    <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_AGR_Intermediary_RELATIONSHIP"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tDBInput_20">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="relationshipVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1152" posY="1312">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_6"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_mJyKcMyWEe2FTfrXPsoQ1g-tMap_6-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="AGRONOMIS_RELATIONSHIP" name="rel_interm">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="RELATEDCONTACTEXTNUM" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="RELATION_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="relationshipVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="relationshipVoRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="context.isTestLoad?(&quot;_&quot;+context.migrationID):&quot;&quot; " name="addSufix" type="id_String"/>
+      </varTables>
+      <outputTables name="rel_interm" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row23.PAR_PARTNER_NR" name="PAR_PARTNER_NR" type="id_Long"/>
+        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row23.RELATEDCONTACTEXTNUM)+Var.addSufix" name="RELATEDCONTACTEXTNUM" type="id_String"/>
+        <mapperTableEntries expression="row23.RELATION_DATE" name="RELATION_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row23.relationshipVoRefID" name="relationshipVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="row23.relationshipVoRefDesc" name="relationshipVoRefDesc" nullable="true" type="id_String"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="ALL_ROWS" name="row23" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
+        <mapperTableEntries name="RELATEDCONTACTEXTNUM" type="id_Long"/>
+        <mapperTableEntries name="RELATION_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="relationshipVoRefID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="relationshipVoRefDesc" nullable="true" type="id_String"/>
+      </inputTables>
+    </nodeData>
+  </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tMap_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="PAR_TITEL"/>
@@ -4548,24 +4765,28 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row26"/>
   </connection>
+  <connection connectorName="FLOW" label="row28" lineStyle="0" metaname="tHSQLDbOutput_18" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_18" target="tLogRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row28"/>
+  </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_18" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_18" target="tHSQLDbRow_16">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk21"/>
   </connection>
-  <connection connectorName="FLOW" label="row23" lineStyle="0" metaname="tDBInput_20" offsetLabelX="0" offsetLabelY="0" source="tDBInput_20" target="tMap_6">
-    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
-      <elementValue elementRef="TRACE_COLUMN" value="relationshipVoRefDesc"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="relationshipVoRefID"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-    </elementParameter>
+  <connection connectorName="FLOW" label="row24" lineStyle="0" metaname="tDBInput_21" offsetLabelX="0" offsetLabelY="0" source="tDBInput_21" target="tMap_9">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row23"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row24"/>
   </connection>
-  <connection connectorName="FLOW" label="rel_interm" lineStyle="10" mergeOrder="4" metaname="rel_interm" offsetLabelX="0" offsetLabelY="0" source="tMap_6" target="tUnite_2">
+  <connection connectorName="FLOW" label="copyOfrel_interm" lineStyle="10" mergeOrder="3" metaname="copyOfrel_interm" offsetLabelX="0" offsetLabelY="0" source="tMap_9" target="tUnite_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="rel_interm"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="copyOfrel_interm"/>
+  </connection>
+  <connection connectorName="FLOW" label="row25" lineStyle="0" metaname="tDBInput_22" offsetLabelX="0" offsetLabelY="0" source="tDBInput_22" target="tMap_10">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row25"/>
+  </connection>
+  <connection connectorName="FLOW" label="out4" lineStyle="10" mergeOrder="4" metaname="out4" offsetLabelX="0" offsetLabelY="0" source="tMap_10" target="tUnite_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out4"/>
   </connection>
   <connection connectorName="FLOW" label="row10" lineStyle="0" metaname="tDBInput_10" offsetLabelX="0" offsetLabelY="0" source="tDBInput_10" target="tHSQLDbOutput_10">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -4677,31 +4898,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row22"/>
   </connection>
-  <connection connectorName="FLOW" label="row24" lineStyle="10" mergeOrder="2" metaname="tDBInput_21" offsetLabelX="0" offsetLabelY="0" source="tDBInput_21" target="tUnite_2">
-    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
-      <elementValue elementRef="TRACE_COLUMN" value="relationshipVoRefDesc"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="relationshipVoRefID"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-    </elementParameter>
+  <connection connectorName="FLOW" label="row17" lineStyle="0" metaname="tDBInput_24" offsetLabelX="0" offsetLabelY="0" source="tDBInput_24" target="tMap_8">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row24"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row17"/>
   </connection>
-  <connection connectorName="FLOW" label="row25" lineStyle="10" mergeOrder="3" metaname="tDBInput_22" offsetLabelX="0" offsetLabelY="0" source="tDBInput_22" target="tUnite_2">
-    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
-      <elementValue elementRef="TRACE_COLUMN" value="relationshipVoRefDesc"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="relationshipVoRefID"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-    </elementParameter>
+  <connection connectorName="FLOW" label="out3" lineStyle="10" mergeOrder="3" metaname="out3" offsetLabelX="0" offsetLabelY="0" source="tMap_8" target="tUnite_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row25"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out3"/>
   </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tDBInput_15" offsetLabelX="0" offsetLabelY="0" source="tDBInput_15" target="tHSQLDbOutput_9">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -4730,12 +4933,29 @@
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_19" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_19" target="tHSQLDbRow_17">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk23"/>
   </connection>
+  <connection connectorName="FLOW" label="row23" lineStyle="0" metaname="tDBInput_20" offsetLabelX="0" offsetLabelY="0" source="tDBInput_20" target="tMap_6">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="relationshipVoRefDesc"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="relationshipVoRefID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row23"/>
+  </connection>
+  <connection connectorName="FLOW" label="rel_interm" lineStyle="10" mergeOrder="2" metaname="rel_interm" offsetLabelX="0" offsetLabelY="0" source="tMap_6" target="tUnite_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="rel_interm"/>
+  </connection>
   <note opaque="true" posX="-64" posY="224" sizeHeight="64" sizeWidth="641" text="CUSTOMER DATA: additional tables: k2v_dev.agr_entity_type"/>
   <note opaque="true" posX="800" posY="224" sizeHeight="64" sizeWidth="641" text="DICTIONARIES:"/>
   <note opaque="true" posX="1536" posY="224" sizeHeight="64" sizeWidth="385" text="TECHNICAL:"/>
   <note opaque="true" posX="832" posY="1632" sizeHeight="64" sizeWidth="449" text="Partner role temporarrly set not correctly for s2s reason"/>
   <note opaque="true" posX="-64" posY="0" sizeHeight="64" sizeWidth="769" text="some cleansing added for names , vornames fileds without VH confirmation"/>
-  <note opaque="true" posX="1120" posY="1504" sizeHeight="64" sizeWidth="577" text="Some relationship switched off due to lack of policies"/>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_4"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -4894,16 +5114,6 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_21"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
-    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
-  </subjob>
-  <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_22"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
-    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
-  </subjob>
-  <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_15"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
@@ -4965,13 +5175,18 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_20f7d142-3dd1-45d4-bbbd-30c6922f0649"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>uA7nH4pgMWQ9OBKqgE3oB6yU0HyfjRsQiUbdolBKbmpuaygP7kaKMSTfjaLkZX/kdue5hZLbj/cI&#13;
-n/4TGKhFqA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ea9f88e5-4734-4e13-a246-fe39bd5a08c1"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pnKh2PdN2RmqlmVvPm8NbcX4FLHzSK3rnYjcApi4uoeO5+x4nRW2mBJGs/LO74N843FWh10i3LtC&#13;
-BM+9fvfBmA==</DigestValue></Reference></SignedInfo><SignatureValue>ehShiJGT9+N08Y6hfxcqHw1ZiStlehfQYNh9UBODA0q62NB9nlX8IDfCYvVeC156sXc+g6JRpEib&#13;
-hyb7iPHlRy6IC8tF6zEg0UHCKqNEEJe4NvkgbsvztTxU7Q2aLg5+tuEi+wTooAWIVpqAwQyYNWUo&#13;
-Hm3N3BNjgYz5MNsWpWeFHy6xzBtP5APImhF5SawyRuo3AAHKCQGKW84latc7Kx61oS3ikD6aOdWA&#13;
-seyXoIZk4LzIrlp9B/ZlnESw9jU/UMWnpP8ZMpJc64mdLpI+bVG/+yFOUF5qtceJC8TDi6k19At6&#13;
-Mq3l2S8LBr43nIGE9wvM9HUbKQhCBUFEhHJP2g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_20"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_d0e4a9bf-9e79-45e7-8dbe-1015c5391502"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8k0xqox+HguZvJOyZym1TgjvZFX/dYuarnjWg8Py3lESqmvBvuBWDhLYNFuklT+gnmi5D6h/ABF7&#13;
+k9nNBtYO7g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_10f6d581-679b-4b7b-b282-3fff50cfcd40"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>X4ohSAGruDtw8KAc/w1O+rQD3exxbVEBIFMjYG0wUx+kb9TnCpkrrFzFRWoyZSvXP2ZZe34u7gsY&#13;
+ZoBZXy2Ytw==</DigestValue></Reference></SignedInfo><SignatureValue>oQ05ouD5lvUpmFYpupuFis04gpY9vb7GJRCwEEF6FHIAwH+SXYjVFoqXzr3XaWCZ/JyNSg6heR6I&#13;
+rsehwHdpEVdo5Qd8c3lAgdyHkqgZGh/CK2rPFUUMRpmvYQ8etS6zzVQ7PiQMc2KeZP3RabwtlTjN&#13;
+OzHaCSii9hQQhC5vuDcQBgQ1gybCpyiM50KATPQcE/feMaoDRd0coSHPd/6L8s5tJKSxKHZYDrt2&#13;
+5L4D3Nw4z9PvEGBx/7Kh6SU+HbXxGmL8u2Yv6ML3GRNUAtIXr7hthw+c05cPET/iCYgD8LKIm1jt&#13;
+w5s38+hOqHFB9ZOjgckJG9JEy+H28UbHulVWEQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4993,4 +5208,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ea9f88e5-4734-4e13-a246-fe39bd5a08c1" Target="#_20f7d142-3dd1-45d4-bbbd-30c6922f0649"><Timestamp>2023-11-28 12:38:00</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_10f6d581-679b-4b7b-b282-3fff50cfcd40" Target="#_d0e4a9bf-9e79-45e7-8dbe-1015c5391502"><Timestamp>2023-12-01 10:58:46</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
