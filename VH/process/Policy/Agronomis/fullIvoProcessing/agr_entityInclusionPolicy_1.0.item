@@ -138,7 +138,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG &#13;&#10;&#9;FROM SEV.VERTRAG v &#13;&#10;&#9;&#9;&#9;WHERE EXISTS (SELECT * FROM sev.POLICE p &#13;&#10;&#9;&#9;&#9;&#9;&#9;WHERE v.POL_POLICEN_NR  = p.POL_POLICEN_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH'))&#13;&#10;&#9;&#9;&#9;&#9;AND v.VER_ZUSTAND = 'lebend' AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;and rownum &lt; 11&#13;&#10;and v.POL_POLICEN_NR = 1000021202&quot;     "/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH a AS (&#13;&#10;SELECT &#9;pol.POL_POLICEN_NR, ver.VER_VERTRAG_NR&#13;&#10;FROM sev.VERTRAG ver, sev.police pol&#13;&#10;WHERE 1=1&#13;&#10;AND ver.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;AND ver.VER_HISTORIE &lt;'HT'&#13;&#10;AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;  and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;  and pol.POL_HISTORIE = 'AN'&#13;&#10;  and pol.POL_POLICE_TYP in ('VH','KH')&#13;&#10;  AND ver.VER_HISTORIE = 'AN'&#13;&#10;) &#13;&#10;SELECT a.POL_POLICEN_NR AS POLICE, a.VER_VERTRAG_NR AS VERTRAG &#13;&#10;FROM a&#13;&#10;WHERE 1=1&#13;&#10;AND a.POL_POLICEN_NR IN (1000021202,&#13;&#10;1006006103,&#13;&#10;1030193901,&#13;&#10;1030193902,&#13;&#10;1030649101,&#13;&#10;1030649103,&#13;&#10;1030773801,&#13;&#10;1030773802,&#13;&#10;1030984902,&#13;&#10;1031207702,&#13;&#10;1031370401,&#13;&#10;1031370402,&#13;&#10;1031626402,&#13;&#10;1032729601,&#13;&#10;1032729602,&#13;&#10;1032899001,&#13;&#10;&#13;&#10;1032899002,&#13;&#10;1033302601,&#13;&#10;1033302602,&#13;&#10;1033338501,&#13;&#10;1033338502,&#13;&#10;1033442201,&#13;&#10;1033442202,&#13;&#10;1033826102,&#13;&#10;1034112303,&#13;&#10;1034172202,&#13;&#10;1034209702&#13;&#10;)&#13;&#10;   &quot;     "/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -224,14 +224,15 @@
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="String.valueOf(row5.POLICE) " name="police_txt" type="id_String"/>
         <mapperTableEntries expression="String.valueOf(row5.VERTRAG) " name="vertrag_txt" type="id_String"/>
+        <mapperTableEntries expression="Var.police_txt + &quot;_&quot;+  Var.vertrag_txt " name="entity_id" type="id_String"/>
       </varTables>
       <outputTables activateCondensedTool="true" name="copyOfcopyOfmain_1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Long"/>
-        <mapperTableEntries expression="&quot;AGR_cntrct_&quot;+  Var.police_txt + &quot;_&quot;+  Var.vertrag_txt " name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="Var.entity_id " name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries expression="null" name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row5.POLICE " name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row5.VERTRAG " name="POLICY_ID" nullable="true" type="id_Long"/>
@@ -466,13 +467,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_d5ed4a40-2179-48d9-8cbe-bb8afaec4907"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>au/a/H6mWzV8lzNBzbtu+pYp8aiT8FytT/s6YiLYYxwnfSxPdcuwbWW17VjNcAKYETcrZsUkFhoW&#13;
-HT2I1yELFQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3587412b-d81d-43ef-aa81-76c4873ee2f4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>dxVYEg/chPsXyr6SuAh5vz6nDb2b97512t8aKE+SAHQE41yBmcqnuk/iigRgx5OqnLScvkjIi4Vw&#13;
-Eu4hQb3Qkg==</DigestValue></Reference></SignedInfo><SignatureValue>O3StzIkCg8IxIcATy5x6krJkebOPnEsexHsPgH4P2oYq18ELp5eaIgE/mLKLJXa2V/nJSdIya4fW&#13;
-9bg1Umb548AvFL9cVZz2VWqeoqTjVDEGREEK6aVkpL4ULIKvS8EUobQN1AitNTFau0H2GViVW+iF&#13;
-1ex8Byk/Un3BSDHE9unwm9UcsZWoKhkYt9c9zqXigcCG+Eq+h7wG9An8mmuNmATloomIVZtc7POO&#13;
-dHVBWXDZsQ1NR837MUFpqIcaK61hwbKNVlHGlg2uCt6y2xv6TpyfJzwOhEVL0YEKok5o6yWGqdBy&#13;
-Smya+5s2xt6+bJJiNK1cE75fggnfYMy+gxX3NQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_88406721-e3eb-469a-b247-a022832776e1"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>xGvJpDhbmuhxKO9MYC3+ll3W7ymonQjZuRr+DxwpHXACdGO8Dtedt3CICql1jJA4NIirRX++O6mT&#13;
+2qUNDIp2Ug==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3db62ff2-cec0-43b2-be70-ca5c64a29e61"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>JKZvYDnbMDNWKFSBJ6S93zFqOv7uWnlvqhRzPMld1G8irmTfPwUtjGNY1Iyr2RlNjCQ9bpAkKh8a&#13;
+c5IeTpmPaQ==</DigestValue></Reference></SignedInfo><SignatureValue>N/XYP1MwaCaR3E9xHwhC+mV6xVExi3vt8FaZfcGkHGavikcZF3dVgu80Lze0ZN0kKA/oEyvFSJml&#13;
+q2gFrCdBj4j7wYkPId5T456Z3F8aEkR4qhux+6WRXOkPKU/JKcbmf9I+FclrT2kYo2ME54E+RtQw&#13;
+AGHALbJJ0r5h9vQFDJIxkqDAXrLDIh0j7x3K37gDx2I2JaqfKbDsvWZy0oUEDaJYoF4/LIj4PiKK&#13;
+Vi9mVcwOh0TNXTWK3s5YH+3qHpawxG5fPwn/0C570PiJ2Qoncn+JrcNqWqQLRUTS9EgjJI9hbsIj&#13;
+u24R+rSMgIHB6nwvLBbpdfik1wpDHwMvhfFnxw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -494,4 +495,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3587412b-d81d-43ef-aa81-76c4873ee2f4" Target="#_d5ed4a40-2179-48d9-8cbe-bb8afaec4907"><Timestamp>2023-11-24 10:14:29</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3db62ff2-cec0-43b2-be70-ca5c64a29e61" Target="#_88406721-e3eb-469a-b247-a022832776e1"><Timestamp>2023-12-01 13:03:47</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
