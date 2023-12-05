@@ -1025,7 +1025,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#9;DISTINCT(pol.POL_POLICEN_NR) police, ver.VER_VERTRAG_NR AS VERTRAG&#13;&#10;    , ver.POL_GUELTIG_AB as policyStartDate , &#9; ver.VER_UNGUELTIG_AB  as policyEndDate, ver.VER_ABL_DATUM,&#13;&#10; ver.VER_STATUS, ver.VER_HISTORIE, pol.POL_WIRTSCHAFTSWEISE,  ver.VER_KUENDIGUNG  &#13;&#10;FROM sev.VERTRAG ver, sev.police pol&#13;&#10;WHERE 1=1&#13;&#10;AND ver.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;AND ver.VER_HISTORIE &lt;'HT'&#13;&#10;AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;  and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;  and pol.POL_HISTORIE = 'AN'&#13;&#10;  and pol.POL_POLICE_TYP in ('VH','KH')&#13;&#10;  and ver.VER_HISTORIE = 'AN'&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE pol.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and ver.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.POLICY_MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#9;DISTINCT(pol.POL_POLICEN_NR) police, ver.VER_VERTRAG_NR AS VERTRAG&#13;&#10;    , ver.POL_GUELTIG_AB as policyStartDate , &#9; ver.VER_UNGUELTIG_AB  as policyEndDate, ver.VER_ABL_DATUM,&#13;&#10; ver.VER_STATUS, ver.VER_HISTORIE, pol.POL_WIRTSCHAFTSWEISE,  ver.VER_KUENDIGUNG , ver.VER_PRODUKT_TYP  &#13;&#10;FROM sev.VERTRAG ver, sev.police pol&#13;&#10;WHERE 1=1&#13;&#10;AND ver.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;AND ver.VER_HISTORIE &lt;'HT'&#13;&#10;AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;  and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;  and pol.POL_HISTORIE = 'AN'&#13;&#10;  and pol.POL_POLICE_TYP in ('VH','KH')&#13;&#10;  and ver.VER_HISTORIE = 'AN'&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE pol.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and ver.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.POLICY_MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1058,6 +1058,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VER_KUENDIGUNG"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_PRODUKT_TYP"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
@@ -1073,6 +1075,7 @@
       <column comment="" key="false" length="10" name="VER_HISTORIE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VER_KUENDIGUNG" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="VER_PRODUKT_TYP" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="192" posY="224">
@@ -1124,6 +1127,7 @@
         <mapperTableEntries name="VER_HISTORIE" nullable="true" type="id_String"/>
         <mapperTableEntries name="POL_WIRTSCHAFTSWEISE" nullable="true" type="id_String"/>
         <mapperTableEntries name="VER_KUENDIGUNG" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="VER_PRODUKT_TYP" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1424,7 +1428,7 @@
       <column comment="" defaultValue="" key="false" length="19" name="bundle_policy_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="idit_p_policy" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row9.EXTERNAL_HEADER_NUMBER" name="EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
@@ -1561,15 +1565,15 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
-  <connection connectorName="FLOW" label="noLookup" lineStyle="0" metaname="noLookup" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tLogRow_2">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="noLookup"/>
-  </connection>
-  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tSortRow_1">
+  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tSortRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out"/>
+  </connection>
+  <connection connectorName="FLOW" label="noLookup" lineStyle="0" metaname="noLookup" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tLogRow_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="noLookup"/>
   </connection>
   <connection connectorName="FLOW" label="crop_group_lookup" lineStyle="8" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1596,6 +1600,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
   <connection connectorName="FLOW" label="row7" lineStyle="0" metaname="tDBInput_4" offsetLabelX="0" offsetLabelY="0" source="tDBInput_4" target="tMap_2">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="VER_PRODUKT_TYP"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row7"/>
   </connection>
@@ -1681,13 +1690,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_59aec15c-4a85-4859-b5dd-38a81fe159ec"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>oKnHh/chUTYI4kWOoIYarqC3Zn2QW2cWYx8qnVtJVwZf0ZRNQuyI8JqCn86QM7w2OiDoJkmtEe/1&#13;
-7DYAA23Tnw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5a3eb959-ef39-4e6a-b44f-674baf2728cf"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>1JgDiFNrgb49m1YMByaRkq5aFfKIr+jDccToL4UyNkhu6xyx17i0eS9hobs4OLuUaU0tMi8sMe+n&#13;
-koUSCtjSjg==</DigestValue></Reference></SignedInfo><SignatureValue>pQjGvAijr89WOd2Q9kTrEDQN90QQ2Ix+rv0cK0BCy0fd2ljjsKqviohBCC+PcP2omuqxZAn5dokw&#13;
-Ywwp1bFpJ14Vc8+mKj/xns9Td7BkCAagIMHRqZSONPA4BenZnhnLw9MsQDQD6SjTlfoId/uGmb02&#13;
-5BUOwsJ0ZAArHshx4lPDlxaRVIgcV3LYUxRaCRH85OaojsyU8yd7Nx3/7LGBh+Kt/Sywe9+bMFdD&#13;
-cMvh410Zi/IqBrWA29ae4ZYiBE7cVyUJcC3F7mwnmR8XGjgsRWaI78MCy+Q3utYYq7IezL4NmGK6&#13;
-w1Nn4QPLLsmPQloK/vWe0sW72IjQLIElR+3GJA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_6a4798de-b94c-4c61-9a2b-d40ba389451f"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>dtwyOjdzLGXA4bkSxwSbR8X7B93M1tCXule+tD6TCbbUKTlupv/ev5IXA0qB0SEqvfgXi+iuNKxZ&#13;
+k5jG78NJnA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_81bb526c-987e-40d6-9cea-f88111a63e47"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>gCoQk6qUb4JLVTfMluzGaqPQ4fYTKBE/WXr04uJwlTD+XPcDJK+WBMidnYHOU5X8e8trQscEzHkS&#13;
+YlsayzGV+g==</DigestValue></Reference></SignedInfo><SignatureValue>ioK9kjR1IIYxlZ0eH85QVcDYD2ShKdYczl3zXpdqwCMn0GcGsC1AGVBmHlw0recI2qVin68vNY+m&#13;
+oSJ4/835069DRv9HH+yxfYOPfnbjZYg9qkVwaqmx0EaXYPxJPayDzIpe8+VMF5IMr/RGW5leUtmz&#13;
+QitSVciFb1Tyc5wg6UKR1x0YPJpidCnW9qiv+rinK1YfLf1E4Xg9HYmhl+9h4DiuAgMM9EVMdu1p&#13;
+nuzQQ6N0VY/qsD/VeEqfRnhqLKsK2v/LTxzSMc/HbljdSdxnoDmi1tHf4xCTWNSqT/1ZM3bm7IFK&#13;
+VCKwOBWlgXeuQd3bYFHwYW/pOsvHcLCEX3+Twg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1709,4 +1718,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5a3eb959-ef39-4e6a-b44f-674baf2728cf" Target="#_59aec15c-4a85-4859-b5dd-38a81fe159ec"><Timestamp>2023-12-04 13:46:05</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_81bb526c-987e-40d6-9cea-f88111a63e47" Target="#_6a4798de-b94c-4c61-9a2b-d40ba389451f"><Timestamp>2023-12-05 10:09:41</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
