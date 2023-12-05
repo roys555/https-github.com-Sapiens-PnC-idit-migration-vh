@@ -10,7 +10,7 @@
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
     <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="0"/>
-    <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="64"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="96"/>
     <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_HADOOP_DISTRIBUTION" show="false" value=""/>
@@ -278,7 +278,7 @@
         <mapperTableEntries expression="(long)1000000" name="productVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Agriculture&quot;" name="productVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="sales1" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row1.policyStartDate " name="sales1Date" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="start_date.POLICY_START_DATE " name="sales1Date" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(long)20" name="statusCodeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Policy&quot;" name="statusCodeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row1.policyStartDate " name="statusCollDate" nullable="true" type="id_Date"/>
@@ -340,6 +340,11 @@
         <mapperTableEntries name="VER_STATUS" nullable="true" type="id_String"/>
         <mapperTableEntries name="VER_KUENDIGUNG" nullable="true" type="id_Date"/>
         <mapperTableEntries name="POLICY_VERSION" type="id_Integer"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="start_date" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row1.POLICE " name="POLICE" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="row1.VERTRAG " name="VERTRAG" operator="=" type="id_Integer"/>
+        <mapperTableEntries name="POLICY_START_DATE" nullable="true" type="id_Date"/>
       </inputTables>
     </nodeData>
   </node>
@@ -889,7 +894,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="608" posY="0">
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="608" posY="-32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
     <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
     <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
@@ -914,7 +919,7 @@
       <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="192" posY="0">
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="256" posY="-32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -994,6 +999,42 @@
       <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:wLHEDZyFDkhba8TOa+Vltt5w92j1Bq9dIynRlFc8"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="POLICY_START_DATE"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT X.POLICE,&#10;&#9;X.VERTRAG,&#10;&#9;&#9;MIN(X.V_START_DATE) policy_start_date&#10;FROM&#9;POLICY_VERSION_SELECTION X&#13;&#10;WHERE X.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND X.VERTRAG = &quot;+context.p_id +&quot;&#13;&#10;&#13;&#10;                                                       &#13;&#10;&quot;&#13;&#10;&#13;&#10;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="POLICY_START_DATE"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POLICY_VERSION_SELECTION" name="tHSQLDbInput_4">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="POLICY_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -1022,18 +1063,22 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policy_version"/>
   </connection>
+  <connection connectorName="FLOW" label="start_date" lineStyle="8" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="start_date"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_228a661a-7136-4f5a-b45d-635f0562ab9a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pENDe4Ss5tZLSpf90VCO/HeTJZL/P4hghhaTlOZodKxxZVBhwBaIvxL8BvZHdkjAk1og/f8jwR9U&#13;
-XsOaGeaYlA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8c483ad8-f7b4-4a7b-bdd9-75dc0bff076a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>JG6ybxIpWiYMGVQBbTABIlygaeB8BLpCM/C2eKwuzKTQsRvAqI6EP+92L+GBsXG0xstyoLV50Dk1&#13;
-f2UqfhIhsA==</DigestValue></Reference></SignedInfo><SignatureValue>as+0MfbORR475quU2ngNzPz5bkc2iD/Hh5hZ5DUwSP9Fl1syA/zaVlSFjtcXr78vHIkR6IXdx8vH&#13;
-XSe8EfDdpN3LtlAoz0d3lpxnBqWR7MFm7uCCtl3yC5vpSUr3g6FvW2RCfSUXJt3ggCFP6rNAqnlX&#13;
-1dc6dwXdFVuude3mzhtgElg08e74cXO29Rtq1s7lDAzjETBk2Cf7cA2N36Pm2C4dkUuXjWFAs/KQ&#13;
-bTixNLwuXoE4SEHHhDBZilya6zj0wOupLrRGx6jCAg16E5r1ON/cYFtVr3gCqFrjIM+EdOdA55/A&#13;
-arOB2T86ztxHR6Gi1/oXhXvb8a4gzRZxYFj5LQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8928ac95-fbe8-4090-a828-f34ebe127aa9"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>w4wxnYqnZ0HCjAAidWAmaJcT/H3j+9v20SqYQw2GrvCh4Xjyyof9QE4h9O3sGxojV0cPVs6Crw4F&#13;
+rxo0x598bg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_e201bb67-e939-4c4a-a4ac-f65ac54563ad"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>6tcCgSZe/uMAuR1o4VVknY44BVfjU+ApnVdv5e0xK/GnUje5q/4oOjJZ4py8NJX8ekptHO9zSDA+&#13;
+d20kB/x5bA==</DigestValue></Reference></SignedInfo><SignatureValue>Mc6wF/pqdRuILWdHe76MYG00sNoVHq/jBvp3Jh6vD7fc3L+AhHxA6f0h55b5BiR6rCCX/3QDl9tt&#13;
+b3s65IPFPwCwIyeacbhA6K/jnQ1naSWvt89mlaucOH7ZP0pcVp0RFFpFlpekIQj+HVUpskm9nJXy&#13;
+i+14xF8JUtwgCD7dZLRB6BDCc27kqXMKDEuhCyk9Y/1ywIPD2oepQHWqWARvvTmRmODyNhTdWDYy&#13;
+BZn6qNu2LV7xGgybtikb2IXdAJwRQyNvrga/G7S4AZVwGUEBiOQCxIVmvuGt1E5kiBPMyHX15uD0&#13;
+xRkxJFfusAr6dxyKx6+n6nlZidgHAioVDRx/kQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1055,4 +1100,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8c483ad8-f7b4-4a7b-bdd9-75dc0bff076a" Target="#_228a661a-7136-4f5a-b45d-635f0562ab9a"><Timestamp>2023-12-05 13:44:46</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_e201bb67-e939-4c4a-a4ac-f65ac54563ad" Target="#_8928ac95-fbe8-4090-a828-f34ebe127aa9"><Timestamp>2023-12-05 14:45:07</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
