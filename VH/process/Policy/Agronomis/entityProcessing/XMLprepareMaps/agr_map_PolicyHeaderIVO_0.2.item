@@ -249,11 +249,12 @@
       <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.getCurrentDate() )) " name="current_date" type="id_Date"/>
+        <mapperTableEntries expression="TalendDate.ADD_TO_DATE(policy_version.V_START_DATE,&quot;Y&quot;,1) " name="renewal_date" type="id_Date"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_-Jx2gCV8Ee6aAfhWDAh9_A - XMLpolicyHeaderIVO" name="out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.POLICE " name="POLICY" type="id_Long"/>
         <mapperTableEntries expression="row1.VERTRAG " name="VERTRAG" type="id_Integer"/>
-        <mapperTableEntries expression="(long)0" name="activePolicyId" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="(long)policy_version.POLICY_VERSION " name="activePolicyId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="true " name="consolidatedBillingFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="bundlePolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="idit_P_POLICY.bundle_header_id " name="bundlePolicyHeaderId" nullable="true" type="id_Long"/>
@@ -264,10 +265,10 @@
         <mapperTableEntries expression="String.valueOf(row1.POLICE)+&quot;/&quot;+String.valueOf(row1.VERTRAG) " name="externalHeaderNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="isHealthUmbrellaPolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="true" name="isMasterPolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="" name="mainRenewalDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="policy_version.V_START_DATE " name="mainRenewalDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="false" name="multiplePayersFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="paidByAgentFlag" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="row1.policyEndDate " name="policyEndDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="Var.renewal_date " name="policyEndDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="Var.current_date " name="policyProposalDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row1.policyStartDate " name="policyStartDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(long)10000" name="processingStatusVORefID" nullable="true" type="id_Long"/>
@@ -320,6 +321,25 @@
         <mapperTableEntries expression="row1.VER_PRODUKT_TYP " name="in_value" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
         <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="FIRST_MATCH" name="policy_version" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row1.POLICE " name="POLICE" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="row1.VERTRAG " name="VERTRAG" operator="=" type="id_Integer"/>
+        <mapperTableEntries name="V_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="V_END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries name="VER_ZUSTAND" nullable="true" type="id_String"/>
+        <mapperTableEntries name="VER_SCHADENFREIHEITSRABATT" nullable="true" type="id_String"/>
+        <mapperTableEntries name="VER_HISTORIE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POL_WIRTSCHAFTSWEISE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="V_CONTRACT_START" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="V_CONTRACT_END" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="CONTRACT_DURATION" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="PAYMENT_TERM" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="COLLECTION_METHOD" nullable="true" type="id_String"/>
+        <mapperTableEntries name="VER_STATUS" nullable="true" type="id_String"/>
+        <mapperTableEntries name="VER_KUENDIGUNG" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="POLICY_VERSION" type="id_Integer"/>
       </inputTables>
     </nodeData>
   </node>
@@ -894,6 +914,86 @@
       <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="192" posY="0">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:KKZ3LzSrm8n2yz9HpHUU0uAUoyC4f/fGA33K5dJ4"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="__hJ3YDEoEe6Aiprvzu3JPQ - POLICY_VERSION_SELECTION"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;POLICY_VERSION_SELECTION&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT X.POLICE,&#10;&#9;X.VERTRAG,&#10;&#9;&#9;X.V_START_DATE,&#10;&#9;&#9;X.V_END_DATE,&#10;&#9;&#9;X.CROP_GROUP,&#10;&#9;&#9;X.VER_ZUSTAND,&#10;&#9;&#9;X.VER_SCHADENFREIHEITSRABATT,&#10;&#9;&#9;X.VER_HISTORIE,&#10;&#9;&#9;X.POL_WIRTSCHAFTSWEISE,&#10;&#9;&#9;X.V_CONTRACT_START,&#10;&#9;&#9;X.V_CONTRACT_END,&#10;&#9;&#9;X.CONTRACT_DURATION,&#10;&#9;&#9;X.PAYMENT_TERM,&#10;&#9;&#9;X.COLLECTION_METHOD,&#10;&#9;&#9;X.VER_STATUS,&#10;&#9;&#9;X.VER_KUENDIGUNG,&#10;&#9;&#9;X.POLICY_VERSION&#10;FROM&#9;POLICY_VERSION_SELECTION X&#13;&#10;WHERE X.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND X.VERTRAG = &quot;+context.p_id +&quot;&#13;&#10;AND X.POLICY_VERSION =&#13;&#10;&#9; (SELECT MAX(A.POLICY_VERSION) &#13;&#10;        FROM POLICY_VERSION_SELECTION A&#13;&#10;       WHERE A.POLICE = X.POLICE &#13;&#10;        AND A.VERTRAG = X.VERTRAG&#13;&#10;)&#13;&#10;                                                       &#13;&#10;&quot;&#13;&#10;&#13;&#10;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_GROUP"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_ZUSTAND"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_SCHADENFREIHEITSRABATT"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_HISTORIE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POL_WIRTSCHAFTSWEISE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_CONTRACT_START"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_CONTRACT_END"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CONTRACT_DURATION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAYMENT_TERM"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="COLLECTION_METHOD"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_STATUS"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_KUENDIGUNG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="POLICY_VERSION_SELECTION"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POLICY_VERSION_SELECTION" name="tHSQLDbInput_3">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="15" name="VER_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="VER_SCHADENFREIHEITSRABATT" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="4" name="VER_HISTORIE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_WIRTSCHAFTSWEISE" nullable="true" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_CONTRACT_START" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_CONTRACT_END" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="CONTRACT_DURATION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="PAYMENT_TERM" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="21" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="VER_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="VER_KUENDIGUNG" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -918,18 +1018,22 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_CropGroup"/>
   </connection>
+  <connection connectorName="FLOW" label="policy_version" lineStyle="8" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policy_version"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bcf076c8-d2c5-49c5-9e81-ed2189d2a82e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>hjfq2uvrepvfqJvnCh7LC9CuaiLGBhQbhuZ4X/TqDIE1FL8tPGZPIG71J4uUPc4DUkncYqAquMvO&#13;
-oOW4Xtf+UA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0890f7b1-acd9-45c3-aeda-ec684c5ba254"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+Ib04ZXPai0ZsM5bp+bc7Dtqy3mNx3Y9yYrQRUd7GG2+KvtedhSE34b1SWDNjMwkHkA/QVAHKtQ1&#13;
-G5jPI1SXdA==</DigestValue></Reference></SignedInfo><SignatureValue>ddYB/eu5drQKnK7ctV4LQhxGJL1wayUI5cVyuix52rIuJwunZqowr0HOWfnpdvdayMIG31FEE656&#13;
-P5edmjGk/jC8t7TRGRUTbChcm+w8su+WfHFEHKJWxDetcv22jT03XfRZhHxUpKSdBIIGABVuSEQr&#13;
-ldcLXwupswvtVkC7O3OOeAaBb+5MQdXQ2RrcXRBcH4OqiYxZ//qi/wDdvEtvsd5zou/Au1EemKSQ&#13;
-+GJrQiuDMOyq8PgBPemxjsHSr4fuTS+72AY6lNfr2qbnnvEF2JIGVwBPKkRpejxpOBUDURxjS19N&#13;
-qwA//I6qcsCBlijsua9mFsqLInMJ1TSl0Nd5Vg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_97c27443-dbcb-49f2-98d6-6b6812940abf"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>WCoE+M30HSZpKS7ECAhRP2xuCq0Z6khqjWjREFSI8r1PEs9erKWQQBkrIj5MrA+RpmJcjtM69xJt&#13;
+q97GspB1Xg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c4a23dcc-3a55-42df-ba71-a6134d1d4033"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>CdZj4fXJHx0Ab5frtq3dwS5e82nO8olpXrhNfi0189Lbv1pxG8T5WYCbiZTKPllB+MrQC6fIW2kd&#13;
+D6pRQivgHg==</DigestValue></Reference></SignedInfo><SignatureValue>lafsCx0N0JFj5XETqKgTgdL0TOiT/I1UzGRjbcXYhiHuqOLmZMNLGkm4NMNv4cdRniEiPOA7C2Rh&#13;
+XUTHNm9lkkQM1Md3YOj8ovetBQaG0gBVHdtgMxuRrz4Oi0MlX3N1iYcOHkNLVlp1ykkocG1ZN8xy&#13;
+QcbldyZKwYv4IPdB4ESpUIqKdKUezhlhkKhXUmqAirzHHByXSdB+9wSv6JJlf7Isu0nzPmm50moG&#13;
+JYtT1uSOFfMOjSt2BQWfMj8zW3Axi0oUMyFQQyMjYhl8G3+G/edqkOuwzGXGdDjVZKzSXBlB0e+f&#13;
+eiFYZRW33ZRDKZxVZRocWjiU/0NCzshkJ2Tfuw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -951,4 +1055,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0890f7b1-acd9-45c3-aeda-ec684c5ba254" Target="#_bcf076c8-d2c5-49c5-9e81-ed2189d2a82e"><Timestamp>2023-12-05 10:36:52</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c4a23dcc-3a55-42df-ba71-a6134d1d4033" Target="#_97c27443-dbcb-49f2-98d6-6b6812940abf"><Timestamp>2023-12-05 13:40:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
