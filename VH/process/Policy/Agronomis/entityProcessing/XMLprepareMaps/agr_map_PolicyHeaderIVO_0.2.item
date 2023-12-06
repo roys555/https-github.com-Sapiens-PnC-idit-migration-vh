@@ -196,7 +196,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" label="XMLpolicyHeaderIVO" name="out">
+    <metadata comment="" connector="FLOW" label="XMLpolicyHeaderIVO" name="out">
       <column comment="" key="false" length="-1" name="POLICY" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="activePolicyId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -246,14 +246,14 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.getCurrentDate() )) " name="current_date" type="id_Date"/>
         <mapperTableEntries expression="TalendDate.ADD_TO_DATE(policy_version.V_START_DATE,&quot;Y&quot;,1) " name="renewal_date" type="id_Date"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_-Jx2gCV8Ee6aAfhWDAh9_A - XMLpolicyHeaderIVO" name="out" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row1.POLICE " name="POLICY" type="id_Long"/>
-        <mapperTableEntries expression="row1.VERTRAG " name="VERTRAG" type="id_Integer"/>
+        <mapperTableEntries expression="POLICY_HEADER.POLICE " name="POLICY" type="id_Long"/>
+        <mapperTableEntries expression="POLICY_HEADER.VERTRAG " name="VERTRAG" type="id_Integer"/>
         <mapperTableEntries expression="(long)policy_version.POLICY_VERSION " name="activePolicyId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="true " name="consolidatedBillingFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="bundlePolicy" nullable="true" type="id_Boolean"/>
@@ -262,7 +262,7 @@
         <mapperTableEntries expression="trn_CropGroup.out_desc " name="cropGroupRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="currencyVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;EUR&quot;" name="currencyVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="String.valueOf(row1.POLICE)+&quot;/&quot;+String.valueOf(row1.VERTRAG) " name="externalHeaderNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="String.valueOf(POLICY_HEADER.POLICE)+&quot;/&quot;+String.valueOf(POLICY_HEADER.VERTRAG) " name="externalHeaderNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="isHealthUmbrellaPolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="true" name="isMasterPolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="Var.renewal_date " name="mainRenewalDate" nullable="true" type="id_Date"/>
@@ -278,11 +278,11 @@
         <mapperTableEntries expression="(long)1000000" name="productVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Agriculture&quot;" name="productVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="sales1" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row1.policyStartDate " name="sales1Date" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="POLICY_HEADER.policyStartDate " name="sales1Date" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(long)20" name="statusCodeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Policy&quot;" name="statusCodeVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row1.policyStartDate " name="statusCollDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="row1.policyStartDate " name="statusDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="POLICY_HEADER.policyStartDate " name="statusCollDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="POLICY_HEADER.policyStartDate " name="statusDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="false" name="trackCoverBalancePerEndors" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="updateTotFlag" nullable="true" type="id_Boolean"/>
       </outputTables>
@@ -290,17 +290,17 @@
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="&quot;deContract&quot;" name="DOMAIN" nullable="true" type="id_String"/>
         <mapperTableEntries expression="context.EntityID" name="ENTITY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row1.POLICE " name="LEGACY_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="String.valueOf(row1.VERTRAG) " name="SUBENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="POLICY_HEADER.POLICE " name="LEGACY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="String.valueOf(POLICY_HEADER.VERTRAG) " name="SUBENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;VERTRAG&quot;" name="SUBENTITY_TYPE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;mapPolicyHeader&quot;" name="OBJECT_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="&quot;Bundle policy is missing in IDIT {external_header_number} = {&quot; +row1.POLICE+ &quot;}&quot; " name="ERROR_DESCRIPTION" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;Bundle policy is missing in IDIT {external_header_number} = {&quot; +POLICY_HEADER.POLICE+ &quot;}&quot; " name="ERROR_DESCRIPTION" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;Lookup&quot;" name="ERROR_TYPE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;E&quot;" name="SEVERITY" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;DECN0002&quot;" name="ERROR_CODE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="Var.current_date " name="ERROR_TIMESTAMP" nullable="true" type="id_Date"/>
       </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="POLICY_HEADER" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
         <mapperTableEntries name="VERTRAG" type="id_Integer"/>
         <mapperTableEntries name="policyStartDate" nullable="true" type="id_Date"/>
@@ -313,18 +313,18 @@
         <mapperTableEntries name="VER_PRODUKT_TYP" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="idit_P_POLICY" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="String.valueOf(row1.POLICE ) " name="EXTERNAL_HEADER_NUMBER" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries expression="String.valueOf(POLICY_HEADER.POLICE ) " name="EXTERNAL_HEADER_NUMBER" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="bundle_header_id" type="id_Long"/>
         <mapperTableEntries name="bundle_policy_id" type="id_Long"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_CropGroup" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row1.VER_PRODUKT_TYP " name="in_value" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries expression="POLICY_HEADER.VER_PRODUKT_TYP " name="in_value" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
         <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="FIRST_MATCH" name="policy_version" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row1.POLICE " name="POLICE" operator="=" type="id_Long"/>
-        <mapperTableEntries expression="row1.VERTRAG " name="VERTRAG" operator="=" type="id_Integer"/>
+        <mapperTableEntries expression="POLICY_HEADER.POLICE " name="POLICE" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="POLICY_HEADER.VERTRAG " name="VERTRAG" operator="=" type="id_Integer"/>
         <mapperTableEntries name="V_START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="V_END_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="CROP_GROUP" nullable="true" type="id_String"/>
@@ -342,8 +342,8 @@
         <mapperTableEntries name="POLICY_VERSION" type="id_Integer"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="start_date" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row1.POLICE " name="POLICE" operator="=" type="id_Long"/>
-        <mapperTableEntries expression="row1.VERTRAG " name="VERTRAG" operator="=" type="id_Integer"/>
+        <mapperTableEntries expression="POLICY_HEADER.POLICE " name="POLICE" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="POLICY_HEADER.VERTRAG " name="VERTRAG" operator="=" type="id_Integer"/>
         <mapperTableEntries name="POLICY_START_DATE" nullable="true" type="id_Date"/>
       </inputTables>
     </nodeData>
@@ -1035,9 +1035,16 @@
       <column comment="" key="false" length="-1" name="POLICY_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
-  <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
+  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="448" posY="480">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="// code sample:&#10;//&#10;// multiply by 2 the row identifier&#10;// output_row.id = input_row.id * 2;&#10;//&#10;// lowercase the name&#10;// output_row.name = input_row.name.toLowerCase();&#10;&#10;"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tJavaRow_1"/>
+  </node>
+  <connection connectorName="FLOW" label="POLICY_HEADER" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="POLICY_HEADER"/>
   </connection>
   <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tHSQLDbOutput_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1072,13 +1079,18 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_4353669c-81af-4e47-abd8-a5b202724b37"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>OPfgULZP1F3BwWmKnmrTlZF9Y9517tiZ6LWwya7NLEyqd9S6JFxoDdoOnpQzxY1Sgcn9RSSyTa89&#13;
-w5VWb2Erag==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_57508909-123e-4974-a53f-8fae5b9e74e4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mgXbeZUX9yzJAQ2QdrGisUQR3PbdhQ/f9s143d5b4jUuDEk8XCjk0+8tAEm0vmScMdKfAwAbqBpw&#13;
-nkvxv7ZHvA==</DigestValue></Reference></SignedInfo><SignatureValue>cC2yhApDrLqWiaeowkQXh2qHzgqiAvuee3GA57oCB/W8/xKM9O9jQZTR8HfCKvReGcyZO0eU9P4u&#13;
-Q4Ncwqj1MqlrW3ZcsrbsxLuWi3bNUIOBrSUr6FQmwkx88xsElDQX//dxVGM2CXJIrNZ5GK307fye&#13;
-Q8ATJd9BX1jFDhIrhcswo2Yi+1108ceX/Oaq5wH/U4Nc9qIEd8XHV0EmcyJanq79aiCRA5uYjSaI&#13;
-RQEC0Ii0L0UaYqFXOfFWNOO3vPZuqjz04mpH312n63xMYlZjpjcD1/fQN/7RRc6NZkoemmdrOIey&#13;
-0wpUfVgLjOvRyQwETPXulncc/8XoQSBOXNt6Lg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_758a819a-2b44-4e28-adfe-6b47088aa3b2"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pdPOf2lNCyT88Zh+msuhe3lcDqLpkgu1rX7wE+rgzaRvBzuZUu1jFzeP1dtddxSvaIlGtHAHeE7y&#13;
+MraydNrMUg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_46477c46-e9fb-4c07-8899-8d4b1b24d4c4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vaENnlwp00aLhNiGoecX2z+HdK2ay2/qnX00fqp3gMaIbIPTzZQA1TsUtfMAdGK+366+yDBmcHPL&#13;
+5ipET7K7eg==</DigestValue></Reference></SignedInfo><SignatureValue>ipEaGFBaAHHLxp64DJQ2M7lmL9XVauw6p22mVV8wK2enr8P+aBBO5MNzca22T9HBG+c2RMUW/6uh&#13;
+p2VK5jIrIono8kT1r5wGgdH29giOuy+UlmXEhf7qWWWg76piSefKmh0trZ6KV7t6uAsHWUvED81E&#13;
+XIQSyaBv3cJuUZ1iv2gm2LPzh1f/1YBXyEmeH8erbv16yMVYlYnxP46RPGyfC627IHemCP5dCGAr&#13;
+zg/CDaXHCPPyBfoC1ZK7kHkkGfx/ekhf2c5hJdgt8IAGtcLSiDO6eBHRbvNaggSUMbfb2t6EoKCw&#13;
+3L4Wk2dBpdzKdGrpUsVXAmsP+CY5KsvKHKPMjw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1100,4 +1112,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_57508909-123e-4974-a53f-8fae5b9e74e4" Target="#_4353669c-81af-4e47-abd8-a5b202724b37"><Timestamp>2023-12-05 15:18:47</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_46477c46-e9fb-4c07-8899-8d4b1b24d4c4" Target="#_758a819a-2b44-4e28-adfe-6b47088aa3b2"><Timestamp>2023-12-06 08:59:23</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
