@@ -141,7 +141,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DE_POLICY_HEADER.ENTITY_ID,&#10;&#9;&#9;DE_POLICY_HEADER.LEGACY_ID,&#10;&#9;&#9;DE_POLICY_HEADER.START_DATE,&#10;&#9;&#9;DE_POLICY_HEADER.LATEST_START&#10;FROM&#9;DE_POLICY_HEADER&#13;&#10;where entity_id =&quot; +context.EntityID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT *&#13;&#10;FROM&#9;DE_POLICY_HEADER&#13;&#10;where entity_id =&quot; +context.EntityID"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -155,6 +155,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNERNR"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="DE_POLICY_HEADER"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -164,6 +166,7 @@
       <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAR_PARTNERNR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="384" posY="288">
@@ -213,7 +216,7 @@
       <column comment="" key="false" length="-1" name="updateTotFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.START_DATE " name="policyStartDate" type="id_Date"/>
         <mapperTableEntries expression="TalendDate.ADD_TO_DATE(TalendDate.ADD_TO_DATE(row1.START_DATE ,&quot;Y&quot;,1),&quot;SS&quot;,-1) " name="policyEndDate" type="id_Date"/>
@@ -221,7 +224,7 @@
       <outputTables name="policyHeader" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries expression="row1.LEGACY_ID " name="LEGACY_ID" type="id_Long"/>
-        <mapperTableEntries expression="(long)0" name="activePolicyId" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="Versions.BUNDLE_VERSION " name="activePolicyId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="true" name="bundlePolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="true" name="consolidatedBillingFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="(long)1" name="currencyVORefID" nullable="true" type="id_Long"/>
@@ -229,10 +232,10 @@
         <mapperTableEntries expression="row1.ENTITY_ID " name="externalHeaderNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="isHealthUmbrellaPolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="isMasterPolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="TalendDate.ADD_TO_DATE(row1.START_DATE ,&quot;Y&quot;,1) " name="mainRenewalDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row1.END_DATE " name="mainRenewalDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="false" name="multiplePayersFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="paidByAgentFlag" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="Var.policyEndDate " name="policyEndDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row1.END_DATE " name="policyEndDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row1.START_DATE " name="policyProposalDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="Var.policyStartDate " name="policyStartDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(long)10000" name="processingStatusVORefID" nullable="true" type="id_Long"/>
@@ -256,6 +259,13 @@
         <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="LATEST_START" nullable="true" type="id_Date"/>
         <mapperTableEntries name="PAR_PARTNERNR" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="Versions" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="row1.LEGACY_ID " name="LEGACY_ID" nullable="true" operator="=" type="id_Long"/>
+        <mapperTableEntries name="POLICY" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -505,6 +515,45 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="128">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:0p2NqEoYo1lEGsmZgBKsxFconaKVn137mXtdC4E/"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;BUNDLE_VERSIONS&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT BUNDLE_VERSIONS.ENTITY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.LEGACY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.POLICY,&#10;&#9;&#9;max( BUNDLE_VERSIONS.BUNDLE_VERSION) max_ver&#10;FROM&#9;BUNDLE_VERSIONS&#13;&#10;where entity_id = &quot; + context.EntityID +&quot;&#13;&#10;group by BUNDLE_VERSIONS.ENTITY_ID,&#13;&#10;&#9;&#9;BUNDLE_VERSIONS.LEGACY_ID,&#13;&#10;&#9;&#9;BUNDLE_VERSIONS.POLICY&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_VERSION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="BUNDLE_VERSIONS"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="BUNDLE_VERSIONS" name="tHSQLDbInput_2">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POLICY" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(&quot;Job : PolicyHederIVO&quot;);&#10;System.out.println(context.EntityID);"/>
@@ -637,6 +686,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
+  <connection connectorName="FLOW" label="Versions" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="Versions"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
@@ -655,13 +708,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_076ba651-d510-4521-855e-1cdfcec6d3cf"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ffvhLzhdheWTrNCtWodwbme4AHP1Mut7KaidxdXaQ/3eIXh2klHHtPQC+D2sgmgJHacI2Ncy07E0&#13;
-uxLAnafmqg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5766f3b9-73fe-47c1-a2f4-ac8e4f80ea5e"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>dT0EgwWBCCrhaIYUQ2AL/xhPyYREPLSZZMOTRHebMqLmXx1uFKnlW9ieYyyPNXA3PwlkTJLIGCi3&#13;
-KCOhKY27Aw==</DigestValue></Reference></SignedInfo><SignatureValue>QSnsW2+qAYd9IU8rCXioxSgo8vjERiAx2gI1XgwS7v0fkOa+RefBa7dUsILwgaCf2A2GE2DBQZWs&#13;
-oVZ3eTNayW5KMt6XYWoxZYjWOiXW554zB+37oKF0YT+cT+b76qeuAGdn5F/3nUBfmEkawTboinPI&#13;
-pDd3jHhDVURMYh7RjkF0Z2+0br44OSFjKBap/UoGlgbY5R4XTjYuidgW+NWyNyu0AQUWcY34MuT9&#13;
-FmM221Cjs63enbFt7QkNE5T7YpgBvNgkC4Pppb7OcvJYmgmrxwDKahteDUSWIkmuqQNDype6O7CY&#13;
-4sFkhX4keLx2fDQLOWSDZlp9d2E120IkyxCkzg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9d3f756b-a95a-41a8-9132-a3eaf4ad7e8b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>cE8tBp07pHud/ckSfqvIeg7rZ3Ou1qRRxrsyrRkNfW2KVVODd45am3EjFzmyIbDLjVbSC840+8yW&#13;
+xaRcU/VlMg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a97cb118-4db9-469b-ac50-677f08ba5974"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VgyQKcoQgLoO/+3TSOOO7zy1jyXz73Goyv1mggeKSy8U1h/2b1UpxSS3GEoTa5xxiee6ZXihFTYw&#13;
+M7kV8k6o0Q==</DigestValue></Reference></SignedInfo><SignatureValue>GDJAAx3MoJs4I9D5mhhx/QxVHbqmkFNpBGERBQc4Ort8G88E6C0VZT3+YSbxt1oEZzLRa42/cHNA&#13;
+PgHaLq+OYvJjr/eCA81XFUPb/tkkPQMuSxzGxZb7FN588Zw7QwJSfR1dleWQ26dbO5ONPPs3UH/p&#13;
+dQrGaNdUvTbi1xiyLUgC0U+Kn6yeC9DbLl3nk1RLp50NSrkdtsAR+wh0zGvugjDV8Vm15C8VnGXq&#13;
+ZEmwfiHpjoXCSuvthdxqiks5Z42aAIXVVRqupLLojunXK02m9WxTqGluw6tfJAqRG+vfymbeMo7z&#13;
+fty2p7mojihYPSWrBTzbHP0SKZCUGhoLZ+csPQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -683,4 +736,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5766f3b9-73fe-47c1-a2f4-ac8e4f80ea5e" Target="#_076ba651-d510-4521-855e-1cdfcec6d3cf"><Timestamp>2023-11-28 09:16:42</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a97cb118-4db9-469b-ac50-677f08ba5974" Target="#_9d3f756b-a95a-41a8-9132-a3eaf4ad7e8b"><Timestamp>2023-12-07 11:44:26</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
