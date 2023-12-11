@@ -237,8 +237,8 @@
         <mapperTableEntries expression="versionSelection.POLICY_VERSION " name="POLICY_VERSION" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="" name="claimsFreeGradeRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="claimsFreeGradeRefDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries name="lobStatusRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="lobStatusRefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="policyIVO.statusCodeVORefID " name="lobStatusRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="policyIVO.statusCodeVORefDesc " name="lobStatusRefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="policy_header.productVORefID " name="lobVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="policy_header.productVORefDesc " name="lobVORefDESC" nullable="true" type="id_String"/>
       </outputTables>
@@ -261,7 +261,7 @@
         <mapperTableEntries name="VER_KUENDIGUNG" nullable="true" type="id_Date"/>
         <mapperTableEntries name="POLICY_VERSION" type="id_Integer"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="ALL_ROWS" name="policy_header" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="ALL_ROWS" minimized="true" name="policy_header" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICY" type="id_Long"/>
         <mapperTableEntries name="VERTRAG" type="id_Integer"/>
         <mapperTableEntries name="activePolicyId" nullable="true" type="id_Long"/>
@@ -296,6 +296,52 @@
         <mapperTableEntries name="trackCoverBalancePerEndors" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="updateTotFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="cancelFrom" nullable="true" type="id_Date"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyIVO" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="versionSelection.POLICE " name="POLICE" nullable="true" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="versionSelection.VERTRAG " name="VERTRAG" nullable="true" operator="=" type="id_Integer"/>
+        <mapperTableEntries expression="versionSelection.POLICY_VERSION " name="POLICY_VERSION" nullable="true" operator="=" type="id_Integer"/>
+        <mapperTableEntries name="billingTypeVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="billingTypeVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="coefficientVersionNr" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="collectionMethodId" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="currencyVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="currencyVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="currentChannelVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="currentChannelVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="customerDecisionVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="customerDecisionVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="endorsEndDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="endorsNr" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="endorsStartDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="externalPolicyNr" nullable="true" type="id_String"/>
+        <mapperTableEntries name="groupPolicy" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries name="isOneInstForEndorsement" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries name="migratedPolicyNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries name="originalChannelVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="originalChannelVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="paymentSlipFlag" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries name="paymentTermId" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="policyBankAccountExternalNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries name="policyEndDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="policyPeriodVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="policyPeriodVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="policyStartDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="policyVersionNr" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="productVersionVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="productVersionVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="proposalDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="proposalValidation" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="rate" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="rateDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="standaloneFleet" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries name="statusCodeVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="statusCodeVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="statusDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="subUnitPolicy" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries name="bundlePolicyID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="endorsmentTypeVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="endorsmentTypeVORefDesc" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -577,6 +623,167 @@
       <column comment="" key="false" length="50" name="lobVORefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="736" posY="64">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name+context.EntityID"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:NbwSJONdzM0eQnYT8eBCZgfuCkSdymGkEPCon5vp"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_DKkmgC-nEe6ex-N9gYFlRA - XMLPolicyIVO"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;XMLPolicyIVO&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT XMLPolicyIVO.POLICE,&#10;&#9;&#9;XMLPolicyIVO.VERTRAG,&#10;&#9;&#9;XMLPolicyIVO.POLICY_VERSION,&#10;&#9;&#9;XMLPolicyIVO.billingTypeVORefID,&#10;&#9;&#9;XMLPolicyIVO.billingTypeVORefDesc,&#10;&#9;&#9;XMLPolicyIVO.coefficientVersionNr,&#10;&#9;&#9;XMLPolicyIVO.collectionMethodId,&#10;&#9;&#9;XMLPolicyIVO.currencyVORefID,&#10;&#9;&#9;XMLPolicyIVO.currencyVORefDesc,&#10;&#9;&#9;XMLPolicyIVO.currentChannelVORefID,&#10;&#9;&#9;XMLPolicyIVO.currentChannelVORefDesc,&#10;&#9;&#9;XMLPolicyIVO.customerDecisionVORefID,&#10;&#9;&#9;XMLPolicyIVO.customerDecisionVORefDesc,&#10;&#9;&#9;XMLPolicyIVO.endorsEndDate,&#10;&#9;&#9;XMLPolicyIVO.endorsNr,&#10;&#9;&#9;XMLPolicyIVO.endorsStartDate,&#10;&#9;&#9;XMLPolicyIVO.externalPolicyNr,&#10;&#9;&#9;XMLPolicyIVO.groupPolicy,&#10;&#9;&#9;XMLPolicyIVO.isOneInstForEndorsement,&#10;&#9;&#9;XMLPolicyIVO.migratedPolicyNumber,&#10;&#9;&#9;XMLPolicyIVO.originalChannelVORefID,&#10;&#9;&#9;XMLPolicyIVO.originalChannelVORefDesc,&#10;&#9;&#9;XMLPolicyIVO.paymentSlipFlag,&#10;&#9;&#9;XMLPolicyIVO.paymentTermId,&#10;&#9;&#9;XMLPolicyIVO.policyBankAccountExternalNumber,&#10;&#9;&#9;XMLPolicyIVO.policyEndDate,&#10;&#9;&#9;XMLPolicyIVO.policyPeriodVORefID,&#10;&#9;&#9;XMLPolicyIVO.policyPeriodVORefDesc,&#10;&#9;&#9;XMLPolicyIVO.policyStartDate,&#10;&#9;&#9;XMLPolicyIVO.policyVersionNr,&#10;&#9;&#9;XMLPolicyIVO.productVersionVORefID,&#10;&#9;&#9;XMLPolicyIVO.productVersionVORefDesc,&#10;&#9;&#9;XMLPolicyIVO.proposalDate,&#10;&#9;&#9;XMLPolicyIVO.proposalValidation,&#10;&#9;&#9;XMLPolicyIVO.rate,&#10;&#9;&#9;XMLPolicyIVO.rateDate,&#10;&#9;&#9;XMLPolicyIVO.standaloneFleet,&#10;&#9;&#9;XMLPolicyIVO.statusCodeVORefID,&#10;&#9;&#9;XMLPolicyIVO.statusCodeVORefDesc,&#10;&#9;&#9;XMLPolicyIVO.statusDate,&#10;&#9;&#9;XMLPolicyIVO.subUnitPolicy,&#10;&#9;&#9;XMLPolicyIVO.bundlePolicyID,&#10;&#9;&#9;XMLPolicyIVO.endorsmentTypeVORefID,&#10;&#9;&#9;XMLPolicyIVO.endorsmentTypeVORefDesc&#10;FROM&#9;XMLPolicyIVO&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="billingTypeVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="billingTypeVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="coefficientVersionNr"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="collectionMethodId"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="currencyVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="currencyVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="currentChannelVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="currentChannelVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="customerDecisionVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="customerDecisionVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="endorsEndDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="endorsNr"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="endorsStartDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="externalPolicyNr"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="groupPolicy"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="isOneInstForEndorsement"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="migratedPolicyNumber"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="originalChannelVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="originalChannelVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paymentSlipFlag"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paymentTermId"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyBankAccountExternalNumber"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyEndDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyPeriodVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyPeriodVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyStartDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="policyVersionNr"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="productVersionVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="productVersionVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="proposalDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="proposalValidation"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="rate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="rateDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="standaloneFleet"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusCodeVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusCodeVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusDate"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="subUnitPolicy"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="bundlePolicyID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="endorsmentTypeVORefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="endorsmentTypeVORefDesc"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="PolicyIVO"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="XMLPolicyIVO" name="tHSQLDbInput_3">
+      <column comment="" key="false" length="10" name="POLICE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="VERTRAG" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="POLICY_VERSION" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="billingTypeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="billingTypeVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="coefficientVersionNr" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="collectionMethodId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="currencyVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="currencyVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="currentChannelVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="currentChannelVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="customerDecisionVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="customerDecisionVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="endorsEndDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="endorsNr" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="endorsStartDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="externalPolicyNr" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="groupPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="isOneInstForEndorsement" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="migratedPolicyNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="originalChannelVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="originalChannelVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="paymentSlipFlag" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="paymentTermId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="policyBankAccountExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyEndDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyPeriodVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="policyPeriodVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyStartDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyVersionNr" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="productVersionVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="productVersionVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="proposalDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="proposalValidation" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="rate" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="rateDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="standaloneFleet" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="statusCodeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="statusCodeVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="statusDate" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="subUnitPolicy" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="bundlePolicyID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="endorsmentTypeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="endorsmentTypeVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="versionSelection" lineStyle="0" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="versionSelection"/>
@@ -593,18 +800,22 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policy_header"/>
   </connection>
+  <connection connectorName="FLOW" label="policyIVO" lineStyle="8" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policyIVO"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_f959a491-7067-4d5f-a35a-f41d5dce5f50"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>l9CT53PIZtIN+pJsaHkhIgwZf1rkGOCOozNnCAHDBlCn6wgmwcsJxcDEG3BbssO9XM5vSZhThSsI&#13;
-m8+EcA2Ujw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8b0eac07-912f-4638-924d-128c8bd966d5"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>yJNhtvl0iTZ3gH6OVmDiXDTCMJX+X8qnLpzCFYpiZ6T1/7NwtSO6LTplR6m9oVc9LYYI7NpxnMmh&#13;
-MRZxc40RYA==</DigestValue></Reference></SignedInfo><SignatureValue>e0fh7YpbGj6xM06A9D/rHF0vcpufMvjkF4fespO0WFvHzNfQdzubLlYhfMR03q4DQO/3476CBko2&#13;
-VmvV8wKC/2V1iPe+8zpBm/uM2cJvKPST/Mvw6illIb6sEEaR+uufv3p0qBwDEsH+uDoX7GFY9NaY&#13;
-/aZDFPxRrA/b/n8SisZ1uGmC0jSatxh/0JBKthgk4yYDHXrhWWn7f/YvmI7tuCmfeviamtPwWxfH&#13;
-fxLxWnhqSP4Ls2vhA9huPpetzsja1E+kaRyiWFBDCYk1vdMXEbHTQZMtV823WGrLQfWGNNI5KJGp&#13;
-MSWWAq6jNedy9/ggX7cYHzynqJUGm0y3cEWN9Q==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8abee0be-b96e-4a24-9252-a8f163623bf8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>xKZo+PxChCCuiy8wp/+mxWpI13Wwev7fpZudlTPvv2PRP1vOf+WzDdNzka3Vl67Uv1YrI6A+QiJx&#13;
+IntMD+8o2Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b063f83a-06c3-4b4a-a5fe-7d68d21e18d7"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>6yj4fCB9zSy+WkdIfjQIDPvVpN0FZZl0pszw382pouZva0h5FtdwBBbBT14qKnl+XvdMmHPdNYWz&#13;
+pYkEJqhAEQ==</DigestValue></Reference></SignedInfo><SignatureValue>muwJT9FXAdJIJfa1XqOUrm9OSISZVckiXgFfdd9XHb/V7cOAmyFEX8pO+S0pfrt6dE0k/ziNM5Hk&#13;
+iXpxhS2cTHzDcQh7UY5XawiZ+w137AthHGV/mKl6+aJNmOAdBwU15iTQqxyhZ4Iwtq6PIfaHZUfO&#13;
+10NnAMiMv76+spQ4pnhXK9+6bgLGlPNVUBfKdrpMbQeKtjNq7HqxC+15YU+J9KpIGPsAYIXkjA/5&#13;
+ic6mhPjbJ6XMVgZ/cnin1bzSInHyAUa1Ywni6Kf8HgpXKJTXtrvUcnu/MdAbFZG56MZ3XgFJ/gxk&#13;
+uIEb0KUHGS5DLW5mjV4k4L5g8pfbeyqceGNTEw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -626,4 +837,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8b0eac07-912f-4638-924d-128c8bd966d5" Target="#_f959a491-7067-4d5f-a35a-f41d5dce5f50"><Timestamp>2023-12-08 14:30:55</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b063f83a-06c3-4b4a-a5fe-7d68d21e18d7" Target="#_8abee0be-b96e-4a24-9252-a8f163623bf8"><Timestamp>2023-12-11 09:36:05</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
