@@ -905,7 +905,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH VERSIONS AS&#13;&#10;&#9;(  SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;&#9;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;&#9;v.VER_UNGUELTIG_AB AS V_END_DATE,&#13;&#10;&#9;v.VER_BEG_DATUM AS V_CONTRACT_START,&#13;&#10;&#9;v.VER_ABL_DATUM AS V_CONTRACT_END,&#13;&#10;&#9;v.VER_PRODUKT_TYP AS CROP_GROUP,&#13;&#10;&#9;v.VER_ZUSTAND,&#13;&#10;&#9;v.VER_HISTORIE,&#13;&#10;&#9;v.VER_STATUS,&#13;&#10;&#9;v.VER_SCHADENFREIHEITSRABATT,&#13;&#10;&#9;ROUND((v.VER_ABL_DATUM - v.VER_BEG_DATUM)/365) AS contract_duration,&#13;&#10;&#9;p.POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;CASE  &#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Einzug' THEN 1000012&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Einzug' THEN 1000008&#13;&#10;&#9;END AS PAYMENT_TERM,&#13;&#10;&#9;CASE v.VER_INKASSOART &#13;&#10;&#9;WHEN 'Selbst' THEN '10019 - Bank Transfer'&#13;&#10;&#9;WHEN 'Einzung' THEN '2 - Direct Debit'&#13;&#10;&#9;END AS COLLECTION_METHOD,&#13;&#10;&#9;v.VER_KUENDIGUNG &#13;&#10;&#9;FROM SEV.VERTRAG v&#13;&#10;&#9;JOIN sev.police p ON p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'&#13;&#10;&#9;&#9;&#9;WHERE 1=1&#13;&#10;&#9;&#9;&#9;AND v.VER_ZUSTAND = 'lebend' &#13;&#10;&#9;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;&#9;&#9;AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH')&#13;&#10;&#9;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.POLICY_MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&#13;&#10;&#9;)&#9;&#13;&#10;&#9;SELECT POLICE, VERTRAG, V_START_DATE, V_END_DATE, CROP_GROUP, VER_ZUSTAND, VER_SCHADENFREIHEITSRABATT, &#9;ver_historie, POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;V_CONTRACT_START, V_CONTRACT_END, contract_duration, PAYMENT_TERM, COLLECTION_METHOD, VER_STATUS, VER_KUENDIGUNG,&#13;&#10;&#9;DENSE_RANK() OVER(partition BY POLICE, VERTRAG  ORDER BY V_START_DATE) AS POLICY_VERSION&#13;&#10;&#9;FROM VERSIONS&#13;&#10;&#9;ORDER BY police, vertrag, V_START_DATE ASC&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH VERSIONS AS&#13;&#10;&#9;(  SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;&#9;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;&#9;v.VER_UNGUELTIG_AB AS V_END_DATE,&#13;&#10;&#9;v.VER_BEG_DATUM AS V_CONTRACT_START,&#13;&#10;&#9;v.VER_ABL_DATUM AS V_CONTRACT_END,&#13;&#10;&#9;v.VER_PRODUKT_TYP AS CROP_GROUP,&#13;&#10;&#9;v.VER_ZUSTAND,&#13;&#10;&#9;v.VER_HISTORIE,&#13;&#10;&#9;v.VER_STATUS,&#13;&#10;&#9;v.VER_SCHADENFREIHEITSRABATT,&#13;&#10;&#9;ROUND((v.VER_ABL_DATUM - v.VER_BEG_DATUM)/365) AS contract_duration,&#13;&#10;&#9;p.POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;CASE  &#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Einzug' THEN 1000012&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Einzug' THEN 1000008&#13;&#10;&#9;END AS PAYMENT_TERM,&#13;&#10;&#9;CASE v.VER_INKASSOART &#13;&#10;&#9;WHEN 'Selbst' THEN 10019&#13;&#10;&#9;WHEN 'Einzung' THEN 2&#13;&#10;    ELSE 1&#13;&#10;&#9;END AS COLLECTION_METHOD,&#13;&#10;&#9;v.VER_KUENDIGUNG &#13;&#10;&#9;FROM SEV.VERTRAG v&#13;&#10;&#9;JOIN sev.police p ON p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'&#13;&#10;&#9;&#9;&#9;WHERE 1=1&#13;&#10;&#9;&#9;&#9;AND v.VER_ZUSTAND = 'lebend' &#13;&#10;&#9;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;&#9;&#9;AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH')&#13;&#10;&#9;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.POLICY_MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&#13;&#10;&#9;)&#9;&#13;&#10;&#9;SELECT POLICE, VERTRAG, V_START_DATE, V_END_DATE, CROP_GROUP, VER_ZUSTAND, VER_SCHADENFREIHEITSRABATT, &#9;ver_historie, POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;V_CONTRACT_START, V_CONTRACT_END, contract_duration, PAYMENT_TERM, COLLECTION_METHOD, VER_STATUS, VER_KUENDIGUNG,&#13;&#10;&#9;DENSE_RANK() OVER(partition BY POLICE, VERTRAG  ORDER BY V_START_DATE) AS POLICY_VERSION&#13;&#10;&#9;FROM VERSIONS&#13;&#10;&#9;ORDER BY police, vertrag, V_START_DATE ASC&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -973,7 +973,7 @@
       <column comment="" key="false" length="0" name="V_CONTRACT_END" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="CONTRACT_DURATION" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="PAYMENT_TERM" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="21" name="COLLECTION_METHOD" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="COLLECTION_METHOD" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INTEGER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="VER_STATUS" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="VER_KUENDIGUNG" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -1007,13 +1007,13 @@
       <column comment="" key="false" length="-1" name="V_CONTRACT_END" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="CONTRACT_DURATION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAYMENT_TERM" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="21" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="VER_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VER_KUENDIGUNG" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="versions" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row2.POLICE" name="POLICE" type="id_Long"/>
@@ -1029,7 +1029,7 @@
         <mapperTableEntries expression="row2.V_CONTRACT_END" name="V_CONTRACT_END" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row2.CONTRACT_DURATION" name="CONTRACT_DURATION" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.PAYMENT_TERM" name="PAYMENT_TERM" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row2.COLLECTION_METHOD" name="COLLECTION_METHOD" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row2.COLLECTION_METHOD" name="COLLECTION_METHOD" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.VER_STATUS" name="VER_STATUS" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.VER_KUENDIGUNG" name="VER_KUENDIGUNG" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row2.POLICY_VERSION" name="POLICY_VERSION" type="id_Integer"/>
@@ -1048,7 +1048,7 @@
         <mapperTableEntries name="V_CONTRACT_END" nullable="true" type="id_Date"/>
         <mapperTableEntries name="CONTRACT_DURATION" nullable="true" type="id_Long"/>
         <mapperTableEntries name="PAYMENT_TERM" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="COLLECTION_METHOD" nullable="true" type="id_String"/>
+        <mapperTableEntries name="COLLECTION_METHOD" nullable="true" type="id_Long"/>
         <mapperTableEntries name="VER_STATUS" nullable="true" type="id_String"/>
         <mapperTableEntries name="VER_KUENDIGUNG" nullable="true" type="id_Date"/>
         <mapperTableEntries name="POLICY_VERSION" nullable="true" type="id_Integer"/>
@@ -1183,7 +1183,7 @@
       <column comment="" key="false" length="-1" name="V_CONTRACT_END" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="CONTRACT_DURATION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAYMENT_TERM" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="21" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="VER_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VER_KUENDIGUNG" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -1202,7 +1202,7 @@
       <column comment="" key="false" length="-1" name="V_CONTRACT_END" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="CONTRACT_DURATION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAYMENT_TERM" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="21" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="VER_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VER_KUENDIGUNG" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -1276,7 +1276,7 @@
       <column comment="" key="false" length="-1" name="V_CONTRACT_END" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="CONTRACT_DURATION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAYMENT_TERM" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="21" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="COLLECTION_METHOD" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="VER_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="VER_KUENDIGUNG" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -1989,15 +1989,15 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
-  <connection connectorName="FLOW" label="noLookup" lineStyle="0" metaname="noLookup" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tLogRow_2">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="noLookup"/>
-  </connection>
-  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tSortRow_1">
+  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tSortRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out"/>
+  </connection>
+  <connection connectorName="FLOW" label="noLookup" lineStyle="0" metaname="noLookup" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tLogRow_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="noLookup"/>
   </connection>
   <connection connectorName="FLOW" label="crop_group_lookup" lineStyle="8" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -2140,13 +2140,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_db1f131d-4608-413a-b904-ef2c2bb17f97"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>fzVY68kcDGehQxBu3pmOwHb6yXYaQBJovLqCV+wc8B4oBhxzTrdKPQdgodTa7BSH51PfDAMpSnM4&#13;
-Rs+ZyFB8tQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0e7e3aa7-03e0-4c57-b044-7f19e0c54c5c"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/Lr+KPOokNujVxCsr143symsfL+oRjk3EJjLkIGe6dPMt5SQ7QICrOIPV+cZZBaU6MytfzHXtcCn&#13;
-UIIteh3CGQ==</DigestValue></Reference></SignedInfo><SignatureValue>pw9cpxSlCmxxLSgLwd7YU9qbGe8FcLBQVmErDeHPoE3v6mWa/ACxHcXAS870ZUhIYH5m9kImIfpS&#13;
-pqL6Kp4mcfgkG0RQElw4EuqWHrenAjO24AWBoC55aJyGbpb/f4MGOuqOumLmMjNIpURE8XUq8a0u&#13;
-6n3B0eMYUK8yw9a5LpgIEPe4PsqeDTXy+c8jBYb+00WEX9hTkWGxiFqkfr/PHnEDwGxwuSH6vwMX&#13;
-egmtTghAcPetxJmfNLxhVNxiENriWNjCjUK8IBJIan++B8Rkqd2QVRXyDEwaYfv5/La4o1AiNZ9e&#13;
-8ZSNDPycABCjZMTIwcPtWQf+7YUjLEvf/pTfWQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_d7f92c3d-ec6f-4665-8f0f-8669a14077a8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>16R4i18YLtGkGY6qXma5c4U6SSG3IaQ+wyudJBQQnFtxqXLtQ/EsqDxUbxm8hrAnoMs7jI1h+mKw&#13;
+j/l37+d1UA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_bf64f58f-58b4-4828-81d6-75ba4e65688f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>XQW512HWYkR/XWphljAbOveKqu0RICHmlyRENCbH3fcBvZ6GH7sN739q8zHxm6uaufz9X3D2UQA6&#13;
+/MeyxI11Hg==</DigestValue></Reference></SignedInfo><SignatureValue>WlLW4STCt8zkrXxYZYDInlVBFQx/6NFWBj+EYT8jWepM4JFiB/c0nNA+qPWVNpjKT23qrLpOo/Pz&#13;
+nwzlM/8Z2T23PlM1N4hm3b/OeHz+LABylfaYfDQp0Az7ftvnGM7+ZeI+jvGNwjXD7l02mLiiNW31&#13;
+ijRcsXpkOEzowFAWQ8ukb3EeXydmeHu88ENiyywMLNrREUwDc64/GSvT/T7s8OHXUH5wTIxyWKgo&#13;
+Vn2hT0h/hBfMCg3bKLWbVdFI+TUxfREAaSWiaaCiXw95BRMYt77OJ4xNvHp9cUNlVntHF1pWTnnL&#13;
+TLW4L+OmvXVBZ02V/RRvaqKR0gu2mbm426EWRw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2168,4 +2168,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0e7e3aa7-03e0-4c57-b044-7f19e0c54c5c" Target="#_db1f131d-4608-413a-b904-ef2c2bb17f97"><Timestamp>2023-12-11 14:36:29</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_bf64f58f-58b4-4828-81d6-75ba4e65688f" Target="#_d7f92c3d-ec6f-4665-8f0f-8669a14077a8"><Timestamp>2023-12-14 10:47:50</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
