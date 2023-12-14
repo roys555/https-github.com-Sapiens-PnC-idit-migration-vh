@@ -10,7 +10,7 @@
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
     <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="0"/>
-    <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="0"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="96"/>
     <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_HADOOP_DISTRIBUTION" show="false" value=""/>
@@ -322,10 +322,10 @@
         <mapperTableEntries expression="versionSelection.POLICY_VERSION &gt;1?(long)10:null" name="endorsmentTypeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="versionSelection.POLICY_VERSION &gt;1?(String)&quot;Policy Reneval&quot;:null" name="endorsmentTypeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="versionSelection.V_CONTRACT_END " name="contractEndDate" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="(long)3" name="contractPeriodVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="&quot;1 Year&quot;" name="contractPeriodVORefDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries name="contractStatusRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="contractStatusRefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="trn_contract_period.out_value " name="contractPeriodVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="trn_contract_period.out_desc " name="contractPeriodVORefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="trn_contract_status.out_value " name="contractStatusRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="trn_contract_status.out_desc " name="contractStatusRefDESC" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="versionSelection" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
@@ -346,7 +346,7 @@
         <mapperTableEntries name="VER_KUENDIGUNG" nullable="true" type="id_Date"/>
         <mapperTableEntries name="POLICY_VERSION" type="id_Integer"/>
       </inputTables>
-      <inputTables innerJoin="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyHeadrerIVO" sizeState="INTERMEDIATE">
+      <inputTables innerJoin="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" minimized="true" name="policyHeadrerIVO" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="versionSelection.POLICE " name="POLICY" operator="=" type="id_Long"/>
         <mapperTableEntries expression="versionSelection.VERTRAG " name="VERTRAG" operator="=" type="id_Integer"/>
         <mapperTableEntries name="activePolicyId" nullable="true" type="id_Long"/>
@@ -386,6 +386,16 @@
         <mapperTableEntries expression="String.valueOf(versionSelection.POLICE) " name="EXTERNAL_HEADER_NUMBER" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="bundle_header_id" type="id_Long"/>
         <mapperTableEntries name="bundle_policy_id" type="id_Long"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_contract_status" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="versionSelection.VER_STATUS " name="in_value" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_contract_period" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="versionSelection.CONTRACT_DURATION " name="in_value" nullable="true" operator="=" type="id_Long"/>
+        <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1106,6 +1116,84 @@
       <column comment="" key="false" length="50" name="contractStatusRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="-32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="in_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_desc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="in_value" value="&quot;A_&quot;"/>
+      <elementValue elementRef="out_value" value="(long)1000185"/>
+      <elementValue elementRef="out_desc" value="&quot;Ausfall&quot;"/>
+      <elementValue elementRef="in_value" value="&quot;J_&quot;"/>
+      <elementValue elementRef="out_value" value="(long)1000184"/>
+      <elementValue elementRef="out_desc" value="&quot;Annual Refuser&quot;"/>
+      <elementValue elementRef="in_value" value="&quot;E_&quot;"/>
+      <elementValue elementRef="out_value" value="(long)1000186"/>
+      <elementValue elementRef="out_desc" value="&quot;Declared&quot;"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="trn_CONTRACT_STATUS"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_1">
+      <column comment="" key="false" length="10" name="in_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="out_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="672" posY="-32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_2"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="in_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_desc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="in_value" value="(long)1"/>
+      <elementValue elementRef="out_value" value="(long)3"/>
+      <elementValue elementRef="out_desc" value="&quot;1 Year&quot;"/>
+      <elementValue elementRef="in_value" value="(long)2"/>
+      <elementValue elementRef="out_value" value="(long)1000000"/>
+      <elementValue elementRef="out_desc" value="&quot;2 Years&quot;"/>
+      <elementValue elementRef="in_value" value="(long)3"/>
+      <elementValue elementRef="out_value" value="(long)1000001"/>
+      <elementValue elementRef="out_desc" value="&quot;3 Years&quot;"/>
+      <elementValue elementRef="in_value" value="(long)4"/>
+      <elementValue elementRef="out_value" value="(long)1000002"/>
+      <elementValue elementRef="out_desc" value="&quot;4 Years&quot;"/>
+      <elementValue elementRef="in_value" value="(long)5"/>
+      <elementValue elementRef="out_value" value="(long)4"/>
+      <elementValue elementRef="out_desc" value="&quot;5 Years&quot;"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="trn_CONTRACT_PERIOD"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_2">
+      <column comment="" key="false" length="10" name="in_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="out_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="versionSelection" lineStyle="0" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="versionSelection"/>
@@ -1126,18 +1214,26 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
+  <connection connectorName="FLOW" label="trn_contract_status" lineStyle="8" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_contract_status"/>
+  </connection>
+  <connection connectorName="FLOW" label="trn_contract_period" lineStyle="8" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_contract_period"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_556c9e30-d5a8-4edd-adc1-0e3bad132b0a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>gWe8pMI7dxt8guy6fjsa4Q9BjiiSJlsp8iOCdCILf0JtDCHm8VkR3zelIj4GRVet/1wq9XydyUEq&#13;
-BRfd2Wm+KQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d6127943-3a3b-4332-8054-49ed38f6609c"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>IL1FzSNqRFS4pl/BqkLysyJ0JQZeGiSoKnbkm0PWYflUn/V2+/ljIoDvjYRHOuM91Kb5knZYpf5P&#13;
-Zn2D/sk2uQ==</DigestValue></Reference></SignedInfo><SignatureValue>dR85ThAQLnM3V1cwpSyMewrOBZBxMEVxOLau3S2baC93/obuggRWoYPLOBmI18Z4bgIMzIjbo7SP&#13;
-rIrJV92cLKF/4cMFZ5Hw+6oHVxLHm2/gZSm6a6ezHm8Ls9mmbpp0NUQYswVEc4oQyHSOI2A2DMVz&#13;
-4e1pk+wMD6/MHEPnkJ3If9+vMo9ghRQp8vzUI9mkCoao6ubz+xDmSBxcOpPnh0YzSsDuZgGH7xzF&#13;
-VhRII4A1Y22Q49OIHuta77jl+mf8BAFp3iYTIHyePM6/DsOuIYrTL5AAhlItBmubi6DFDjtHy2Rl&#13;
-4xMtdVWRFF7CxwZQ8TbTyDY8tQo/civjvlb7ng==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9941aac6-80f2-45dc-a364-8fbf05b205ef"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>wk49js+5PByir97YXyCZqj3smubLChSGOydUQnxsejuYGLY1w8MHNnS/L9oQ8Iioi0I3LWuPW7Wa&#13;
+K+mFw3pGEA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f53f2837-d02b-47e9-819d-2d11f56644d1"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>hkHTM11He5m/AnqBwPCLJnu2ZWnt0C7yNIcV/Vr1IJhRZzxy4ryeVSb/b+QK0ZYTxrgLLIVj1SV4&#13;
+fb/64AdNKg==</DigestValue></Reference></SignedInfo><SignatureValue>ivoq1jFvUw2gCujs37SoxaU4AHVHRy+G7tfteQ2dTTiYjeh4v7C+cUh5kK60zGfZHz4V5ipYKeHl&#13;
+888gguUHudPKKoly1APd0P1xhWrA+Bq6nkT6FyqUUjsfoeO2i+phEo3SLE9W/+T5J2iP2CCrmMbl&#13;
+4jlE1P2g5G9O2MHIRM6O4b2z+v8teMcbGaJgSQxY8PyBTrcBEQMioJCuGjDjXwjn7sdTrEHKrLCY&#13;
+ObiD8DQJHrGeVe14eqmEbW48VySiBhuw8pIqNc+FM1MKd1eDIr+HrCky6xUiWq3OOxp7lXWNbxVq&#13;
+JWm7ZjULjUPGp6GN4L/P4KkWzjIi7QRlFgtA2A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1159,4 +1255,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d6127943-3a3b-4332-8054-49ed38f6609c" Target="#_556c9e30-d5a8-4edd-adc1-0e3bad132b0a"><Timestamp>2023-12-14 11:38:57</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f53f2837-d02b-47e9-819d-2d11f56644d1" Target="#_9941aac6-80f2-45dc-a364-8fbf05b205ef"><Timestamp>2023-12-14 12:17:20</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
