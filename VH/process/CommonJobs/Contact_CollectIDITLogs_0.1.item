@@ -141,7 +141,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10; crl.ID&#13;&#10;,crl.UPDATE_DATE&#13;&#10;,crl.FILE_NAME&#13;&#10;,crl.EXTERNAL_ENT_ID &#13;&#10;,crl.ENT_TYPE&#13;&#10;,crl.STATUS&#13;&#10;,crl.ERROR_MESSAGE&#13;&#10;,cc.ID as IditContactID&#13;&#10;FROM CONVERSION_ROW_LOG crl&#13;&#10;LEFT JOIN CN_CONTACT cc on&#13;&#10;&#9;cc.EXTERNAL_CONTACT_NUMBER =crl.EXTERNAL_ENT_ID &#13;&#10;WHERE crl.UPDATE_DATE &gt;= '&quot;+context.Update_Date+&quot;'&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10; crl.ID&#13;&#10;,crl.UPDATE_DATE&#13;&#10;,crl.FILE_NAME&#13;&#10;,crl.EXTERNAL_ENT_ID &#13;&#10;,crl.ENT_TYPE&#13;&#10;,crl.STATUS&#13;&#10;,substring(crl.ERROR_MESSAGE,1,3900)&#13;&#10;,cc.ID as IditContactID&#13;&#10;FROM CONVERSION_ROW_LOG crl&#13;&#10;LEFT JOIN CN_CONTACT cc on&#13;&#10;&#9;cc.EXTERNAL_CONTACT_NUMBER =crl.EXTERNAL_ENT_ID &#13;&#10;WHERE crl.UPDATE_DATE &gt;= '&quot;+context.Update_Date+&quot;'&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -186,7 +186,7 @@
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="416" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.ID = input_row.ID;&#13;&#10;output_row.UPDATE_DATE = input_row.UPDATE_DATE;&#13;&#10;output_row.FILE_NAME = input_row.FILE_NAME;&#13;&#10;output_row.EXTERNAL_ENT_ID = input_row.EXTERNAL_ENT_ID;&#13;&#10;output_row.ENT_TYPE = input_row.ENT_TYPE;&#13;&#10;output_row.STATUS = input_row.STATUS;&#13;&#10;output_row.ERROR_MESSAGE = input_row.ERROR_MESSAGE;&#13;&#10;output_row.IditContactID = input_row.IditContactID;&#10;&#10;if(input_row.EXTERNAL_ENT_ID == null){&#10;String second;&#10;second = input_row.FILE_NAME.substring(12);&#10;second = second.substring(0,second.lastIndexOf('_'));&#10;output_row.EXTERNAL_ENT_ID = second;&#10;}&#10;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.ID = input_row.ID;&#13;&#10;output_row.UPDATE_DATE = input_row.UPDATE_DATE;&#13;&#10;output_row.FILE_NAME = input_row.FILE_NAME;&#13;&#10;output_row.EXTERNAL_ENT_ID = input_row.EXTERNAL_ENT_ID;&#13;&#10;output_row.ENT_TYPE = input_row.ENT_TYPE;&#13;&#10;output_row.STATUS = input_row.STATUS;&#13;&#10;output_row.ERROR_MESSAGE = input_row.ERROR_MESSAGE;&#13;&#10;output_row.IditContactID = input_row.IditContactID;&#10;&#10;//if (input_row.ERROR_MESSAGE != null &amp;&amp; input_row.ERROR_MESSAGE.length()&gt;0) {output_row.ERROR_MESSAGE = input_row.ERROR_MESSAGE.substring(0,3900);}&#10;//else {output_row.ERROR_MESSAGE = input_row.ERROR_MESSAGE;}&#10;&#10;if(input_row.EXTERNAL_ENT_ID == null){&#10;String second;&#10;second = input_row.FILE_NAME.substring(12);&#10;second = second.substring(0,second.lastIndexOf('_'));&#10;output_row.EXTERNAL_ENT_ID = second;&#10;}&#10;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJavaRow_1">
@@ -692,19 +692,10 @@
   <node componentName="tMSSqlClose" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1184" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBClose_1"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
   <node componentName="tMSSqlConnection" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="896" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBConnection_1"/>
-    <elementParameter field="TEXT" name="COMPONENT_NAME" show="false" value="tMSSqlConnection"/>
-    <elementParameter field="TEXT" name="VERSION" show="false" value="0.102 (ALPHA)"/>
-    <elementParameter field="TEXT" name="FAMILY" show="false" value="Databases/DB Specifics/MS_SQL_Server|ELT/Connections"/>
-    <elementParameter field="CHECK" name="START" show="false" value="false"/>
-    <elementParameter field="CHECK" name="STARTABLE" show="false" value="true"/>
-    <elementParameter field="CHECK" name="SUBTREE_START" show="false" value="true"/>
-    <elementParameter field="CHECK" name="END_OF_FLOW" show="false" value="true"/>
-    <elementParameter field="TEXT" name="HELP" show="false" value="org.talend.help.tMSSqlConnection"/>
-    <elementParameter field="DIRECTORY" name="IREPORT_PATH" show="false" value=""/>
-    <elementParameter field="DIRECTORY" name="JAVA_LIBRARY_PATH" show="false" value="C:\Talend\8.0.1\studio\configuration\lib\java"/>
     <elementParameter field="CLOSED_LIST" name="DRIVER" value="JTDS"/>
     <elementParameter field="TEXT" name="HOST" value="&quot;10.86.77.4&quot;"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="MSSQL"/>
@@ -820,13 +811,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b73e278c-c31b-4e12-87aa-b94ee1a432f2"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>bI8uHPKXBpSRjWOSgbuRWRjLGUfIeGCfyeUyZHMNxevtQDMyknb7Pi/cnVZ8QC9i2MgKZr8lSgi0&#13;
-BDccOJXTKg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_390f8524-62c8-4b6a-ba24-419986288135"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8rfS4xeha4/JpCx3VVpUp8l04NUqiCK4xS8LJvr34F1JFkNp+5tvxzDHoICZ+oEFdmm2kTYtkuI6&#13;
-i1A2boIJnA==</DigestValue></Reference></SignedInfo><SignatureValue>nU52S5vcVOVb8AIuUUbIySrqIR6JIF9pkGCDns3mqXzc1mxK3MBPTbXI19aX1DmiSsVfFcu4d2JQ&#13;
-SIP+8snSrNh+alLv5vsgVJiovO45Q95VwSp2zzDsGkyAlpNe/VzY0TPkH720DDUBGCoHIDr4fSXh&#13;
-kb12aDEYAEGOeXzZgOQzSopjEHCfI4oRzBDr37kmUdql/kRx4ST+BZlxa/0dJPtqvqcx4/9MAY3H&#13;
-MhHW4HB3SptaoT/3za0ZDl6ZYkhioWTbw1RYJsbwtnhpWuMz43XquxnEF0ZrRs9bU2aWldo9nPUV&#13;
-PisMCBzlgURQzltQygon/Gka/bQw+n29QId0EQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_557226d1-efd9-498f-993f-486814bf7058"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>MOfBZyNR9NhzHwdgbsQD29oHloCHQSfRr/aV1HpPZKcUBLXPoS6lG5sIV+fY8ZHrdsNTrAlnSot+&#13;
+FDcRzxV0KQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_06450b23-4e4d-4f2a-9336-fb820e809b5b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>kKsqvtf7qutPVYzvO8E/J38ZVEfDB5hA9cce3h8wZbVs+zK/6vcQD8NHrDst4AjaQFoKeXHv4lbd&#13;
+wyUR4jShLA==</DigestValue></Reference></SignedInfo><SignatureValue>OKr/PFs1vhlivSTi62VLwr6n4uahujB3kdD4CkMbhfvbSTq6tv0c9YCKm5DKf/Q7VNCpv19BKqiW&#13;
+OI0Z8b1p0UhmiK0JbH1BioT0qlFfGIuxFjeFeF33iIfPh576ZrI9zbLmUQFuYEJ5cYOKvsjFSqul&#13;
+SQIarQU/JFLV0kkEW6lCa0JnUkPOR34P4DxaQdUZhoEH0ibIicUHultaxVIPTAlHjw7OX4kAVvV9&#13;
+tAynp3EI0JIegR/BpSBgqkcKItfl2bGXuaNaspBuiGPXLU/pLk/P/qv/9xsGFldQ3tuk9bdfHkK8&#13;
+qzrK1s0NctDLTAsQ9BTk4iOa3wQj6ptwdztpGA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -848,4 +839,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_390f8524-62c8-4b6a-ba24-419986288135" Target="#_b73e278c-c31b-4e12-87aa-b94ee1a432f2"><Timestamp>2023-12-21 09:45:24</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_06450b23-4e4d-4f2a-9336-fb820e809b5b" Target="#_557226d1-efd9-498f-993f-486814bf7058"><Timestamp>2023-12-21 12:07:46</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
