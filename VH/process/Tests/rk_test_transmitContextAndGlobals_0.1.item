@@ -116,7 +116,7 @@
     <routinesParameter id="_tGUWcMlvEe2pvuBUnRcxzQ" name="TalendStringUtil"/>
     <routinesParameter id="_tGNBsMlvEe2pvuBUnRcxzQ" name="TalendString"/>
   </parameters>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="192" posY="96">
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="64" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
     <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
     <elementParameter field="RADIO" name="USE_SINGLEMODE" value="true"/>
@@ -135,16 +135,16 @@
       <column comment="" key="false" length="100" name="col1" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="416" posY="96">
+  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="288" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_2"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.col1 = input_row.col1;&#10;&#10;&#10;System.out.println(&quot;odczytano lini&quot; +globalMap.get(&quot;tFixedFlowInput_1_NB_LINE&quot;));&#10;System.out.println(&quot;Context.var1= &quot; + context.Context_var1);&#10;System.out.println(&quot;Context.var2= &quot; + context.Context_var2);&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.col1 = input_row.col1;&#10;&#10;&#10;System.out.println(&quot;--------------&gt;Parent JOB&quot; );&#10;System.out.println(&quot;odczytano lini&quot; +globalMap.get(&quot;tFixedFlowInput_1_NB_LINE&quot;));&#10;System.out.println(&quot;Context.var1= &quot; + context.Context_var1);&#10;System.out.println(&quot;Context.var2= &quot; + context.Context_var2);&#10;&#10;System.out.println(&quot;Context.Global1= &quot; + globalMap.get(&quot;Global1&quot;));&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJavaRow_2">
       <column comment="" key="false" length="100" name="col1" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="640" posY="96">
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="512" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
     <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
     <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
@@ -168,7 +168,7 @@
       <column comment="" key="false" length="100" name="col1" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="640" posY="352">
+  <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="64" posY="448">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_1"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
@@ -180,7 +180,12 @@
     <elementParameter field="CHECK" name="USE_INDEPENDENT_PROCESS" value="false"/>
     <elementParameter field="CHECK" name="DIE_ON_CHILD_ERROR" value="true"/>
     <elementParameter field="CHECK" name="TRANSMIT_WHOLE_CONTEXT" value="true"/>
-    <elementParameter field="TABLE" name="CONTEXTPARAMS"/>
+    <elementParameter field="TABLE" name="CONTEXTPARAMS">
+      <elementValue elementRef="PARAM_NAME_COLUMN" value="Context_var1"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="globalMap.get(&quot;Global1&quot;)"/>
+      <elementValue elementRef="PARAM_NAME_COLUMN" value="Smap"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="globalMap.get(&quot;sharedMap&quot;)"/>
+    </elementParameter>
     <elementParameter field="CHECK" name="PROPAGATE_CHILD_RESULT" value="false"/>
     <elementParameter field="CHECK" name="PRINT_PARAMETER" value="false"/>
     <elementParameter field="CHECK" name="TRANSMIT_ORIGINAL_CONTEXT" show="false" value="true"/>
@@ -195,16 +200,48 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tRunJob_1"/>
   </node>
+  <node componentName="tSetGlobalVar" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="64" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tSetGlobalVar_1"/>
+    <elementParameter field="TABLE" name="VARIABLES">
+      <elementValue elementRef="KEY" value="&quot;Global1&quot;"/>
+      <elementValue elementRef="VALUE" value="&quot;Global1 Value&quot;"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tSetGlobalVar_1"/>
+  </node>
+  <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="224" posY="544">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="&#10;System.out.println(&quot;--------------&gt;Parent JOB -&gt; after Child execution&quot; );&#10;&#10;System.out.println(&quot;odczytano lini&quot; +globalMap.get(&quot;tFixedFlowInput_1_NB_LINE&quot;));&#10;System.out.println(&quot;Context.var1= &quot; + context.Context_var1);&#10;System.out.println(&quot;Context.var2= &quot; + context.Context_var2);&#10;&#10;System.out.println(&quot;Context.Global1= &quot; + globalMap.get(&quot;Global1&quot;));&#10;&#10;&#10;String XXX = (String)((java.util.concurrent.ConcurrentHashMap)globalMap.get(&quot;sharedMap&quot;)).get(&quot;XXX&quot;);&#10;//System.out.println((String)((java.util.concurrent.ConcurrentHashMap)globalMap.get(&quot;sharedMap&quot;)).get(&quot;XXX&quot;));&#10;&#10;System.out.println(&quot;z child : &quot; + XXX);&#10;&#10;&#10;"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tJava_1"/>
+  </node>
+  <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="320">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_2"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="globalMap.put(&quot;sharedMap&quot;, new java.util.concurrent.ConcurrentHashMap());&#10;&#10;"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tJava_2"/>
+  </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tJavaRow_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tRunJob_1">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tJava_2">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
   </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tJavaRow_2" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_2" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_1" offsetLabelX="0" offsetLabelY="0" source="tRunJob_1" target="tJava_1">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tSetGlobalVar_1" offsetLabelX="0" offsetLabelY="0" source="tSetGlobalVar_1" target="tFixedFlowInput_1">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_2" offsetLabelX="0" offsetLabelY="0" source="tJava_2" target="tRunJob_1">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
   </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
@@ -216,13 +253,28 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_f6baa7a7-1140-4f79-b5b9-d70d66fcd237"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>d181sCFrHcZ99DdIYum7Bk0s9Glwi1vK6YPA0VCeRzc68esD4zDZ00r/d/wTRQzZ8oqxuZaCNP1P&#13;
-Xzq9hZKjXg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a2e9a7e6-2215-4db9-b3a4-20bfbf522943"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QngWGb9ONE5zhYTQMARjjlaMd6D8YEZLP3s0kn4trgnh09wNy9qDoLIoQ5MOLWtqxfreTTH7Zvta&#13;
-50vFjE3Y5A==</DigestValue></Reference></SignedInfo><SignatureValue>dombT1A03JS4VPNfsjiCSeWPiiAO0nsUa8Ip1bP55Qp/temV7nGV4GYhfW+5IGwdEK8W4E12kTKg&#13;
-As3hMN4JwhLv/aV2PdVv3CZTYg3ycqM2nYHGJ9QDo4FbU4VWJ9g/bMZBeIM/toAkLf9iknrTHrAA&#13;
-pbQKuePb8dtXbaRfKDBqnxIejGMofuwUT+e17Agqjen5wsWLbe01JR9XSkRF8ZTcIKgFZlBE8eQK&#13;
-xNyskmZtXMeqOwOsrzPrFAdBx7T8RqJXarTNtM0wZOlu477qlooFmO5tnaSrsj8v1/b0sptuCXOq&#13;
-kAqRsqwY2fp1CanJUSGYaosNhowJ26jL37XRSA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tSetGlobalVar_1"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_2"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3b8da015-66b1-445f-8c40-a66dcf430d98"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>HxIp9rCxeVTb+hGYybkBQVc4hZoaQC1Zdf3OR2vTc80K2mn7KgBw76clGTZ/HLXS96Tn/U4Gr1An&#13;
+6XaZlDTH0A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_af00188a-4d93-406c-9c68-b50ce79b79bc"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vHHdB3hUhAUwgKlmMvqmRldtDqF4t9x268BHEgxneIab8wNouTDx0JcvH1cBH+6YcMnNEK2Wz4uY&#13;
+H9sU3nABoA==</DigestValue></Reference></SignedInfo><SignatureValue>ckOU5uRLhgFrRK47DVaHDOBnMwSpXVCW4IO4w7tyVMKmtUuwsVwF23Foomnl/xw5qCi6DNr2EIfv&#13;
+2e9heWcZWVnOrBJOE50X86x8NVpsojrb/D7clSQmqiqGH3igg2XIzjD0c8I0f47g84GC8hBgvD7k&#13;
+z08i5IpbwZ0fdHqVllIlMDy5FRfcQM5+AtsokaaRuu8rbMyHBFZR+F5fPvq3ZBYOnqEzO2mrNwVp&#13;
+D97o6nKBQAdzNmWsSuwp7+Di2HUrq73v/PibP76z/rK7qZNBVo3rrNqW99dXZlO1Jsu8u1wud/FO&#13;
+6E4jGwsq31+EXI99J1E1FDMCIMTJKSlp6VAXgg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -244,4 +296,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a2e9a7e6-2215-4db9-b3a4-20bfbf522943" Target="#_f6baa7a7-1140-4f79-b5b9-d70d66fcd237"><Timestamp>2023-12-21 15:42:12</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_af00188a-4d93-406c-9c68-b50ce79b79bc" Target="#_3b8da015-66b1-445f-8c40-a66dcf430d98"><Timestamp>2023-12-22 12:59:14</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
