@@ -393,7 +393,7 @@
   </node>
   <node componentName="tFileOutputRaw" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="896" posY="160">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFileOutputRaw_1"/>
-    <elementParameter field="FILE" name="FILENAME" value="context.PATH_contactXMLOutputDirectory + &quot;/&quot;+context.migrationID + &quot;/&quot;+(((Integer)globalMap.get(&quot;varRelationID&quot;))==null?&quot;K&quot;:&quot;R&quot;)+&quot;/RZC_contact_&quot;+context.Legacy2ID +&quot;_&quot;+ context.migrationID+&quot;.xml&quot;"/>
+    <elementParameter field="FILE" name="FILENAME" value="context.PATH_contactXMLOutputDirectory + &quot;/&quot;+context.migrationID + &quot;/&quot;+(((Integer)globalMap.get(&quot;varContactRole&quot;))==110l?&quot;K&quot;:&quot;R&quot;)+&quot;/RZC_contact_&quot;+context.Legacy2ID +&quot;_&quot;+ context.migrationID+&quot;.xml&quot;"/>
     <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;UTF-8&quot;"/>
     <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="UTF-8"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
@@ -499,7 +499,7 @@
   </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="96" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="context.Legacy2ID = context.LegacyID.replace(&quot;/&quot;,&quot;_&quot;);&#10;//System.out.println(context.LegacyID);&#10;//System.out.println(context.Legacy2ID);&#10;Integer RelationID = null;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="context.Legacy2ID = context.LegacyID.replace(&quot;/&quot;,&quot;_&quot;);&#10;//System.out.println(context.LegacyID);&#10;//System.out.println(context.Legacy2ID);&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_1"/>
@@ -538,7 +538,7 @@
     </metadata>
   </node>
   <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="256" posY="32">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
@@ -548,31 +548,33 @@
     <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name+context.EntityID"/>
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:PdrG7tM17pOtPGIVf+7shZvk7r5t3pDqElRfioMT"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;XML_RelationShip_IVO&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:FpluS7fvMd2M3ePnIb5Vfx/sV4zKZOVJKsPwF3a8"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;XML_all_IVO&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#9;a.relationshipTypeVORefID&#13;&#10;FROM&#9;XML_RelationShip_IVO a&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT XML_all_IVO.contactRoleVoRefID &#10;FROM&#9; XML_all_IVO&quot;"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="relationshipTypeVORefID"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="contactRoleVoRefID"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
-    <elementParameter field="TEXT" name="LABEL" value="Contact_RelationShip"/>
+    <elementParameter field="TEXT" name="LABEL" value="getContactRole"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="XML_RelationShip_IVO" name="tHSQLDbInput_4">
-      <column comment="" key="false" length="-1" name="relationshipTypeVORefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+    <metadata connector="FLOW" label="XML_all_IVO" name="tHSQLDbInput_5">
+      <column comment="" key="false" length="-1" name="contactRoleVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="480" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_2"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="// code sample:&#10;//&#10;// multiply by 2 the row identifier&#10;// output_row.id = input_row.id * 2;&#10;//&#10;// lowercase the name&#10;// output_row.name = input_row.name.toLowerCase();&#10;&#10;RelationID = input_row.relationshipTypeVORefID;&#10;String folder;&#10;&#10;globalMap.put(&quot;varRelationID&quot;,RelationID);&#10;//(if RelationID.equals(1000001) ) {folder = &quot;K&quot;;} else {folder=&quot;R&quot;;};&#10;&#10;//globalMap.put(&quot;varFolder&quot;,folder);&#10;&#10;//System.out.println(folder);"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="// code sample:&#10;//&#10;// multiply by 2 the row identifier&#10;// output_row.id = input_row.id * 2;&#10;//&#10;// lowercase the name&#10;// output_row.name = input_row.name.toLowerCase();&#10;&#10;&#10;globalMap.put(&quot;varContactRole&quot;,input_row.contactRoleVoRefID);&#10;//(if RelationID.equals(1000001) ) {folder = &quot;K&quot;;} else {folder=&quot;R&quot;;};&#10;&#10;//globalMap.put(&quot;varFolder&quot;,folder);&#10;&#10;//System.out.println(folder);"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tJavaRow_2"/>
+    <metadata connector="FLOW" label="XML_all_IVO" name="tJavaRow_2">
+      <column comment="" key="false" length="-1" name="contactRoleVoRefID" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+    </metadata>
   </node>
   <connection connectorName="FLOW" label="contactIVO" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tHMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -597,14 +599,14 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="contactRelationShip"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_4">
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_5">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
-  <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tJavaRow_2">
+  <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tJavaRow_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tHSQLDbInput_1">
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tHSQLDbInput_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
   </connection>
   <note opaque="true" posX="832" posY="64" sizeHeight="64" sizeWidth="385" text="contactRole mapping switched off in tHmap due to IDIT dev"/>
@@ -624,17 +626,17 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a0fb0519-e86c-4e48-acb0-74d0a7bc8e90"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ylv8coHztZt3ToZ/2sgCk9iWR0rJ1WiOKA4Y3RKCIENFGI09tUvRcn1KaHsDRlc2PeLkfgJwcraU&#13;
-t2IBUz3bCg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b3b10fe7-5d1c-418d-bef6-7082909502c3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>bEdjXlQOKybBRCJI1NJWYtTKpymtxHWT07473wnQ3jXrV7L7CKAYpB9Cf01IQDo+iRwiE7Ym1UDh&#13;
-OvJBft5NDw==</DigestValue></Reference></SignedInfo><SignatureValue>cgwmc4WV4It0rkE4ALm8sShFq7S9/1BhYFKBUy3Tmrup60wxCovDwEsOAODxeR/An4VaLw8ItvZ5&#13;
-ciyM6BtAVPvSgCc0HCBnajym7OraMu+IOsODj57Mrn0VLTJ9rmaFOZPMHD0Fr+Qow6uqKhj59gUG&#13;
-xnCRdzh9VcykI5RWll1yraKKRoQ49PPQ9w2q0Z0MTZOEkig3LsoqJZX5cu3d8uecfizp0KQVIc/+&#13;
-LbAWrZy0Ly9LwzssvvwfB9A/odpKaSKdwlc1NfOm0oV1QT3nUkVhUtsUHtX0HMr2k4nF+YFviPOh&#13;
-4x025f2g/mcOX/h8H8/c0ah5Eg7/EjphgOfmsg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8f0dba70-2fd2-4068-a71a-0eb8546a0107"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/wVHYmOixxrBIHoynuVKKhxJ1aoYSLy+/0JFHzD7Sg7ovZz/OCKBvJ40+wehRh5cfpL44FeKG+k+&#13;
+f0w6UJlQ/A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_956dc4d5-ec1e-422e-82ac-2e44c6a938a8"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>2uDPk729RH2CBwQfmJWXXQttGzV9NWDr3pa5KxcsfZa8lINf3TS1pjCocPbcuCvozloI2ZNuoSya&#13;
+MGLRIUwyog==</DigestValue></Reference></SignedInfo><SignatureValue>kSqEXZzZd34p3iU7kzA/3gtPf2pgmrwQp/DEDzf0+5Zc7M77ZZVmXAEcRi0lazm2OuBjBNJdTXnB&#13;
+jfK0tG6TcdyUMqgdLyH8v+Usb52WzJGmzB9kAJ1vzJxjITqvPdGi7p/9NDbzzF8K841+2vYV3Lul&#13;
+6xp2jBMMwu4tHRvDb/bbv+dswIgmDkFIZzo8dyGraDTMCyz7DEO7vbvYnXAP8uNQASk/bjL+qoW/&#13;
+1VCuVC3pOh9wXcPKC+tVrLKZKA6SKLYe1hVWPKMvH7TpGQsIfzUjUWndCpuWXn3PTSrBB17BHfCN&#13;
+6yViX1O9Fz87EOk6U5lNbU9WbpHzGAeJ4YUTJQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -656,4 +658,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b3b10fe7-5d1c-418d-bef6-7082909502c3" Target="#_a0fb0519-e86c-4e48-acb0-74d0a7bc8e90"><Timestamp>2024-01-10 13:10:18</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_956dc4d5-ec1e-422e-82ac-2e44c6a938a8" Target="#_8f0dba70-2fd2-4068-a71a-0eb8546a0107"><Timestamp>2024-01-10 13:23:01</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
