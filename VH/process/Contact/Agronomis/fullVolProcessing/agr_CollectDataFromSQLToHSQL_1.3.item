@@ -4609,7 +4609,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH XXX AS (&#13;&#10;Select vmr.PAR_PARTNER_NR , VMR_AEN_DATUM, VMR_VERTRIEBSFORM &#13;&#10;from sev.vm vmr&#13;&#10;WHERE&#13;&#10;vmr.VMR_ABLAUF_ZU_ARBEIT is NULL AND&#13;&#10;vmr.VMR_VERTRIEBSFORM IS NOT NULL AND&#13;&#10;vmr.VMR_VERTRIEBSFORM in ('Bezirksvertreter','Inspektor','Orga-Leiter','Oberinspektor') &#13;&#10;union all&#13;&#10;Select vmh.PAR_PARTNER_NR, VMR_AEN_DATUM, VMR_VERTRIEBSFORM &#13;&#10;from sev.vm_historie vmh&#13;&#10;WHERE&#13;&#10;vmh.VMR_VERTRIEBSFORM IS NOT NULL AND&#13;&#10;vmh.VMR_VERTRIEBSFORM in ('Bezirksvertreter','Inspektor','Orga-Leiter','Oberinspektor') &#13;&#10;)&#13;&#10;,YYY AS (&#13;&#10;SELECT  XXX.par_partner_nr, XXX.VMR_VERTRIEBSFORM, XXX.VMR_AEN_DATUM&#13;&#10;,rank()  OVER (PARTITION BY par_partner_nr, VMR_VERTRIEBSFORM ORDER BY par_partner_nr, VMR_AEN_DATUM) lp&#13;&#10;, lead(VMR_VERTRIEBSFORM) OVER (PARTITION BY par_partner_nr ORDER BY par_partner_nr, VMR_AEN_DATUM) NEXT_type&#13;&#10;, lead(VMR_AEN_DATUM) OVER (PARTITION BY par_partner_nr ORDER BY par_partner_nr, VMR_AEN_DATUM) discontinue_date&#13;&#10;FROM XXX &#13;&#10;WHERE 1=1&#13;&#10;--AND par_partner_nr IN (12009061,12021724) --,12008912)&#13;&#10;AND EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE XXX.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  = 100&#13;&#10;                  AND cms.MIGRATION_ID =  &quot;  + context.migrationID + &quot;)&quot;&#13;&#10;ORDER BY par_partner_nr, VMR_AEN_DATUM&#13;&#10;) &#13;&#10;SELECT *&#13;&#10;FROM YYY A&#13;&#10;ORDER BY A.par_partner_nr, A.VMR_AEN_DATUM&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH XXX AS ( &#13;&#10;Select vmr.PAR_PARTNER_NR , VMR_AEN_DATUM, VMR_VERTRIEBSFORM  &#13;&#10;from sev.vm vmr &#13;&#10;WHERE &#13;&#10;vmr.VMR_ABLAUF_ZU_ARBEIT is NULL AND &#13;&#10;vmr.VMR_VERTRIEBSFORM IS NOT NULL AND &#13;&#10;vmr.VMR_VERTRIEBSFORM in ('Bezirksvertreter','Inspektor','Orga-Leiter','Oberinspektor')  &#13;&#10;union all &#13;&#10;Select vmh.PAR_PARTNER_NR, VMR_AEN_DATUM, VMR_VERTRIEBSFORM &#13;&#10;from sev.vm_historie vmh &#13;&#10;WHERE &#13;&#10;vmh.VMR_VERTRIEBSFORM IS NOT NULL AND &#13;&#10;vmh.VMR_VERTRIEBSFORM in ('Bezirksvertreter','Inspektor','Orga-Leiter','Oberinspektor') &#13;&#10;) &#13;&#10;,YYY AS ( &#13;&#10;SELECT  XXX.par_partner_nr, XXX.VMR_VERTRIEBSFORM, XXX.VMR_AEN_DATUM, &#13;&#10;rank()  OVER (PARTITION BY par_partner_nr, VMR_VERTRIEBSFORM ORDER BY par_partner_nr, VMR_AEN_DATUM) as LP,   &#13;&#10; lead(VMR_VERTRIEBSFORM) OVER (PARTITION BY par_partner_nr ORDER BY par_partner_nr, VMR_AEN_DATUM) as NEXT_TYPE, &#13;&#10; lead(VMR_AEN_DATUM) OVER (PARTITION BY par_partner_nr ORDER BY par_partner_nr, VMR_AEN_DATUM) as DISCONTINUE_DATE&#13;&#10;FROM XXX  &#13;&#10;WHERE 1=1 &#13;&#10;--AND par_partner_nr IN (12009061,12021724) --,12008912)&#13;&#10;AND EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;               WHERE XXX.par_partner_nr = cms.PARTNER_ID &#13;&#10;                 AND cms.MIGRATION_STATUS  = 100 &#13;&#10;                AND cms.MIGRATION_ID =  &quot;  + context.migrationID + &quot; )  &#13;&#10;)  &#13;&#10;SELECT YYY.par_partner_nr,    YYY.VMR_AEN_DATUM,  YYY.VMR_VERTRIEBSFORM,  &#13;&#10;          YYY.LP,         YYY.NEXT_TYPE,   YYY.DISCONTINUE_DATE &#13;&#10;FROM YYY &#13;&#10; &quot; "/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -4626,11 +4626,15 @@
     <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
       <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_NOTIZ"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_AEN_DATUM"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_ABLAUF"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERTRIEBSFORM"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_VERSICHERER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LP"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="NEXT_TYPE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DISCONTINUE_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
@@ -4638,43 +4642,165 @@
     <elementParameter field="TEXT" name="LABEL" value="stg_AGRONOMIS_ROLES_inspectors"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_25">
-      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="250" name="KON_NOTIZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="KON_ABLAUF" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="KON_VERSICHERER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="VMR_AEN_DATUM" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy hh:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="VMR_VERTRIEBSFORM" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="9" name="LP" nullable="true" originalLength="9" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="NEXT_TYPE" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="DISCONTINUE_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy hh:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="352" posY="2208">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
-    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
-    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
-    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
-    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
-    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
-    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
-    <elementParameter field="TABLE" name="LENGTHS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_NOTIZ"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_ABLAUF"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="KON_VERSICHERER"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
-    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="352" posY="2208">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_11"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_mJyKcMyWEe2FTfrXPsoQ1g-tMap_11-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tLogRow_1">
-      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="250" name="KON_NOTIZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="KON_ABLAUF" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="KON_VERSICHERER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+    <metadata name="out1">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="VMR_AEN_DATUM" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy hh:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="VMR_VERTRIEBSFORM" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="9" name="LP" nullable="true" originalLength="9" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="NEXT_TYPE" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="DISCONTINUE_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy hh:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties shellMaximized="true"/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables name="out1" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row28.PAR_PARTNER_NR " name="PAR_PARTNER_NR" type="id_BigDecimal"/>
+        <mapperTableEntries expression="row28.VMR_AEN_DATUM " name="VMR_AEN_DATUM" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row28.VMR_VERTRIEBSFORM " name="VMR_VERTRIEBSFORM" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row28.LP " name="LP" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row28.NEXT_TYPE " name="NEXT_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row28.DISCONTINUE_DATE " name="DISCONTINUE_DATE" nullable="true" type="id_Date"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row28" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="PAR_PARTNER_NR" type="id_BigDecimal"/>
+        <mapperTableEntries name="VMR_AEN_DATUM" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="VMR_VERTRIEBSFORM" nullable="true" type="id_String"/>
+        <mapperTableEntries name="LP" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="NEXT_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="DISCONTINUE_DATE" nullable="true" type="id_Date"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="608" posY="2208">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_20"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:Qi1nj7u00Rw4Nai+B5CSQKzAm2HvVeZI34MMoRpn"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;AGRONOMIS_ROLES_inspectors&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
+    <elementParameter field="TABLE" name="ADD_COLS"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_AEN_DATUM"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VMR_VERTRIEBSFORM"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LP"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="NEXT_TYPE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DISCONTINUE_DATE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="AGRONOMIS_ROLES_inspectors"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tHSQLDbOutput_20">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="VMR_AEN_DATUM" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy hh:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="VMR_VERTRIEBSFORM" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="9" name="LP" nullable="true" originalLength="9" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="NEXT_TYPE" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="DISCONTINUE_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy hh:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="REJECT" name="REJECT">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="VMR_AEN_DATUM" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy hh:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="VMR_VERTRIEBSFORM" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="9" name="LP" nullable="true" originalLength="9" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="NEXT_TYPE" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="DISCONTINUE_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy hh:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="928" posY="2208">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_18"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:VznIfp0EMS5IGDNsiExzIS6PqouooCACm5mqhViA"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX AGRONOMIS_ROLES_inspectors_i1&#13;&#10;ON AGRONOMIS_ROLES_inspectors   (par_partner_nr);&quot;"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="PROPAGATE_RECORD_SET" value="false"/>
+    <elementParameter field="COLUMN_LIST" name="RECORD_SET_COLUMN" show="false" value=""/>
+    <elementParameter field="CHECK" name="USE_PREPAREDSTATEMENT" value="false"/>
+    <elementParameter field="TABLE" name="SET_PREPAREDSTATEMENT_PARAMETERS" show="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
+    <elementParameter field="TEXT" name="LABEL" value="INDEX additional insurance"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tHSQLDbRow_18"/>
+    <metadata connector="REJECT" name="REJECT">
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tMap_5">
@@ -5006,9 +5132,36 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out3"/>
   </connection>
-  <connection connectorName="FLOW" label="row28" lineStyle="0" metaname="tDBInput_25" offsetLabelX="0" offsetLabelY="0" source="tDBInput_25" target="tLogRow_1">
+  <connection connectorName="FLOW" label="row28" lineStyle="0" metaname="tDBInput_25" offsetLabelX="0" offsetLabelY="0" source="tDBInput_25" target="tMap_11">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row28"/>
+  </connection>
+  <connection connectorName="FLOW" label="out1" lineStyle="0" metaname="out1" offsetLabelX="0" offsetLabelY="0" source="tMap_11" target="tHSQLDbOutput_20">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="VMR_AEN_DATUM"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="LP"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="VMR_VERTRIEBSFORM"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="NEXT_TYPE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="DISCONTINUE_DATE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out1"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_20" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_20" target="tHSQLDbRow_18">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk24"/>
   </connection>
   <note opaque="true" posX="-64" posY="224" sizeHeight="64" sizeWidth="641" text="CUSTOMER DATA: additional tables: k2v_dev.agr_entity_type"/>
   <note opaque="true" posX="800" posY="224" sizeHeight="64" sizeWidth="641" text="DICTIONARIES:"/>
@@ -5249,13 +5402,18 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9fa3a9e8-fc71-45b1-90fb-4d09aadf6203"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>z3t511lhruNOcFP29Gt1theBdb1qQLbMo1mIU8q83ph2a8SEFe0CUgIAd5wVnSKCMAPjij7uwqj+&#13;
-CVkEKK6Oag==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f630876c-5daf-4156-987a-368c5a0e610d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>CnrMmADwWEhmHR3f7Fhi808mXj6sRsnqEc3oDR76t3AlZRN7//kV1uTIvVK7ICaxpxkUIU+ce8o7&#13;
-ZmN3FwsrzA==</DigestValue></Reference></SignedInfo><SignatureValue>dC+qGmkjuWK0CilXth1Ex0OyfxkTXbGV13HgHCzyjikWPiB5+lhmXeMHQwZft63ApfsqP9BTq74X&#13;
-rDvTMqYvrvMSarV7TzcyuViH9C6ZhbWOJ3EUAYbvpHXX+1Rz7yvPPa/+g/ndn6rsNHbjAFZQPN5h&#13;
-uELRwDepg7ndXF2J00fGps/KXjviZNmaHJc97REqRqmTkoEId8OYPT9r9M/4gUR5Cndo9WVpunud&#13;
-oY/Ehl7nw2zLd6IMq+T/n+TYZiK89qLVuXftIAQzOxNPBZOI7uie4quBrMXXDVVo96TUACVmhjkk&#13;
-+5E3hzI2uXCrI4wthp6TxoLYLkwDzUTSjQt4yA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_18"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_56c146f1-5ebb-4907-9fb3-e4809485f044"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>daGNmnt1EVMZICmDW34i1eSNDKN+bGtpPzySykoecUrpiy6eRgO49vl5+KtsT2rj4bOx/a59hYRZ&#13;
+FKztZO17bg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9c6d7aeb-f65e-4275-a1f6-9682361df932"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>0hP6oO5tYd/hq32FrIFqIpNqel72Tdd9wI5UArn+t+WbW771G83VZg4zOPpKIM9CPywIzJSdCkmJ&#13;
+QdZPsIXsJA==</DigestValue></Reference></SignedInfo><SignatureValue>Wgz650jM8tBN0cfs3HIktexIViBbuRqj0GTk03sv6sks8vh19t9R4cK6CINdWjkh+weuI8ckNpD8&#13;
+uutFSln/dPw1FIyR5iTYw4skVxwZrE1s4/ACLb1kTmo0FTRzBD3NEuYsz4VS/8dMui81EUNZNm5l&#13;
+ZRSZkyVInjXJwwvuWqky8s+z6djQs962PkzGiDaoKEfG2E7sTqRpv14UFT43z794RKEcNYJPDV/D&#13;
+JckRk0Bv4NyDRMtosshUvfUgb0r3oDAewylfj6+DkpUMJw8Z3uxFw6GM/Juf3rGTfiMltrVn3YXe&#13;
+BKVFRgQ7jIga4vjBzVI2gor8xxa4llRi8hd+rQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5277,4 +5435,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f630876c-5daf-4156-987a-368c5a0e610d" Target="#_9fa3a9e8-fc71-45b1-90fb-4d09aadf6203"><Timestamp>2024-01-18 12:37:07</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9c6d7aeb-f65e-4275-a1f6-9682361df932" Target="#_56c146f1-5ebb-4907-9fb3-e4809485f044"><Timestamp>2024-01-18 13:47:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
