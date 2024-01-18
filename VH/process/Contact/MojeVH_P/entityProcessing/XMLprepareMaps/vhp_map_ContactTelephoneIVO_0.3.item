@@ -189,7 +189,21 @@
       <column comment="" key="false" length="50" name="remarks" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="608" posY="224">
+  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="544" posY="224">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_2"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.PARTNERID = input_row.PARTNERID;&#13;&#10;output_row.CONTACTID = input_row.CONTACTID;&#13;&#10;//output_row.PHONE = input_row.PHONE;&#13;&#10;output_row.NUMBERGROUP = input_row.NUMBERGROUP;&#13;&#10;output_row.ID_CONTACT_TYPE = input_row.ID_CONTACT_TYPE;&#13;&#10;output_row.remarks = input_row.remarks;&#13;&#10;&#10;String PhoneNum = &quot;&quot;;&#10;if( (input_row.PHONE.length() &gt; 9) &amp;&amp; (input_row.PHONE.matches(&quot;[+|0]*48\\d{8,}&quot;))){&#10;PhoneNum = input_row.PHONE.replaceAll(&quot;[+|0]*48(\\d{8,})&quot;, &quot;$1&quot;);&#10;}&#10;else{&#10;PhoneNum = input_row.PHONE;&#10;}&#10;output_row.PHONE = PhoneNum;"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="MOJEVH_TELEPHONE_SELECTION" name="tJavaRow_2">
+      <column comment="" defaultValue="" key="false" length="38" name="PARTNERID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="38" name="CONTACTID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="PHONE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="NUMBERGROUP" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="ID_CONTACT_TYPE" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="remarks" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="672" posY="224">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_1"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
@@ -216,18 +230,18 @@
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="Numeric.sequence(row4.PHONE,1,1) " name="phoneSeq" type="id_Integer"/>
+        <mapperTableEntries expression="Numeric.sequence(row5.PHONE,1,1) " name="phoneSeq" type="id_Integer"/>
       </varTables>
       <outputTables name="enriched" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row4.PARTNERID" name="PARTNERID" type="id_Long"/>
-        <mapperTableEntries expression="row4.CONTACTID" name="CONTACTID" type="id_Long"/>
-        <mapperTableEntries expression="row4.PHONE" name="PHONE" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row4.NUMBERGROUP" name="NUMBERGROUP" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row5.PARTNERID" name="PARTNERID" type="id_Long"/>
+        <mapperTableEntries expression="row5.CONTACTID" name="CONTACTID" type="id_Long"/>
+        <mapperTableEntries expression="row5.PHONE" name="PHONE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row5.NUMBERGROUP" name="NUMBERGROUP" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row3.entityTypeVORefID" name="entityTypeVORefID" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="Var.phoneSeq " name="phoneSeq" type="id_Integer"/>
-        <mapperTableEntries expression="row4.remarks " name="remarks" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row5.remarks" name="remarks" nullable="true" type="id_String"/>
       </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row4" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row5" sizeState="INTERMEDIATE">
         <mapperTableEntries name="PARTNERID" type="id_Long"/>
         <mapperTableEntries name="CONTACTID" type="id_Long"/>
         <mapperTableEntries name="PHONE" nullable="true" type="id_String"/>
@@ -236,7 +250,7 @@
         <mapperTableEntries name="remarks" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables activateCondensedTool="true" innerJoin="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row3" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row4.PARTNERID " name="ID_PARTNER" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="row5.PARTNERID " name="ID_PARTNER" operator="=" type="id_Long"/>
         <mapperTableEntries name="entityTypeVORefID" nullable="true" type="id_Integer"/>
       </inputTables>
     </nodeData>
@@ -276,7 +290,7 @@
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="800" posY="224">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="output_row.ID_CONTACT = input_row.CONTACTID;&#10;output_row.id_partner = input_row.PARTNERID;&#10;output_row.ContactTelephoneIVOType_att = &quot;ContactTelephoneIVO&quot;;&#10;output_row.countryDialCodeRefId = 163;&#10;output_row.countryDialCodeRefContent = &quot;48&quot;;&#10;output_row.remarks = input_row.remarks;&#10;&#10;String PhoneNum = &quot;&quot;;&#10;if( (input_row.PHONE.length() &gt; 9) &amp;&amp; (input_row.PHONE.substring(0,2).equals(&quot;48&quot;))){&#10;PhoneNum = input_row.PHONE.substring(2);&#10;}&#10;else{&#10;PhoneNum = input_row.PHONE;&#10;}&#10;output_row.telephoneNumber = PhoneNum;&#10;&#10;&#10;//output_row.telephoneTypeRefID = (input_row.entityTypeVORefID == 1)?1:2;&#10;//output_row.telephoneTypeRefContent = (input_row.entityTypeVORefID == 1)?&quot;Private telephone&quot;:&quot;Work telephone&quot;;&#13;&#10;&#13;&#10;output_row.incorrectPhone  = (PhoneNum.length() &gt; 9) ? true : false;&#13;&#10;output_row.telephonePrefix = &quot;000&quot;;&#10;&#10;//System.out.println(input_row.phoneSeq);&#10;&#10;if (input_row.entityTypeVORefID == 101) {&#10;&#9;switch (input_row.phoneSeq) {&#10;&#9;case 1:&#9;output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;; break;&#10;&#9;case 2: output_row.telephoneTypeRefID=3; output_row.telephoneTypeRefContent = &quot;Home telephone&quot;; break;&#10;&#9;case 3: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;; break;&#10;&#9;case 4: output_row.telephoneTypeRefID=4; output_row.telephoneTypeRefContent = &quot;Mobie&quot;; break;&#10;&#9;default: output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;;&#10;&#9;}&#10;} else {&#10;&#9;switch (input_row.phoneSeq) {&#10;&#9;case 3:&#9;output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;; break;&#10;&#9;case 2: output_row.telephoneTypeRefID=3; output_row.telephoneTypeRefContent = &quot;Home telephone&quot;; break;&#10;&#9;case 1: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;; break;&#10;&#9;case 4: output_row.telephoneTypeRefID=4; output_row.telephoneTypeRefContent = &quot;Mobie&quot;; break;&#10;&#9;default: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;;&#10;&#9;}&#10;}&#13;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="output_row.ID_CONTACT = input_row.CONTACTID;&#10;output_row.id_partner = input_row.PARTNERID;&#10;output_row.ContactTelephoneIVOType_att = &quot;ContactTelephoneIVO&quot;;&#10;output_row.countryDialCodeRefId = 163;&#10;output_row.countryDialCodeRefContent = &quot;48&quot;;&#10;output_row.remarks = input_row.remarks;&#10;output_row.telephoneNumber = input_row.PHONE;&#10;&#10;&#10;//output_row.telephoneTypeRefID = (input_row.entityTypeVORefID == 1)?1:2;&#10;//output_row.telephoneTypeRefContent = (input_row.entityTypeVORefID == 1)?&quot;Private telephone&quot;:&quot;Work telephone&quot;;&#13;&#10;&#13;&#10;output_row.incorrectPhone  = (input_row.PHONE.length() &gt; 9) ? true : false;&#13;&#10;output_row.telephonePrefix = &quot;000&quot;;&#10;&#10;//System.out.println(input_row.phoneSeq);&#10;&#10;if (input_row.entityTypeVORefID == 101) {&#10;&#9;switch (input_row.phoneSeq) {&#10;&#9;case 1:&#9;output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;; break;&#10;&#9;case 2: output_row.telephoneTypeRefID=3; output_row.telephoneTypeRefContent = &quot;Home telephone&quot;; break;&#10;&#9;case 3: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;; break;&#10;&#9;case 4: output_row.telephoneTypeRefID=4; output_row.telephoneTypeRefContent = &quot;Mobie&quot;; break;&#10;&#9;default: output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;;&#10;&#9;}&#10;} else {&#10;&#9;switch (input_row.phoneSeq) {&#10;&#9;case 3:&#9;output_row.telephoneTypeRefID=2; output_row.telephoneTypeRefContent = &quot;Work telephone&quot;; break;&#10;&#9;case 2: output_row.telephoneTypeRefID=3; output_row.telephoneTypeRefContent = &quot;Home telephone&quot;; break;&#10;&#9;case 1: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;; break;&#10;&#9;case 4: output_row.telephoneTypeRefID=4; output_row.telephoneTypeRefContent = &quot;Mobie&quot;; break;&#10;&#9;default: output_row.telephoneTypeRefID=1; output_row.telephoneTypeRefContent = &quot;Private telephone&quot;;&#10;&#9;}&#10;}&#13;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="XMLContactTelephoneIVO" name="tJavaRow_1">
@@ -408,9 +422,33 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
-  <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tNormalize_1" offsetLabelX="0" offsetLabelY="0" source="tNormalize_1" target="tMap_1">
+  <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tNormalize_1" offsetLabelX="0" offsetLabelY="0" source="tNormalize_1" target="tJavaRow_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
+  </connection>
+  <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tJavaRow_2" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_2" target="tMap_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="PARTNERID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="PHONE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="NUMBERGROUP"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="ID_CONTACT_TYPE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="CONTACTID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="remarks"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
   <connection connectorName="FLOW" label="enriched" lineStyle="0" metaname="enriched" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tJavaRow_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -442,13 +480,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_0416f449-1768-4996-9c33-35af711fba5f"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>9REntg7x9Mhy3OGbsepUhglbsFtEwEge9EM1duLf5FDPeKOnWcG81VNXbmiqaAIb/UwSOn9arlGH&#13;
-6eANkxmYZA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_81b9b6a7-2765-4b20-bf8c-a739e9098876"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>6jq013VfS28AS/yYf8bMrn9sULq3GJU3Awjwr72MqXhnCM8ljQz9aMug3mFfzL7suzrwQEtyTVEQ&#13;
-UBHs7rHWFA==</DigestValue></Reference></SignedInfo><SignatureValue>Dy8Gf0eMJzvtX8X3bFblx2zKX9GV9kV87+x9hbahXBLY7oJstbS9xJ6/r+Dl3aA0YNDwjTMUgilw&#13;
-UphE3l3SYybmYZP93Zy7EobxH2ZJiyEFH8BZg3lX945ppnJrXZydleGBYwR0mZvORQMqLvFiI4xL&#13;
-vcVykVFE6tZPPjC4Kg16YL1dd/011Ko5kkW12jRDQlK7D8qXZ2bc6zDQkxQiKgXBpbjH/zc/4/Wb&#13;
-L3JMi1hSlkDeWr286R/Q75XyuTO8tC6Y3lGUV0pTrUj3J2BhOhMfi3XYRG0qUYf4ZXjSiDQrtDiS&#13;
-jUyPYVNnDhO1ne+W1+MpNAZPaHLYJOgo9Ru12A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8f45609d-e5b8-446f-809c-7e0eea1f2ca1"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>wdU9yEgX+p4ulKR+CD6u1NTq2upwFjO27tu2GeZBCaG0B7QWfFes5zhLaz7cZk6ngj8P21HUzXyY&#13;
+0sXail0jNg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_cdc21052-da8d-4846-b6ad-70cffbfb2ceb"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>lX3B8wsHzcYTH+3v6Yb8xO9BFNKqWtaNCKtgBrZ1ydzvWa/+yCIPC+gKvOQOoRwu4VpXER8UF2eP&#13;
+SpCz9Gc1Gw==</DigestValue></Reference></SignedInfo><SignatureValue>k+rBFHm/38CvJa/pBvASTHdarfVZKmXfMjLtq1WYd657xFaT02iKrZYwvVRvEuzNjBss2zAHmlyI&#13;
+dmASwEVuP86OpYA65UG+PjubANe/yDdO9QBzkQMBq/E6M15tE1XSznllJIyvQE5nI4GSp9WcNCUO&#13;
+Gqz6T6hc0fgQflDNo16yG1PJy4YdqVFdNOpUJv0C9QQ1qFitUbNT5Fay5Dgn+wimEPRMdgJlq5pM&#13;
++jgGWhtdARUDShDHocD/tMr0SHcrQDao7AdJG8lcjyshp2gxUj0EI/3QAhc8bkC433gYSoA+uunt&#13;
+nVHFs2anPoM/+sZTLr0KLehTE/UIbQN6YJcl6w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -470,4 +508,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_81b9b6a7-2765-4b20-bf8c-a739e9098876" Target="#_0416f449-1768-4996-9c33-35af711fba5f"><Timestamp>2023-11-24 10:14:24</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_cdc21052-da8d-4846-b6ad-70cffbfb2ceb" Target="#_8f45609d-e5b8-446f-809c-7e0eea1f2ca1"><Timestamp>2024-01-18 09:21:21</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
