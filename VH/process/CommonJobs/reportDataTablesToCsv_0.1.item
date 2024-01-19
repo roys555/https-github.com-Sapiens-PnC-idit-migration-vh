@@ -232,7 +232,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ROW_NUMBER,MIGRATION_ID,ENTITY_ID, &quot;+context.field1+&quot; ,EXTERNAL_NUMBER ,MIGRATION_STATUS&#13;&#10;,CASE MIGRATION_STATUS WHEN 300 THEN 'UPLOADED' ELSE 'UPLOAD FAILED' END  AS status_name&#13;&#10;,to_char(MIGRATION_STATUS_TIMESTAMP,'YYYY-MM-DD HH24:MI:SS'),replace(MIGRATION_ERROR,chr(10),' ') as migration_error,cms.ERROR_CODE &#13;&#10;,tec.DESCRIPTION AS error_desc &#13;&#10;FROM K2V_DEV.&quot;+context.domain+&quot;_MIGRATION_STATUS cms &#13;&#10;LEFT JOIN K2V_DEV.T_ERROR_CLASS tec ON tec.ERROR_CODE  = cms.ERROR_CODE &#13;&#10;WHERE MIGRATION_ID = &quot;+context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ROW_NUMBER,MIGRATION_ID,ENTITY_ID, &quot;+context.field1+&quot; ,EXTERNAL_NUMBER ,MIGRATION_STATUS&#13;&#10;,tms.STATUS_NAME &#13;&#10;,to_char(MIGRATION_STATUS_TIMESTAMP,'YYYY-MM-DD HH24:MI:SS'),replace(MIGRATION_ERROR,chr(10),' ') as migration_error,cms.ERROR_CODE &#13;&#10;,tec.DESCRIPTION AS error_desc &#13;&#10;FROM K2V_DEV.&quot;+context.domain+&quot;_MIGRATION_STATUS cms &#13;&#10;LEFT JOIN K2V_DEV.T_ERROR_CLASS tec ON tec.ERROR_CODE  = cms.ERROR_CODE &#13;&#10;LEFT JOIN K2V_DEV.T_MIGRATION_STATUS tms ON TMS.ID  = CMS.MIGRATION_STATUS &#13;&#10;WHERE MIGRATION_ID = &quot;+context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -603,12 +603,12 @@
       <column comment="" key="false" length="200" name="COUNTER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="200" name="COUNTER_ADDITIONAL_DATA" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="200" name="COUNTER_TYPE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="LEGACY" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="STAGING" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="IDIT" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="EXTRACT_ISSUE" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="UPLOAD_ISSUE" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="DIFF" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="LEGACY" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="STAGING" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="IDIT" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="EXTRACT_ISSUE" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="UPLOAD_ISSUE" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="DIFF" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="OK_FLAG" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
@@ -650,12 +650,12 @@
       <column comment="" key="false" length="200" name="COUNTER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="200" name="COUNTER_ADDITIONAL_DATA" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="200" name="COUNTER_TYPE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="LEGACY" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="STAGING" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="IDIT" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="EXTRACT_ISSUE" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="UPLOAD_ISSUE" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="20" name="DIFF" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="LEGACY" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="STAGING" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="IDIT" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="EXTRACT_ISSUE" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="UPLOAD_ISSUE" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="20" name="DIFF" nullable="true" originalLength="-1" pattern="" precision="4" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="OK_FLAG" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
@@ -747,13 +747,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_06da46da-e574-40b6-ba81-06e61e56fa66"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>DbLPQuOu8nHfvHOwHGVahkEObTnI+8KrirfMg6nEl5aQNPGZzriMF2lNZVAt+lIuvZGpx9dH4z/T&#13;
-PBLOqq+1tw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b8523788-989c-4f74-bf40-da86bd06ee6a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>MOC5GVj1Gc/qjpyxTiPHkc6JbF6/QKaUw63+uY9s8nf4P8ZYLjENRZJCrTvkbq3piVca0JqaH6hx&#13;
-6eiU3T9odw==</DigestValue></Reference></SignedInfo><SignatureValue>FENmec7uczK8abHEvHLHTzaDgXhOKED3APP5ksC0uV16bQHkhqU38C/d2m5Jut1l/6Lb19tOcfUm&#13;
-PUaTbmrcJUHyCC/XBV1A4uIoEOw1j/Sg9LDdRLUojsLCmjk02Bb0Kmi3Ys7xR67w9TfxciURBAwa&#13;
-h/myi/AXnxW5skM993HeEvdCLASRxLgPugBTudpn2xdOkm68SoA+CNt+Me+DFFAghhoU9alvhM6m&#13;
-PIXsgJYqXCKcck0+Ee/0QpdDx+VmnlBeLRyW2nhuRNsxqVVsUs/ztEXsIT2TRX6Vx4pAGrxFj8Jg&#13;
-LfkNKLvLrXNNdzoUQPfG9ycHaEZtqoIGdPQNvw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_17f97c09-1664-476f-a409-c9376317f187"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8fDQuyyRMAu8mA2VIFbJYL7gEpd2NQ7NdptrKlFzRmVb8/YdpWMW8CPcwJbbr3F1M3L8OKnO0YLH&#13;
+nNV/i/kb5g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_acf46b7f-1db7-446d-b5ef-64643d7940ff"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>zf1X8DRA0Y3znjBs0Z7fXjnzxvl1t7i1o8yYc0AY58sWH+cJxx2QYb6tTdjg9+FnXDmnGtTnHYAI&#13;
+ntp4WBrBJQ==</DigestValue></Reference></SignedInfo><SignatureValue>gZcF7cGT3Ocb1FowBkKtih4PBFcvEOn+GX00NNwTxBjEvu0suU2Vq220+4T7Ple+RE/HQ4prXMzZ&#13;
+hPYB5fzQhzP/4b/yc1s/qXMz5Xz17vBZy/dMfSa2ixvZlI3WzTP5eONS5jrTeln7z49G/4Mv1Vcz&#13;
+MVqs7rm0jkWncxhvuGC+dj1+0T2IuaMPH1OIZ7WN7VCEZquzfvMEVt8/rsX0EGxoi2PLrJ8ZASZd&#13;
+R1/CYwJ/rSqYlnKZKezrWBcGj9gm/1Lp7gSe3SrXF/AFDa3TMlY6UUq/mc1kX5zm9PM3zRc8D0jq&#13;
+ruXyNSZ/OMwFDmh7yj+88N6042jnsHCQtd6YDw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -775,4 +775,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b8523788-989c-4f74-bf40-da86bd06ee6a" Target="#_06da46da-e574-40b6-ba81-06e61e56fa66"><Timestamp>2024-01-19 11:00:10</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_acf46b7f-1db7-446d-b5ef-64643d7940ff" Target="#_17f97c09-1664-476f-a409-c9376317f187"><Timestamp>2024-01-19 14:59:02</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
