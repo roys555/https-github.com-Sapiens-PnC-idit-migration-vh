@@ -6,6 +6,7 @@
     <contextParameter comment="" internalId="_RZNDQscLEe2DoJT7zYL8TA" name="EntityID" prompt="EntityID?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
     <contextParameter comment="" internalId="_RZNDQ8cLEe2DoJT7zYL8TA" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
     <contextParameter comment="" internalId="_YrnCcMciEe2DoJT7zYL8TA" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
+    <contextParameter comment="" internalId="_WeHhcLkoEe6eCKt6LKEPcQ" name="MAX_VERTRAG" prompt="MAX_VERTRAG?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
@@ -142,7 +143,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT *&#10;FROM&#9;POLICY_CONTRACT_SELECTION&#13;&#10;WHERE POLICY_CONTRACT_SELECTION.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND POLICY_CONTRACT_SELECTION.VERTRAG = &quot;+context.p_id"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT *&#13;&#10;FROM&#9;POLICY_CONTRACT_SELECTION&#13;&#10;WHERE POLICY_CONTRACT_SELECTION.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND POLICY_CONTRACT_SELECTION.VERTRAG = &quot;+context.p_id"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -278,6 +279,7 @@
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.getCurrentDate() )) " name="current_date" type="id_Date"/>
         <mapperTableEntries expression="TalendDate.ADD_TO_DATE(policy_version.V_START_DATE,&quot;Y&quot;,1) " name="renewal_date" type="id_Date"/>
+        <mapperTableEntries expression="Long.valueOf(context.MAX_VERTRAG) +1 " name="max_vertrag_plus1" type="id_Long"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_-Jx2gCV8Ee6aAfhWDAh9_A - XMLpolicyHeaderIVO" name="out1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="POLICY_HEADER.POLICE " name="POLICY" type="id_Long"/>
@@ -314,8 +316,8 @@
         <mapperTableEntries expression="false" name="trackCoverBalancePerEndors" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="updateTotFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="policy_version.V_START_DATE " name="cancelFrom" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="nextPolicyNumInBundle" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="nextProposalNumInBundle" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="Var.max_vertrag_plus1 " name="nextPolicyNumInBundle" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="Var.max_vertrag_plus1 " name="nextProposalNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isAnnualPayer" nullable="true" type="id_Boolean"/>
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="idit_P_POLICY.EXTERNAL_HEADER_NUMBER ==null" name="error_DECN002" sizeState="INTERMEDIATE">
@@ -1024,7 +1026,6 @@
   </node>
   <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1120" posY="160">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
     <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
     <elementParameter field="RADIO" name="VERTICAL" value="false"/>
@@ -1156,6 +1157,67 @@
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1536" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:SVjFoohpkRm32lk88xOsD7Hh9BJfEQygqn8qrIn2"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;POLICY_CONTRACT_SELECTION&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  'MAX_VERTRAG' as key,&#13;&#10;MAX(VERTRAG) as value&#13;&#10;FROM&#9;POLICY_CONTRACT_SELECTION&#13;&#10;WHERE POLICY_CONTRACT_SELECTION.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND POLICY_CONTRACT_SELECTION.VERTRAG = &quot;+context.p_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="key"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="value"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;POLICY_CONTRACT_SELECTION&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POLICY_CONTRACT_SELECTION" name="tHSQLDbInput_5">
+      <column comment="" key="false" length="50" name="key" nullable="false" originalLength="-1" pattern="" precision="-1" sourceType="BIGINT" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="value" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tContextLoad" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1792" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tContextLoad_1"/>
+    <elementParameter field="CLOSED_LIST" name="LOAD_NEW_VARIABLE" value="Warning"/>
+    <elementParameter field="CLOSED_LIST" name="NOT_LOAD_OLD_VARIABLE" value="Warning"/>
+    <elementParameter field="CHECK" name="PRINT_OPERATIONS" value="false"/>
+    <elementParameter field="CHECK" name="DISABLE_ERROR" value="false"/>
+    <elementParameter field="CHECK" name="DISABLE_WARNINGS" value="true"/>
+    <elementParameter field="CHECK" name="DISABLE_INFO" value="true"/>
+    <elementParameter field="CHECK" name="DIEONERROR" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="MAX_VERTRAG"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tContextLoad_1">
+      <column defaultValue="" key="false" length="255" name="key" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="value" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tPrejob" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1312" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPrejob_1"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+  </node>
+  <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1504" posY="192">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(&quot;Max Vertrag : &quot; + String.valueOf( context.MAX_VERTRAG));"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tJava_1"/>
+  </node>
   <connection connectorName="FLOW" label="xxx" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="xxx"/>
@@ -1205,8 +1267,18 @@
   </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
+  </connection>
+  <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tContextLoad_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tJava_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tPrejob_1" offsetLabelX="0" offsetLabelY="0" source="tPrejob_1" target="tHSQLDbInput_5">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
   </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
@@ -1214,17 +1286,28 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c79b7d8d-48fd-4a68-938f-794e1ac7ceef"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qAevtgVpjzShCG2fUZsXMg2JcYfjxQHTDzoK8j7ZEQUsnSGICa//W5q5c17DdPJudUKcgqL3dy3p&#13;
-eQ+/6Rb/ug==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0f5d6a4d-1cd4-409b-a7d9-1a22871ee074"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VC/xdxGNuyVyszgdXAHPuObehHp6dchSDEhQmFJKurRqJx//Wmqjbrm0kFLL9kHmxEPB3BnBjqpI&#13;
-NBkyP1JJPA==</DigestValue></Reference></SignedInfo><SignatureValue>ISAraVUm6dcYMMJjqcLkOPJeyMHmuQ2ey8w5BUEx4io61tRiAE5MmnAFLD0l4aAFEDrKivXxwZgy&#13;
-SiNFR91ME5NLdVhRdQWfyuiCgAwplmqvZOl+3Qeg/v26APTLpMqKJA7IGEo3xxPmRPsaoww7RTZx&#13;
-fujQyS2NnkyjrPvoJ6kHrzTo8UorDsRLZ8dguhZOz+Zrf1vw1P0+ypJwC40OsTMCyoIUOy/Bm2Px&#13;
-q2bUYV1l65wRLFhs2NWSzrh3rHW+Qqptq7pAMDbY7Ea8JF0yT+dzEQqB/IgE2jvC+xFrPqUgo3Ku&#13;
-mJpl7oMGmEt8k3M6mZXJBMeTlX8owfiU+vqIMQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPrejob_1"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_29effd7d-6a0d-4222-8b02-51e43c14cab5"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>GZmn1VQrkRzkV44xuEWbbNPuxVwNjfpNmuiWYXYPSVETHvOkOCAhp0gfOtTS0JAi5eh5LfmQ5nkE&#13;
+T6kcsoLz9g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_00469d82-4643-4eee-8e94-5db06bc68b49"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>TBsRm9Q4mWbRMjzF2HTSFmt7DJiRv5B6VWs3pBGzAP1fuMbZZDfAc1ifqc+QFo8nhDsEp/2Eedwa&#13;
+sEHRzkq6Xw==</DigestValue></Reference></SignedInfo><SignatureValue>VP7qFS9f6BUl88ueCw4mK17JGwZ77cSzvK9iX0fFRvrkRrE0ChWXMmHmHNXGrruiKxmAFd0mUFdc&#13;
+KQMIM4+PZaQwws5mVBMNwVEvHnQNB84M29UCkSUBuJblV5yxFacqHCO/SK6AtS95SBBsL3aNuki5&#13;
+rFe4kE8dEgCaVsZQa134evatg1uZi+n/MLT/jhThp5C8aFXsbCeqOHVWkx2JlSW7gKvcv7xRcsYk&#13;
+/cmihMvnl5J/9q0NOAMli3UVZNmsiPXN2NaqoNzFZ/CLjl0MM5v6MS81xNdpLg2kNU7nZ+qtqsb/&#13;
+SR7UyJ5ou4E8ze7nmDahxhDUQBD3TeFwkXBSLg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1246,4 +1329,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0f5d6a4d-1cd4-409b-a7d9-1a22871ee074" Target="#_c79b7d8d-48fd-4a68-938f-794e1ac7ceef"><Timestamp>2024-01-22 12:45:57</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_00469d82-4643-4eee-8e94-5db06bc68b49" Target="#_29effd7d-6a0d-4222-8b02-51e43c14cab5"><Timestamp>2024-01-22 13:28:24</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
