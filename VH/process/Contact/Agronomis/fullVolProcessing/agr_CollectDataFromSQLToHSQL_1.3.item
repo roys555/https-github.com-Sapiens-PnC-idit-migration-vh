@@ -4906,7 +4906,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;f.ID_SEV_PARTNER, &#13;&#10;f.ID_SEV_GEMEINDE_FELDMARK&#9;AS communityRef, &#13;&#10;f.ANBAUJAHR                 AS Year, &#13;&#10;f.BEZEICHNUNG&#9;           AS fieldName,&#13;&#10;f.FELD_NR                      AS parcelId,&#13;&#10;f.FLIK_FID_LPIS             AS flikNumber, &#13;&#10;f.FLAECHE                       AS area, &#13;&#10;f.HERKUNFT                   AS originRef, &#13;&#10;f.ANL_DATUM                 AS creationDate, &#13;&#10;f.ANL_PARTNER_NR   AS addedBy &#13;&#10;FROM webav.FELDSTUECK f &#13;&#10;where EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;               WHERE f.ID_SEV_PARTNER = cms.PARTNER_ID &#13;&#10;                 AND cms.MIGRATION_STATUS  = 100 &#13;&#10;                AND cms.MIGRATION_ID =  &quot;  + context.migrationID + &quot; )  &quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;f.ID_SEV_PARTNER, &#13;&#10;f.ID_SEV_GEMEINDE_FELDMARK&#9;AS communityRef, &#13;&#10;cast(f.ANBAUJAHR as varchar2(4))                AS parcelYear, &#13;&#10;f.BEZEICHNUNG&#9;           AS fieldName,&#13;&#10;f.FELD_NR                      AS parcelId,&#13;&#10;f.FLIK_FID_LPIS             AS flikNumber, &#13;&#10;f.FLAECHE                       AS area, &#13;&#10;f.HERKUNFT                   AS originRef, &#13;&#10;f.ANL_DATUM                 AS creationDate, &#13;&#10;f.ANL_PARTNER_NR   AS addedBy &#13;&#10;FROM webav.FELDSTUECK f &#13;&#10;where EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;               WHERE f.ID_SEV_PARTNER = cms.PARTNER_ID &#13;&#10;                 AND cms.MIGRATION_STATUS  = 100 &#13;&#10;                AND cms.MIGRATION_ID =  &quot;  + context.migrationID + &quot; )  &quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -4925,7 +4925,7 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="COMMUNITYREF"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="YEAR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="parcelYear"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="FIELDNAME"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -4949,7 +4949,7 @@
     <metadata connector="FLOW" name="tDBInput_26">
       <column comment="" defaultValue="" key="false" length="8" name="ID_SEV_PARTNER" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="COMMUNITYREF" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="4" name="YEAR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="4" name="parcelYear" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="FIELDNAME" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="PARCELID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="4000" name="FLIKNUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -4976,7 +4976,7 @@
     <metadata comment="" label="AGRONOMIS_PARCEL" name="out_parcel">
       <column comment="" defaultValue="" key="false" length="8" name="ID_SEV_PARTNER" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="COMMUNITYREF" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="4" name="YEAR" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="4" name="parcelYear" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="FIELDNAME" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="PARCELID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="4000" name="FLIKNUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -4992,7 +4992,7 @@
       <outputTables activateCondensedTool="true" id="_3qgVELqtEe6eBaMrJ2mPTw - AGRONOMIS_PARCEL" name="out_parcel" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row29.ID_SEV_PARTNER" name="ID_SEV_PARTNER" type="id_Long"/>
         <mapperTableEntries expression="row29.COMMUNITYREF" name="COMMUNITYREF" type="id_String"/>
-        <mapperTableEntries expression="row29.YEAR" name="YEAR" type="id_Integer"/>
+        <mapperTableEntries expression="row29.parcelYear " name="parcelYear" type="id_String"/>
         <mapperTableEntries expression="row29.FIELDNAME" name="FIELDNAME" type="id_String"/>
         <mapperTableEntries expression="row29.PARCELID" name="PARCELID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row29.FLIKNUMBER" name="FLIKNUMBER" nullable="true" type="id_String"/>
@@ -5005,7 +5005,7 @@
       <inputTables lookupMode="LOAD_ONCE" matchingMode="ALL_ROWS" name="row29" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ID_SEV_PARTNER" type="id_Long"/>
         <mapperTableEntries name="COMMUNITYREF" type="id_String"/>
-        <mapperTableEntries name="YEAR" type="id_Integer"/>
+        <mapperTableEntries name="parcelYear" type="id_String"/>
         <mapperTableEntries name="FIELDNAME" type="id_String"/>
         <mapperTableEntries name="PARCELID" nullable="true" type="id_String"/>
         <mapperTableEntries name="FLIKNUMBER" nullable="true" type="id_String"/>
@@ -5056,7 +5056,7 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="YEAR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="parcelYear"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -5108,7 +5108,7 @@
     <metadata connector="FLOW" label="AGRONOMIS_PARCEL" name="tHSQLDbOutput_21">
       <column comment="" defaultValue="" key="false" length="8" name="ID_SEV_PARTNER" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="COMMUNITYREF" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="4" name="YEAR" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="4" name="parcelYear" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="FIELDNAME" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="PARCELID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="4000" name="FLIKNUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -5121,7 +5121,7 @@
     <metadata connector="REJECT" label="AGRONOMIS_PARCEL" name="REJECT">
       <column comment="" defaultValue="" key="false" length="8" name="ID_SEV_PARTNER" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="COMMUNITYREF" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="4" name="YEAR" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="4" name="parcelYear" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="FIELDNAME" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="500" name="PARCELID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="4000" name="FLIKNUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -5181,7 +5181,7 @@
       <column comment="" key="false" length="255" name="EXTERNAL_CODE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="704" posY="2336">
+  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="800" posY="2336">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_19"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -5861,13 +5861,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b454f323-316a-4684-b056-4b6ec931ec37"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>zYWVnISSyGlCrt3uJTRssQZuue1FV81KPmrmLG9yeE8UxSek0wMN08G2gOqEZjqMXcxggEvGGNNf&#13;
-JQU5LJ9Y5g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c3573f58-ab1a-4f66-b4ce-7c9bedb3109d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>7jhN7MOSYMMhv6VTSkzIykSlkVA2xux17hS4ILl8aWmPIt4mawbpzujMJ35fgZTZd07y4RsO9IYk&#13;
-3qJdr3YcDA==</DigestValue></Reference></SignedInfo><SignatureValue>pO+OiOskvIH/arXClFxpjbzwJcAbYsY6oq6OWmP0cRLECmnhh8nvCAsLzVHrWXTX29rYX+ku5yv0&#13;
-U2R63b3nXIkOmwqleUhl5sfGNS0NDS5IQJYwvpg0J8tBtakEbefPo8foz8MEaYadR/99Jbkb91mj&#13;
-Eah11ugX9eMymw5AWIWTCobY0bMexpiOBIGAw/kkT+n6Vs+9UYp7ugHNhVbAMXeD42T+H7XboaOq&#13;
-RVsLP97ycHZCBJG5ATSqw0jM4n3RwA37/UWXJswzO4fS4rdHM+S8BHn85F5r1DtRQjz72DcD6pss&#13;
-ESQyY9pXDnZiEbqGRnxG3F/D44JJSi6GsprE0w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c02a26cb-0b8a-49fc-b5e1-709825d95978"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>bbEqX8oFysPu8yh2bOslKpekuRvdEIptjI/CLCqYhyY9eki9USlZoCU/anBz4MH0mFfqkRVYAOyT&#13;
+DFNrx1Bztg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b06e7649-e346-44f1-a1e4-0da1f1b13684"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>1B4IXDBVzXlOeBJCuAKL0EYpp8OFZUBUoIy3YiLc8B1AdTFTlL41BFwFTemTmB0BMuwczrb1wAnA&#13;
+PvlHsFqYiQ==</DigestValue></Reference></SignedInfo><SignatureValue>ULyeOmkWD6kG7UYrL5ZwYioL1qf/JxlDBrpH+YtosBwOejl6uekpt7oaG9giQTp+4vbjgjkNswEC&#13;
+lIcQoZ2hXAaJUFw2XpzdoK9kYV9FipH2rgBBxHPBx4CSsPrsrYNHMK8G8oriewVnU5dUvlZuGrQn&#13;
+pwgUNb2JvIaqjSb2ee22N23/BEyz9w16mUF2mNrIDbSFBYsQBYtCFalGW1VKWNBA9nX2Qb/NUydA&#13;
+JRsXYQCG2RVHSLfZDBvqpthnnW0/FRZXEKOJlubSIj6IB601RIpxn9m8BRfKDY8nkv1RlgnGwXpn&#13;
+9VldTS/P3WQD1E3TOs8B2e3389HoWgWEWClbNA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5889,4 +5889,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c3573f58-ab1a-4f66-b4ce-7c9bedb3109d" Target="#_b454f323-316a-4684-b056-4b6ec931ec37"><Timestamp>2024-01-24 11:48:02</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b06e7649-e346-44f1-a1e4-0da1f1b13684" Target="#_c02a26cb-0b8a-49fc-b5e1-709825d95978"><Timestamp>2024-01-24 15:18:59</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
