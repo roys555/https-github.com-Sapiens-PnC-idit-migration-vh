@@ -966,7 +966,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH inc AS ( &#13;&#10; SELECT p.POL_POLICEN_NR external_policy_number, p.PAR_PARTNER_NR,  min(p.pol_gueltig_ab) start_date&#13;&#10;FROM sev.POLICE p&#13;&#10;WHERE EXISTS&#13;&#10;&#9;(SELECT 1 FROM sev.VERTRAG v&#13;&#10;&#9; WHERE v.POL_POLICEN_NR = p.POL_POLICEN_NR&#13;&#10;&#9;  AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9; AND v.VER_HISTORIE &lt;'HT'&#13;&#10;&#9; AND v.VER_ZUSTAND = 'lebend'&#13;&#10;&#9; AND p.POL_GUELTIG_AB &lt;= v.POL_GUELTIG_AB)&#13;&#10;AND p.POL_POLICE_TYP in ('VH','KH')&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT' AND POL_ZUSTAND = 'lebend'&#13;&#10;AND p.POL_UNGUELTIG_AB&gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;GROUP BY p.POL_POLICEN_NR, p.PAR_PARTNER_NR&#13;&#10;),&#13;&#10;ver AS &#13;&#10;&#9;(&#13;&#10;SELECT DISTINCT p.POL_POLICEN_NR AS POLICE,  &#13;&#10;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#13;&#10;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#13;&#10;p.POL_WIRTSCHAFTSWEISE AS economy_ref,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM &#13;&#10;WHEN 'Secufarm' THEN 1000198&#13;&#10;WHEN 'Basis' THEN 1000198&#13;&#10;WHEN 'Garant' THEN 1000199&#13;&#10;END AS premiumSystem,&#13;&#10;CASE  &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Secufarm' AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NOT NULL THEN concat(concat(p.POL_PRODUKT_OBERGRUPPE,', '), p.pol_beschreibung)&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NULL THEN p.POL_PRODUKT_OBERGRUPPE &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NULL AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;ELSE NULL&#13;&#10;END AS bundle_remarks,&#13;&#10;CASE p.POL_RECHNUNGSTYP WHEN '1' THEN 1 ELSE 0 END IS_ANNUAL_PAYER,&#13;&#10;CASE WHEN p.POL_STORNOGRUND IS NOT NULL AND p.POL_HISTORIE = 'AN' THEN '40 - Cancelled'&#13;&#10;ELSE '20 - Policy'&#13;&#10;END AS bundle_policy_status,&#13;&#10;p.POL_HISTORIE AS bundle_Status,&#13;&#10;p.POL_STORNOGRUND AS cancelled&#13;&#10;FROM sev.POLICE p  &#13;&#10;WHERE 1=1&#13;&#10;--AND p.POL_GUELTIG_AB &gt;= [start_date from POLICY_LEGACY_SELECTION]&#13;&#10;--AND p.POL_POLICEN_NR = [external_policy_number from POLICY_LEGACY_SELECTION&#13;&#10;AND p.pol_ungueltig_ab &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;AND p.POL_ZUSTAND = 'lebend'&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;) &#13;&#10;&#13;&#10;SELECT a.entity_id, a.legacy_id, ver.police, ver.B_VER_START_DATE, ver.B_VER_END_DATE, ver.economy_ref,&#13;&#10;ver.premiumSystem, ver.bundle_remarks, ver.IS_ANNUAL_PAYER  ,&#13;&#10;-- ver.bundle_policy_status, ver.bundle_Status, ver.cancelled,&#13;&#10;&#9;DENSE_RANK() OVER(PARTITION BY ver.police ORDER BY ver.B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM  k2v_dev.DE_POLICY_MIGRATION_STATUS a&#13;&#10;INNER JOIN ver ON A.LEGACY_ID = ver.police&#13;&#10;INNER JOIN inc ON ver.police = inc.external_policy_number AND ver.B_VER_START_DATE &gt;= inc.start_date&#13;&#10;WHERE 1=1&#13;&#10; AND a.migration_id = &quot;  + context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH inc AS ( &#13;&#10; SELECT p.POL_POLICEN_NR external_policy_number, p.PAR_PARTNER_NR,  min(p.pol_gueltig_ab) start_date&#13;&#10;FROM sev.POLICE p&#13;&#10;WHERE EXISTS&#13;&#10;&#9;(SELECT 1 FROM sev.VERTRAG v&#13;&#10;&#9; WHERE v.POL_POLICEN_NR = p.POL_POLICEN_NR&#13;&#10;&#9;  AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9; AND v.VER_HISTORIE &lt;'HT'&#13;&#10;&#9; AND v.VER_ZUSTAND = 'lebend'&#13;&#10;&#9; AND p.POL_GUELTIG_AB &lt;= v.POL_GUELTIG_AB)&#13;&#10;AND p.POL_POLICE_TYP in ('VH','KH')&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT' AND POL_ZUSTAND = 'lebend'&#13;&#10;AND p.POL_UNGUELTIG_AB&gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;GROUP BY p.POL_POLICEN_NR, p.PAR_PARTNER_NR&#13;&#10;),&#13;&#10;ver AS &#13;&#10;&#9;(&#13;&#10;SELECT DISTINCT p.POL_POLICEN_NR AS POLICE,  &#13;&#10;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#13;&#10;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#13;&#10;p.POL_WIRTSCHAFTSWEISE AS economy_ref,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM &#13;&#10;WHEN 'Secufarm' THEN 1000198&#13;&#10;WHEN 'Basis' THEN 1000198&#13;&#10;WHEN 'Garant' THEN 1000199&#13;&#10;END AS premiumSystem,&#13;&#10;CASE  &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Secufarm' AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NOT NULL THEN concat(concat(p.POL_PRODUKT_OBERGRUPPE,', '), p.pol_beschreibung)&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NULL THEN p.POL_PRODUKT_OBERGRUPPE &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NULL AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;ELSE NULL&#13;&#10;END AS bundle_remarks,&#13;&#10;CASE p.POL_RECHNUNGSTYP WHEN '1' THEN 1 ELSE 0 END IS_ANNUAL_PAYER,&#13;&#10;CASE WHEN p.POL_STORNOGRUND IS NOT NULL AND p.POL_HISTORIE = 'AN' THEN 40 &#13;&#10;ELSE 20 &#13;&#10;END AS bundle_policy_status,&#13;&#10;p.POL_HISTORIE AS bundle_Status,&#13;&#10;p.POL_STORNOGRUND AS cancelled&#13;&#10;FROM sev.POLICE p  &#13;&#10;WHERE 1=1&#13;&#10;--AND p.POL_GUELTIG_AB &gt;= [start_date from POLICY_LEGACY_SELECTION]&#13;&#10;--AND p.POL_POLICEN_NR = [external_policy_number from POLICY_LEGACY_SELECTION&#13;&#10;AND p.pol_ungueltig_ab &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;AND p.POL_ZUSTAND = 'lebend'&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;) &#13;&#10;&#13;&#10;SELECT a.entity_id, a.legacy_id, ver.police, ver.B_VER_START_DATE, ver.B_VER_END_DATE, ver.economy_ref,&#13;&#10;ver.premiumSystem, ver.bundle_remarks, ver.IS_ANNUAL_PAYER  ,&#13;&#10;ver.bundle_policy_status, ver.bundle_Status, ver.cancelled,&#13;&#10;&#9;DENSE_RANK() OVER(PARTITION BY ver.police ORDER BY ver.B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM  k2v_dev.DE_POLICY_MIGRATION_STATUS a&#13;&#10;INNER JOIN ver ON A.LEGACY_ID = ver.police&#13;&#10;INNER JOIN inc ON ver.police = inc.external_policy_number AND ver.B_VER_START_DATE &gt;= inc.start_date&#13;&#10;WHERE 1=1&#13;&#10; AND a.migration_id = &quot;  + context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -999,6 +999,12 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="IS_ANNUAL_PAYER"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_POLICY_STATUS"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_STATUS"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CANCELLED"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_VERSION"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
@@ -1016,6 +1022,9 @@
       <column comment="" key="false" length="10" name="PREMIUMSYSTEM" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="BUNDLE_REMARKS" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="IS_ANNUAL_PAYER" nullable="true" originalLength="1" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="BUNDLE_POLICY_STATUS" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="4" name="BUNDLE_STATUS" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
@@ -1064,6 +1073,9 @@
         <mapperTableEntries name="PREMIUMSYSTEM" nullable="true" type="id_Long"/>
         <mapperTableEntries name="BUNDLE_REMARKS" nullable="true" type="id_String"/>
         <mapperTableEntries name="IS_ANNUAL_PAYER" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="BUNDLE_POLICY_STATUS" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="BUNDLE_STATUS" nullable="true" type="id_String"/>
+        <mapperTableEntries name="CANCELLED" nullable="true" type="id_String"/>
         <mapperTableEntries name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
@@ -1379,6 +1391,15 @@
       <elementValue elementRef="TRACE_COLUMN" value="IS_ANNUAL_PAYER"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="CANCELLED"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="BUNDLE_STATUS"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="BUNDLE_POLICY_STATUS"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
@@ -1502,13 +1523,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_78886dad-300b-4b3d-a926-1c1d912bd6ae"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>U4rQzsUcYCPsu6PoZq2QO+zGRp0rCywoe0bPchRlX7a5iBlUepMLdo/HfA1xdC5WZeC697drJW+P&#13;
-g6M3JQ/v2g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ebaf24e4-242c-4c96-a03a-b778a0b13551"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>OykJ/JNkI71sBnKOlyK9hq2xA2PgUI8Fo/UKBhMQ0W8a7RJ12wMQ1T3UDBSYoXm6PhxD6pnx+qjN&#13;
-acdZynHheg==</DigestValue></Reference></SignedInfo><SignatureValue>T8dCwntnZWztVr3VqoRiKFdD3mFdfSxSH9+7gIAgu6ZzxpobxvYVYqq4EN7kPGCZCee3DJ9/6Q3D&#13;
-/FjYBt1Z0eqWc9JpEY+g4Hw2veq5g0JvngixX94RO/aQvR8armHalMsRGprsp9inQFMSuw1gaXWC&#13;
-4XdLjM3nuqokQHcJquyHa6sibRO5orfLfL3CJeA+4uzuZBlIcjO9JTP7LUjVYRkEGXr2+GmsW9/7&#13;
-8Z/UkVp/3GqfiJo9SU545CJgL5O14nyQzoGnzvV1hkOK41qlJ+VAV9hf/GT+iooCl7/B1RHffRLX&#13;
-CwXz1Y28ZGk23rb60wENi0MWB5VPy5jgkSmIgA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ccca52c1-5f5f-4949-85aa-7c94d87dca64"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Jo2vhuivt04UJdk8+HuknZYt8HIvGFV2YwXPm0HXELBrPPrEQHiuqlU9TN5Ke6kYgNuGVLmEdRBd&#13;
+4nDXV9ohIw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_2accc8ad-1743-48d4-8ae0-e21d6c74b96b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>23k87qu5GtZ4bsA/ZerAmkbJ2/bvejmQSYS8aCQjtZ6zD1NmZMyQoFNcy5jp0Pl56xWw+SCb1i24&#13;
+qZgTVzh3Kg==</DigestValue></Reference></SignedInfo><SignatureValue>N0+42aZKWjUMsEF15PVquLlA3sqU835EUOduzXDjUILKvNBZ7PUzwMgKYlFlmF5Zd3hY+udKh6uT&#13;
+7fhUgSd/SYarjQ+IoNf5d8II24FLqdG/IquX8T6f7R9eHtARlosCZeXJCWFSqKvgmIFWx9mJ7lw/&#13;
+vUvXCWGXHZJvXGwE1gLVLfcoAx/F0Uog7ctRV+fPHCElnsYkKFP6I8TAXqMGY53It4yQZmFv2AQl&#13;
+F+2KhFZo/7FG9cDubdLmBAm+rHDIjMwwHWCPPvAHeIaOJw2eEZev/uzjyNGjBvZjS5RRzog50awE&#13;
+T1JveItK3LzZi9hc/4zip94cTCpCgn1nm87PhA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1530,4 +1551,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ebaf24e4-242c-4c96-a03a-b778a0b13551" Target="#_78886dad-300b-4b3d-a926-1c1d912bd6ae"><Timestamp>2024-01-24 14:18:15</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_2accc8ad-1743-48d4-8ae0-e21d6c74b96b" Target="#_ccca52c1-5f5f-4949-85aa-7c94d87dca64"><Timestamp>2024-01-24 14:26:50</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
