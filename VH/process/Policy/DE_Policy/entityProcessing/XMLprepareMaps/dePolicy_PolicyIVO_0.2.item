@@ -316,8 +316,8 @@
         <mapperTableEntries expression="false" name="standaloneFleet" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="(long)10012" name="statusAttributeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(String)&quot;Final&quot;" name="statusAttributeVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="policyHeader.statusCodeVORefID " name="statusCodeVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="policyHeader.statusCodeVORefDesc " name="statusCodeVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="VERSIONS.BUNDLE_POLICY_STATUS " name="statusCodeVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="statusCodeVORef.statusCodeRefDesc " name="statusCodeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="Var.currentDate " name="statusDate" nullable="true" type="id_Date"/>
         <mapperTableEntries name="subUnitPolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="VERSIONS.PREMIUMSYSTEM " name="premiumSystemRefID" nullable="true" type="id_Long"/>
@@ -339,7 +339,7 @@
         <mapperTableEntries name="CANCELLED" nullable="true" type="id_String"/>
         <mapperTableEntries name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
       </inputTables>
-      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyHeader" sizeState="INTERMEDIATE">
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" minimized="true" name="policyHeader" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.ENTITY_ID " name="ENTITY_ID" operator="=" type="id_String"/>
         <mapperTableEntries name="LEGACY_ID" type="id_Long"/>
         <mapperTableEntries name="activePolicyId" nullable="true" type="id_Long"/>
@@ -378,6 +378,10 @@
         <mapperTableEntries name="i_we" nullable="true" type="id_String"/>
         <mapperTableEntries name="o_RefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="o_RefDesc" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="statusCodeVORef" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="VERSIONS.BUNDLE_POLICY_STATUS " name="statusCodeRefId" nullable="true" operator="=" type="id_Long"/>
+        <mapperTableEntries name="statusCodeRefDesc" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -951,6 +955,34 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="640" posY="160">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_2"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusCodeRefId"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="statusCodeRefDesc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="statusCodeRefId" value="(long)40"/>
+      <elementValue elementRef="statusCodeRefDesc" value="&quot;Cancelled&quot;"/>
+      <elementValue elementRef="statusCodeRefId" value="(long)20"/>
+      <elementValue elementRef="statusCodeRefDesc" value="&quot;Policy&quot;"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="trn_statusCodeVORef"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_2">
+      <column comment="" key="false" length="10" name="statusCodeRefId" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="statusCodeRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(&quot;Job : PolicyIVO&quot;);&#10;System.out.println(context.EntityID);"/>
@@ -1165,6 +1197,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
+  <connection connectorName="FLOW" label="statusCodeVORef" lineStyle="8" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="statusCodeVORef"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
@@ -1183,13 +1219,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_d0f9e9d4-7512-4782-8e1d-103575670e24"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>bn3IRL12ABM/f/M0OCXPywSD8P93Krp5lwtkhc+wZE35i0dMYg6uLx/4drnhg93wnHSVEXZoCl+O&#13;
-WlHPcVF8Nw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f32a5f47-2f58-425e-bc1c-88e317023279"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>SiTJYpjg8bq6klM0M9dSmhM0sZQHdJVJlUUUpXo25WOULMIu99//K9AJv59zt2toMdK5PZV4TrXA&#13;
-1J8XAIsg6Q==</DigestValue></Reference></SignedInfo><SignatureValue>bAXPUJwDyxc9ie9yAHh9AmYl4AVKL2Bvc41EPQrJq6u0Kc1OtbwS67LIZNV5zYBSCPxB6A0PWeC4&#13;
-p1cTDU42Ljt4GjMXmvTAWH0ik+3BLGfFz7ij1pXowMDt9mLIs8vQ+fYpUZ0X8msnSxPiqopBJjX7&#13;
-ZwrCr/a5TPHIBkIVXL21noYFBhVXF8WvQd7zEezXgiXmlHHoxvjz6dA8NSdCl579cr3YqLDRB/cl&#13;
-EGVFzuOn4rvgJcwfzr9g6YaM+JTeoRxSJqw8Iom25to5b9dkCerveAwNMi9z3xxc7wah5aX2dVQm&#13;
-4ePip8jchZRp2xIrzxxkHKQ6nqB1uoNoRtKtTg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8fc5d644-6699-443c-bb22-c3c183ee2405"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>W2QMP3yEg1zwzlYCfkkP4S1SEyo9IXnx7OIdzVBdHS8f2rmhzSpbCcj54MyYlgyRS/2xE0U3MzQQ&#13;
+JzXQswbO6w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8b44c2d9-a767-4067-96a7-8c6f18bc905c"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>B6VMIvwKOmSry5MYOUTkuENSoQK5XfFHYfyMeckFA68NqRLBiWNpheDv1U7jpy1qbofRRoAry2pS&#13;
+rZAvYM0Opg==</DigestValue></Reference></SignedInfo><SignatureValue>Avjb0qLFCcCaH4XjaHtWp5+ITrCv9COOH6KKX1uCEDqz9kbVifyACUJS4v0Pgh6THL9mTxs3H+Vd&#13;
+9qF3TZkFYRCDFbnba+vvvn1WTaiP2svpenCovSQHuSJQqfcI4GWmsA45oKB9oNo8fWJJXZ4wXQdh&#13;
+ooEZQYvVP3ra0OjgzteoAPZn5XHiV3DQ5xylMe6l3EzmY1RLTbD32PphKBmD9ksb6zOFwSIm43mA&#13;
+vV+F9uPlz35f2RPvh/BXKcuJ+a5KwywhLj2zEMfgxX7rxagAV/CzXq3W2Rv22AhuQVuPsA1XQmoA&#13;
+gmFeL0GSI+3YFCv5rlzb6j67Kexmf9t2utM1Dw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1211,4 +1247,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f32a5f47-2f58-425e-bc1c-88e317023279" Target="#_d0f9e9d4-7512-4782-8e1d-103575670e24"><Timestamp>2024-01-25 14:31:00</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8b44c2d9-a767-4067-96a7-8c6f18bc905c" Target="#_8fc5d644-6699-443c-bb22-c3c183ee2405"><Timestamp>2024-01-25 14:45:04</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
