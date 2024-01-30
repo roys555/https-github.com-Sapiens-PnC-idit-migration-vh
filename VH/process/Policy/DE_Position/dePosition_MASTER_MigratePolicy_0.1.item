@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="2249"/>
+    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="2256"/>
     <contextParameter comment="Path to directory where you want to save generated contact XMLs." internalId="_s-hx8cTFEe2kmaNIdZptpQ" name="PATH_contactXMLOutputDirectory" prompt="PATH_contactXMLOutputDirectory?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:\\VHmigration\\PolicyXMLs\\dePosition&quot;"/>
     <contextParameter comment="Prefix used for identyfing migration scope" internalId="_s-hx8sTFEe2kmaNIdZptpQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;dePosition&quot;"/>
     <contextParameter comment="Name for 'total' HSQLDB" internalId="_q44TEMTQEe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;proj&quot;"/>
@@ -677,7 +677,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#10;  pms.BUNDLE_POLICY_ID as bp_id, &#10;  pms.POLICY_ID as p_id &#13;&#10; ,pms.ENTITY_ID&#10;FROM K2V_DEV.POLICY_MIGRATION_STATUS pms&#13;&#10;WHERE  pms.MIGRATION_STATUS = 100 AND  pms.MIGRATION_ID = &quot; + context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#10;  pms.BUNDLE_POLICY_ID as bp_id, &#10;  pms.POLICY_ID as p_id,&#13;&#10;  pms.POSITION_ID as positon_id,&#13;&#10; pms.ENTITY_ID&#10;FROM K2V_DEV.POLICY_MIGRATION_STATUS pms&#13;&#10;WHERE  pms.MIGRATION_STATUS = 100 AND  pms.MIGRATION_ID = &quot; + context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -696,6 +696,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="P_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
@@ -706,6 +708,7 @@
     <metadata connector="FLOW" name="tDBInput_2">
       <column comment="" defaultValue="" key="false" length="38" name="BP_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="P_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POSITION_ID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" originalLength="255" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
@@ -733,6 +736,8 @@
       <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Long)globalMap.get(&quot;row1.BP_ID&quot;))"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="p_id"/>
       <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Integer)globalMap.get(&quot;row1.P_ID&quot;))"/>
+      <elementValue elementRef="PARAM_NAME_COLUMN" value="position_id"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="((Long)globalMap.get(&quot;row1.POSITION_ID&quot;))"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="migrationID"/>
       <elementValue elementRef="PARAM_VALUE_COLUMN" value="context.migrationID"/>
       <elementValue elementRef="PARAM_NAME_COLUMN" value="EntityID"/>
@@ -841,6 +846,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="POSITION_ID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -911,13 +919,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9fb2a960-a78b-4202-968d-200b4a893705"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>G6K1XpnvKvZGXNvEs3erhofFli/0M8fT6+732jeAsCDZggdGVeuzXERMj0j+1/UM90c3jpUTtwdL&#13;
-/P+S3N2Szw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_85ec6c26-0d45-402b-8f69-7da6e622fcb8"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>e9XN8um/I1sGBCnCUqR2JTvn7XxGAyMRn4zQd0uSFgrCTgovyS6xLdnhw1KknUffbSS25HT1txn9&#13;
-Ygd6Qc8C1A==</DigestValue></Reference></SignedInfo><SignatureValue>nQlg1fNB/djS4h3/tz+mmRram69Y6kJtNTWupcj0cdOk9zhR/uc6betZO2ZAF99c+UppRmtaeo0q&#13;
-GjLo8GAp7077OtvJxeNoCARzHYGxJTOoeAiS51pPZy3q0BPrgOZOxNEJRDXoecTaF+UlUnfpgI0f&#13;
-5YqCdThqb3R8PowZoUM5lIWP/x6H4meUV9ZeNNubYtS5sW8xumY8osWJ675y3J4hMOlzgrGZlJ3o&#13;
-AZtl5VZTVbNDYNQjmQBf+We0eQnYep5O0VNNwwZaCyVGCsEsr0xqAp/VKO84TE4JITIdqlDdFmE7&#13;
-GmjUUnOomwjgA8BKN+jfCnmrS6pUc84DR820Rw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_2c1a86c6-1a35-4fbb-a814-7ff86cefc9e9"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>m+n4/HBvJHQpi+QvirzqFmror17gthXC9fIRpkMV/8pYq50Sv49DYbUWRJzp3QIslZYwzLJQu1QI&#13;
+IZ+igK29PQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d6081318-8e74-4796-8657-5564edd22009"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>fcqYspIkgIE9ixEx876abXE3XZpP5n2lIhxEAJXGA15kq8a5NzIhHW+kmKGvr2wW6cuGVwqey6M/&#13;
+GbuLEvxbWw==</DigestValue></Reference></SignedInfo><SignatureValue>BBnuCNuYopyMJQ85OyND73iN1iTEgsSTSKDmqIM8IIo5ozZf0H6jkKbIsivnujoVDYpONHHb2yU6&#13;
+gxIOQxRTNbgDXEUmPF8SkXoaubWXW2HawtxIgYMi8Upl6UAXs/peFKuLBFMmNEN8yiAUGe1b8fm8&#13;
+GQXvp+pnSgMtu/qFm1mT7AVFk5jhsN/f/pBS4uuTPGc7jUAhx3aObtyndvXoFB293lBdbEQvdhqp&#13;
+WOrUIdzq55kXxbiv40IVSbpeSwDTkdOuu3wwcOSw1iEBZCTRkI8T5Br2soOmO/aA4Wl3SbuYfW61&#13;
+a1eRmoxYkvT/+bzeWFzHNn+YrSE9dJi1LBSCUg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -939,4 +947,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_85ec6c26-0d45-402b-8f69-7da6e622fcb8" Target="#_9fb2a960-a78b-4202-968d-200b4a893705"><Timestamp>2024-01-30 09:21:25</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d6081318-8e74-4796-8657-5564edd22009" Target="#_2c1a86c6-1a35-4fbb-a814-7ff86cefc9e9"><Timestamp>2024-01-30 09:53:51</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
