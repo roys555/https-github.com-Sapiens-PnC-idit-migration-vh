@@ -344,24 +344,26 @@
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="TalendDate.ADD_TO_DATE(POSITIONS.POL_GUELTIG_AB,&quot;Y&quot;,1) " name="v_reneval_date" type="id_Date"/>
+      </varTables>
       <outputTables activateCondensedTool="true" id="_8E8BEMDkEe62tuGFKQIfcA - XMLpolicyHeaderIVO" name="headerIVO" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row2.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row2.BUNDLE_POLICY_ID " name="BUNDLE_POLICY_ID" type="id_Long"/>
-        <mapperTableEntries expression="row2.POLICY_ID " name="POLICY_ID" type="id_Long"/>
-        <mapperTableEntries expression="row2.POSITION_ID " name="POSITION_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="POSITIONS.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="POSITIONS.BUNDLE_POLICY_ID " name="BUNDLE_POLICY_ID" type="id_Long"/>
+        <mapperTableEntries expression="POSITIONS.POLICY_ID " name="POLICY_ID" type="id_Long"/>
+        <mapperTableEntries expression="POSITIONS.POSITION_ID " name="POSITION_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(long)1" name="activePolicyId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="true" name="consolidatedBillingFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="bundlePolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="row2.BUNDLE_POLICY_ID " name="bundlePolicyHeaderId" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="POSITIONS.BUNDLE_POLICY_ID " name="bundlePolicyHeaderId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="" name="cropGroupRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="cropGroupRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="currencyVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;EUR&quot;" name="currencyVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row2.ENTITY_ID " name="externalHeaderNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="POSITIONS.ENTITY_ID " name="externalHeaderNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="isHealthUmbrellaPolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="isMasterPolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries name="mainRenewalDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="Var.v_reneval_date " name="mainRenewalDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="false" name="multiplePayersFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="paidByAgentFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="policyEndDate" nullable="true" type="id_Date"/>
@@ -386,7 +388,7 @@
         <mapperTableEntries name="nextProposalNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isAnnualPayer" nullable="true" type="id_Boolean"/>
       </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="POSITIONS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="POLICY_ID" nullable="true" type="id_Long"/>
@@ -867,22 +869,22 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_2"/>
   </node>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tJava_1">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
-  </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tContextLoad_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tJava_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
+  </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tPrejob_1" offsetLabelX="0" offsetLabelY="0" source="tPrejob_1" target="tHSQLDbInput_5">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
   </connection>
-  <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbInput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_6" target="tMap_2">
+  <connection connectorName="FLOW" label="POSITIONS" lineStyle="0" metaname="tHSQLDbInput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_6" target="tMap_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="POSITIONS"/>
   </connection>
   <connection connectorName="FLOW" label="headerIVO" lineStyle="0" metaname="headerIVO" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tHSQLDbOutput_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -921,13 +923,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c186eaf1-9f6b-4680-9e3c-2b93651ed3e8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>APl+ww6foyCMAVqhmVKOpStSuf3SLM1euPck86Fr9FRcrFysadfG6nHuiNtYomtkUCrqppAy/oAm&#13;
-htp39h3LZg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3087c45b-75a7-423b-a0df-bcc558fa58ca"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>dheiOUrP5sMvj7F3mTxijCa8Qu9EC9cXHly4Lnk7vVybblORIICoBE8Q73wcWBgSISNasOnmcjQJ&#13;
-Uq/hxsHoaw==</DigestValue></Reference></SignedInfo><SignatureValue>BTIUitp9gHr3S5QCU/quvfhhxUtAW4+dnzgCcjBH4LJRsKsBR1iYkUdxvYFq2FlFXDTpAH0kgvFU&#13;
-4xK8gkttG7YXvcXrzXQHbcZPGYxhzgvbik1f8KCWGQrC+QPnXZyuP+G0NkghBnpcmT4PO0hkRK/O&#13;
-ptqMYZqfX5Taf73he8DCeeB4pFlb7GuRO03GHNjZ/dyIb4q56rXhZrUOSOZKtiAwb3wbuqhNUCyv&#13;
-ul7n1BUaK2ZQooDlfxcAWBVGC6cy4j57ZLr5LzoAFNsJxRlU/NIuaVKOHOcBM69EPYyntFFk250w&#13;
-ZtZmsDAjNDhPyRxEDg0JQ6rdNQWbOlZVuu1ttQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3c97dc3c-38d9-4bb2-a362-664fef5ee8df"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8wih2m6rc4TDCKL9DDsldPXqoZl/VDfbdYeVmq10XmVrKJIQX9AY0L93d6TYASLkBA+GKvLtOHbs&#13;
+7sdyIzuJdg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_7b250261-67cc-43df-b902-2e593444519a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qTuulTz9E3OLnuCus4bK0y7FWljKwn0qiaG0+SEzZumwGIhCA/y7vik1A7i79Ef4U/yR+Z6nKYbD&#13;
+c4ZCQZIG4A==</DigestValue></Reference></SignedInfo><SignatureValue>DAS0kJcJK5K2aJKWBw/U41Utayia+1+KaFFXTQ0XbGf/voYX5e/5DEGTYSPCr6WxH8Bzm6J7sVGx&#13;
+gMcxANgbRx/ujexGEN8xplax5SWP7oe6OCNK4RzSw52Y56C9x0dY2cU/FjE8FFhD/eP5wqIvWfsz&#13;
+pS/fYDVL/F7I4id+QiGUKrD8FWy0SzAamerP4lIdDKrE4g3Mer0oEgsX/nD/6DW+pkaBUgR49I+r&#13;
+XLbSy46mtz3uX/1Qt0Fc+fuazmTuw0VVQwfvOOVo7XvYh/tqHsDl813v9afQjLb9YPDyzOfsgHwc&#13;
+EPFLANYt1/7Brr//0PNibI7j4PSg3izdlCo+pQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -949,4 +951,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3087c45b-75a7-423b-a0df-bcc558fa58ca" Target="#_c186eaf1-9f6b-4680-9e3c-2b93651ed3e8"><Timestamp>2024-02-01 11:56:17</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_7b250261-67cc-43df-b902-2e593444519a" Target="#_3c97dc3c-38d9-4bb2-a362-664fef5ee8df"><Timestamp>2024-02-02 12:04:31</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
