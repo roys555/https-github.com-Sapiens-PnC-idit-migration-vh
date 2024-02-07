@@ -1448,7 +1448,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH  pos as (&#13;&#10;SELECT &#9;gob.POL_POLICEN_NR, gob.VER_VERTRAG_NR, gob.GEF_GEFAHR_NR, gob.OBJ_OBJEKT_NR, gob.POL_GUELTIG_AB,  &#13;&#10;&#9; &#9;gob.GOB_OBJEKT_TYP, gob.GOB_UNGUELTIG_AB, gob.GOB_HISTORIE, gob.GOB_ZUSTAND,   &#13;&#10;&#9; &#9;ofr.OFR_FLAECHE, ofr.OFR_VERSICHERUNGSWERT, ofr.ID_WEBAV_POSITION, p.ID_FELDSTUECK, &#13;&#10;&#9; &#9;p.ANBAUJAHR, p.HEKTARWERT, p.flaeche, p.HEKTARWERTANTEILPROZ,  &#13;&#10;&#9; &#9;p.flaeche * p.HEKTARWERT AS sumInsured,  &#13;&#10;&#9;&#9;CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('SubPolicy','DP-'), gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))), '_'), trim(to_char(gob.OBJ_OBJEKT_NR,'00000'))),'/'),'00') AS Position_external_Number &#13;&#10;  FROM sev.gefahr_objekt gob  &#13;&#10;       JOIN sev.objekt_fruchtart ofr ON ofr.pol_policen_nr = gob.pol_policen_nr  &#13;&#10;                                        AND ofr.ver_vertrag_nr = gob.ver_vertrag_nr  &#13;&#10;              &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.gef_gefahr_nr = gob.gef_gefahr_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.obj_objekt_nr = gob.obj_objekt_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_gueltig_ab = gob.pol_gueltig_ab  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_aenderung = gob.pol_aenderung  &#13;&#10;       LEFT JOIN webav.POSITION p  ON  ofr.ID_WEBAV_POSITION = p.ID  &#13;&#10;                                   --AND  ofr.POL_POLICEN_NR = p.SEV_POL_POLICEN_NR   &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;   --AND ofr.VER_VERTRAG_NR = p.SEV_VER_VERTRAG_NR   &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;   &#13;&#10; WHERE 1=1 &#13;&#10;  AND gob.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;   AND gob.gob_historie IN ('AN', 'HN') &#13;&#10;   AND gob.gob_zustand = 'lebend'&#13;&#10;)&#13;&#10;SELECT cms.ENTITY_ID,  cms.BUNDLE_POLICY_ID, cms.POLICY_ID , cms.POSITION_ID,  v.* &#13;&#10;FROM pos v &#13;&#10;  inner join K2V_DEV.POLICY_MIGRATION_STATUS cms  &#9;ON  v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#9;and v.VER_VERTRAG_NR = cms.POLICY_ID     and v.OBJ_OBJEKT_NR = cms.POSITION_ID&#13;&#10;WHERE 1=1&#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;&#13;&#10;ORDER BY v.POL_POLICEN_NR, v.VER_VERTRAG_NR, v.OBJ_OBJEKT_NR&#13;&#10;&quot;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH  pos as (&#13;&#10;SELECT &#9;gob.POL_POLICEN_NR, gob.VER_VERTRAG_NR, gob.GEF_GEFAHR_NR, gob.OBJ_OBJEKT_NR, gob.POL_GUELTIG_AB,  &#13;&#10;&#9; &#9;gob.GOB_OBJEKT_TYP, gob.GOB_UNGUELTIG_AB, gob.GOB_HISTORIE, gob.GOB_ZUSTAND,   &#13;&#10;&#9; &#9;ofr.OFR_FLAECHE, ofr.OFR_VERSICHERUNGSWERT, ofr.ID_WEBAV_POSITION, p.ID_FELDSTUECK, &#13;&#10;&#9; &#9;p.ANBAUJAHR, p.HEKTARWERT, p.flaeche, p.HEKTARWERTANTEILPROZ,  &#13;&#10;&#9; &#9;p.flaeche * p.HEKTARWERT AS sumInsured,  &#13;&#10;&#9;&#9;CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('SubPolicy','DP-'), gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))), '_'), trim(to_char(gob.OBJ_OBJEKT_NR,'00000'))),'/'),'00') AS Position_external_Number,&#13;&#10;&#9;&#9;CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('SubPolicy','DP-'), gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))), '_'), trim(to_char(gob.OBJ_OBJEKT_NR,'00000'))) AS Position_external_header_Number,&#13;&#10;&#9;&#9;CONCAT(CONCAT('DP-', gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))) AS Master_external_header_Number &#13;&#10;  FROM sev.gefahr_objekt gob  &#13;&#10;       JOIN sev.objekt_fruchtart ofr ON ofr.pol_policen_nr = gob.pol_policen_nr  &#13;&#10;                                        AND ofr.ver_vertrag_nr = gob.ver_vertrag_nr  &#13;&#10;              &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.gef_gefahr_nr = gob.gef_gefahr_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.obj_objekt_nr = gob.obj_objekt_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_gueltig_ab = gob.pol_gueltig_ab  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_aenderung = gob.pol_aenderung  &#13;&#10;       LEFT JOIN webav.POSITION p  ON  ofr.ID_WEBAV_POSITION = p.ID  &#13;&#10;                                   --AND  ofr.POL_POLICEN_NR = p.SEV_POL_POLICEN_NR   &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;   --AND ofr.VER_VERTRAG_NR = p.SEV_VER_VERTRAG_NR   &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;   &#13;&#10; WHERE 1=1 &#13;&#10;  AND gob.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;   AND gob.gob_historie IN ('AN', 'HN') &#13;&#10;   AND gob.gob_zustand = 'lebend'&#13;&#10;)&#13;&#10;SELECT cms.ENTITY_ID,  cms.BUNDLE_POLICY_ID, cms.POLICY_ID , cms.POSITION_ID,  v.* &#13;&#10;FROM pos v &#13;&#10;  inner join K2V_DEV.POLICY_MIGRATION_STATUS cms  &#9;ON  v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#9;and v.VER_VERTRAG_NR = cms.POLICY_ID     and v.OBJ_OBJEKT_NR = cms.POSITION_ID&#13;&#10;WHERE 1=1&#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;&#13;&#10;ORDER BY v.POL_POLICEN_NR, v.VER_VERTRAG_NR, v.OBJ_OBJEKT_NR&#13;&#10;&quot;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1509,6 +1509,10 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_EXTERNAL_NUMBER"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -1538,6 +1542,8 @@
       <column comment="" defaultValue="" key="false" length="3" name="HEKTARWERTANTEILPROZ" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" originalLength="10" pattern="" precision="2" sourceType="NUMBER" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" key="false" length="66" name="POSITION_EXTERNAL_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="224" posY="320">
@@ -1554,33 +1560,35 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="POSITION_LEGACY_SELECTION" name="positions_legacy_selection">
-      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="POSITION_ID" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+    <metadata comment="" label="POSITION_LEGACY_SELECTION" name="positions_legacy_selection">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POSITION_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="POL_GUELTIG_AB" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="GOB_OBJEKT_TYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GOB_OBJEKT_TYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="GOB_UNGUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="4" name="GOB_HISTORIE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="15" name="GOB_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="NUMBER" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DEC" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="12" name="ID_WEBAV_POSITION" nullable="true" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="ID_FELDSTUECK" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="4" name="ANBAUJAHR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="NUMBER" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="NUMBER" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="3" name="HEKTARWERTANTEILPROZ" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="NUMBER" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" key="false" length="66" name="POSITION_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="4" name="GOB_HISTORIE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="15" name="GOB_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="12" name="ID_WEBAV_POSITION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="38" name="ID_FELDSTUECK" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="4" name="ANBAUJAHR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="3" name="HEKTARWERTANTEILPROZ" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" key="false" length="66" name="POSITION_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_imlxAL98Ee6XqIJotbqKxQ - POSITION_LEGACY_SELECTION" name="positions_legacy_selection" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -1606,6 +1614,8 @@
         <mapperTableEntries expression="row1.HEKTARWERTANTEILPROZ " name="HEKTARWERTANTEILPROZ" type="id_Long"/>
         <mapperTableEntries expression="row1.SUMINSURED " name="SUMINSURED" nullable="true" type="id_BigDecimal"/>
         <mapperTableEntries expression="row1.POSITION_EXTERNAL_NUMBER " name="POSITION_EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row1.POSITION_EXTERNAL_HEADER_NUMBER " name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row1.MASTER_EXTERNAL_HEADER_NUMBER " name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -1631,6 +1641,8 @@
         <mapperTableEntries name="HEKTARWERTANTEILPROZ" type="id_Long"/>
         <mapperTableEntries name="SUMINSURED" nullable="true" type="id_BigDecimal"/>
         <mapperTableEntries name="POSITION_EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1648,6 +1660,8 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;POSITION_LEGACY_SELECTION&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_imlxAL98Ee6XqIJotbqKxQ - POSITION_LEGACY_SELECTION"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -1772,11 +1786,21 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;POSITION_LEGACY_SELECTION&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tHSQLDbOutput_1">
+    <metadata connector="FLOW" label="POSITION_LEGACY_SELECTION" name="tHSQLDbOutput_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1790,18 +1814,20 @@
       <column comment="" key="false" length="0" name="GOB_UNGUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="4" name="GOB_HISTORIE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="15" name="GOB_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="12" name="ID_WEBAV_POSITION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="ID_FELDSTUECK" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="4" name="ANBAUJAHR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="HEKTARWERTANTEILPROZ" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" key="false" length="66" name="POSITION_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
-    <metadata connector="REJECT" name="REJECT">
+    <metadata connector="REJECT" label="POSITION_LEGACY_SELECTION" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1815,16 +1841,18 @@
       <column comment="" key="false" length="0" name="GOB_UNGUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="4" name="GOB_HISTORIE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="15" name="GOB_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="12" name="ID_WEBAV_POSITION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="ID_FELDSTUECK" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="4" name="ANBAUJAHR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="HEKTARWERTANTEILPROZ" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" key="false" length="66" name="POSITION_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1890,11 +1918,15 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_EXTERNAL_NUMBER"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tLogRow_1">
+    <metadata connector="FLOW" label="POSITION_LEGACY_SELECTION" name="tLogRow_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1908,16 +1940,18 @@
       <column comment="" key="false" length="0" name="GOB_UNGUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="4" name="GOB_HISTORIE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="15" name="GOB_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="12" name="ID_WEBAV_POSITION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="38" name="ID_FELDSTUECK" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="4" name="ANBAUJAHR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="HEKTARWERTANTEILPROZ" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DECIMAL" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
       <column comment="" key="false" length="66" name="POSITION_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row12" lineStyle="0" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tHSQLDbOutput_12">
@@ -2017,7 +2051,10 @@
       <elementValue elementRef="TRACE_COLUMN" value="POLICY_ID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="newColumn1"/>
+      <elementValue elementRef="TRACE_COLUMN" value="MASTER_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="POSITION_EXTERNAL_HEADER_NUMBER"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -2123,13 +2160,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_4da889e0-5943-4f11-a280-f71aab0fe6a7"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mDbtB7GcXNZziucjQrNyXdIj2TQWIEd1UUpw3U5q7hmBmnaaI039m9bCDVE79GL7mzNxcQQlRazZ&#13;
-jJ+4sS9YXg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3520a40f-2eb7-4b0c-8138-01f2cf4cf725"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>FLjmHAc8KH9bLcoARxSz5F8IZr5y2U0cQUJ1jtlCsSxEfOk2hILPwnnRaLsObRQtGz0E4cJ6ptfB&#13;
-W7/qYOghsw==</DigestValue></Reference></SignedInfo><SignatureValue>B8UoQ9Av02k2onte0zFPMNktDTopyzyGLmBMk264VuZrLQNiD1oO46Hk+YaSgRicg7lWrfC79r0F&#13;
-Y/l0syfcGDDqzSQNqllsJNAjRl3osectndsOQ/X6wybZ45olh/XQoOj2nY577vuvr3Z1ufu3tMKk&#13;
-PWRKT8WwgnXrnkMuTp9LKWR4VcieMaewE4yhHRE755re4yBnGdfKtH1NHlcGMJ+DZfCorTEb3rQb&#13;
-XejY5cnh+yPcxUedrDb/hkh+JZeYU0e77JVBfumbHSzWA+erkuxcLznVtyvXZGjfgU1Onp4rIsgH&#13;
-RkTMdd9ZYSMmNM0C9SCPvHxQz1U0OFzgxXvdYw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8c3fee90-7ba7-4f87-80f3-1679de9b6b28"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>sPKM7k0o3x1A/nPtqdaIh51JpfWbMuGegQ7nTaIXjIQO6erculCbXrRR0vLPb13KlAiZeKJf83kV&#13;
+lxj1xFTSTw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_bcf0964a-c4b9-40e6-a456-b4e565d4ed45"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>nbavfQP2WQfD6O2pEm2kdovn2FcGmCVU2h1Acme5lFefgQcAxLvwU5BwMZZN2gNTWbS3yheshJou&#13;
+fi0LCWqpYQ==</DigestValue></Reference></SignedInfo><SignatureValue>ViAFUjKNfWdSr/f39sKxzWq9kBdAcK2Z3NNwwjT/ZYlqDKSM7cWbK0iw7hT81gQ66H3gmllGRorO&#13;
+J3Pl32JJs7xmHi2ZNpah3YPXt6JUJRdUROuAwlX3AtE+aCGo+Tmk42AiHcuJJiwJ4omT7hOIe6wp&#13;
+6XGsObDPZSu1bmxvPY9yZM7beKdaSiy39L+l4gWGrx7oQvjYCERtRqqXSyzu9Lr0c84ISpBo//mX&#13;
+d4AULlJZ6qi2L2RhBEKuNMRbwvmTut8qSqcqKIttyMXagQ3V3/AW7GKX9VpWKf/CGU+G7zdNuRXy&#13;
+xvOdkQ7ANp/Io4YrSV7mrwgVLFx2xfFPQmrftQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2151,4 +2188,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3520a40f-2eb7-4b0c-8138-01f2cf4cf725" Target="#_4da889e0-5943-4f11-a280-f71aab0fe6a7"><Timestamp>2024-02-05 14:14:08</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_bcf0964a-c4b9-40e6-a456-b4e565d4ed45" Target="#_8c3fee90-7ba7-4f87-80f3-1679de9b6b28"><Timestamp>2024-02-07 09:32:52</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
