@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="" internalId="_gaBZcMTOEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="944"/>
+    <contextParameter comment="" internalId="_gaBZcMTOEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="188"/>
     <contextParameter comment="" internalId="_pDyhELtiEe65_pL7HwxoNg" name="Oracle_staging_Server" prompt="Oracle_staging_Server?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value="10.86.77.7"/>
     <contextParameter comment="" internalId="_pDyhEbtiEe65_pL7HwxoNg" name="Oracle_staging_AdditionalParams" prompt="Oracle_staging_AdditionalParams?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value=""/>
     <contextParameter comment="" internalId="_pDyhErtiEe65_pL7HwxoNg" name="Oracle_staging_Login" prompt="Oracle_staging_Login?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value="system"/>
@@ -11,7 +11,7 @@
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
-    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="0"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="32"/>
     <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="0"/>
     <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" show="false" value=""/>
@@ -145,7 +145,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT CLAIM_NUMBER,  POLICY_NUMBER&#13;&#10;FROM K2V_DEV.SRC_PL_CLAIM &quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT&#13;&#10;DISTINCT s.SCH_SCHADEN_NR AS CLAIM_NR,  &#13;&#10;sa.SAK_AKTE_NR AS MULTI_CLAIM_NR, &#13;&#10;S.SCH_SCHADENDATUM AS CLAIM_EVENT_DATE, &#13;&#10;CONCAT('MIG_AP-', s.PAR_PARTNER_NR) AS POLICYHOLDER, &#13;&#10;s.SCH_SCHADENSTATUS AS CLAIM_STATUS, &#13;&#10;s.SCH_BEARBEITUNGSSTAND AS CLAIM_STATUS_REASON, &#13;&#10;s.SCH_MELDEDATUM AS NOTIFICATION_DATE, &#13;&#10;s.POL_POLICEN_NR AS EXT_POLICY_NR &#13;&#10;FROM sev.SCHADENAKTE sa &#13;&#10;LEFT JOIN sev.SCHADEN s ON sa.SAK_AKTE_NR = s.SAK_AKTE_NR  &#13;&#10;LEFT JOIN sev.VERTRAG v &#13;&#10;&#9;ON s.POL_POLICEN_NR = v.POL_POLICEN_NR &#13;&#10;&#9;AND s.VER_VERTRAG_NR = v.VER_VERTRAG_NR &#13;&#10;&#9;AND s.POL_GUELTIG_AB = v.POL_GUELTIG_AB &#13;&#10;LEFT JOIN K2V_DEV.TEMP_CROP_GROUP tcg ON v.VER_PRODUKT_TYP  = tcg.EXTERNAL_CODE  &#13;&#10;WHERE EXTRACT(YEAR FROM sa.SAK_ERNTEJAHR) &gt;= 2013 &#13;&#10;AND s.SAK_AKTE_NR IS NOT null &#13;&#10;AND EXISTS (SELECT * FROM sev.POLICE p &#13;&#10;&#9;&#9;&#9;WHERE s.POL_POLICEN_NR = p.POL_POLICEN_NR &#13;&#10;&#9;&#9;&#9;AND p.POL_POLICE_TYP IN ('VH', 'KH')) &#13;&#10;and rownum&lt;100 &quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -160,9 +160,21 @@
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAIM_NUMBER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAIM_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_NUMBER"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MULTI_CLAIM_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAIM_EVENT_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICYHOLDER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAIM_STATUS"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAIM_STATUS_REASON"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="NOTIFICATION_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="EXT_POLICY_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
@@ -170,8 +182,14 @@
     <elementParameter field="TEXT" name="LABEL" value="Select inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_3">
-      <column comment="" key="false" length="20" name="CLAIM_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="CLAIM_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="MULTI_CLAIM_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="CLAIM_EVENT_DATE" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="47" name="POLICYHOLDER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CLAIM_STATUS" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CLAIM_STATUS_REASON" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="NOTIFICATION_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="EXT_POLICY_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="384" posY="32">
@@ -179,7 +197,7 @@
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
-    <elementParameter field="IMAGE" name="PREVIEW" value="_RtlVkH7bEe6q2NhSAyHf6g-tMap_3-PREVIEW.bmp"/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_HE-esMDzEe6AGrpljEYXSA-tMap_3-PREVIEW.bmp"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
     <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
     <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
@@ -222,23 +240,29 @@
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="CLAIM_MIGRATION_STATUS" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Long"/>
-        <mapperTableEntries expression="row3.CLAIM_NUMBER " name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries expression="row3.CLAIM_NUMBER " name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row3.CLAIM_NUMBER " name="LEGACY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row3.POLICY_NUMBER " name="POLICY_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;DE&quot;+  row1.CLAIM_NR " name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="" name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row1.CLAIM_NR " name="LEGACY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row1.EXT_POLICY_NR " name="POLICY_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Long"/>
         <mapperTableEntries expression="TalendDate.getCurrentDate() " name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
         <mapperTableEntries name="MIGRATION_ERROR" nullable="true" type="id_String"/>
         <mapperTableEntries name="ERROR_CODE" nullable="true" type="id_String"/>
         <mapperTableEntries name="IDIT_ID" nullable="true" type="id_Long"/>
       </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row3" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="CLAIM_NUMBER" nullable="true" type="id_String"/>
-        <mapperTableEntries name="POLICY_NUMBER" nullable="true" type="id_String"/>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="CLAIM_NR" type="id_String"/>
+        <mapperTableEntries name="MULTI_CLAIM_NR" type="id_String"/>
+        <mapperTableEntries name="CLAIM_EVENT_DATE" type="id_Date"/>
+        <mapperTableEntries name="POLICYHOLDER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="CLAIM_STATUS" nullable="true" type="id_String"/>
+        <mapperTableEntries name="CLAIM_STATUS_REASON" nullable="true" type="id_String"/>
+        <mapperTableEntries name="NOTIFICATION_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="EXT_POLICY_NR" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -411,9 +435,9 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tMap_3">
+  <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tMap_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
   <connection connectorName="FLOW" label="CLAIM_MIGRATION_STATUS" lineStyle="0" metaname="CLAIM_MIGRATION_STATUS" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tDBOutput_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -425,13 +449,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5d38ef0f-7520-4eb8-bf2a-0b76e149f189"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mo/56mSg/tiEatLsN09rVO7FIYXlJIq0HuibcobLlPwm6vT1NXTAkhKyVxwdlNqBeHa8qqJ3t/7R&#13;
-Ascwyz6l4g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c0c02dc8-cb87-471b-9603-155877aa8382"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>g8AMJVoQQQzJ3EvXZ0qPrlYuTOA2b/e8RBGV5xh0PjHajw8SahK6tgpbtTcLctbszJsYgCFC6kNc&#13;
-q2m+YRMd0A==</DigestValue></Reference></SignedInfo><SignatureValue>k5vHQpdol7xqdarJ1D+wmPKLw2SW1MnCVP6hx93bT11Gja/ijJ5+n0LIrLVYzH72jEKNQbpNpQdf&#13;
-W2fVXFtYOA0S7q96omqmfTm+b14LCec07f379P0LDtff7PTkCGcO6FxaExJl87K2PchBmApwEtKy&#13;
-38QavTzDA1mhRrdhCngZ3nGFJvi2gy00ovbEtFf6bAsStFucKpTNAoomSke7klGVylR3zfjvyud0&#13;
-u3vLtyMPib9UrOLP74QB99WIGjBnWjt1zNeZ9rJJdwQsxj/1YXu9/EqOxA79CCIlUdPXPknCmxac&#13;
-UbBbDICXXiugusRaeDwG3ceCIuUkS7hyzVFDgA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_277826d5-a88f-49b8-ad2e-587b4ff94763"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>CpfXC5fatMJifpKWw9dKK/C6CVE1a4LTFGItif3K28fZriWK/3S8xgLDj8uAfJMUe99S4NM8h13t&#13;
+2pMvnWfv+A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_1ce86ae6-57dd-491b-9a34-12bf274b6c5e"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>K5274BM7g1fo8X9FkWBNcXXpBtJA/uhPK0MI1J3XRZ6bi7thUWcsBHQErx9I5ZA2KNa2DNTYlId2&#13;
+MptAdKfzbw==</DigestValue></Reference></SignedInfo><SignatureValue>Td/Ifs0rwie8ITnrq9NK9c2VTgKoV6CsGLT/ohP0234F1pNP6UDzrBMJJKGK1X3U2kdOUS0WR/Ix&#13;
+BcOLdUDjRuGvm6d6ME8meL34MAdpVNk8RK7QxXbbmUmyEaC27USYLaoSTbxy4wQM4sxLF7rc8inN&#13;
+nSIbCNf/TPkpYMRozmvjX2JvSmbs/dQo7NR1Ba5S1x7x0qEylE3COkE3dgVVybVgI4oUF/GaSbVa&#13;
+4M8Zf/jOhxuUsANSGEw5v+OLMKnRCjvzyvbP8B9S4+kr9Yvmkj/aZcwtbIpZSKldAyv8XJLAd+6m&#13;
+OtCCumoCU6wT2vxVTVPy3tYJ8UYlQRypGNTeMA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -453,4 +477,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c0c02dc8-cb87-471b-9603-155877aa8382" Target="#_5d38ef0f-7520-4eb8-bf2a-0b76e149f189"><Timestamp>2024-02-01 11:14:56</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_1ce86ae6-57dd-491b-9a34-12bf274b6c5e" Target="#_277826d5-a88f-49b8-ad2e-587b4ff94763"><Timestamp>2024-02-12 11:41:12</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
