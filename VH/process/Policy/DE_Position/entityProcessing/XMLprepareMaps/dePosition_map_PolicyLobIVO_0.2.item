@@ -370,6 +370,20 @@
       <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
+    <metadata connector="FLOW" label="logsGlobal" name="POL0083_CropType">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="DOMAIN" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="250" name="OBJECT_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ERROR_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE"/>
@@ -394,16 +408,30 @@
       </outputTables>
       <outputTables activateExpressionFilter="true" expressionFilter="bonus_malus.out_desc ==null" name="DECN0021_BonusMalus" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="(int)context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
-        <mapperTableEntries expression="&quot;deContract&quot;" name="DOMAIN" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;dePosition&quot;" name="DOMAIN" nullable="true" type="id_String"/>
         <mapperTableEntries expression="context.EntityID" name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="policyIVO.BUNDLE_POLICY_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="String.valueOf(policyIVO.POLICY_ID ) " name="SUBENTITY_ID" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="&quot;VERTRAG&quot;" name="SUBENTITY_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;&lt;&quot; + String.valueOf(policyIVO.POLICY_ID ) + &quot;, &quot; + String.valueOf(policyIVO.POLICY_ID ) + &quot;&gt;&quot; " name="SUBENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;POSITION&quot;" name="SUBENTITY_TYPE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;mapPolicyLobIVO&quot;" name="OBJECT_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="&quot;No value in lookup: &quot; +policyIVO.VER_SCHADENFREIHEITSRABATT " name="ERROR_DESCRIPTION" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;No value in BONUS_MALUS lookup: &quot; +policyIVO.VER_SCHADENFREIHEITSRABATT " name="ERROR_DESCRIPTION" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;Lookup&quot;" name="ERROR_TYPE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;E&quot;" name="SEVERITY" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;DECN0021&quot;" name="ERROR_CODE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="TalendDate.getCurrentDate() " name="ERROR_TIMESTAMP" nullable="true" type="id_Date"/>
+      </outputTables>
+      <outputTables activateExpressionFilter="true" expressionFilter="crop_type.Desc == null" name="POL0083_CropType" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="&quot;dePosition&quot;" name="DOMAIN" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="context.EntityID" name="ENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="policyIVO.BUNDLE_POLICY_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;&lt;&quot; + String.valueOf(policyIVO.POLICY_ID ) + &quot;, &quot; + String.valueOf(policyIVO.POLICY_ID ) + &quot;&gt;&quot; " name="SUBENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;Position&quot;" name="SUBENTITY_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;mapPolicyLobIVO&quot;" name="OBJECT_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;No value in CROP_TYPE lookup: &quot; +  policyIVO.GOB_OBJEKT_TYP " name="ERROR_DESCRIPTION" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;Lookup&quot;" name="ERROR_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;E&quot;" name="SEVERITY" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;POL0083&quot;" name="ERROR_CODE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="TalendDate.getCurrentDate() " name="ERROR_TIMESTAMP" nullable="true" type="id_Date"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyIVO" sizeState="INTERMEDIATE">
@@ -719,8 +747,6 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;logsGlobal&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="NONE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_1VRYkL5xEe2-b8KOcQ5fjg - logsGlobal"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -877,6 +903,32 @@
       <column comment="" key="false" length="100" name="Desc" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHashOutput" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="960" posY="512">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashOutput_1"/>
+    <elementParameter field="CHECK" name="LINK_WITH" value="false"/>
+    <elementParameter field="COMPONENT_LIST" name="LIST" show="false" value=""/>
+    <elementParameter field="CLOSED_LIST" name="DATA_WRITE_MODEL" value="MEMORY"/>
+    <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
+    <elementParameter field="TEXT" name="MEMORY_HEAP_MAX_SIZE" show="false" value="2"/>
+    <elementParameter field="CLOSED_LIST" name="KEYS_MANAGEMENT" value="KEEP_ALL"/>
+    <elementParameter field="CHECK" name="APPEND" value="true"/>
+    <elementParameter field="CHECK" name="HASH_KEY_FROM_INPUT_CONNECTOR" show="false" value="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="logsGlobal" name="tHashOutput_1">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="DOMAIN" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="250" name="OBJECT_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ERROR_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="policyIVO" lineStyle="0" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policyIVO"/>
@@ -888,6 +940,10 @@
   <connection connectorName="FLOW" label="DECN0021_BonusMalus" lineStyle="0" metaname="DECN0021_BonusMalus" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tHSQLDbOutput_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="DECN0021_BonusMalus"/>
+  </connection>
+  <connection connectorName="FLOW" label="POL0083_CropType" lineStyle="0" metaname="POL0083_CropType" offsetLabelX="0" offsetLabelY="0" outputId="3" source="tMap_1" target="tHashOutput_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="POL0083_CropType"/>
   </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -906,13 +962,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_264ddc2b-f84a-4a82-a01c-ab916ff49711"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>E6FXXR5ygrsrzmAK5bju5VsEXFyMv3L3l3cRJh3tpupPt3CmMF0yHkB9mY2D3mXOEQ23ZPlbm1Ru&#13;
-64FE1uZWFw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3ffcf16a-e4d1-4240-a36b-10cc7c55de1f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>j8IG1X03A7cJaYke+2Cu1g00Wx8Z+GFOr5lPicig4jtmY4bc4nK/FaFQ6c2nQulmEe1ErnzB5S7f&#13;
-FOJAPSRO9Q==</DigestValue></Reference></SignedInfo><SignatureValue>R5UxwDz6peAUntNQIpmGON+XP6DZlw71lBM/VlL7kt4bOEYEU9c5YcgHwjDdxDNsylGZxNkSbtUr&#13;
-NsZDRQ3UYJXCXx15KcuUFenqtGXm3NlFgSyDQDmurBW4KFPmzv+6iTqan4tOMtJXeOU3uxNMJ86Q&#13;
-5NzhTzN1PJrRlC36aS5PCrGGGMZDPh/teM97Ef3OnAQlXE8k1tsuconFXsj9p3Jx+xiuoqEXo8zW&#13;
-mBdJJiYIN+asvuFw6ejErVdh2HKkwp/D8JH66Eqlj3+TNiI8D5obEqNtlqUYVgoQI4NsG0K1DBQa&#13;
-35uP2+tsq5gP0eDfzOkn6sXKzUI0xw8o8C6BAQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_6a36d750-6b71-4e95-9fc6-c78e951b4d71"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>jDVBLThMhuCapeigModfO0d89YYwYjkyG19XJpMjsi/T8coP389vFs1wo68vJstS5CdDGBO0vlba&#13;
+6LsQ1Qg/sA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0716cf60-87b2-4fe8-b483-88320590c90a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>yIeXTlH5Mg46jveQdrbm+xm/oMKX+0oiEi3QoNIGNHu/9fjv18EK0uXs6h5UVS5eeJV3/jOzztHC&#13;
+EL/DHphlGw==</DigestValue></Reference></SignedInfo><SignatureValue>Wmlmly3k9O7mtvYkMoqvyg3TcHplVdCDwzSxYHIPBoLx8u8JqhLfPVAHasLoG5CVahNNimYyzC3P&#13;
+U3vHJyaLrvbUVy5ZWgr9na9dyP4VSBOkzox9xfkxg7xJ9le1WiwCD/6OT50+dFwWqTTHiH/gltHE&#13;
+15RFF70Ebi0Duo/7suQzWT7wTCECmAdL/5NqOpOl6dZ73MAImxpkXJemYCWPXx2Xbl8rFiqE6uJD&#13;
+u7PrJPbEFp34wq/ZxoFvcj3KgsA4tnRGlLLX87jeb27zynzpi/oJKKfLpJup6ldXJSBc5bxEbPnC&#13;
+y+75PgVjuVSE8Fcfzr4H9AS/rKLkMK54NbJ44A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -934,4 +990,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3ffcf16a-e4d1-4240-a36b-10cc7c55de1f" Target="#_264ddc2b-f84a-4a82-a01c-ab916ff49711"><Timestamp>2024-02-14 15:15:21</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0716cf60-87b2-4fe8-b483-88320590c90a" Target="#_6a36d750-6b71-4e95-9fc6-c78e951b4d71"><Timestamp>2024-02-14 15:49:41</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
