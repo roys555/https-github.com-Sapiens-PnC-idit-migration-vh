@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="146"/>
+    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="30"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;proj&quot;"/>
     <contextParameter comment="" internalId="_zyPscG8yEe6s4NRAlgiHqQ" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
@@ -892,7 +892,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT &#13;&#10;PARTNER_ID, PHONE_NORMALIZED, REMARKS, COUNTRY_CODE, apn.PHONE_TYPE_IDIT , apn.PHONE_TYPE_DESC_IDIT ,null as ANS_LAENDERKENNZEICHEN&#13;&#10;FROM K2V_DEV.AGRONIMIS_PHONE_NORMALIZED apn&#13;&#10;--LEFT JOIN sev.PARTNER_ANSCHRIFT pa ON pa.PAR_PARTNER_NR = apn.PARTNER_ID AND pa.PAN_ART ='*'&#13;&#10;--LEFT JOIN sev.ANSCHRIFT a ON a.ANS_ANSCHRIFT_NR = pa.ANS_ANSCHRIFT_NR &#13;&#10;WHERE apn.PHONE_NORMALIZED IS NOT NULL&#13;&#10;and apn.HISTORICAL = 'N'&#13;&#10;and EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = apn.Partner_ID &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH phone AS (&#13;&#10;SELECT &#13;&#10;PARTNER_ID, PHONE_NORMALIZED, REMARKS, COUNTRY_CODE, apn.PHONE_TYPE_IDIT , apn.PHONE_TYPE_DESC_IDIT ,null as ANS_LAENDERKENNZEICHEN&#13;&#10;FROM K2V_DEV.AGRONIMIS_PHONE_NORMALIZED apn&#13;&#10;WHERE apn.PHONE_NORMALIZED IS NOT NULL&#13;&#10;and apn.HISTORICAL = 'N'&#13;&#10;UNION &#13;&#10;SELECT &#13;&#10;PARTNER_ID, PHONE_NORMALIZED, REMARKS, COUNTRY_CODE, apn.PHONE_TYPE_IDIT , apn.PHONE_TYPE_DESC_IDIT ,null as ANS_LAENDERKENNZEICHEN&#13;&#10;FROM K2V_DEV.AGRONIMIS_PHONE_NORMALIZED apn&#13;&#10;WHERE apn.PHONE_SECOND  IS NOT NULL&#13;&#10;and apn.HISTORICAL = 'N'&#13;&#10;) &#13;&#10;SELECT * FROM phone ph &#13;&#10;where EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = ph.Partner_ID &#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -4920,7 +4920,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;f.ID_SEV_PARTNER, &#13;&#10;f.ID_SEV_GEMEINDE_FELDMARK&#9;AS communityRef, &#13;&#10;cast(f.ANBAUJAHR as varchar2(4))                AS parcelYear, &#13;&#10;f.BEZEICHNUNG&#9;           AS fieldName,&#13;&#10;f.FELD_NR                      AS parcelId,&#13;&#10;f.FLIK_FID_LPIS             AS flikNumber, &#13;&#10;f.FLAECHE                       AS area, &#13;&#10;f.HERKUNFT                   AS originRef, &#13;&#10;f.ANL_DATUM                 AS creationDate, &#13;&#10;f.ANL_PARTNER_NR   AS addedBy &#13;&#10;FROM webav.FELDSTUECK f &#13;&#10;where EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;               WHERE f.ID_SEV_PARTNER = cms.PARTNER_ID &#13;&#10;                 AND cms.MIGRATION_STATUS  = 100 &#13;&#10;                AND cms.MIGRATION_ID =  &quot;  + context.migrationID + &quot; )  &quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;f.ID_SEV_PARTNER, &#13;&#10;f.ID_SEV_GEMEINDE_FELDMARK&#9;AS communityRef, &#13;&#10;cast(f.ANBAUJAHR as varchar2(4))                AS parcelYear, &#13;&#10;f.BEZEICHNUNG&#9;           AS fieldName,&#13;&#10;f.FELD_NR                      AS parcelId,&#13;&#10;f.FLIK_FID_LPIS             AS flikNumber, &#13;&#10;f.FLAECHE                       AS area, &#13;&#10;f.HERKUNFT                   AS originRef, &#13;&#10;f.ANL_DATUM                 AS creationDate, &#13;&#10;f.ANL_PARTNER_NR   AS addedBy &#13;&#10;FROM webav.FELDSTUECK f &#13;&#10;where EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;               WHERE f.ID_SEV_PARTNER = cms.PARTNER_ID &#13;&#10;                 AND cms.MIGRATION_STATUS  = 100 &#13;&#10;                AND cms.MIGRATION_ID =  &quot;  + context.migrationID + &quot; )  &#13;&#10;and 1=0&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -5606,6 +5606,7 @@
   <note opaque="true" posX="1536" posY="224" sizeHeight="64" sizeWidth="385" text="TECHNICAL:"/>
   <note opaque="true" posX="832" posY="1632" sizeHeight="64" sizeWidth="449" text="Partner role temporarrly set not correctly for s2s reason"/>
   <note opaque="true" posX="-64" posY="0" sizeHeight="64" sizeWidth="769" text="some cleansing added for names , vornames fileds without VH confirmation"/>
+  <note opaque="true" posX="672" posY="2432" sizeHeight="64" sizeWidth="801" text="population temporarly switched off due to IDIT developement (tdbInput_26 - where 1=0"/>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_4"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -5769,7 +5770,7 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPrejob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
@@ -5785,7 +5786,7 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPostjob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
@@ -5875,13 +5876,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3ca710fb-e21f-42f4-9cef-3e66012d2a77"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3WCw9qdgLDXmpASJUV/yM5sah8QyOoCXhSgB21Zcw6hMbU03Zcb71pMFcYBnQsnvZqYt/wiimrqg&#13;
-6vamhYDPHw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_403fb6f1-5629-4a42-97ad-b5b697e42c34"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>krayqz5BOPF1pOoOfe1vdgGXE8d1PwAmcNAaUy9oCuZXf2RLoLMruou8ieXttYi4FZac6NpX6TR4&#13;
-hRaLriLf5w==</DigestValue></Reference></SignedInfo><SignatureValue>XO0wvW8aLaeU7SrO/iWVz3U6X9sKIXml7Ul86TMzf57RO9sQ9Yte4mUo44TUBpFIKHaCKFdwtu1R&#13;
-dzINBVwNg93a8of0EzcmFTid6PJjZTtLM9qVNfqnDlUC+mCF0s5ccdU1K49jThzSr2tGr+RFrGNs&#13;
-NoE5WhB4sagOXTUiY8vQcpiXL3JOtxC5SAtVVfyVa/EMOJeg6yTjKzcxnuBaQr5sBYzW/4dZcKHv&#13;
-Ife0wyMvRKc4zu2a1AE5LowD+LK8id48eNM1ZOvVtAYmu2ABPbroCDpbBjG++GV5t1FkjhdUHYiI&#13;
-LXAPrMjxGQxp3VmDRkKzCvIgBN9XtQ4kJ505Ig==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_d31a5c4a-81be-4162-a90c-abce8dda3545"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NBLON6OQcKXQ7suWWDNQfdBO6/OUFO3248WuILkf4kSRB3DAQc7CrGdn5IzI8n7eC1pYlTuCsMk6&#13;
+u9o/FZUbtw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_65638ae8-342f-4605-aaac-431f83a591d5"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>DkWEgbjwo63e7VM+FySWc6Z25HeqOaVuUABVSgXCuIgpAH+udBA3Zv4iVGSPPDYgGa7t8fRg+b8U&#13;
+PB8pMkd6uw==</DigestValue></Reference></SignedInfo><SignatureValue>jMyx0pLwa+N67kxOR5FPn6xYZhgo0Sq7KmXWTvKFekk6bZgNbipx/ZS8Dc1yfd+2I4yZU3cdXZNo&#13;
+/neileJuavSesAGaBLEd7S2tNqjCceY0tFxSWb0GS827YJiT8CudOWJ0+1BXRI8J8ijQnAIvOZz5&#13;
+K3eUlkpWTF5hlTos0Ej2EOf4wwAnQo2DnjH8b5lKJJxBfTevCYdV8AGTQ6xKzHFUcDeGRBy4Webb&#13;
+Jo0oI57PurJw/I+/t3hSPVIAmUV8uSGq02jOTOpXNj9sDM3HnndtiyaTtm51HlO+N0oufoBNxQoJ&#13;
+EvsSI+941ZmI8bP2RUGASce/eMoKAiG5mMa8nw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5903,4 +5904,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_403fb6f1-5629-4a42-97ad-b5b697e42c34" Target="#_3ca710fb-e21f-42f4-9cef-3e66012d2a77"><Timestamp>2024-01-25 09:38:02</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_65638ae8-342f-4605-aaac-431f83a591d5" Target="#_d31a5c4a-81be-4162-a90c-abce8dda3545"><Timestamp>2024-02-15 11:37:48</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
