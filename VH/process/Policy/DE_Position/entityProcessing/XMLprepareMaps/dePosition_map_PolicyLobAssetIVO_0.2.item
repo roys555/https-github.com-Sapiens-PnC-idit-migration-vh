@@ -407,15 +407,15 @@
         <mapperTableEntries expression="&quot;Agriculture&quot;" name="lobVORefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="crop_type.Output " name="cropTypeRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="crop_type.Desc " name="cropTypeRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="" name="area" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="POSITIONS.FLAECHE " name="area" nullable="true" type="id_Double"/>
         <mapperTableEntries expression="(long)11330" name="areaUnitTypeRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Hectare&quot;" name="areaUnitTypeRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="" name="valueAreaUnit" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="POSITIONS.HEKTARWERT " name="valueAreaUnit" nullable="true" type="id_Double"/>
         <mapperTableEntries expression="(long)10027" name="assetTypeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Agriculture&quot;" name="assetTypeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries name="cropSubTypeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="cropSubTypeVORefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="fieldPiece" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="POSITIONS.FIELD_NAME " name="fieldPiece" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="mortgageFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="positionNumber" nullable="true" type="id_Long"/>
         <mapperTableEntries name="sumInsured" nullable="true" type="id_Double"/>
@@ -493,12 +493,12 @@
         <mapperTableEntries name="VER_SCHADENFREIHEITSRABATT" nullable="true" type="id_String"/>
         <mapperTableEntries name="GOB_OBJEKT_TYP" nullable="true" type="id_String"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="crop_type" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" minimized="true" name="crop_type" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="policyIVO.GOB_OBJEKT_TYP " name="Input" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="Output" nullable="true" type="id_Long"/>
         <mapperTableEntries name="Desc" nullable="true" type="id_String"/>
       </inputTables>
-      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="FIRST_MATCH" name="policy_header" sizeState="INTERMEDIATE">
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="FIRST_MATCH" minimized="true" name="policy_header" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="policyIVO.ENTITY_ID " name="ENTITY_ID" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="BUNDLE_POLICY_ID" type="id_Long"/>
         <mapperTableEntries name="POLICY_ID" type="id_Long"/>
@@ -539,6 +539,36 @@
         <mapperTableEntries name="nextProposalNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isAnnualPayer" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="masterHeaderExternalNumber" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" innerJoin="true" lookupMode="LOAD_ONCE" matchingMode="ALL_MATCHES" name="POSITIONS" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="policyIVO.ENTITY_ID " name="ENTITY_ID" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="POLICY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="POSITION_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="POL_POLICEN_NR" type="id_Long"/>
+        <mapperTableEntries name="VER_VERTRAG_NR" type="id_Long"/>
+        <mapperTableEntries name="GEF_GEFAHR_NR" type="id_Long"/>
+        <mapperTableEntries name="OBJ_OBJEKT_NR" type="id_Long"/>
+        <mapperTableEntries name="POL_GUELTIG_AB" type="id_Date"/>
+        <mapperTableEntries name="GOB_OBJEKT_TYP" nullable="true" type="id_String"/>
+        <mapperTableEntries name="GOB_UNGUELTIG_AB" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="GOB_HISTORIE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="GOB_ZUSTAND" nullable="true" type="id_String"/>
+        <mapperTableEntries name="OFR_FLAECHE" nullable="true" type="id_BigDecimal"/>
+        <mapperTableEntries name="OFR_VERSICHERUNGSWERT" nullable="true" type="id_BigDecimal"/>
+        <mapperTableEntries name="ID_WEBAV_POSITION" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="ID_FELDSTUECK" type="id_Long"/>
+        <mapperTableEntries name="ANBAUJAHR" type="id_Long"/>
+        <mapperTableEntries name="HEKTARWERT" type="id_BigDecimal"/>
+        <mapperTableEntries name="FLAECHE" type="id_BigDecimal"/>
+        <mapperTableEntries name="HEKTARWERTANTEILPROZ" type="id_Long"/>
+        <mapperTableEntries name="SUMINSURED" nullable="true" type="id_BigDecimal"/>
+        <mapperTableEntries name="FIELD_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries name="ID_SEV_GEMEINDE_FELDMARK" nullable="true" type="id_String"/>
+        <mapperTableEntries name="GFM_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POSITION_EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -989,6 +1019,119 @@
       <column comment="" key="false" length="100" name="masterHeaderExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="768" posY="128">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:bDDPLEXGNu7nRYV4Di2es5lZ0VKrtzOHCEUlSFKV"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_imlxAL98Ee6XqIJotbqKxQ - POSITION_LEGACY_SELECTION"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;POSITION_LEGACY_SELECTION&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT *&#10;FROM&#9;POSITION_LEGACY_SELECTION&#13;&#10;WHERE POSITION_LEGACY_SELECTION.ENTITY_ID = '&quot; + context.EntityID +&quot;'&quot; "/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_POLICY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POL_POLICEN_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_VERTRAG_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GEF_GEFAHR_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="OBJ_OBJEKT_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POL_GUELTIG_AB"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GOB_OBJEKT_TYP"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GOB_UNGUELTIG_AB"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GOB_HISTORIE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GOB_ZUSTAND"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="OFR_FLAECHE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="OFR_VERSICHERUNGSWERT"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID_WEBAV_POSITION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID_FELDSTUECK"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ANBAUJAHR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="HEKTARWERT"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="FLAECHE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="HEKTARWERTANTEILPROZ"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SUMINSURED"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="FIELD_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID_SEV_GEMEINDE_FELDMARK"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GFM_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_EXTERNAL_NUMBER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="POSITON_LEGACY_SELECTION"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POSITION_LEGACY_SELECTION" name="tHSQLDbInput_2">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POSITION_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="POL_GUELTIG_AB" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GOB_OBJEKT_TYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="GOB_UNGUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="4" name="GOB_HISTORIE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="15" name="GOB_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="OFR_FLAECHE" nullable="true" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="OFR_VERSICHERUNGSWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="12" name="ID_WEBAV_POSITION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="38" name="ID_FELDSTUECK" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="4" name="ANBAUJAHR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="false" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="FLAECHE" nullable="false" pattern="" precision="4" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="3" name="HEKTARWERTANTEILPROZ" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_BigDecimal" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="FIELD_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ID_SEV_GEMEINDE_FELDMARK" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="GFM_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="66" name="POSITION_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="100" name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="128" posY="768">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_1"/>
     <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
@@ -1177,6 +1320,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="policy_header"/>
   </connection>
+  <connection connectorName="FLOW" label="POSITIONS" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="POSITIONS"/>
+  </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHashInput_1" offsetLabelX="0" offsetLabelY="0" source="tHashInput_1" target="tHSQLDbOutput_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
@@ -1191,13 +1338,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_312bc7e1-baeb-4f61-908b-52c3d31b4e83"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3yZh67OVhYQjcltQ4HpNq+pAc92QCUIRTObOM4TNQZ22a0mvLdYSXFhU2mP+xLZ/09+V2fv/eExF&#13;
-2Yf5r1orLQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ae785eab-d7b5-4539-b6af-ba58b803dd6b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>rpDK88E9oGUGXgPES/R6kSYVCajYSS4Loi7RSXh8bmHYUcFAjKfcoLqNAfLu3qlNx3TBWDNnKqhk&#13;
-+KUzMgTkOg==</DigestValue></Reference></SignedInfo><SignatureValue>CWjFYmpsUqKFXTCoP8gjPmvABpZLQw2uxJKKsqL5xH8hgerFB31u2xTH2IbqSSBZJ7vOItuGoog0&#13;
-8GAinFtL00dmABfyu9T4BFwi2F6HppbDx4wu9byJ3VV6xkOn1SUlg17UhbzGJjVfzCTCFf8LHOJc&#13;
-tHk6EzPcITT2mTQaS2Q16n9bzR/2QVHz/d+OXYx+tLo5knEnxUrZjV8FC7CsoM0nvzAYtH8/a6La&#13;
-sd0wVb1B2ZsFfOmPBQqClPkFdeSuhN+wBzufzFA6pD2I//AYkohnxR0dj2zlJaGkiAlfiCmMVVna&#13;
-iqceMpBc3CZbel7d5ltj80OYWCuFxP43er99eg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b42e163f-6566-4b62-a6fd-2acdb5503486"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>OiM7b6RQKFmDuAvAVees0X22OiewhzayqQUJELPw+1A8z3eM31Yq6cZlBSkneyqO5i/qG3sQg/+I&#13;
+ZXlAGUAcRA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8dbc2d56-8f42-4bbe-9401-7fe4a6759452"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>xTFuBcISIvPOuzJSgen+H3Us651v4Pi1ErMe54j5beyHEK7ZBAIELKP33ZCpOWI4s4rb4ezZUdEP&#13;
+erQ/wr7MdQ==</DigestValue></Reference></SignedInfo><SignatureValue>aLHqYLyCejKdP2hUERNX+Z86x1VFcZWqucYD2JxgC2Mc/HHrbjUEOt5fXehWRXqV8zV3xvR91UXY&#13;
+huLocZBraEXs0x6Q0iL2es9Gcw0/eZRS2UUn2dTnlXyEVsAa+7X3oPTbxRfEL91jjKkKOU9m/wDs&#13;
+IzV7h8Dy4UA/QImaBSiVhrHoaifFqmRvD8cDwhDv+8DeU/FaOTW0E6Zi8vMu08glapmB/ahshwFu&#13;
+/FXlY8eGwVjnjmMBNNvKSOQpb6/H5+AxdrLPtVdbh7riymnu9BfI7Qne+++E1VLnbwCjjGp1DrZZ&#13;
+PUyVzCvLMeSwbksGEr+b0fs+u4bdLRSVs+xM9g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1219,4 +1366,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ae785eab-d7b5-4539-b6af-ba58b803dd6b" Target="#_312bc7e1-baeb-4f61-908b-52c3d31b4e83"><Timestamp>2024-02-19 08:36:01</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8dbc2d56-8f42-4bbe-9401-7fe4a6759452" Target="#_b42e163f-6566-4b62-a6fd-2acdb5503486"><Timestamp>2024-02-19 08:55:28</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
