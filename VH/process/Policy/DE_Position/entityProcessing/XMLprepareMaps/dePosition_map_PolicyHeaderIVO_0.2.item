@@ -316,7 +316,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLpolicyHeaderIVO" name="headerIVO">
+    <metadata comment="" label="XMLpolicyHeaderIVO" name="headerIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="BUNDLE_POLICY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POLICY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -359,7 +359,7 @@
       <column comment="" key="false" length="100" name="masterHeaderExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.ADD_TO_DATE(POSITIONS.POL_GUELTIG_AB,&quot;Y&quot;,1) " name="v_reneval_date" type="id_Date"/>
         <mapperTableEntries expression="POSITIONS.POL_GUELTIG_AB " name="v_start_date" type="id_Date"/>
@@ -373,7 +373,7 @@
         <mapperTableEntries expression="(long)1" name="activePolicyId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="true" name="consolidatedBillingFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="bundlePolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="POSITIONS.BUNDLE_POLICY_ID " name="bundlePolicyHeaderId" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="P_Policy.bundle_header_id " name="bundlePolicyHeaderId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="CROP_TYPE.Output " name="cropGroupRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="CROP_TYPE.Desc " name="cropGroupRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="currencyVORefID" nullable="true" type="id_Long"/>
@@ -454,6 +454,11 @@
         <mapperTableEntries expression="POLICY_CONTRACT_SELECTION.VER_PRODUKT_TYP " name="Input" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="Output" nullable="true" type="id_Long"/>
         <mapperTableEntries name="Desc" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="P_Policy" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="String.valueOf(POSITIONS.POL_POLICEN_NR) " name="EXTERNAL_HEADER_NUMBER" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="bundle_header_id" type="id_Long"/>
+        <mapperTableEntries name="bundle_policy_id" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -859,6 +864,44 @@
       <column comment="" key="false" length="100" name="Desc" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="384">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:vPpoBYaPWFs3jHIkIMOVOMrPSsjXzPJw1DqPmeYi"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_U7egMJKrEe6VY7yEaTTm5w - idit_P_POLICY"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;idit_P_POLICY&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT idit_P_POLICY.EXTERNAL_HEADER_NUMBER,&#10;&#9;&#9;idit_P_POLICY.bundle_header_id,&#10;&#9;&#9;idit_P_POLICY.bundle_policy_id&#10;FROM&#9;idit_P_POLICY&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="bundle_header_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="bundle_policy_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;idit_P_POLICY&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="idit_P_POLICY" name="tHSQLDbInput_2">
+      <column comment="" key="false" length="30" name="EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="bundle_header_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="bundle_policy_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="64" posY="64">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_2"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="&#10;System.out.print(&quot;Job : &quot;);&#10;System.out.println(jobName);&#10;System.out.println(context.EntityID);&#10;&#10;System.out.println(((String)globalMap.get(&quot;jobName&quot;)));"/>
@@ -1008,14 +1051,14 @@
       <column comment="" key="false" length="100" name="masterHeaderExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tJava_1">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
-  </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tContextLoad_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tJava_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tPrejob_1" offsetLabelX="0" offsetLabelY="0" source="tPrejob_1" target="tHSQLDbInput_5">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
@@ -1042,6 +1085,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CROP_TYPE"/>
   </connection>
+  <connection connectorName="FLOW" label="P_Policy" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="P_Policy"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_2" offsetLabelX="0" offsetLabelY="0" source="tJava_2" target="tHSQLDbInput_6">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
   </connection>
@@ -1051,7 +1098,7 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPrejob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
@@ -1076,13 +1123,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a9394867-7c9a-4c9d-ad1d-830572430d32"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>LsSjRHwfD7YXdJsg3O7osk6bFy6MgJS903Q0ZirSUy4X2NXpxH6jPPyHCZnE3w8XZI8OBtS0xVDV&#13;
-QFHiMiLD8g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f62c7d27-c36d-498d-8b19-ee92cd7ddb22"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QOdZVNdDzYwwtu4B1TWAe1RzXk/whho9iBn5AeJ58nEBqIx9H+7eHzy75I0v/Tbx1h+qowUIZMc2&#13;
-cIaSZ/un0Q==</DigestValue></Reference></SignedInfo><SignatureValue>NvuBL7MJ0KsJcl7dC4i1enqYmwPP3gSk6Z4N4RuzWWNVipL7TtTevGBl8mqkX2iyf5cGkE79gTjd&#13;
-mu8r46X9Na9XynHgKKde07MbXQ1QzZUw7heLhvmU7SKICFO/f2xuTdatwvK3Pyc91i4Ob4OWn71e&#13;
-1GxXPg15pQo6raWp4xx1lHptpFeYF4TXMuqqqkAL3QYsezST4kxZklWdR0PbDf5SQcEb3jwr++FG&#13;
-UbGMpJ2FvgwWi2HXiUaIDEaRbv9ckgelSlsIU6qfXTcbSXPew4GJJEVPJeyGkQFepqXbb3z/yzcW&#13;
-KquyLGTHw5axk5UaBvk1PEbgdZS6bF8CxU+hQA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b7cef687-a743-4bbd-8dd2-5399fb7c75fe"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>4dgQwZo//SfV+bRf6fWjmY2Yq/d55CWeSIehv9de+pLHqNA0JNZbRnjSnSJYf56s4l+JCdNj5WWc&#13;
+fM6GloJaRA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a0d6cab0-1a49-4351-b558-e9c1ddcbe8b2"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>dPlQv3ghCu9XMEce5eVX/tHQTvXotpc703jvPJDGFG7yEMmG50KwvlFuqnU+n2zTMklLKWvAXlw6&#13;
+TpiKRhw2gQ==</DigestValue></Reference></SignedInfo><SignatureValue>otQ//DN8CvZXwI9ukbSRTWPhaui+KncvfYMkFW9g6CRmy78IjIze42pNR7hI/jS43vPnn0u6Rga6&#13;
+dBYU0x8bCp9nG2FohSPGd+X9i7KjHokAlH9pK1KLXiOIHlCCsv2XzyIreQNdgX6/obTCWLSSwGNJ&#13;
+uNm7gPKr0wFZZhqjWQTa1jxGvGZ5hmUbl+vBnPuNo1adYhS0rDxk3vb5INIY4YLi6nznvtHDYtW+&#13;
+Cg7bvANCjERQDlxtHSOgLrOZ8rj8hwAJjte4cAsR57hAdZ7wCmyoevGBpOok9mbcCgIuJAGI61oi&#13;
+e5DD3k2Pcw0OkF8CWZZ/2lIpd7dIDUiko9+M0g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1104,4 +1151,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f62c7d27-c36d-498d-8b19-ee92cd7ddb22" Target="#_a9394867-7c9a-4c9d-ad1d-830572430d32"><Timestamp>2024-02-19 09:17:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a0d6cab0-1a49-4351-b558-e9c1ddcbe8b2" Target="#_b7cef687-a743-4bbd-8dd2-5399fb7c75fe"><Timestamp>2024-02-21 09:58:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
