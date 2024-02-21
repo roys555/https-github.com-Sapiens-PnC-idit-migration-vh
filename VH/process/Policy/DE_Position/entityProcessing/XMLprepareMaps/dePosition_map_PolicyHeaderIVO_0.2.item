@@ -316,7 +316,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLpolicyHeaderIVO" name="headerIVO">
+    <metadata comment="" label="XMLpolicyHeaderIVO" name="headerIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="BUNDLE_POLICY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POLICY_ID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -357,9 +357,24 @@
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="masterHeaderExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="IDIT_bundlePolicyId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="FLOW" label="logsGlobal" name="DECN0010_Bundle_is_missing">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="DOMAIN" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="250" name="OBJECT_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ERROR_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.ADD_TO_DATE(POSITIONS.POL_GUELTIG_AB,&quot;Y&quot;,1) " name="v_reneval_date" type="id_Date"/>
         <mapperTableEntries expression="POSITIONS.POL_GUELTIG_AB " name="v_start_date" type="id_Date"/>
@@ -373,9 +388,9 @@
         <mapperTableEntries expression="(long)1" name="activePolicyId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="true" name="consolidatedBillingFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="bundlePolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="POSITIONS.BUNDLE_POLICY_ID " name="bundlePolicyHeaderId" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="CROP_TYPE.Output " name="cropGroupRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="CROP_TYPE.Desc " name="cropGroupRefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="P_Policy.bundle_header_id " name="bundlePolicyHeaderId" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="CROP_GROUP.out_value " name="cropGroupRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="CROP_GROUP.out_desc " name="cropGroupRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="currencyVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;EUR&quot;" name="currencyVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="POSITIONS.POSITION_EXTERNAL_HEADER_NUMBER " name="externalHeaderNumber" nullable="true" type="id_String"/>
@@ -406,8 +421,23 @@
         <mapperTableEntries name="nextProposalNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isAnnualPayer" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="POSITIONS.MASTER_EXTERNAL_HEADER_NUMBER " name="masterHeaderExternalNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="P_Policy.bundle_policy_id " name="IDIT_bundlePolicyId" nullable="true" type="id_Long"/>
       </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="POSITIONS" sizeState="INTERMEDIATE">
+      <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="P_Policy.EXTERNAL_HEADER_NUMBER  == null" name="DECN0010_Bundle_is_missing" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
+        <mapperTableEntries expression="&quot;dePosition&quot;" name="DOMAIN" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="POSITIONS.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="POSITIONS.BUNDLE_POLICY_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;&lt;&quot; + String.valueOf(POSITIONS.POLICY_ID ) + &quot;, &quot; + String.valueOf(POSITIONS.POSITION_ID ) + &quot;&gt;&quot; " name="SUBENTITY_ID" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;dePosition&quot;" name="SUBENTITY_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;mapPolicyHeaderIVO&quot;" name="OBJECT_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;Bundle policy is missing in IDIT &lt;external_header_number&gt; = &lt;&quot; +POSITIONS.BUNDLE_POLICY_ID+ &quot;&gt;&quot; " name="ERROR_DESCRIPTION" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;Lookup&quot;" name="ERROR_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;E&quot;" name="SEVERITY" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;DECN0010&quot;" name="ERROR_CODE" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="TalendDate.getCurrentDate() " name="ERROR_TIMESTAMP" nullable="true" type="id_Date"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" minimized="true" name="POSITIONS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="POLICY_ID" nullable="true" type="id_Long"/>
@@ -454,6 +484,16 @@
         <mapperTableEntries expression="POLICY_CONTRACT_SELECTION.VER_PRODUKT_TYP " name="Input" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="Output" nullable="true" type="id_Long"/>
         <mapperTableEntries name="Desc" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="P_Policy" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="String.valueOf(POSITIONS.POL_POLICEN_NR) " name="EXTERNAL_HEADER_NUMBER" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="bundle_header_id" type="id_Long"/>
+        <mapperTableEntries name="bundle_policy_id" type="id_Long"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="CROP_GROUP" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="POLICY_CONTRACT_SELECTION.VER_PRODUKT_TYP " name="in_value" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -682,6 +722,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="IDIT_bundlePolicyId"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;XMLpolicyHeaderIVO&quot;"/>
@@ -727,6 +772,7 @@
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="masterHeaderExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="IDIT_bundlePolicyId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLpolicyHeaderIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -769,6 +815,7 @@
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="masterHeaderExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="IDIT_bundlePolicyId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -857,6 +904,96 @@
       <column comment="" key="false" length="10" name="Input" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="Output" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="Desc" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="384">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:vPpoBYaPWFs3jHIkIMOVOMrPSsjXzPJw1DqPmeYi"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_U7egMJKrEe6VY7yEaTTm5w - idit_P_POLICY"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;idit_P_POLICY&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT idit_P_POLICY.EXTERNAL_HEADER_NUMBER,&#10;&#9;&#9;idit_P_POLICY.bundle_header_id,&#10;&#9;&#9;idit_P_POLICY.bundle_policy_id&#10;FROM&#9;idit_P_POLICY &#13;&#10;WHERE EXTERNAL_HEADER_NUMBER = '&quot; + context.bp_id+  &quot;'&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="EXTERNAL_HEADER_NUMBER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="bundle_header_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="bundle_policy_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;idit_P_POLICY&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="idit_P_POLICY" name="tHSQLDbInput_2">
+      <column comment="" key="false" length="30" name="EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="bundle_header_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="bundle_policy_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHashOutput" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="864" posY="416">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashOutput_1"/>
+    <elementParameter field="CHECK" name="LINK_WITH" value="false"/>
+    <elementParameter field="COMPONENT_LIST" name="LIST" show="false" value=""/>
+    <elementParameter field="CLOSED_LIST" name="DATA_WRITE_MODEL" value="MEMORY"/>
+    <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
+    <elementParameter field="TEXT" name="MEMORY_HEAP_MAX_SIZE" show="false" value="2"/>
+    <elementParameter field="CLOSED_LIST" name="KEYS_MANAGEMENT" value="KEEP_ALL"/>
+    <elementParameter field="CHECK" name="APPEND" value="true"/>
+    <elementParameter field="CHECK" name="HASH_KEY_FROM_INPUT_CONNECTOR" show="false" value="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="logsGlobal" name="tHashOutput_1">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="DOMAIN" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="250" name="OBJECT_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ERROR_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1056" posY="96">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_2"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="in_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_desc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
+    <elementParameter field="TABLE" name="INTABLE" show="false"/>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;\t&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" value="000_001x&#9;1000010&#9;Cereals&#13;&#10;021_002x&#9;1000011&#9;Legumes&#13;&#10;221_001x&#9;1000017&#9;Special energy/forage crops&#13;&#10;330_002x&#9;1000013&#9;Corn&#13;&#10;420_103x&#9;1000036&#9;Stone fruit and table grapes under hail net&#13;&#10;420_104x&#9;1000028&#9;Pome fruit under hail net&#13;&#10;421_135x&#9;1000023&#9;Vegetables small areas&#13;&#10;421_145x&#9;1000033&#9;Seed extraction of special crops&#13;&#10;421_146x&#9;1000040&#9;Onion vegetables&#13;&#10;422_005x&#9;1000021&#9;Fruiting and yielding wood&#13;&#10;422_013x&#9;1000032&#9;Plants for ornamental production&#13;&#10;423_002x&#9;1000020&#9;Strawberries&#13;&#10;423_111x&#9;1000031&#9;Fruit under rain protection&#13;&#10;430_003x&#9;1000027&#9;Pome fruit&#13;&#10;431_002x&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;431_114x&#9;1000022&#9;Fruiting vegetables&#13;&#10;431_116x&#9;1000029&#9;Cabbage vegetables&#13;&#10;431_118x&#9;1000024&#9;Legumes for green harvest&#13;&#10;431_120x&#9;1000026&#9;Young plant production&#13;&#10;431_124x&#9;1000034&#9;Shoot vegetables&#13;&#10;431_126x&#9;1000039&#9;Root/tuber vegetables&#13;&#10;432_002x&#9;1000018&#9;Medicinal herbs and spice plants&#13;&#10;433_008x&#9;1000025&#9;Industrial fruit / cider fruit&#13;&#10;433_010x&#9;1000030&#9;Chestnuts/Nuts&#13;&#10;433_012x&#9;1000035&#9;Stone fruit&#13;&#10;433_014x&#9;1000037&#9;Bush berries&#13;&#10;433_016x&#9;1000038&#9;Table grapes&#13;&#10;520_002x&#9;1000015&#9;Beets&#13;&#10;521_002x&#9;1000012&#9;Potatoes&#13;&#10;620_004x&#9;1000014&#9;Oil crops&#13;&#10;621_002x&#9;1000016&#9;Seeds&#13;&#10;622_002x&#9;1000009&#9;Spider plants&#13;&#10;720_002x&#9;1000041&#9;Hops&#13;&#10;820_002x&#9;1000044&#9;Wine&#13;&#10;821_002x&#9;1000042&#9;Vine wood&#13;&#10;920_002x&#9;1000043&#9;Tobacco&#13;&#10;000_001&#9;1000010&#9;Cereals&#13;&#10;000_002&#9;1000010&#9;Cereals&#13;&#10;000_003&#9;1000010&#9;Cereals&#13;&#10;000_004&#9;1000010&#9;Cereals&#13;&#10;001_001&#9;1000011&#9;Legumes&#13;&#10;001_002&#9;1000011&#9;Legumes&#13;&#10;020_002x&#9;1000010&#9;Cereals&#13;&#10;021_001x&#9;1000011&#9;Legumes&#13;&#10;030_002x&#9;1000010&#9;Cereals&#13;&#10;031_001x&#9;1000011&#9;Legumes&#13;&#10;040_002x&#9;1000010&#9;Cereals&#13;&#10;041_001x&#9;1000011&#9;Legumes&#13;&#10;201_001&#9;1000017&#9;Special energy/forage crops&#13;&#10;201_002&#9;1000017&#9;Special energy/forage crops&#13;&#10;201_003&#9;1000017&#9;Special energy/forage crops&#13;&#10;201_004&#9;1000017&#9;Special energy/forage crops&#13;&#10;221_002x&#9;1000017&#9;Special energy/forage crops&#13;&#10;221_004x&#9;1000017&#9;Special energy/forage crops&#13;&#10;230_001x&#9;1000017&#9;Special energy/forage crops&#13;&#10;230_002x&#9;1000017&#9;Special energy/forage crops&#13;&#10;240_001x&#9;1000017&#9;Special energy/forage crops&#13;&#10;271_006x&#9;-1&#9;Grünland&#13;&#10;300_001&#9;1000013&#9;Corn&#13;&#10;300_002&#9;1000013&#9;Corn&#13;&#10;302_002&#9;1000013&#9;Corn&#13;&#10;320_001x&#9;1000013&#9;Corn&#13;&#10;330_001x&#9;1000013&#9;Corn&#13;&#10;340_001x&#9;1000013&#9;Corn&#13;&#10;400_001&#9;1000027&#9;Pome fruit&#13;&#10;400_100&#9;1000028&#9;Pome fruit under hail net&#13;&#10;400_102&#9;1000025&#9;Industrial fruit / cider fruit&#13;&#10;401_001&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;401_101&#9;1000022&#9;Fruiting vegetables&#13;&#10;401_102&#9;1000024&#9;Legumes for green harvest&#13;&#10;401_103&#9;1000029&#9;Cabbage vegetables&#13;&#10;401_105&#9;1000039&#9;Root/tuber vegetables&#13;&#10;401_106&#9;1000040&#9;Onion vegetables&#13;&#10;401_113&#9;1000023&#9;Vegetables small areas&#13;&#10;401_114&#9;1000034&#9;Shoot vegetables&#13;&#10;401_115&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;402_001&#9;1000032&#9;Plants for ornamental production&#13;&#10;402_103&#9;1000018&#9;Medicinal herbs and spice plants&#13;&#10;402_104&#9;1000033&#9;Seed extraction of special crops&#13;&#10;402_105&#9;1000021&#9;Fruiting and yielding wood&#13;&#10;402_106&#9;1000026&#9;Young plant production&#13;&#10;402_107&#9;1000032&#9;Plants for ornamental production&#13;&#10;403_001&#9;1000020&#9;Strawberries&#13;&#10;403_100&#9;1000035&#9;Stone fruit&#13;&#10;403_103&#9;1000037&#9;Bush berries&#13;&#10;403_107&#9;1000020&#9;Strawberries&#13;&#10;403_109&#9;1000031&#9;Fruit under rain protection&#13;&#10;403_110&#9;1000038&#9;Table grapes&#13;&#10;420_001x&#9;1000027&#9;Pome fruit&#13;&#10;420_100x&#9;1000028&#9;Pome fruit under hail net&#13;&#10;421_001x&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;421_113x&#9;1000022&#9;Fruiting vegetables&#13;&#10;421_115x&#9;1000029&#9;Cabbage vegetables&#13;&#10;421_117x&#9;1000024&#9;Legumes for green harvest&#13;&#10;421_119x&#9;1000026&#9;Young plant production&#13;&#10;421_121x&#9;1000033&#9;Seed extraction of special crops&#13;&#10;421_123x&#9;1000034&#9;Shoot vegetables&#13;&#10;421_125x&#9;1000039&#9;Root/tuber vegetables&#13;&#10;421_127x&#9;1000040&#9;Onion vegetables&#13;&#10;421_129x&#9;1000023&#9;Vegetables small areas&#13;&#10;422_001x&#9;1000018&#9;Medicinal herbs and spice plants&#13;&#10;422_007x&#9;1000021&#9;Fruiting and yielding wood&#13;&#10;422_009x&#9;1000032&#9;Plants for ornamental production&#13;&#10;423_001x&#9;1000020&#9;Strawberries&#13;&#10;423_007x&#9;1000025&#9;Industrial fruit / cider fruit&#13;&#10;423_009x&#9;1000030&#9;Chestnuts/Nuts&#13;&#10;423_011x&#9;1000035&#9;Stone fruit&#13;&#10;423_013x&#9;1000037&#9;Bush berries&#13;&#10;423_015x&#9;1000038&#9;Table grapes&#13;&#10;423_109x&#9;1000031&#9;Fruit under rain protection&#13;&#10;430_001x&#9;1000027&#9;Pome fruit&#13;&#10;430_004x&#9;1000027&#9;Pome fruit&#13;&#10;430_005x&#9;1000028&#9;Pome fruit under hail net&#13;&#10;431_001x&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;431_113x&#9;1000022&#9;Fruiting vegetables&#13;&#10;431_115x&#9;1000029&#9;Cabbage vegetables&#13;&#10;431_117x&#9;1000024&#9;Legumes for green harvest&#13;&#10;431_123x&#9;1000034&#9;Shoot vegetables&#13;&#10;431_125x&#9;1000039&#9;Root/tuber vegetables&#13;&#10;431_127x&#9;1000040&#9;Onion vegetables&#13;&#10;432_001x&#9;1000018&#9;Medicinal herbs and spice plants&#13;&#10;432_007x&#9;1000021&#9;Fruiting and yielding wood&#13;&#10;433_007x&#9;1000025&#9;Industrial fruit / cider fruit&#13;&#10;433_011x&#9;1000035&#9;Stone fruit&#13;&#10;433_013x&#9;1000037&#9;Bush berries&#13;&#10;500_001&#9;1000015&#9;Beets&#13;&#10;500_002&#9;1000015&#9;Beets&#13;&#10;501_001&#9;1000012&#9;Potatoes&#13;&#10;501_002&#9;1000012&#9;Potatoes&#13;&#10;502_001&#9;1000012&#9;Potatoes&#13;&#10;502_002&#9;1000012&#9;Potatoes&#13;&#10;520_001x&#9;1000015&#9;Beets&#13;&#10;521_001x&#9;1000012&#9;Potatoes&#13;&#10;530_001x&#9;1000015&#9;Beets&#13;&#10;531_001x&#9;1000012&#9;Potatoes&#13;&#10;540_001x&#9;1000015&#9;Beets&#13;&#10;541_001x&#9;1000012&#9;Potatoes&#13;&#10;600_001&#9;1000014&#9;Oil crops&#13;&#10;600_002&#9;1000014&#9;Oil crops&#13;&#10;600_003&#9;1000014&#9;Oil crops&#13;&#10;600_004&#9;1000014&#9;Oil crops&#13;&#10;601_001&#9;1000016&#9;Seeds&#13;&#10;601_002&#9;1000016&#9;Seeds&#13;&#10;602_001&#9;1000009&#9;Spider plants&#13;&#10;602_002&#9;1000009&#9;Spider plants&#13;&#10;620_002x&#9;1000014&#9;Oil crops&#13;&#10;621_001x&#9;1000016&#9;Seeds&#13;&#10;622_001x&#9;1000009&#9;Spider plants&#13;&#10;630_002x&#9;1000014&#9;Oil crops&#13;&#10;631_002x&#9;1000016&#9;Seeds&#13;&#10;640_002x&#9;1000014&#9;Oil crops&#13;&#10;700_001&#9;1000041&#9;Hops&#13;&#10;720_001x&#9;1000041&#9;Hops&#13;&#10;800_001&#9;1000044&#9;Wine&#13;&#10;800_002&#9;1000044&#9;Wine&#13;&#10;801_001&#9;1000042&#9;Vine wood&#13;&#10;801_002&#9;1000042&#9;Vine wood&#13;&#10;820_001x&#9;1000044&#9;Wine&#13;&#10;821_001x&#9;1000042&#9;Vine wood&#13;&#10;822_001x&#9;1000044&#9;Wine&#13;&#10;830_001x&#9;1000044&#9;Wine&#13;&#10;900_001&#9;1000043&#9;Tobacco&#13;&#10;920_001x&#9;1000043&#9;Tobacco&#13;&#10;"/>
+    <elementParameter field="TEXT" name="LABEL" value="trn_CROP_GROUP"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_2">
+      <column comment="" key="false" length="10" name="in_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="out_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="64" posY="64">
@@ -961,6 +1098,8 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="masterHeaderExternalNumber"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="IDIT_bundlePolicyId"/>
+      <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
@@ -1006,16 +1145,157 @@
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="masterHeaderExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="IDIT_bundlePolicyId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tJava_1">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
-  </connection>
+  <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="608">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_1"/>
+    <elementParameter field="CHECK" name="LINK_WITH" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="LIST" value="tHashOutput_1"/>
+    <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
+    <elementParameter field="CHECK" name="RELEASE_CACHE" value="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="logsGlobal" name="tHashInput_1">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="DOMAIN" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="250" name="OBJECT_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ERROR_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="288" posY="608" sizeX="64" sizeY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_1"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:ZC6zwkq75SvozuvDYgAJ2b8q15Xbk9wafIesLhlL"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;logsGlobal&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="NONE"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
+    <elementParameter field="TABLE" name="ADD_COLS"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="MIGRATION_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DOMAIN"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SUBENTITY_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SUBENTITY_TYPE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="OBJECT_NAME"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_DESCRIPTION"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_TYPE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SEVERITY"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_CODE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ERROR_TIMESTAMP"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="logsGlobal"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="logsGlobal" name="tHSQLDbOutput_1">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="DOMAIN" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="250" name="OBJECT_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ERROR_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="REJECT" label="logsGlobal" name="REJECT">
+      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="DOMAIN" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="SUBENTITY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="250" name="OBJECT_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="ERROR_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ERROR_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="SEVERITY" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="errorCode" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tContextLoad_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_5" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_5" target="tJava_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tPrejob_1" offsetLabelX="0" offsetLabelY="0" source="tPrejob_1" target="tHSQLDbInput_5">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
@@ -1025,9 +1305,16 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="POSITIONS"/>
   </connection>
-  <connection connectorName="FLOW" label="headerIVO" lineStyle="0" metaname="headerIVO" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tHSQLDbOutput_3">
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_6" target="tHashInput_1">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
+  </connection>
+  <connection connectorName="FLOW" label="headerIVO" lineStyle="0" metaname="headerIVO" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_2" target="tHSQLDbOutput_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="headerIVO"/>
+  </connection>
+  <connection connectorName="FLOW" label="DECN0010_Bundle_is_missing" lineStyle="0" metaname="DECN0010_Bundle_is_missing" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_2" target="tHashOutput_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="DECN0010_Bundle_is_missing"/>
   </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tHSQLDbOutput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_3" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1042,8 +1329,20 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CROP_TYPE"/>
   </connection>
+  <connection connectorName="FLOW" label="P_Policy" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="P_Policy"/>
+  </connection>
+  <connection connectorName="FLOW" label="CROP_GROUP" lineStyle="8" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tMap_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CROP_GROUP"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_2" offsetLabelX="0" offsetLabelY="0" source="tJava_2" target="tHSQLDbInput_6">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
+  </connection>
+  <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHashInput_1" offsetLabelX="0" offsetLabelY="0" source="tHashInput_1" target="tHSQLDbOutput_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
@@ -1051,7 +1350,7 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPrejob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
@@ -1076,13 +1375,18 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a9394867-7c9a-4c9d-ad1d-830572430d32"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>LsSjRHwfD7YXdJsg3O7osk6bFy6MgJS903Q0ZirSUy4X2NXpxH6jPPyHCZnE3w8XZI8OBtS0xVDV&#13;
-QFHiMiLD8g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f62c7d27-c36d-498d-8b19-ee92cd7ddb22"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QOdZVNdDzYwwtu4B1TWAe1RzXk/whho9iBn5AeJ58nEBqIx9H+7eHzy75I0v/Tbx1h+qowUIZMc2&#13;
-cIaSZ/un0Q==</DigestValue></Reference></SignedInfo><SignatureValue>NvuBL7MJ0KsJcl7dC4i1enqYmwPP3gSk6Z4N4RuzWWNVipL7TtTevGBl8mqkX2iyf5cGkE79gTjd&#13;
-mu8r46X9Na9XynHgKKde07MbXQ1QzZUw7heLhvmU7SKICFO/f2xuTdatwvK3Pyc91i4Ob4OWn71e&#13;
-1GxXPg15pQo6raWp4xx1lHptpFeYF4TXMuqqqkAL3QYsezST4kxZklWdR0PbDf5SQcEb3jwr++FG&#13;
-UbGMpJ2FvgwWi2HXiUaIDEaRbv9ckgelSlsIU6qfXTcbSXPew4GJJEVPJeyGkQFepqXbb3z/yzcW&#13;
-KquyLGTHw5axk5UaBvk1PEbgdZS6bF8CxU+hQA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashInput_1"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_38bc0a05-e4ba-42ae-b532-0ee997431c71"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>H4nifUiDh0PbDX4paTMz/Rsitn5PgY6b9hof1qAJ+I5RQ+cYgdswn0iRkjQkRI5qGUYOhxuOjqFE&#13;
+0Pt8RrTDKw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_4f65d10f-f732-4dca-8736-24e417cfe06a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>k0sbSHbrtUisBKTX3l01C6HRkcoB2UsPUbvftWYF/JSqx9iMzrj3uIsRTdZrgiwtzliFBzsq43Ll&#13;
+ou8Hcqhghg==</DigestValue></Reference></SignedInfo><SignatureValue>O6PCpWzy3t8lod+hFosGGnWTirDaIqi/ucSr4kqSkOoQhgH4xWwGc1ATaEivhRXGvoXhffGfI+6B&#13;
+q8nx3jPyys1Z08cpx3og9/ScXkVkJfIa3lmXPxAtfNuwqSK7fkM32Ib7FUeMl9iJig7QOpalgmic&#13;
+NEn1/K5xBDWxrq/nQ4yf/eaH/0SCUxkWlE+taiKdgaWJTf2ZY3mHBJhF1h2EVmJkBjVhF1UXUAJd&#13;
+EvlupEFUZu3HOhVH4XCSeYHrmRVFonkSedjSJXzsOa+N05wHEFXWPtWX0c1qBlgVK0xvmxM1w9uU&#13;
+hKiGZIjMTBOuQCSAr9AjUVHBAO5RW+8XgakvBA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1104,4 +1408,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f62c7d27-c36d-498d-8b19-ee92cd7ddb22" Target="#_a9394867-7c9a-4c9d-ad1d-830572430d32"><Timestamp>2024-02-19 09:17:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_4f65d10f-f732-4dca-8736-24e417cfe06a" Target="#_38bc0a05-e4ba-42ae-b532-0ee997431c71"><Timestamp>2024-02-21 14:14:08</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
