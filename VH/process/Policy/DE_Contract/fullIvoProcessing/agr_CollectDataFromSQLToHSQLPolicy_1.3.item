@@ -712,7 +712,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH VERSIONS AS&#13;&#10;&#9;(  SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;&#9;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;&#9;v.VER_UNGUELTIG_AB AS V_END_DATE,&#13;&#10;&#9;v.VER_BEG_DATUM AS V_CONTRACT_START,&#13;&#10;&#9;v.VER_ABL_DATUM AS V_CONTRACT_END,&#13;&#10;&#9;v.VER_PRODUKT_TYP AS CROP_GROUP,&#13;&#10;&#9;v.VER_ZUSTAND,&#13;&#10;&#9;v.VER_HISTORIE,&#13;&#10;&#9;v.VER_STATUS,&#13;&#10;&#9;v.VER_SCHADENFREIHEITSRABATT,&#13;&#10;&#9;ROUND((v.VER_ABL_DATUM - v.VER_BEG_DATUM)/365) AS contract_duration,&#13;&#10;&#9;p.POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;CASE  &#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Einzug' THEN 1000012&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Einzug' THEN 1000008&#13;&#10;&#9;END AS PAYMENT_TERM,&#13;&#10;  CASE  WHEN p.POL_RECHNUNGSTYP = 1 THEN 1 ELSE 0 END as IS_ANNUAL_PAYER,&#13;&#10;&#9;CASE v.VER_INKASSOART &#13;&#10;&#9;WHEN 'Selbst' THEN 10019&#13;&#10;&#9;WHEN 'Einzug' THEN 2&#13;&#10;    --ELSE 1&#13;&#10;&#9;END AS COLLECTION_METHOD,&#13;&#10;&#9;v.VER_KUENDIGUNG,&#13;&#10;p.PAR_PARTNER_NR,&#13;&#10;v.ver_beschreibung vertrag_remarks&#13;&#10;&#9;FROM SEV.VERTRAG v&#13;&#10;&#9;JOIN sev.police p ON p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'&#13;&#10;&#9;&#9;&#9;WHERE 1=1&#13;&#10;&#9;&#9;&#9;AND v.VER_ZUSTAND = 'lebend' &#13;&#10;&#9;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;&#9;&#9;AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH')&#13;&#10;&#9;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&#13;&#10;&#9;)&#9;&#13;&#10;&#9;SELECT POLICE, VERTRAG, V_START_DATE, V_END_DATE, CROP_GROUP, VER_ZUSTAND, VER_SCHADENFREIHEITSRABATT, &#9;ver_historie, POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;V_CONTRACT_START, V_CONTRACT_END, contract_duration, PAYMENT_TERM, IS_ANNUAL_PAYER, COLLECTION_METHOD, VER_STATUS, VER_KUENDIGUNG, PAR_PARTNER_NR, vertrag_remarks,&#13;&#10;&#9;DENSE_RANK() OVER(partition BY POLICE, VERTRAG  ORDER BY V_START_DATE) AS POLICY_VERSION&#13;&#10;&#9;FROM VERSIONS&#13;&#10;&#9;ORDER BY police, vertrag, V_START_DATE ASC&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH VERSIONS AS&#13;&#10;&#9;(  SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;&#9;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;&#9;v.VER_UNGUELTIG_AB AS V_END_DATE,&#13;&#10;&#9;v.VER_BEG_DATUM AS V_CONTRACT_START,&#13;&#10;&#9;v.VER_ABL_DATUM AS V_CONTRACT_END,&#13;&#10;&#9;v.VER_PRODUKT_TYP AS CROP_GROUP,&#13;&#10;&#9;v.VER_ZUSTAND,&#13;&#10;&#9;v.VER_HISTORIE,&#13;&#10;&#9;v.VER_STATUS,&#13;&#10;&#9;v.VER_SCHADENFREIHEITSRABATT,&#13;&#10;&#9;ROUND((v.VER_ABL_DATUM - v.VER_BEG_DATUM)/365) AS contract_duration,&#13;&#10;&#9;p.POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;CASE  &#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Einzug' THEN 1000012&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Einzug' THEN 1000008&#13;&#10;&#9;END AS PAYMENT_TERM,&#13;&#10;  CASE  WHEN p.POL_RECHNUNGSTYP = 1 THEN 1 ELSE 0 END as IS_ANNUAL_PAYER,&#13;&#10;&#9;CASE v.VER_INKASSOART &#13;&#10;&#9;WHEN 'Selbst' THEN 10019&#13;&#10;&#9;WHEN 'Einzug' THEN 2&#13;&#10;    --ELSE 1&#13;&#10;&#9;END AS COLLECTION_METHOD,&#13;&#10;&#9;v.VER_KUENDIGUNG,&#13;&#10;p.PAR_PARTNER_NR,&#13;&#10;v.ver_beschreibung vertrag_remarks&#13;&#10;&#9;FROM SEV.VERTRAG v&#13;&#10;&#9;JOIN sev.police p ON p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'&#13;&#10;&#9;&#9;&#9;WHERE 1=1&#13;&#10;&#9;&#9;&#9;AND v.VER_ZUSTAND = 'lebend' &#13;&#10;&#9;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;&#9;&#9;AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH')&#13;&#10;&#9;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&#13;&#10;&#9;)&#9;&#13;&#10;&#9;SELECT POLICE, VERTRAG, V_START_DATE, V_END_DATE, CROP_GROUP, VER_ZUSTAND, VER_SCHADENFREIHEITSRABATT, &#9;ver_historie, POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;V_CONTRACT_START, V_CONTRACT_END, contract_duration, PAYMENT_TERM, IS_ANNUAL_PAYER, COLLECTION_METHOD, VER_STATUS, VER_KUENDIGUNG, PAR_PARTNER_NR, vertrag_remarks,&#13;&#10;&#9;DENSE_RANK() OVER(partition BY POLICE, VERTRAG  ORDER BY V_START_DATE) AS POLICY_VERSION,&#13;&#10;max(vertrag+1) OVER (PARTITION BY POLICE ) AS NextNumInBundle&#13;&#10;&#9;FROM VERSIONS&#13;&#10;&#9;ORDER BY police, vertrag, V_START_DATE ASC&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -767,6 +767,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Next_num_in_bundle"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -793,6 +795,7 @@
       <column comment="" key="false" length="10" name="PAR_PARTNER_NR" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="vertrag_remarks" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tReplicate" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="192" posY="864">
@@ -819,6 +822,7 @@
       <column comment="" key="false" length="10" name="PAR_PARTNER_NR" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="vertrag_remarks" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="192" posY="768">
@@ -903,6 +907,7 @@
         <mapperTableEntries name="PAR_PARTNER_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries name="vertrag_remarks" nullable="true" type="id_String"/>
         <mapperTableEntries name="POLICY_VERSION" nullable="true" type="id_Integer"/>
+        <mapperTableEntries name="Next_num_in_bundle" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1217,6 +1222,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Next_num_in_bundle"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
@@ -1253,6 +1263,7 @@
       <column comment="" key="false" length="10" name="PAR_PARTNER_NR" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="vertrag_remarks" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" name="REJECT">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -1275,6 +1286,7 @@
       <column comment="" key="false" length="10" name="PAR_PARTNER_NR" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="vertrag_remarks" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2184,15 +2196,15 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
-  <connection connectorName="FLOW" label="noLookup" lineStyle="0" metaname="noLookup" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tLogRow_2">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="noLookup"/>
-  </connection>
-  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tSortRow_1">
+  <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_1" target="tSortRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out"/>
+  </connection>
+  <connection connectorName="FLOW" label="noLookup" lineStyle="0" metaname="noLookup" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_1" target="tLogRow_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="noLookup"/>
   </connection>
   <connection connectorName="FLOW" label="crop_group_lookup" lineStyle="8" metaname="tFixedFlowInput_2" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_2" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -2223,6 +2235,9 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="PAR_PARTNER_NR"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="Next_num_in_bundle"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -2400,13 +2415,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_6802586c-b68e-447c-b312-4d405b50f728"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>BqguTgA79Q2dU04mHYSMqwXtAMNu0hG0P90B47UHA72tk6TbOVYx4R/0DxpOrNX4xhIoM+Igkqx4&#13;
-0pV92xJEcw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ba1c17ac-86a0-465d-912c-9c5986be05f5"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>UnA4qqm/hNYk2js+IRKBX+3no/Dz8g9UR9gbw+tYEVD7n6oNbSicushU8TsmefSOHVTvFCorkKVM&#13;
-7PT9nkE5eA==</DigestValue></Reference></SignedInfo><SignatureValue>DQPdGICgofoS/hPG3GprzW/E7Rf8VZU8h9I/eTt8SlFlGN0genuYgc9+0hWo5SUgbyTIfDdAtvJJ&#13;
-6NoljW9vcpd4ti5w+Ef7P+kA2rAWZwQyQDcN6IMMUfDAO6KtaPPJtZdXBj8an5zLX2rIrkH3Y5ej&#13;
-jYk64/JGNKc9eDsy0kbdXkNSbUVXa5dTllej7hxjICg5zG+iiVUMt9ZF0zeOdu6yPEarqDiHQEHd&#13;
-Ovujp72H9axya9Ke72ZgQmYpg/EvFDa5+dPYZsz3Yc5YsjR9t6QE53Q3T95chGs7s7B7vvzRNZc1&#13;
-mtmlfWoU6GudQG/rxdE2YfjUGoxJ9naeYh37vw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_765e0c72-40bd-4de1-afb5-ab3407bba2e8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VcyDDPi6QIQGsqvXESVrXWizvOa006IXeiksGOJzZ4U4H/9nqkUuQ/HoGI3wGPXF7SlYDIju250O&#13;
+TGwj59lCqQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3eec3c01-503e-460b-8b30-5dc35f2dae8d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mdBjwetMLc2qfuHECgQFC09YURIedmjls3m3m7KGz8jMLzmnWfKchkcwxMwV/iv9FIDtuepa/wj4&#13;
+eN9MV13hWg==</DigestValue></Reference></SignedInfo><SignatureValue>KlsVKWBK8SPzP/Focd9rikCZfijQS28s8yckiXKbJWDjznqsGkUtnDEMFxXeOb5xBwV0dohsnf4a&#13;
+/Uobrug8RN7vrUdgxqcDTkHFKWYEs0UgB6NE7uZIYljb4ngHUiY5lBwsb3bgRCQC39LceJ2zrIg5&#13;
+XJh1a7DI+t3QklI6DuzCiqJROKyCkvvdV5e4trzWTz7s2bH+fU/960rZ2ZhNIv8aj93OFrIst+04&#13;
+FWNKj2KmPhGDl3uhlGxUX4ygxNlKngsfvD/w/Fsa5WM8BIAXdZB6eRLc3Uej6Kgw0PLJbTBUep0Q&#13;
+3TjL/AWvs688hdt4YCf4BVZqVJJ1Fz3vFQIlyQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2428,4 +2443,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ba1c17ac-86a0-465d-912c-9c5986be05f5" Target="#_6802586c-b68e-447c-b312-4d405b50f728"><Timestamp>2024-02-12 11:05:53</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3eec3c01-503e-460b-8b30-5dc35f2dae8d" Target="#_765e0c72-40bd-4de1-afb5-ab3407bba2e8"><Timestamp>2024-02-22 09:14:27</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
