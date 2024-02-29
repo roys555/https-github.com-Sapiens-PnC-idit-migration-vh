@@ -1340,7 +1340,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH  pos as (&#13;&#10;SELECT &#9;gob.POL_POLICEN_NR, gob.VER_VERTRAG_NR, gob.GEF_GEFAHR_NR, gob.OBJ_OBJEKT_NR, gob.POL_GUELTIG_AB,  &#13;&#10;&#9; &#9;gob.GOB_OBJEKT_TYP, gob.GOB_UNGUELTIG_AB, gob.GOB_HISTORIE, gob.GOB_ZUSTAND,   &#13;&#10;&#9; &#9;ofr.OFR_FLAECHE, ofr.OFR_VERSICHERUNGSWERT, ofr.ID_WEBAV_POSITION, p.ID_FELDSTUECK, &#13;&#10;&#9; &#9;p.ANBAUJAHR, p.HEKTARWERT, p.flaeche, p.HEKTARWERTANTEILPROZ,  &#13;&#10;&#9; &#9;p.flaeche * p.HEKTARWERT AS sumInsured,  &#13;&#10;&#9;    f.bezeichnung AS field_name, f.id_sev_gemeinde_feldmark,&#9; &#9;gf.gfm_name,&#13;&#10;&#9;&#9;CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('SubPolicy','DP-'), gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))), '_'), trim(to_char(gob.OBJ_OBJEKT_NR,'00000'))),'/'),'00') AS Position_external_Number,&#13;&#10;&#9;&#9;CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('SubPolicy','DP-'), gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))), '_'), trim(to_char(gob.OBJ_OBJEKT_NR,'00000'))) AS Position_external_header_Number,&#13;&#10;&#9;&#9;CONCAT(CONCAT('DP-', gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))) AS Master_external_header_Number &#13;&#10;  FROM sev.gefahr_objekt gob  &#13;&#10;       JOIN sev.objekt_fruchtart ofr ON ofr.pol_policen_nr = gob.pol_policen_nr  &#13;&#10;                                        AND ofr.ver_vertrag_nr = gob.ver_vertrag_nr  &#13;&#10;              &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.gef_gefahr_nr = gob.gef_gefahr_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.obj_objekt_nr = gob.obj_objekt_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_gueltig_ab = gob.pol_gueltig_ab  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_aenderung = gob.pol_aenderung  &#13;&#10;       LEFT JOIN webav.POSITION p  ON  ofr.ID_WEBAV_POSITION = p.ID  &#13;&#10;       LEFT JOIN WEBAV.FELDSTUECK f ON f.id = p.ID_FELDSTUECK&#13;&#10;       LEFT JOIN sev.GEMEINDE_FELDMARK gf ON f.ID_SEV_GEMEINDE_FELDMARK = gf.GFM_FELDMARK  &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;   &#13;&#10; WHERE 1=1 &#13;&#10;  AND gob.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;   AND gob.gob_historie IN ('AN', 'HN') &#13;&#10;   AND gob.gob_zustand = 'lebend'&#13;&#10;)&#13;&#10;SELECT cms.ENTITY_ID,  cms.BUNDLE_POLICY_ID, cms.POLICY_ID , cms.POSITION_ID,  v.* &#13;&#10;FROM pos v &#13;&#10;  inner join K2V_DEV.POLICY_MIGRATION_STATUS cms  &#9;ON  v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#9;and v.VER_VERTRAG_NR = cms.POLICY_ID     and v.OBJ_OBJEKT_NR = cms.POSITION_ID&#13;&#10;WHERE 1=1&#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;&#13;&#10;ORDER BY v.POL_POLICEN_NR, v.VER_VERTRAG_NR, v.OBJ_OBJEKT_NR&#13;&#10;&quot;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH  pos as (&#13;&#10;SELECT &#9;gob.POL_POLICEN_NR, gob.VER_VERTRAG_NR, gob.GEF_GEFAHR_NR, gob.OBJ_OBJEKT_NR, gob.POL_GUELTIG_AB,  &#13;&#10;&#9; &#9;gob.GOB_OBJEKT_TYP, gob.GOB_UNGUELTIG_AB, gob.GOB_HISTORIE, gob.GOB_ZUSTAND,   &#13;&#10;&#9; &#9;ofr.OFR_FLAECHE, ofr.OFR_VERSICHERUNGSWERT, ofr.ID_WEBAV_POSITION, p.ID_FELDSTUECK, &#13;&#10;&#9; &#9;p.ANBAUJAHR, p.HEKTARWERT, p.flaeche, p.HEKTARWERTANTEILPROZ,  &#13;&#10;&#9; &#9;p.flaeche * p.HEKTARWERT AS sumInsured,  &#13;&#10;&#9;    f.bezeichnung AS field_name, f.id_sev_gemeinde_feldmark,&#9; &#9;gf.gfm_name,&#13;&#10;&#9;&#9;CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('SubPolicy','DP-'), gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))), '_'), trim(to_char(gob.OBJ_OBJEKT_NR,'00000'))),'/'),'00') AS Position_external_Number,&#13;&#10;&#9;&#9;CONCAT(CONCAT(CONCAT(CONCAT(CONCAT('SP','DP-'), gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))), '_'), trim(to_char(gob.OBJ_OBJEKT_NR,'00000'))) AS Position_external_header_Number,&#13;&#10;&#9;&#9;CONCAT(CONCAT('DP-', gob.POL_POLICEN_NR),trim(to_char(gob.VER_VERTRAG_NR,'000'))) AS Master_external_header_Number &#13;&#10;  FROM sev.gefahr_objekt gob  &#13;&#10;       JOIN sev.objekt_fruchtart ofr ON ofr.pol_policen_nr = gob.pol_policen_nr  &#13;&#10;                                        AND ofr.ver_vertrag_nr = gob.ver_vertrag_nr  &#13;&#10;              &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.gef_gefahr_nr = gob.gef_gefahr_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.obj_objekt_nr = gob.obj_objekt_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_gueltig_ab = gob.pol_gueltig_ab  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_aenderung = gob.pol_aenderung  &#13;&#10;       LEFT JOIN webav.POSITION p  ON  ofr.ID_WEBAV_POSITION = p.ID  &#13;&#10;       LEFT JOIN WEBAV.FELDSTUECK f ON f.id = p.ID_FELDSTUECK&#13;&#10;       LEFT JOIN sev.GEMEINDE_FELDMARK gf ON f.ID_SEV_GEMEINDE_FELDMARK = gf.GFM_FELDMARK  &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;   &#13;&#10; WHERE 1=1 &#13;&#10;  AND gob.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;   AND gob.gob_historie IN ('AN', 'HN') &#13;&#10;   AND gob.gob_zustand = 'lebend'&#13;&#10;)&#13;&#10;SELECT cms.ENTITY_ID,  cms.BUNDLE_POLICY_ID, cms.POLICY_ID , cms.POSITION_ID,  v.* &#13;&#10;FROM pos v &#13;&#10;  inner join K2V_DEV.POLICY_MIGRATION_STATUS cms  &#9;ON  v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#9;and v.VER_VERTRAG_NR = cms.POLICY_ID     and v.OBJ_OBJEKT_NR = cms.POSITION_ID&#13;&#10;WHERE 1=1&#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;&#13;&#10;ORDER BY v.POL_POLICEN_NR, v.VER_VERTRAG_NR, v.OBJ_OBJEKT_NR&#13;&#10;&quot;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2512,7 +2512,7 @@
       <column comment="" key="false" length="5" name="NEXT_NUM_IN_BUNDLE" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="contact_version_selection" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row5.POLICE " name="POLICE" type="id_Long"/>
@@ -2799,7 +2799,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;&#13;&#10;WITH  pos as (&#13;&#10;SELECT &#9;gob.POL_POLICEN_NR, gob.VER_VERTRAG_NR, gob.GEF_GEFAHR_NR, gob.OBJ_OBJEKT_NR, gob.POL_GUELTIG_AB,&#13;&#10;&#9; &#9; gob.GOB_UNGUELTIG_AB &#13;&#10;  FROM sev.gefahr_objekt gob  &#13;&#10;       JOIN sev.objekt_fruchtart ofr ON ofr.pol_policen_nr = gob.pol_policen_nr  &#13;&#10;                                        AND ofr.ver_vertrag_nr = gob.ver_vertrag_nr  &#13;&#10;              &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.gef_gefahr_nr = gob.gef_gefahr_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.obj_objekt_nr = gob.obj_objekt_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_gueltig_ab = gob.pol_gueltig_ab  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_aenderung = gob.pol_aenderung  &#13;&#10;       LEFT JOIN webav.POSITION p  ON  ofr.ID_WEBAV_POSITION = p.ID  &#13;&#10;       LEFT JOIN WEBAV.FELDSTUECK f ON f.id = p.ID_FELDSTUECK&#13;&#10;       LEFT JOIN sev.GEMEINDE_FELDMARK gf ON f.ID_SEV_GEMEINDE_FELDMARK = gf.GFM_FELDMARK  &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;   &#13;&#10; WHERE 1=1 &#13;&#10;  AND gob.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;   AND gob.gob_historie IN ('AN', 'HN') &#13;&#10;   AND gob.gob_zustand = 'lebend'&#13;&#10;),&#13;&#10;pos2 as(&#13;&#10;SELECT cms.ENTITY_ID,  cms.BUNDLE_POLICY_ID, cms.POLICY_ID , cms.POSITION_ID,  v.* &#13;&#10;FROM pos v &#13;&#10;  inner join K2V_DEV.POLICY_MIGRATION_STATUS cms  &#9;ON  v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#9;and v.VER_VERTRAG_NR = cms.POLICY_ID     and v.OBJ_OBJEKT_NR = cms.POSITION_ID&#13;&#10;WHERE 1=1&#13;&#10;   AND cms.MIGRATION_STATUS  =100 &#13;&#10;       AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;&#13;&#10;)&#13;&#10;SELECT DISTINCT     X.ENTITY_ID,  X.BUNDLE_POLICY_ID,  X.POLICY_ID , X.POSITION_ID,  &#13;&#10;  gor.POL_POLICEN_NR, gor.VER_VERTRAG_NR, gor.GOR_RISIKO_TYP, rt.RIT_BEZEICHNUNG, gor.GEF_GEFAHR_NR, gor.OBJ_OBJEKT_NR, gor.POL_GUELTIG_AB, gor.GOR_UNGUELTIG_AB    &#13;&#10;FROM sev.gefahr_objekt_risiko gor&#13;&#10;JOIN sev.POLICE p ON p.POL_POLICEN_NR = gor.POL_POLICEN_NR &#13;&#10;  &#9;&#9;&#9;&#9; AND p.POL_HISTORIE IN ('AN','HN') &#13;&#10;&#9;&#9;&#9;&#9; AND p.POL_ZUSTAND = 'lebend'&#13;&#10;&#9;&#9;&#9;&#9; AND p.POL_UNGUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;&#9;&#9;&#9; AND p.POL_POLICE_TYP in ('VH','KH')&#13;&#10;JOIN sev.RISIKO_TYP rt ON rt.RIT_RISIKO_TYP = gor.GOR_RISIKO_TYP&#13;&#10;JOIN sev.VERTRAG v ON p.POL_POLICEN_NR = v.POL_POLICEN_NR &#13;&#10;  &#9;&#9;&#9;&#9;  AND v.VER_HISTORIE IN ('AN', 'HN')&#13;&#10;  &#9;&#9;&#9;&#9;  AND v.VER_ZUSTAND = 'lebend'&#13;&#10;  &#9;&#9;&#9;&#9;  AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;  &#9;&#9;&#9;&#9;  AND v.VER_VERTRAG_NR = gor.VER_VERTRAG_NR&#13;&#10;INNER JOIN pos2 X ON X.pol_policen_nr = gor.POL_POLICEN_NR AND X.ver_vertrag_nr = gor.VER_VERTRAG_NR AND gor.obj_objekt_nr = X.POSITION_ID  &#13;&#10;--        AND X.POL_GUELTIG_AB = gor.POL_GUELTIG_AB &#13;&#10;WHERE 1=1&#13;&#10;AND gor.gor_historie IN ('AN', 'HN')&#13;&#10;AND gor.gor_zustand = 'lebend'&#13;&#10;&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;&#13;&#10;WITH  pos as (&#13;&#10;SELECT &#9;gob.POL_POLICEN_NR, gob.VER_VERTRAG_NR, gob.GEF_GEFAHR_NR, gob.OBJ_OBJEKT_NR, gob.POL_GUELTIG_AB,&#13;&#10;&#9; &#9; gob.GOB_UNGUELTIG_AB &#13;&#10;  FROM sev.gefahr_objekt gob  &#13;&#10;       JOIN sev.objekt_fruchtart ofr ON ofr.pol_policen_nr = gob.pol_policen_nr  &#13;&#10;                                        AND ofr.ver_vertrag_nr = gob.ver_vertrag_nr  &#13;&#10;              &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.gef_gefahr_nr = gob.gef_gefahr_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.obj_objekt_nr = gob.obj_objekt_nr  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_gueltig_ab = gob.pol_gueltig_ab  &#13;&#10;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND ofr.pol_aenderung = gob.pol_aenderung  &#13;&#10;       LEFT JOIN webav.POSITION p  ON  ofr.ID_WEBAV_POSITION = p.ID  &#13;&#10;       LEFT JOIN WEBAV.FELDSTUECK f ON f.id = p.ID_FELDSTUECK&#13;&#10;       LEFT JOIN sev.GEMEINDE_FELDMARK gf ON f.ID_SEV_GEMEINDE_FELDMARK = gf.GFM_FELDMARK  &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;   &#13;&#10; WHERE 1=1 &#13;&#10;  AND gob.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;   AND gob.gob_historie IN ('AN', 'HN') &#13;&#10;   AND gob.gob_zustand = 'lebend'&#13;&#10;),&#13;&#10;pos2 as(&#13;&#10;SELECT cms.ENTITY_ID,  cms.BUNDLE_POLICY_ID, cms.POLICY_ID , cms.POSITION_ID,  v.* &#13;&#10;FROM pos v &#13;&#10;  inner join K2V_DEV.POLICY_MIGRATION_STATUS cms  &#9;ON  v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#9;and v.VER_VERTRAG_NR = cms.POLICY_ID     and v.OBJ_OBJEKT_NR = cms.POSITION_ID&#13;&#10;WHERE 1=1&#13;&#10;   AND cms.MIGRATION_STATUS  =100 &#13;&#10;       AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;&#13;&#10;)&#13;&#10;SELECT     X.ENTITY_ID,  X.BUNDLE_POLICY_ID,  X.POLICY_ID , X.POSITION_ID,  &#13;&#10;  gor.POL_POLICEN_NR, gor.VER_VERTRAG_NR, gor.GOR_RISIKO_TYP,&#13;&#10;gor.GOR_RISIKO_NR, &#13;&#10;rt.RIT_BEZEICHNUNG, gor.GEF_GEFAHR_NR, gor.OBJ_OBJEKT_NR, gor.POL_GUELTIG_AB, gor.GOR_UNGUELTIG_AB&#13;&#10;,a.ABR_NETTOPRAEMIE_DIFF, a.ABR_VERS_SUMME_DIFF, a.ABR_BRUTTOPRAEMIE   &#13;&#10;FROM sev.gefahr_objekt_risiko gor&#13;&#10;JOIN sev.POLICE p ON p.POL_POLICEN_NR = gor.POL_POLICEN_NR &#13;&#10;  &#9;&#9;&#9;&#9; AND p.POL_HISTORIE IN ('AN','HN') &#13;&#10;&#9;&#9;&#9;&#9; AND p.POL_ZUSTAND = 'lebend'&#13;&#10;&#9;&#9;&#9;&#9; AND p.POL_UNGUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;&#9;&#9;&#9; AND p.POL_POLICE_TYP in ('VH','KH')&#13;&#10;JOIN sev.RISIKO_TYP rt ON rt.RIT_RISIKO_TYP = gor.GOR_RISIKO_TYP&#13;&#10;JOIN sev.VERTRAG v ON p.POL_POLICEN_NR = v.POL_POLICEN_NR &#13;&#10;  &#9;&#9;&#9;&#9;  AND v.VER_HISTORIE IN ('AN', 'HN')&#13;&#10;  &#9;&#9;&#9;&#9;  AND v.VER_ZUSTAND = 'lebend'&#13;&#10;  &#9;&#9;&#9;&#9;  AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;  &#9;&#9;&#9;&#9;  AND v.VER_VERTRAG_NR = gor.VER_VERTRAG_NR&#13;&#10;JOIN SEV.ABRECHNUNG a ON a.pol_policen_nr = GOR.pol_policen_nr&#13;&#10;&#9;&#9;&#9;&#9;&#9; AND a.ver_vertrag_nr = gor.VER_VERTRAG_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9; AND a.GEF_GEFAHR_NR = GOR.GEF_GEFAHR_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9; AND a.OBJ_OBJEKT_NR = gor.OBJ_OBJEKT_NR &#13;&#10;&#9;&#9;&#9;&#9;&#9; AND a.GOR_RISIKO_NR = gor.GOR_RISIKO_NR &#13;&#10;INNER JOIN pos2 X ON X.pol_policen_nr = gor.POL_POLICEN_NR AND X.ver_vertrag_nr = gor.VER_VERTRAG_NR AND gor.obj_objekt_nr = X.POSITION_ID  &#13;&#10;--        AND X.POL_GUELTIG_AB = gor.POL_GUELTIG_AB &#13;&#10;WHERE 1=1&#13;&#10;AND gor.gor_historie IN ('AN', 'HN')&#13;&#10;AND gor.gor_zustand = 'lebend'&#13;&#10;GROUP BY  X.ENTITY_ID,  X.BUNDLE_POLICY_ID,  X.POLICY_ID , X.POSITION_ID,  &#13;&#10;  gor.POL_POLICEN_NR, gor.VER_VERTRAG_NR, gor.GOR_RISIKO_TYP,&#13;&#10;gor.GOR_RISIKO_NR, &#13;&#10;rt.RIT_BEZEICHNUNG, gor.GEF_GEFAHR_NR, gor.OBJ_OBJEKT_NR, gor.POL_GUELTIG_AB, gor.GOR_UNGUELTIG_AB&#13;&#10;,a.ABR_NETTOPRAEMIE_DIFF, a.ABR_VERS_SUMME_DIFF, a.ABR_BRUTTOPRAEMIE   &#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2828,6 +2828,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="GOR_RISIKO_TYP"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GOR_RISIKO_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="RIT_BEZEICHNUNG"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="GEF_GEFAHR_NR"/>
@@ -2838,10 +2840,16 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="GOR_UNGUELTIG_AB"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_NETTOPRAEMIE_DIFF"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_VERS_SUMME_DIFF"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_BRUTTOPRAEMIE"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_POSITION_LEGACY_SELECTION"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_POSITION_COVER_SELECTION"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_8">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -2851,11 +2859,15 @@
       <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOR_RISIKO_TYP" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="3" name="GOR_RISIKO_NR" nullable="true" originalLength="3" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="GOR_UNGUELTIG_AB" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_NETTOPRAEMIE_DIFF" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_VERS_SUMME_DIFF" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_BRUTTOPRAEMIE" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tReplicate" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="64" posY="608">
@@ -2869,11 +2881,15 @@
       <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOR_RISIKO_TYP" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="3" name="GOR_RISIKO_NR" nullable="true" originalLength="3" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="GOR_UNGUELTIG_AB" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_NETTOPRAEMIE_DIFF" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_VERS_SUMME_DIFF" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_BRUTTOPRAEMIE" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="288" posY="640">
@@ -2946,6 +2962,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GOR_RISIKO_NR"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="RIT_BEZEICHNUNG"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -2967,6 +2988,21 @@
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="GOR_UNGUELTIG_AB"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_NETTOPRAEMIE_DIFF"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_VERS_SUMME_DIFF"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_BRUTTOPRAEMIE"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -2994,11 +3030,15 @@
       <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOR_RISIKO_TYP" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="3" name="GOR_RISIKO_NR" nullable="true" originalLength="3" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="GOR_UNGUELTIG_AB" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_NETTOPRAEMIE_DIFF" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_VERS_SUMME_DIFF" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_BRUTTOPRAEMIE" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -3008,11 +3048,15 @@
       <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOR_RISIKO_TYP" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="3" name="GOR_RISIKO_NR" nullable="true" originalLength="3" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="GOR_UNGUELTIG_AB" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_NETTOPRAEMIE_DIFF" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_VERS_SUMME_DIFF" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_BRUTTOPRAEMIE" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -3031,7 +3075,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="positon_cover_selection" name="positon_cover_selection">
+    <metadata comment="" connector="FLOW" label="POSITION_COVER_SELECTION" name="positon_cover_selection">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -3039,11 +3083,15 @@
       <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOR_RISIKO_TYP" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="3" name="GOR_RISIKO_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="GOR_UNGUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_NETTOPRAEMIE_DIFF" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_VERS_SUMME_DIFF" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_BRUTTOPRAEMIE" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties/>
@@ -3056,11 +3104,15 @@
         <mapperTableEntries expression="row14.POL_POLICEN_NR " name="POL_POLICEN_NR" type="id_Long"/>
         <mapperTableEntries expression="row14.VER_VERTRAG_NR " name="VER_VERTRAG_NR" type="id_Long"/>
         <mapperTableEntries expression="row14.GOR_RISIKO_TYP " name="GOR_RISIKO_TYP" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row14.GOR_RISIKO_NR " name="GOR_RISIKO_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row14.RIT_BEZEICHNUNG " name="RIT_BEZEICHNUNG" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row14.GEF_GEFAHR_NR " name="GEF_GEFAHR_NR" type="id_Long"/>
         <mapperTableEntries expression="row14.OBJ_OBJEKT_NR " name="OBJ_OBJEKT_NR" type="id_Long"/>
         <mapperTableEntries expression="row14.POL_GUELTIG_AB " name="POL_GUELTIG_AB" type="id_Date"/>
         <mapperTableEntries expression="row14.GOR_UNGUELTIG_AB " name="GOR_UNGUELTIG_AB" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row14.ABR_NETTOPRAEMIE_DIFF " name="ABR_NETTOPRAEMIE_DIFF" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="row14.ABR_VERS_SUMME_DIFF " name="ABR_VERS_SUMME_DIFF" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="row14.ABR_BRUTTOPRAEMIE " name="ABR_BRUTTOPRAEMIE" nullable="true" type="id_Double"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row14" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -3070,15 +3122,19 @@
         <mapperTableEntries name="POL_POLICEN_NR" type="id_Long"/>
         <mapperTableEntries name="VER_VERTRAG_NR" type="id_Long"/>
         <mapperTableEntries name="GOR_RISIKO_TYP" nullable="true" type="id_String"/>
+        <mapperTableEntries name="GOR_RISIKO_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries name="RIT_BEZEICHNUNG" nullable="true" type="id_String"/>
         <mapperTableEntries name="GEF_GEFAHR_NR" type="id_Long"/>
         <mapperTableEntries name="OBJ_OBJEKT_NR" type="id_Long"/>
         <mapperTableEntries name="POL_GUELTIG_AB" type="id_Date"/>
         <mapperTableEntries name="GOR_UNGUELTIG_AB" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="ABR_NETTOPRAEMIE_DIFF" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="ABR_VERS_SUMME_DIFF" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="ABR_BRUTTOPRAEMIE" nullable="true" type="id_Double"/>
       </inputTables>
     </nodeData>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="352" posY="544">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="448" posY="544">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_8"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -3092,6 +3148,8 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;POSITION_COVER_SELECTION&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_m4P-UM8xEe6mF-LlU-XY0w - POSITION_COVER_SELECTION"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -3136,6 +3194,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GOR_RISIKO_NR"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="RIT_BEZEICHNUNG"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -3161,6 +3224,21 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_NETTOPRAEMIE_DIFF"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_VERS_SUMME_DIFF"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ABR_BRUTTOPRAEMIE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;POSITION_COVER_SELECTION&quot;"/>
@@ -3173,13 +3251,17 @@
       <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOR_RISIKO_TYP" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="3" name="GOR_RISIKO_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="GOR_UNGUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_NETTOPRAEMIE_DIFF" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_VERS_SUMME_DIFF" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_BRUTTOPRAEMIE" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
-    <metadata connector="REJECT" label="positon_cover_selection" name="REJECT">
+    <metadata connector="REJECT" label="POSITION_COVER_SELECTION" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -3187,11 +3269,15 @@
       <column comment="" defaultValue="" key="false" length="10" name="POL_POLICEN_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VER_VERTRAG_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOR_RISIKO_TYP" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="3" name="GOR_RISIKO_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="3" name="GEF_GEFAHR_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="OBJ_OBJEKT_NR" nullable="false" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="GOR_UNGUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_NETTOPRAEMIE_DIFF" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_VERS_SUMME_DIFF" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="ABR_BRUTTOPRAEMIE" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -3482,6 +3568,164 @@
       <column comment="" key="false" length="19" name="update_date" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="1600">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:j7OXl6loXg34Jve9OiiEoZr2tOahqJoqBrPHZIXY"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;POSITION_LEGACY_SELECTION&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT Distinct&#10;&#9;&#9;POSITION_LEGACY_SELECTION.GFM_NAME&#10;FROM&#9;POSITION_LEGACY_SELECTION&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="GFM_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="POSITON_LEGACY_SELECTION"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POSITION_LEGACY_SELECTION" name="tHSQLDbInput_2">
+      <column comment="" key="false" length="60" name="GFM_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="192" posY="1600">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_9"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_rjU8AL6LEe6jcPiMlGgGPA-tMap_9-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata comment="" connector="FLOW" label="T_COMMUNITIES_VH" name="idit_t_communities_vh">
+      <column comment="" key="false" length="10" name="ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="Description" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables activateCondensedTool="true" id="_SJvJcNboEe6DhqnYUCo9wA - T_COMMUNITIES_VH" name="idit_t_communities_vh" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row13.ID " name="ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row13.Description " name="Description" nullable="true" type="id_String"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row10" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="GFM_NAME" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row13" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ID" type="id_Long"/>
+        <mapperTableEntries expression="row10.GFM_NAME " name="Description" operator="=" type="id_String"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="1600">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_9"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:R655ml+x3C/qweDPEtlFv7gCs7v+KELiViYBazXI"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;T_COMMUNITIES_VH&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_SJvJcNboEe6DhqnYUCo9wA - T_COMMUNITIES_VH"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
+    <elementParameter field="TABLE" name="ADD_COLS"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Description"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="idit_T_COMMUNITIES_VH"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="T_COMMUNITIES_VH" name="tHSQLDbOutput_9">
+      <column comment="" key="false" length="10" name="ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="Description" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="REJECT" label="T_COMMUNITIES_VH" name="REJECT">
+      <column comment="" key="false" length="10" name="ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="Description" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="192" posY="1696">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_9"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_16b-YL2xEe2IaexRWdMOsQ"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.4&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="DRIVER" show="false" value="JTDS"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="MSSQL"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1433&quot;"/>
+    <elementParameter field="TEXT" name="DB_SCHEMA" show="false" value="&quot;dbo&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;VH_DEVMIG&quot;"/>
+    <elementParameter field="TEXT" name="USER" show="false" value="&quot;K2View_vhetl&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:qLiyAlYd8QMij/hCKNBI/Xm2Kr5SiqdT9TBMogCZ7zRnqntgCJPOZq9A"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select ID, Description&#13;&#10;from T_COMMUNITIES_VH &#13;&#10; &quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="id_MSSQL"/>
+    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="ACTIVE_DIR_AUTH" show="false" value="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Description"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="SET_QUERY_TIMEOUT" value="false"/>
+    <elementParameter field="TEXT" name="QUERY_TIMEOUT_IN_SECONDS" show="false" value="30"/>
+    <elementParameter field="TEXT" name="LABEL" value="T_COMMUNITIES_VH"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tDBInput_9">
+      <column comment="" defaultValue="" key="false" length="10" name="ID" nullable="false" originalLength="10" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="Description" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row12" lineStyle="0" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tHSQLDbOutput_12">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
@@ -3596,6 +3840,9 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="position_legacy_selection"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tHSQLDbInput_2">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
+  </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tReplicate_1" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tReplicate_1" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
@@ -3604,7 +3851,7 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row6"/>
   </connection>
-  <connection connectorName="FLOW" label="positions_legacy_selection" lineStyle="0" metaname="positions_legacy_selection" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tHSQLDbOutput_1">
+  <connection connectorName="FLOW" label="positions_legacy_selection" lineStyle="0" metaname="positions_legacy_selection" offsetLabelX="50" offsetLabelY="4" source="tMap_1" target="tHSQLDbOutput_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="positions_legacy_selection"/>
   </connection>
@@ -3670,6 +3917,20 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk7"/>
   </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tReplicate_2">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="ABR_VERS_SUMME_DIFF"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="GOR_RISIKO_NR"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="ABR_BRUTTOPRAEMIE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="ABR_NETTOPRAEMIE_DIFF"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
@@ -3701,10 +3962,22 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="cn_contact"/>
   </connection>
+  <connection connectorName="FLOW" label="row10" lineStyle="0" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_9">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row10"/>
+  </connection>
+  <connection connectorName="FLOW" label="idit_t_communities_vh" lineStyle="0" metaname="idit_t_communities_vh" offsetLabelX="0" offsetLabelY="0" source="tMap_9" target="tHSQLDbOutput_9">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="idit_t_communities_vh"/>
+  </connection>
+  <connection connectorName="FLOW" label="row13" lineStyle="8" metaname="tDBInput_9" offsetLabelX="0" offsetLabelY="0" source="tDBInput_9" target="tMap_9">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row13"/>
+  </connection>
   <note opaque="true" posX="-96" posY="224" sizeHeight="64" sizeWidth="641" text="CUSTOMER DATA:"/>
   <note opaque="true" posX="1504" posY="192" sizeHeight="64" sizeWidth="385" text="TECHNICAL:"/>
   <note opaque="true" posX="-64" posY="1152" sizeHeight="64" sizeWidth="641" text="IDIT:"/>
-  <note opaque="true" posX="-64" posY="1600" sizeHeight="64" sizeWidth="641" text="UPDATES:"/>
+  <note opaque="true" posX="-128" posY="1856" sizeHeight="64" sizeWidth="641" text="UPDATES:"/>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_4"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -3822,13 +4095,18 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_0839bb85-b16e-4da0-8882-005cc163aa02"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mXQHElMA/zfGJYVBMO2ypSOaQBxd3LFL0fBWVkqCGlh9RWPzz87OL5r9OqSBhg3BO6NG6Gtba13r&#13;
-ZXcLJ7Hx7g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b5111a78-d403-4614-abee-3f2becc8120f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>njylvmcucv0CaVavix0HyeFKYkAWc57BxL0oMdQbxpT9zzBtOJFYkmB3f8Ckn4kaFIfKZ7xv+5Bx&#13;
-LE4TcVcf3g==</DigestValue></Reference></SignedInfo><SignatureValue>RJZ4ggQt8lPf1avFV0i3MmqkCw6VoaJm/ysgRLJivyZCxpgSDMcjJMPSjPTcqlXkolQrOIIno6gJ&#13;
-cMalH7UcIWwDxg+QKshvFY3Y+EwnY/dh085qrXPNCDKB+a5xi6PIKPvdLm6yMoRpqWW1J2Q09n/0&#13;
-LESjhYccc6Aubz/W1P/HdDC2cB+Az4vZua8Ny0YY2mmP1mOag/qnWWTGwuYzyUhwoOaRA5GmUEpQ&#13;
-rK2F1RVxgD+PX74DJzuYda6LgJtSScUgIMaKOY/nbrKIJl9kghekneBlQx0RzmegbSNH3f7FWX+q&#13;
-GiRK4odpBc7k5B8sXJuIzpynFx43gau35FCXFA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b481e56a-612f-43ab-9339-31ea68f4a7a9"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>I/46JTYHH5+9VPyK0ELrVfvq75UKUCjbB7/XLbXSpAxy7YkwJcP6lleInV9zWnQ3GgVGIH6v2vW5&#13;
+fLdbIuvE7A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c3add0b6-99ce-4848-a05b-ed20f3ed2693"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>V6GhaEmyZ5Y/6FbPeuIU+kwRAG/8qXCt2LzOYcVCmiHrVNF3FqunMgQ+Tg4Q6zmzM4k3rVFUWZ1I&#13;
+i1+uFIqhVw==</DigestValue></Reference></SignedInfo><SignatureValue>UM1e2gnVvgVp0vwBvQcdza0gF926U00Hb3HolIH5mPuF58b4+ocVJXupBt4kHsEYncDKQU/Dyc7Q&#13;
+NmLzbQBdRqFG25SPyB9HndOLOkdx+46i6oUONijw/jhapJd/7M7PXOaBMUnNGgRXBaaeL1+W4v+b&#13;
+Ig9GeWw2aaq3C0/U9GXxN7HQbcJ+8Ycnn7eYg5sZ1ujJuvju2JMpWLcTtpTKO5c8JH4OiEKM/vy5&#13;
+/p7F1XlDVIJUZk1Y7zWB7UNo9v4SDFyMwDvFT03jGDrMo0kjp1nKGa9aaR9p3ke7XDXl9EyV9fF/&#13;
+2Lo83sv/4ESTikZBGu1OrPeLgq3aHQEOE+N1IA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -3850,4 +4128,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b5111a78-d403-4614-abee-3f2becc8120f" Target="#_0839bb85-b16e-4da0-8882-005cc163aa02"><Timestamp>2024-02-22 10:22:43</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c3add0b6-99ce-4848-a05b-ed20f3ed2693" Target="#_b481e56a-612f-43ab-9339-31ea68f4a7a9"><Timestamp>2024-02-29 11:51:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>

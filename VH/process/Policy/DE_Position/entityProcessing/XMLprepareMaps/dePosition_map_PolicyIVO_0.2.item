@@ -1421,7 +1421,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLPolicyIVO" name="PolicyIVO">
+    <metadata comment="" label="XMLPolicyIVO" name="PolicyIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1479,6 +1479,7 @@
       <column comment="" key="false" length="100" name="masterEndorsementExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="VER_SCHADENFREIHEITSRABATT" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOB_OBJEKT_TYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="GFM_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="rejectNoContractVersion">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -1495,7 +1496,7 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;, TalendDate.getCurrentDate() ) ) " name="v_current_timestamp" type="id_Date"/>
         <mapperTableEntries expression="TalendDate.addDate(&#13;&#10;TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;, &#13;&#13;&#10;&#13;&#13;&#10;TalendDate.addDate(TalendDate.getCurrentDate(), 31, &quot;dd&quot;)) ) ,-1,&quot;ss&quot;) " name="v_current_timestamp_p30d" type="id_Date"/>
@@ -1503,7 +1504,7 @@
         <mapperTableEntries expression="policyHeader.policyStartDate " name="v_policy_start_date" type="id_Date"/>
         <mapperTableEntries expression="(long)100" name="v_current_channel_id" type="id_Long"/>
         <mapperTableEntries expression="&quot;Company Employee Channel&quot;" name="v_current_channel_desc" type="id_String"/>
-        <mapperTableEntries expression="&quot;DP-&quot; + String.valueOf(contract_version.POLICE)+ String.format(&quot;%03d&quot;, contract_version.VERTRAG)+&quot;/&quot; +&#13;&#10;String.valueOf(contract_version.POLICY_VERSION) " name="v_contract_migrated_number" type="id_String"/>
+        <mapperTableEntries expression="&quot;DP-&quot; + String.valueOf(contract_version.POLICE)+ String.format(&quot;%03d&quot;, contract_version.VERTRAG)+&quot;/&quot; +&#13;&#10;String.format(&quot;%02d&quot;,contract_version.POLICY_VERSION-1) " name="v_contract_migrated_number" type="id_String"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_GTsIcMaVEe6AveZw4oUw2Q - XMLPolicyIVO" name="PolicyIVO" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="POSITIONS.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -1563,6 +1564,7 @@
         <mapperTableEntries expression="Var.v_contract_migrated_number " name="masterEndorsementExternalNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="contract_version.VER_SCHADENFREIHEITSRABATT " name="VER_SCHADENFREIHEITSRABATT" nullable="true" type="id_String"/>
         <mapperTableEntries expression="POSITIONS.GOB_OBJEKT_TYP " name="GOB_OBJEKT_TYP" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="POSITIONS.GFM_NAME " name="GFM_NAME" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="contract_version.POLICE == 0" name="rejectNoContractVersion" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -1990,6 +1992,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GFM_NAME"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;XMLPolicyIVO&quot;"/>
@@ -2052,6 +2059,7 @@
       <column comment="" key="false" length="100" name="masterEndorsementExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="VER_SCHADENFREIHEITSRABATT" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOB_OBJEKT_TYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="GFM_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLPolicyIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -2111,6 +2119,7 @@
       <column comment="" key="false" length="100" name="masterEndorsementExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="VER_SCHADENFREIHEITSRABATT" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOB_OBJEKT_TYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="GFM_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2614,13 +2623,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3699e705-3a52-46fa-81e0-3e8a3e51a5e9"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>R//btuk1Qi0l0XanhF3WWNHpRGBl2RNWxhGQAHcjcf5pZHrDgeUQeOtijce+udgZ+NwqKz4dT4mP&#13;
-ZDB9lVUUgw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5c116bf9-3ab0-4164-bae0-f593426356df"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Fr+kYdBPluxxuqtgpTafeSYiaT2qNb3RT/pXuxBnhefsgjFDt+aXiG038rnY6X3gmk5KWlFrwgn8&#13;
-whR+I4JHCA==</DigestValue></Reference></SignedInfo><SignatureValue>Kkg84Y/o0Qgj82ZScPhJC0Of1dgDlJpLO0b8JssUPJfZMknuBQxDCfjTG1SGnitsUt2hCSaJiZaU&#13;
-4XaOhH2z6RPVsyc31tTgkw8VjUxzMY+b2UvVwK9SGc/vcudqOEkOJZGqRwr9dimMqpQ8dNwPdvSQ&#13;
-iVXA3f3bPGKub5tfbgGE8WSjwup0Stdsw/bpDy9ZCM4nZ85xrGC1uNlmCmkVL3f8m9fKkzwkhGCu&#13;
-mHoLMrz69NlUnLuMY4qdpPdkYYzJBbhKO8AgJIBAh0msypNfMKGrCElcm0Ph5tJVnZXBOL5FkIzs&#13;
-NPAjKefpj2V3RwMtZSmKVXhSGzNkr12cRYMRJw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5348ea35-4515-4468-92fe-d6b3f173960b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3najSUcFzfW8ms0Q8p4vWwGTAG8nnTKhhJc5MRGDF31s7PHPpfBQA9hQFB4UsYk582pVoMsntrsX&#13;
+2o0l6onHaA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d4e63896-8d23-4c54-a2b3-48c5c90fce00"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RsfvZr8aXpx31/TJkeMJIjxHj7AJt+4b2h86u8ADFjaluTnZFkXIbZm9vrqiEO6udNAkfcPtoGID&#13;
+GdMwwEsZ+Q==</DigestValue></Reference></SignedInfo><SignatureValue>MOkIMzHgH/M87inKjIKYy8z0wlN9xvA/Sgvg5RtFBZBRnpUWUHG/o3nyV3VeZB+aTiz2xOdf2Hm4&#13;
+r00DFw5Z/FV/Rq6rZSalu7M4tSVtEvwEFeMRxYHHeCk02xmLY/4grGQUUQqlkeY37FTLcMkXJIoX&#13;
+inEw+F6WhLndwA1e5CCXeNq6quVS1hJoYmGz7avvVzAgc4/QsimTvtWAqOfXQGfdBv1OMQIe/WV/&#13;
+BQaGlo+iF962Z+XvRtap6e9GDmVRR5KN8SAdkWSFFPZRaEN8zv6UI6Cf+57TjzqYvJBhp9uMfFkx&#13;
+fFJoyKyFH0pp+G3b9GS9Plo5Kkn6FwWTknmL8A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2642,4 +2651,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5c116bf9-3ab0-4164-bae0-f593426356df" Target="#_3699e705-3a52-46fa-81e0-3e8a3e51a5e9"><Timestamp>2024-02-22 09:18:29</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d4e63896-8d23-4c54-a2b3-48c5c90fce00" Target="#_5348ea35-4515-4468-92fe-d6b3f173960b"><Timestamp>2024-02-29 10:27:21</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
