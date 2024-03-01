@@ -20,7 +20,7 @@
     <contextParameter comment="" internalId="_ah1MJbtlEe65_pL7HwxoNg" name="IDIT_db_Port" prompt="IDIT_db_Port?" promptNeeded="false" repositoryContextId="_Wmf_ALtlEe65_pL7HwxoNg" type="id_String" value="1433"/>
   </context>
   <context confirmationNeeded="false" hide="false" name="TEST">
-    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="944"/>
+    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="267"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;proj&quot;"/>
     <contextParameter comment="" internalId="_zyPscG8yEe6s4NRAlgiHqQ" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
@@ -41,7 +41,7 @@
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
-    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="96"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="64"/>
     <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="64"/>
     <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" show="false" value=""/>
@@ -719,7 +719,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="0" posY="320">
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="320">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_6"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
@@ -737,12 +737,12 @@
     <elementParameter field="TEXT" name="USER" show="false" value="&quot;system&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:XgctgLB1uZMoOspgo7fYra8bfE9nZFZo9RNgM8vA0b+IUUzCU35UZQ=="/>
     <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;K2V_DEV.ALL_DE_POLICY&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH inc AS ( &#13;&#10;SELECT p.POL_POLICEN_NR external_policy_number, p.PAR_PARTNER_NR,  min(p.pol_gueltig_ab) start_date, max(p.POL_UNGUELTIG_AB) end_date, v.vertrag_nr, b.orig_start_date&#13;&#10;FROM sev.POLICE p&#13;&#10;JOIN (SELECT pol_policen_nr, max(ver_vertrag_nr) + 1 vertrag_nr FROM sev.VERTRAG v WHERE v.ver_historie = 'AN' AND pol_gueltig_ab &gt;= timestamp '2014-01-01 00:00:00.000' GROUP BY pol_policen_nr) v ON v.pol_policen_nr = p.pol_policen_nr -- GET the highest existing vertrag nr&#13;&#10;JOIN (SELECT min(POL_GUELTIG_AB) orig_start_date, pol_policen_nr FROM SEV.police WHERE pol_historie &lt;&gt; 'HT' GROUP BY POL_POLICEN_NR) b ON b.pol_policen_nr = p.POL_POLICEN_NR --GET the original START DATE OF the bundle&#13;&#10;WHERE EXISTS&#13;&#10;&#9;(SELECT 1 FROM sev.VERTRAG v&#13;&#10;&#9; WHERE v.POL_POLICEN_NR = p.POL_POLICEN_NR&#13;&#10;&#9;  AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000' -- Active policy AFTER this DATE IN VERTRAG&#13;&#10;&#9;-- AND p.POL_UNGUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9; AND v.VER_HISTORIE &lt;'HT' -- NOT a temp row&#13;&#10;&#9; AND v.VER_ZUSTAND = 'lebend' -- policy IS active&#13;&#10;&#9; AND p.POL_GUELTIG_AB &lt;= v.POL_GUELTIG_AB) -- MATCH ON START dates FOR rows&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT' --AND POL_ZUSTAND = 'lebend' -- we want TO also see cancelled bundles WITH active vertrag IN the scope&#13;&#10;AND p.POL_UNGUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000' -- END DATE OF the bundle IS IN scope&#13;&#10;AND p.POL_POLICE_TYP in ('VH','KH')&#13;&#10;GROUP BY p.POL_POLICEN_NR, p.PAR_PARTNER_NR , v.vertrag_nr, b.orig_start_date&#13;&#10;) &#13;&#10; SELECT a.entity_id, a.legacy_id, inc.start_date, inc.start_date AS latest_start, inc.PAR_PARTNER_NR, inc.end_date, inc.vertrag_nr, inc.orig_start_date&#13;&#10; FROM k2v_dev.de_policy_migration_status a&#13;&#10;    INNER JOIN inc ON a.legacy_id = inc.external_policy_number&#13;&#10; WHERE 1=1&#13;&#10; AND a.migration_id = &quot;  + context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ENTITY_ID, BUNDLE_POLICY_ID, START_DATE, LATEST_START, PAR_PARTNER_NR, END_DATE, MAX_VERTRAG_NR, ORIG_START_DATE &#13;&#10;FROM K2V_DEV.ALL_DE_POLICY adp &#13;&#10;where exists (select 1 from k2v_dev.policy_migration_status a where adp.entity_id = a.entity_id and a.migration_status=100 and  a.migration_id = &quot;+ context.migrationID+&quot;)&quot;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -769,14 +769,14 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG_NR"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MAX_VERTRAG_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ORIG_START_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_DE_POLICY_HEADER_v49"/>
+    <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_6">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -785,7 +785,7 @@
       <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="VERTRAG_NR" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="MAX_VERTRAG_NR" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
@@ -803,7 +803,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" label="DE_POLICY_HEADER" name="DE_POLICY_HEADER">
+    <metadata comment="" connector="FLOW" label="DE_POLICY_HEADER" name="DE_POLICY_HEADER">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
@@ -814,7 +814,7 @@
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_HPHtYISTEe6FjatyUK4Uyg - DE_POLICY_HEADER" name="DE_POLICY_HEADER" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row5.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
@@ -823,7 +823,7 @@
         <mapperTableEntries expression="row5.LATEST_START " name="LATEST_START" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row5.PAR_PARTNER_NR " name="PAR_PARTNERNR" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row5.END_DATE " name="END_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="row5.VERTRAG_NR " name="VERTRAG_NR" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row5.MAX_VERTRAG_NR " name="VERTRAG_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row5.ORIG_START_DATE " name="ORIG_START_DATE" nullable="true" type="id_Date"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row5" sizeState="INTERMEDIATE">
@@ -833,12 +833,12 @@
         <mapperTableEntries name="LATEST_START" nullable="true" type="id_Date"/>
         <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
         <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="VERTRAG_NR" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="MAX_VERTRAG_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries name="ORIG_START_DATE" nullable="true" type="id_Date"/>
       </inputTables>
     </nodeData>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="320">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="448" posY="320">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_6"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -1015,7 +1015,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH inc AS ( &#13;&#10; SELECT p.POL_POLICEN_NR external_policy_number, p.PAR_PARTNER_NR,  min(p.pol_gueltig_ab) start_date&#13;&#10;FROM sev.POLICE p&#13;&#10;WHERE EXISTS&#13;&#10;&#9;(SELECT 1 FROM sev.VERTRAG v&#13;&#10;&#9; WHERE v.POL_POLICEN_NR = p.POL_POLICEN_NR&#13;&#10;&#9;  AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9; AND v.VER_HISTORIE &lt;'HT'&#13;&#10;&#9; AND v.VER_ZUSTAND = 'lebend'&#13;&#10;&#9; AND p.POL_GUELTIG_AB &lt;= v.POL_GUELTIG_AB)&#13;&#10;AND p.POL_POLICE_TYP in ('VH','KH')&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT' --AND POL_ZUSTAND = 'lebend'&#13;&#10;AND p.POL_UNGUELTIG_AB&gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;GROUP BY p.POL_POLICEN_NR, p.PAR_PARTNER_NR&#13;&#10;),&#13;&#10;ver AS &#13;&#10;  (&#13;&#10;SELECT DISTINCT p.POL_POLICEN_NR AS POLICE,  &#13;&#10;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#13;&#10;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#13;&#10;p.POL_WIRTSCHAFTSWEISE AS economy_ref,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM &#13;&#10;WHEN 'Secufarm' THEN 1000198&#13;&#10;WHEN 'Basis' THEN 1000198&#13;&#10;WHEN 'Garant' THEN 1000199&#13;&#10;END AS premiumSystem,&#13;&#10;CASE  &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Secufarm' AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NOT NULL THEN concat(concat(p.POL_PRODUKT_OBERGRUPPE,', '), p.pol_beschreibung)&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NULL THEN p.POL_PRODUKT_OBERGRUPPE &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NULL AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;ELSE NULL&#13;&#10;END AS bundle_remarks,&#13;&#10;CASE p.POL_RECHNUNGSTYP WHEN '1' THEN 1 ELSE 0 END IS_ANNUAL_PAYER,&#13;&#10;CASE WHEN p.POL_STORNOGRUND IS NOT NULL AND p.POL_HISTORIE = 'AN' THEN 40 -- 'Cancelled'&#13;&#10;ELSE 20 --'Policy'&#13;&#10;END AS bundle_policy_status,&#13;&#10;p.POL_HISTORIE AS bundle_Status,&#13;&#10;p.POL_STORNOGRUND AS cancelled&#13;&#10;FROM sev.POLICE p  &#13;&#10;WHERE 1=1&#13;&#10;--AND p.POL_GUELTIG_AB &gt;= [start_date from POLICY_LEGACY_SELECTION]&#13;&#10;--AND p.POL_POLICEN_NR = [external_policy_number from POLICY_LEGACY_SELECTION&#13;&#10;AND p.pol_ungueltig_ab &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#13;&#10;--AND p.POL_ZUSTAND = 'lebend' -- removed to ensure we get cancelled row&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;) &#13;&#10;&#13;&#10;SELECT a.entity_id, a.legacy_id, ver.police, ver.B_VER_START_DATE, ver.B_VER_END_DATE, ver.economy_ref,&#13;&#10;ver.premiumSystem, ver.bundle_remarks, ver.IS_ANNUAL_PAYER  ,&#13;&#10;ver.bundle_policy_status, ver.bundle_Status, ver.cancelled,&#13;&#10;&#9;DENSE_RANK() OVER(PARTITION BY ver.police ORDER BY ver.B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM  k2v_dev.DE_POLICY_MIGRATION_STATUS a&#13;&#10;INNER JOIN ver ON A.LEGACY_ID = ver.police&#13;&#10;INNER JOIN inc ON ver.police = inc.external_policy_number AND ver.B_VER_START_DATE &gt;= inc.start_date&#13;&#10;WHERE 1=1&#13;&#10; AND a.migration_id = &quot;  + context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH inc AS ( &#13;&#10;SELECT adp.entity_id, adp.BUNDLE_POLICY_ID , adp.PAR_PARTNER_NR , adp.START_DATE &#13;&#10;FROM K2V_DEV.ALL_DE_POLICY adp &#13;&#10;),&#13;&#10;ver AS (&#13;&#10;SELECT DISTINCT p.POL_POLICEN_NR AS BUNDLE_POLICY_ID,  &#13;&#10;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#13;&#10;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#13;&#10;p.POL_WIRTSCHAFTSWEISE AS economy_ref,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM &#13;&#10;&#9;WHEN 'Secufarm' THEN 1000198&#13;&#10;&#9;WHEN 'Basis' THEN 1000198&#13;&#10;&#9;WHEN 'Garant' THEN 1000199&#13;&#10;END AS premiumSystem,&#13;&#10;CASE  &#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Secufarm' AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NOT NULL THEN concat(concat(p.POL_PRODUKT_OBERGRUPPE,', '), p.pol_beschreibung)&#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NULL THEN p.POL_PRODUKT_OBERGRUPPE &#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NULL AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;ELSE NULL&#13;&#10;END AS bundle_remarks,&#13;&#10;CASE p.POL_RECHNUNGSTYP WHEN '1' THEN 1 ELSE 0 END IS_ANNUAL_PAYER,&#13;&#10;CASE WHEN p.POL_STORNOGRUND IS NOT NULL AND p.POL_HISTORIE = 'AN' THEN 40 -- 'Cancelled'&#13;&#10;ELSE 20 --'Policy'&#13;&#10;END AS bundle_policy_status,&#13;&#10;p.POL_HISTORIE AS bundle_Status,&#13;&#10;p.POL_STORNOGRUND AS cancelled&#13;&#10;FROM sev.POLICE p  &#13;&#10;WHERE 1=1&#13;&#10;--AND p.POL_GUELTIG_AB &gt;= [start_date from POLICY_LEGACY_SELECTION]&#13;&#10;--AND p.POL_POLICEN_NR = [external_policy_number from POLICY_LEGACY_SELECTION&#13;&#10;AND p.pol_ungueltig_ab &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;--AND p.POL_ZUSTAND = 'lebend' -- removed to ensure we get cancelled row&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;) &#13;&#10;SELECT inc.entity_id, inc.bundle_policy_id, ver.B_VER_START_DATE, ver.B_VER_END_DATE, ver.economy_ref,&#13;&#10;ver.premiumSystem, ver.bundle_remarks, ver.IS_ANNUAL_PAYER  ,&#13;&#10;ver.bundle_policy_status, ver.bundle_Status, ver.cancelled,&#13;&#10;DENSE_RANK() OVER(PARTITION BY ver.BUNDLE_POLICY_ID ORDER BY ver.B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM  inc&#13;&#10;INNER JOIN ver ON inc.bundle_policy_id = ver.BUNDLE_POLICY_ID AND ver.B_VER_START_DATE &gt;= inc.start_date&#13;&#10;WHERE EXISTS (SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS pms WHERE pms.ENTITY_ID = inc.ENTITY_ID AND pms.MIGRATION_ID = &quot;+context.migrationID+&quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1032,9 +1032,7 @@
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_POLICY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="B_VER_START_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -1063,8 +1061,7 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_2">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="B_VER_START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="B_VER_END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="ECONOMY_REF" nullable="true" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -1107,12 +1104,12 @@
       <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="versions" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row2.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries expression="row2.LEGACY_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row2.POLICE " name="POLICY" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row2.BUNDLE_POLICY_ID " name="LEGACY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row2.BUNDLE_POLICY_ID " name="POLICY" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.B_VER_START_DATE " name="VER_START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row2.B_VER_END_DATE " name="VER_END_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row2.ECONOMY_REF " name="ECONOMY_REF" nullable="true" type="id_String"/>
@@ -1126,8 +1123,7 @@
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries name="LEGACY_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="POLICE" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="B_VER_START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="B_VER_END_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="ECONOMY_REF" nullable="true" type="id_String"/>
@@ -1419,7 +1415,7 @@
       <elementValue elementRef="TRACE_COLUMN" value="END_DATE"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="VERTRAG_NR"/>
+      <elementValue elementRef="TRACE_COLUMN" value="MAX_VERTRAG_NR"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="ORIG_START_DATE"/>
@@ -1429,7 +1425,7 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
-  <connection connectorName="FLOW" label="DE_POLICY_HEADER" lineStyle="0" metaname="DE_POLICY_HEADER" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tHSQLDbOutput_6">
+  <connection connectorName="FLOW" label="DE_POLICY_HEADER" lineStyle="0" metaname="DE_POLICY_HEADER" offsetLabelX="2" offsetLabelY="1" source="tMap_3" target="tHSQLDbOutput_6">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="VERTRAG_NR"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
@@ -1583,13 +1579,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3580312d-dab6-4ffb-b9dc-035d721ebd44"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>uUwjg7BO025Zay2XFUvQmSxFcDAPmmeWMLvhaoWWP2yXpdzc4H5HO7MoE72OnQC7/SrVnkoAUkrO&#13;
-NzitBwfMyg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c64604dd-fd51-455d-90f6-11646a4a103b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8SHVMB3PrkPpi+UGkJUtuG4oQ4sibmdXx3Vpn+6qGixZtioFKEOwnldfoZ9VHqj+1B6zr9SwhEai&#13;
-NxD5caQanw==</DigestValue></Reference></SignedInfo><SignatureValue>PI9NNTq7rjjYtLr4ZOicovKl878ANFnm/FREMEnnEuCjN6hslKL7ncswUqAXStFSjJlN9qGlR5sa&#13;
-raKmOtRD9ABNM3/hQjaIuAF/5Bz4vDJbHUevXDk9mhpiWjjc12B3NEhwdMsEFFWOBMpORXhlS0MY&#13;
-SF5m6nPLcX/dGawhVU8EQiXxjfvav0UvrHOujUCD3UXL4UPr7zIkgwdv2Ja8DAFKCmtT/Lg/wlqX&#13;
-klob6bZJVGjhXOiJ4ttlQXV4cnloWP5Fnev+udIYd0GOc0Z5K78nYKltiazatq2gNTK+RP1vqVg9&#13;
-v9H/ZajlDCxf+h8gWd70JNMoP1YKZ6/UShVOEQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9b6529e9-150d-4445-a4f3-d48172cfcb08"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vez3fGj+zs2ex9jXq6lHAjVQ2WkccboPgemONObqkfhHZ12c4Sn5YDcx8GCSHmwkSKNpeysAwZG6&#13;
+7IZeqRCAew==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_11aeb918-68ac-4c0b-8dee-b14f249bcee9"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mvIZvCJyx0JcZJmkRpowjm0CKRZnDDyzCX/v0iYd1CXmL9gd7rel+8nNt1y23IS5/ZosoODQ+5y9&#13;
+fgLnGLI+pg==</DigestValue></Reference></SignedInfo><SignatureValue>GctQHOHNUe9TjCvIf9NcTrjv0n+AjBVfRR1Mnb1re6vcRijThQKoJul78koXmS0M9rjcZqIfE24z&#13;
+6EIHZ3bTyJ5DSZ1zz2XcOqe+H51BGt0/sPUsuchUJydh5PZA3+emlYoowMSgPqHBEBrKRdjY5DzL&#13;
+88tKLlLIMjH32mpIT7yZTtETMwVU8ItjtRG211uKy/ozWgr587ue6JTGemOB3v7u2wBw7F0GxDO2&#13;
+c7/1tCkAKevZgIiB4iVL7dPdh1ylT1cz8TSBtWuR0fymo1yZPVBo93Fu/T01CyPhvwCLSXeTWvkC&#13;
+isgPQYCSPpwmw7yRYDpEwqaVx3c+MwmVTfaVzg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1611,4 +1607,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c64604dd-fd51-455d-90f6-11646a4a103b" Target="#_3580312d-dab6-4ffb-b9dc-035d721ebd44"><Timestamp>2024-02-29 15:28:15</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_11aeb918-68ac-4c0b-8dee-b14f249bcee9" Target="#_9b6529e9-150d-4445-a4f3-d48172cfcb08"><Timestamp>2024-03-01 13:51:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
