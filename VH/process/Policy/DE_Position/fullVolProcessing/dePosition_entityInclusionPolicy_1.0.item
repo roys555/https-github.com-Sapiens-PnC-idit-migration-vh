@@ -155,7 +155,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH a AS (&#13;&#10;SELECT &#9;pol.POL_POLICEN_NR, ver.VER_VERTRAG_NR&#13;&#10;FROM sev.VERTRAG ver, sev.police pol&#13;&#10;WHERE 1=1&#13;&#10;AND ver.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;AND ver.VER_HISTORIE &lt;'HT'&#13;&#10;AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;  and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;  and pol.POL_HISTORIE = 'AN'&#13;&#10;  and pol.POL_POLICE_TYP in ('VH','KH')&#13;&#10;  AND ver.VER_HISTORIE = 'AN'&#13;&#10;) &#13;&#10;SELECT a.POL_POLICEN_NR AS POLICE, a.VER_VERTRAG_NR AS VERTRAG &#13;&#10;FROM a&#13;&#10;WHERE 1=1&#13;&#10;AND a.POL_POLICEN_NR IN (&#13;&#10;'1100030902',&#13;&#10;'1254100601',&#13;&#10;'1259175701',&#13;&#10;'1438152801',&#13;&#10;'1495175301',&#13;&#10;'1498170901',&#13;&#10;'1006829602',&#13;&#10;'1077274603',&#13;&#10;'1257903902',&#13;&#10;'1469212001',&#13;&#10;'1040225802',&#13;&#10;'1258696001',&#13;&#10;'1466240201',&#13;&#10;'1478821001',&#13;&#10;'1017501802',&#13;&#10;'1030861502',&#13;&#10;'1129054803',&#13;&#10;'1020551003',&#13;&#10;'1038550502',&#13;&#10;'1049619202',&#13;&#10;'1109002102',&#13;&#10;'1254191002',&#13;&#10;'1415625301',&#13;&#10;'1501345002',&#13;&#10;'1501384402',&#13;&#10;'1127448603',&#13;&#10;'1227658804',&#13;&#10;'1254424201',&#13;&#10;'1029926302',&#13;&#10;'1069291702',&#13;&#10;'1097845602',&#13;&#10;'1112279802',&#13;&#10;'1259885901',&#13;&#10;'1490864001',&#13;&#10;'1010241402',&#13;&#10;'1049097302',&#13;&#10;'1480431901',&#13;&#10;'1399741102'&#13;&#10;)&#13;&#10;   &quot;     "/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT a.BUNDLE_POLICY_ID as POL_POLICEN_NR, a.POLICY_ID as VER_VERTRAG_NR, a.POSITION_ID as OBJ_OBJEKT_NR&#13;&#10;FROM K2V_DEV.ALL_DE_POSITION A&#13;&#10;WHERE a.BUNDLE_POLICY_ID IN (&#13;&#10;'1100030902',&#13;&#10;'1254100601',&#13;&#10;'1259175701',&#13;&#10;'1438152801',&#13;&#10;'1495175301',&#13;&#10;'1498170901',&#13;&#10;'1006829602',&#13;&#10;'1077274603',&#13;&#10;'1257903902',&#13;&#10;'1469212001',&#13;&#10;'1040225802',&#13;&#10;'1258696001',&#13;&#10;'1466240201',&#13;&#10;'1478821001',&#13;&#10;'1017501802',&#13;&#10;'1030861502',&#13;&#10;'1129054803',&#13;&#10;'1020551003',&#13;&#10;'1038550502',&#13;&#10;'1049619202',&#13;&#10;'1109002102',&#13;&#10;'1254191002',&#13;&#10;'1415625301',&#13;&#10;'1501345002',&#13;&#10;'1501384402',&#13;&#10;'1127448603',&#13;&#10;'1227658804',&#13;&#10;'1254424201',&#13;&#10;'1029926302',&#13;&#10;'1069291702',&#13;&#10;'1097845602',&#13;&#10;'1112279802',&#13;&#10;'1259885901',&#13;&#10;'1490864001',&#13;&#10;'1010241402',&#13;&#10;'1049097302',&#13;&#10;'1480431901',&#13;&#10;'1399741102',&#13;&#10;'1006006103'&#13;&#10;)&#13;&#10;   &quot;     "/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -174,6 +174,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -182,6 +184,7 @@
     <metadata connector="FLOW" name="tDBInput_1">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POSITION" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="416" posY="480">
@@ -238,11 +241,11 @@
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="String.valueOf(row1.POLICE) " name="police_txt" type="id_String"/>
         <mapperTableEntries expression="String.valueOf(row1.VERTRAG) " name="vertrag_txt" type="id_String"/>
-        <mapperTableEntries expression="Var.police_txt + &quot;_&quot;+  Var.vertrag_txt " name="entity_id" type="id_String"/>
+        <mapperTableEntries expression="Var.police_txt + &quot;_&quot;+  Var.vertrag_txt  + &quot;_&quot; +String.valueOf(row1.POSITION) " name="entity_id" type="id_String"/>
       </varTables>
       <outputTables activateCondensedTool="true" name="copyOfcopyOfcopyOfmain_1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Long"/>
@@ -250,7 +253,7 @@
         <mapperTableEntries expression="null" name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row1.POLICE " name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row1.VERTRAG " name="POLICY_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="(long)1" name="POSITION_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row1.POSITION " name="POSITION_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Position&quot;" name="POLICY_TYPE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Integer"/>
         <mapperTableEntries expression="null" name="ZIP_FILE_NAME" nullable="true" type="id_String"/>
@@ -261,6 +264,7 @@
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
         <mapperTableEntries name="VERTRAG" type="id_Long"/>
+        <mapperTableEntries name="POSITION" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1291,13 +1295,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_89d45256-5c84-4032-8c29-50fcc4614589"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>1RqXbFNJ2lLYiNDoqfO7C/4wYw0OYn1PVPRIJ5YFRZvj1OY/zA5zXF/lcaxhp90TSWKjJ9B2VlFC&#13;
-GutuIDHUXA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_17b8031b-ad70-4554-a951-6dd42273e86e"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>X5UOOBzhrG/DxO0UsD90o8gy5XezsIHYlyIw2zUMzxFDJqOAhIdI7vG/CYa3B653uU6SoQsIcWor&#13;
-JguqsCImbw==</DigestValue></Reference></SignedInfo><SignatureValue>G7AeKL2k3Bfh9N+dbOxFVoVDc0dcqlVd7jgbhAtpAN4rHrQrspqFJmSp2LUws33O1GQAtGbFsMhG&#13;
-d/Lgd2Xi1buZUN7sJuSnpXD4lOnXW+AjiAdJbevEer9+A2QTbjMdTyuKuPkcl3bUEAPGMq66EvCy&#13;
-ra0Yj0CQ45oUGwwyRxmSwcaNVusC0Ql0ngDk/WRV1NjLHVsszMOOIscjmobQjjsXXg5d/KhZLXPy&#13;
-WsExisO0im2OcmVTKvjWMrmXo4NlhxIGSeFjpVxi3suTdUJs9n6mXy006TJAsb8JjrCuPZjzqN3N&#13;
-feHRr3Iy8YAbXgIr69V/UG9Dwen1R2jn5DaLaQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3669060a-eea1-460f-9db1-b843275832a2"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>aItyxoO/YX/BowE4ImYBIqm4mwGDXFPwGrtO+/0SGhMdvT7s3eur9nyWwaqnzN+vQ9PNKl9RwL7q&#13;
+9MvdRqrPpw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_78afcdba-c441-4b60-8646-50ed9cd38bd9"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>4KU9aKLImzZew56BmxtNiomkxdrpNrHRW57KdHnvBbq1UdQtesq+/f/ZM4JoLwW/rSnpw8Z5hPyS&#13;
+matDkgLCtg==</DigestValue></Reference></SignedInfo><SignatureValue>o2xKA3GIeOhz3i6dFxFO4EAJ5ee7GCYTvzpsN18AzgHgmXSH64FghsIEhpWq3V2Wq1O1NB6oXcQD&#13;
+3WJMdnV1oI54SIwUkIndEaV3TDk4JM3Tb4wq8Eh1kJH3ukHZebxt3ORkWabr4XtSeIU4pcot2sC3&#13;
+jIAVzrsUfiBWWE2nqY404Pux4ITJjwmbmIufWWkR7Lt91KeHWtvst0EO2o7DlKOiuJg1SY0pbpc/&#13;
+yi8Tlqr7ezU4B0ggugxFD/mPpJsDCKWttMqPWODQPIgURC54FSWiF1SqGaQcfBq0A4RLSHrBBFyK&#13;
+MUYhZdhWQkr2nkuEXLD3hBZT/f+LKIAX645bwg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1319,4 +1323,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_17b8031b-ad70-4554-a951-6dd42273e86e" Target="#_89d45256-5c84-4032-8c29-50fcc4614589"><Timestamp>2024-03-20 12:02:06</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_78afcdba-c441-4b60-8646-50ed9cd38bd9" Target="#_3669060a-eea1-460f-9db1-b843275832a2"><Timestamp>2024-03-20 12:23:50</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
