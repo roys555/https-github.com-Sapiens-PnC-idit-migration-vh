@@ -256,20 +256,20 @@
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:NbwSJONdzM0eQnYT8eBCZgfuCkSdymGkEPCon5vp"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_4Pbn4O3CEe6FWsyE3GHr-A - CONTRACT_CLAUSES"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;CONTRACT_CLAUSES&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT CONTRACT_CLAUSES.POLICE,&#10;&#9;&#9;CONTRACT_CLAUSES.VERTRAG,&#10;&#9;&#9;CONTRACT_CLAUSES.START_DATE,&#10;&#9;&#9;CONTRACT_CLAUSES.END_DATE,&#10;&#9;&#9;CONTRACT_CLAUSES.CLAUSE_NAME,&#10;&#9;&#9;CONTRACT_CLAUSES.V_CROP_GROUP,&#10;&#9;&#9;CONTRACT_CLAUSES.TABLE_NAME&#10;FROM&#9;CONTRACT_CLAUSES&#13;&#10;WHERE  CONTRACT_CLAUSES.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND &#9;&#9;CONTRACT_CLAUSES.VERTRAG = &quot;+context.p_id"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT CONTRACT_CLAUSES.POLICE,&#10;&#9;&#9;CONTRACT_CLAUSES.VERTRAG,&#13;&#10;POLICY_VERSION_SELECTION .policy_version,&#10;&#9;&#9;CONTRACT_CLAUSES.START_DATE,&#10;&#9;&#9;CONTRACT_CLAUSES.END_DATE,&#10;&#9;&#9;CONTRACT_CLAUSES.CLAUSE_NAME,&#10;&#9;&#9;CONTRACT_CLAUSES.V_CROP_GROUP,&#10;&#9;&#9;CONTRACT_CLAUSES.TABLE_NAME&#10;FROM&#9;CONTRACT_CLAUSES &#13;&#10;inner join POLICY_VERSION_SELECTION  on CONTRACT_CLAUSES.POLICE = POLICY_VERSION_SELECTION.POLICE  and CONTRACT_CLAUSES.VERTRAG = POLICY_VERSION_SELECTION.VERTRAG and &#9;&#9;CONTRACT_CLAUSES.START_DATE = &#9;&#9;POLICY_VERSION_SELECTION.V_START_DATE,&#13;&#10;WHERE  CONTRACT_CLAUSES.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND &#9;&#9;CONTRACT_CLAUSES.VERTRAG = &quot;+context.p_id"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -287,6 +287,7 @@
     <metadata connector="FLOW" label="CONTRACT_CLAUSES" name="tHSQLDbInput_3">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -312,6 +313,8 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
+      <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
@@ -329,6 +332,7 @@
     <metadata connector="FLOW" label="CONTRACT_CLAUSES" name="tLogRow_1">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -337,6 +341,11 @@
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tLogRow_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="POLICY_VERSION"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
@@ -350,13 +359,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_6e31398a-a4ba-4501-824f-a55fb93b9f62"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>5pYAtLRGKX0xwe9Vx97ykj0ThK/+U2PAQ8ZMIpS1L8rX1F7EDbjSaVVzV5FCdXZv1wjLi104KXC4&#13;
-QWfX0XXPjA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5e156cd5-3e8d-4be9-90d2-96d4f58dba4e"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>rTxSfrKC7/twwiK7Lnf36JargFCyryA8zHPtVNo0ZIPJqz+u0IHJZJEtpeQUz5P9y4Rn5ia4lHxG&#13;
-CWZd2rJPWA==</DigestValue></Reference></SignedInfo><SignatureValue>cv0AK37Bz+zjcQCO71F3Tcn3WdJJREiJQmC/JY6NUZyp9yzuIFzF8q/Do38R1FnFC9MSxmHrYQmJ&#13;
-tV4r02kWoIaKB29L3Ifh5M/dMIjynjcXQtvm51i2fNVUSWpjP5gcMsepMhBhu1ZrZ3njylzhP3KH&#13;
-UbFOzldukAG5VzbiEWRcX7EfMp79f/JudIJ/xkSGHflKK92kuusCeHr/r8dAsoVrGylHiWpuMplL&#13;
-V0+bueIGq976xwHvdxVpm+dOf8r8pquul3GBzEIRIWP/tD7pMGXazpK5YEYhqxQHYvTf6q/ISS40&#13;
-dpsiVYbkZ1pCNF7Yckwj5l9BkmvpHb2VoyC91A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bd673d9c-7536-4f91-a1b0-fd1692fa2f60"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>5sOi1VDsIv951gYjpJjfc+PxabOghUm1uTB1hDm6B1/GO3HO0QLo+foBelaOIyWPWOzZMkQZHhWW&#13;
+YKezGQzIVQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a0213be6-b212-404f-a729-90c9fb669bfe"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>JHglRMyE2Gh7OXLQFaD2KOrsmAWgLel/lcUfmhAtMo2P4ShMZZf+R7QlssAH+n6glmU0vKK8KJxI&#13;
+AF848931aA==</DigestValue></Reference></SignedInfo><SignatureValue>CkeHYBIL72tgRTmyzfcYeheUOepWAotYpTDqGfdCynSoX1UokG24DjrXUMHb85Omjwb2+eysRP15&#13;
+ivr1iuam1fV0VN0tZ6gKRKYmWTFJiO5EiPxFPzhitpafOvj38OQYAwwcJ9qdpny4wmqIAgf+lpdq&#13;
+hbxp7S+6Daie70zHoL2zq71nY1KJUUR0vw7S/vmlfLhrPK/5N1YGGhuAtXYKItT09S5d6QHvqsrM&#13;
+1gbQwJmJl78WYa0YHPv/ItpdubwmtH1zO+kQXU2K2/WSWN8fatA9x3EccKYxjp7388V8PWoH8zCa&#13;
+rb79GzyGxchgQt9Wjr5mesUoXIKOxPI9qVXJLw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -378,4 +387,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5e156cd5-3e8d-4be9-90d2-96d4f58dba4e" Target="#_6e31398a-a4ba-4501-824f-a55fb93b9f62"><Timestamp>2024-03-29 13:24:03</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a0213be6-b212-404f-a729-90c9fb669bfe" Target="#_bd673d9c-7536-4f91-a1b0-fd1692fa2f60"><Timestamp>2024-03-29 13:37:39</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
