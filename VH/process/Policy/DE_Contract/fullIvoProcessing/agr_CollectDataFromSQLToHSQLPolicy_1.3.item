@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="2606"/>
+    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="2675"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;projAGR&quot;"/>
     <contextParameter comment="" internalId="_oLlGsLtiEe65_pL7HwxoNg" name="Oracle_staging_Server" prompt="Oracle_staging_Server?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value="10.86.77.7"/>
@@ -17,6 +17,7 @@
     <contextParameter comment="" internalId="_a4WOs7tlEe65_pL7HwxoNg" name="IDIT_db_Schema" prompt="IDIT_db_Schema?" promptNeeded="false" repositoryContextId="_Wmf_ALtlEe65_pL7HwxoNg" type="id_String" value="dbo"/>
     <contextParameter comment="" internalId="_a4WOtLtlEe65_pL7HwxoNg" name="IDIT_db_Server" prompt="IDIT_db_Server?" promptNeeded="false" repositoryContextId="_Wmf_ALtlEe65_pL7HwxoNg" type="id_String" value="10.86.77.4"/>
     <contextParameter comment="" internalId="_a4WOtbtlEe65_pL7HwxoNg" name="IDIT_db_Port" prompt="IDIT_db_Port?" promptNeeded="false" repositoryContextId="_Wmf_ALtlEe65_pL7HwxoNg" type="id_String" value="1433"/>
+    <contextParameter comment="" internalId="_mcWJIO20Ee6FWsyE3GHr-A" name="borderDate" prompt="borderDate?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;2015-01-01 00:00:00.000&quot;"/>
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
@@ -357,7 +358,7 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tRunJob_1"/>
   </node>
-  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="768">
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="0" posY="768">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_3"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
@@ -380,7 +381,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH VERSIONS AS&#13;&#10;&#9;(  SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;&#9;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;&#9;v.VER_UNGUELTIG_AB AS V_END_DATE,&#13;&#10;&#9;v.VER_BEG_DATUM AS V_CONTRACT_START,&#13;&#10;&#9;v.VER_ABL_DATUM AS V_CONTRACT_END,&#13;&#10;&#9;v.VER_PRODUKT_TYP AS CROP_GROUP,&#13;&#10;&#9;v.VER_ZUSTAND,&#13;&#10;&#9;v.VER_HISTORIE,&#13;&#10;&#9;v.VER_STATUS,&#13;&#10;&#9;v.VER_SCHADENFREIHEITSRABATT,&#13;&#10;&#9;ROUND((v.VER_ABL_DATUM - v.VER_BEG_DATUM)/365) AS contract_duration,&#13;&#10;&#9;p.POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;CASE  &#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Einzug' THEN 1000012&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Einzug' THEN 1000008&#13;&#10;&#9;END AS PAYMENT_TERM,&#13;&#10;  CASE  WHEN p.POL_RECHNUNGSTYP = 1 THEN 1 ELSE 0 END as IS_ANNUAL_PAYER,&#13;&#10;&#9;CASE v.VER_INKASSOART &#13;&#10;&#9;WHEN 'Selbst' THEN 10019&#13;&#10;&#9;WHEN 'Einzug' THEN 2&#13;&#10;    --ELSE 1&#13;&#10;&#9;END AS COLLECTION_METHOD,&#13;&#10;&#9;v.VER_KUENDIGUNG,&#13;&#10;p.PAR_PARTNER_NR,&#13;&#10;v.ver_beschreibung vertrag_remarks&#13;&#10;&#9;FROM SEV.VERTRAG v&#13;&#10;&#9;JOIN sev.police p ON p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'&#13;&#10;&#9;&#9;&#9;WHERE 1=1&#13;&#10;&#9;&#9;&#9;AND v.VER_ZUSTAND = 'lebend' &#13;&#10;&#9;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;&#9;&#9;AND v.POL_GUELTIG_AB &gt;= timestamp '2014-01-01 00:00:00.000'&#13;&#10;&#9;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH')&#13;&#10;&#9;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&#13;&#10;&#9;)&#9;&#13;&#10;&#9;SELECT POLICE, VERTRAG, V_START_DATE, V_END_DATE, CROP_GROUP, VER_ZUSTAND, VER_SCHADENFREIHEITSRABATT, &#9;ver_historie, POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;V_CONTRACT_START, V_CONTRACT_END, contract_duration, PAYMENT_TERM, IS_ANNUAL_PAYER, COLLECTION_METHOD, VER_STATUS, VER_KUENDIGUNG, PAR_PARTNER_NR, vertrag_remarks,&#13;&#10;&#9;DENSE_RANK() OVER(partition BY POLICE, VERTRAG  ORDER BY V_START_DATE) AS POLICY_VERSION,&#13;&#10;max(vertrag+1) OVER (PARTITION BY POLICE ) AS NextNumInBundle&#13;&#10;&#9;FROM VERSIONS&#13;&#10;&#9;ORDER BY police, vertrag, V_START_DATE ASC&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH VERSIONS AS&#13;&#10;&#9;(  SELECT DISTINCT v.POL_POLICEN_NR AS POLICE, &#13;&#10;&#9;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;&#9;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;&#9;v.VER_UNGUELTIG_AB AS V_END_DATE,&#13;&#10;&#9;v.VER_BEG_DATUM AS V_CONTRACT_START,&#13;&#10;&#9;v.VER_ABL_DATUM AS V_CONTRACT_END,&#13;&#10;&#9;v.VER_PRODUKT_TYP AS CROP_GROUP,&#13;&#10;&#9;v.VER_ZUSTAND,&#13;&#10;&#9;v.VER_HISTORIE,&#13;&#10;&#9;v.VER_STATUS,&#13;&#10;&#9;v.VER_SCHADENFREIHEITSRABATT,&#13;&#10;&#9;ROUND((v.VER_ABL_DATUM - v.VER_BEG_DATUM)/365) AS contract_duration,&#13;&#10;&#9;p.POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;CASE  &#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Einzug' THEN 1000012&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Selbst' THEN 1000005&#13;&#10;&#9;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Einzug' THEN 1000008&#13;&#10;&#9;END AS PAYMENT_TERM,&#13;&#10;  CASE  WHEN p.POL_RECHNUNGSTYP = 1 THEN 1 ELSE 0 END as IS_ANNUAL_PAYER,&#13;&#10;&#9;CASE v.VER_INKASSOART &#13;&#10;&#9;WHEN 'Selbst' THEN 10019&#13;&#10;&#9;WHEN 'Einzug' THEN 2&#13;&#10;    --ELSE 1&#13;&#10;&#9;END AS COLLECTION_METHOD,&#13;&#10;&#9;v.VER_KUENDIGUNG,&#13;&#10;p.PAR_PARTNER_NR,&#13;&#10;v.ver_beschreibung vertrag_remarks&#13;&#10;&#9;FROM SEV.VERTRAG v&#13;&#10;&#9;JOIN sev.police p ON p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'&#13;&#10;&#9;&#9;&#9;WHERE 1=1&#13;&#10;&#9;&#9;&#9;AND v.VER_ZUSTAND = 'lebend' &#13;&#10;&#9;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;&#9;&#9;AND v.POL_GUELTIG_AB &gt;=  timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;&#9;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH')&#13;&#10;&#9;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VER_VERTRAG_NR = cms.POLICY_ID &#13;&#10;     AND cms.MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&#13;&#10;&#9;)&#9;&#13;&#10;&#9;SELECT POLICE, VERTRAG, V_START_DATE, V_END_DATE, CROP_GROUP, VER_ZUSTAND, VER_SCHADENFREIHEITSRABATT, &#9;ver_historie, POL_WIRTSCHAFTSWEISE,&#13;&#10;&#9;V_CONTRACT_START, V_CONTRACT_END, contract_duration, PAYMENT_TERM, IS_ANNUAL_PAYER, COLLECTION_METHOD, VER_STATUS, VER_KUENDIGUNG, PAR_PARTNER_NR, vertrag_remarks,&#13;&#10;&#9;DENSE_RANK() OVER(partition BY POLICE, VERTRAG  ORDER BY V_START_DATE) AS POLICY_VERSION,&#13;&#10;max(vertrag+1) OVER (PARTITION BY POLICE ) AS NextNumInBundle&#13;&#10;&#9;FROM VERSIONS&#13;&#10;&#9;ORDER BY police, vertrag, V_START_DATE ASC&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -466,7 +467,7 @@
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tReplicate" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="192" posY="864">
+  <node componentName="tReplicate" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="160" posY="864">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tReplicate_2"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tReplicate_2">
@@ -493,7 +494,7 @@
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="192" posY="768">
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="160" posY="768">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_4"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
@@ -581,7 +582,7 @@
       </inputTables>
     </nodeData>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="768">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="352" posY="768">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_3"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -764,7 +765,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="448" posY="864">
+  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="416" posY="864">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_2"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_2"/>
@@ -1408,7 +1409,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="1024">
+  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="1472">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_5"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
@@ -1455,7 +1456,7 @@
       <column comment="" defaultValue="" key="false" length="19" name="bundle_policy_id" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="160" posY="1024">
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="160" posY="1472">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_3"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
@@ -1489,7 +1490,7 @@
       </inputTables>
     </nodeData>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="352" posY="1024">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="352" posY="1472">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_5"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -1546,7 +1547,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="1184">
+  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="1632">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_6"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
@@ -1596,7 +1597,7 @@
       <column comment="" key="false" length="19" name="update_date" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="288" posY="1184">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="288" posY="1632">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_6"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -2213,7 +2214,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="640" posY="1024">
+  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="640" posY="1472">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_5"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -2246,7 +2247,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="576" posY="1184">
+  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="576" posY="1632">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_6"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -2277,6 +2278,204 @@
     <metadata connector="REJECT" name="REJECT">
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="0" posY="1056">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_2"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_2"/>
+    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" show="false" value="ORACLE_18"/>
+    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1521&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" show="false" value="&quot;system&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:5hfnYdPGVEAdRfvroZK/8+TmHosvZGdozHB8XmneDvdqH7tew1Wa5Q=="/>
+    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH CLAUSES AS &#13;&#10;(&#9;SELECT * FROM  &#13;&#10;&#9;(  &#9;&#13;&#10;&#9;&#9;SELECT &#9;v.POL_POLICEN_NR AS POLICE, v.VER_VERTRAG_NR AS VERTRAG, v.POL_GUELTIG_AB AS V_START_DATE,  &#13;&#10;                                        v.VER_UNGUELTIG_AB AS V_END_DATE, v.ver_produkt_typ AS v_crop_group,   &#13;&#10;&#9;&#9;&#9;&#9;        a.CLAUSE_NAME, a.start_date, a.end_date, a.table_name  &#13;&#10;&#9;&#9;FROM SEV.VERTRAG v  &#13;&#10;&#9;&#9;JOIN SEV.POLICE p on p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'  &#13;&#10;&#9;&#9;JOIN (&#9;SELECT POL_POLICEN_NR AS POLICE , VER_VERTRAG_NR AS VERTRAG , POL_GUELTIG_AB AS START_DATE ,   &#13;&#10;                                ZAB_UNGUELTIG_AB AS END_DATE , ZAB_ZU_ABSCHLAG_TYP AS CLAUSE_NAME, 'ZU_ABSCHLAG' TABLE_NAME   &#13;&#10;&#9;&#9;&#9;&#9;FROM sev.ZU_ABSCHLAG za WHERE ZAB_HISTORIE &lt;&gt; 'HT' AND ZAB_ZUSTAND = 'lebend'    &#13;&#10;&#9;&#9;&#9;&#9;union   &#13;&#10;&#9;&#9;&#9;&#9;SELECT POL_POLICEN_NR AS POLICE , VER_VERTRAG_NR AS VERTRAG , POL_GUELTIG_AB AS START_DATE ,     &#13;&#10;                                BKP_UNGUELTIG_AB AS END_DATE, BKL_DATEINAME AS CLAUSE_NAME, 'BEDINGUNG_KLAUSEL_POLICE' TABLE_NAME   &#13;&#10;&#9;&#9;&#9;&#9;FROM sev.BEDINGUNG_KLAUSEL_POLICE bkp &#13;&#10;&#9;&#9;&#9;&#9;WHERE BKP_HISTORIE &lt;&gt; 'HT' AND BKP_ZUSTAND = 'lebend'  &#13;&#10;&#9;&#9;&#9; ) a ON a.police = v.POL_POLICEN_NR AND a.vertrag = v.VER_VERTRAG_NR AND v.POL_GUELTIG_AB = a.start_date   &#13;&#10;                                                                                         AND a.end_date &gt;= v.VER_UNGUELTIG_AB   &#13;&#10;&#9;&#9;WHERE 1=1    &#13;&#10;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' AND v.VER_ZUSTAND = 'lebend' AND v.POL_GUELTIG_AB &gt;=  timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;                AND p.POL_POLICE_TYP in ('VH', 'KH')   &#13;&#10;&#9;)     &#13;&#10;)   &#13;&#10;  &#13;&#10;SELECT &#9;POLICE, VERTRAG, START_DATE, END_DATE, CLAUSE_NAME, v_crop_group, TABLE_NAME  &#13;&#10;FROM CLAUSES V  &#13;&#10;WHERE 1=1   &#13;&#10;AND EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms    &#13;&#10;&#9;         WHERE v.POLICE = cms.BUNDLE_POLICY_ID    &#13;&#10;&#9;           AND v.VERTRAG = cms.POLICY_ID    &#13;&#10;               AND cms.MIGRATION_STATUS  =100   &#13;&#10;               AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;&#13;&#10;     ) &#13;&#10;ORDER BY POLICE , VERTRAG , START_DATE&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
+    <elementParameter field="CHECK" name="IS_CONVERT_XMLTYPE" value="false"/>
+    <elementParameter field="TABLE" name="CONVERT_XMLTYPE" show="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" show="false" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="USE_CURSOR" value="false"/>
+    <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSE_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_CROP_GROUP"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="TABLE_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
+    <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_CONTRACT_CLAUSES"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tDBInput_2">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="224" posY="1056">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_5"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_QkxSgCV6Ee6aAfhWDAh9_A-tMap_5-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="CONTRACT_CLAUSES" name="outCONTRACT_CLAUSES">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties shellMaximized="true"/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables activateCondensedTool="true" id="_4Pbn4O3CEe6FWsyE3GHr-A - CONTRACT_CLAUSES" name="outCONTRACT_CLAUSES" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="inClauses.POLICE" name="POLICE" type="id_Long"/>
+        <mapperTableEntries expression="inClauses.VERTRAG" name="VERTRAG" type="id_Long"/>
+        <mapperTableEntries expression="inClauses.START_DATE" name="START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="inClauses.END_DATE" name="END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="inClauses.CLAUSE_NAME" name="CLAUSE_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="inClauses.V_CROP_GROUP" name="V_CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="inClauses.TABLE_NAME" name="TABLE_NAME" nullable="true" type="id_String"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="inClauses" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="POLICE" type="id_Long"/>
+        <mapperTableEntries name="VERTRAG" type="id_Long"/>
+        <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="CLAUSE_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries name="V_CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries name="TABLE_NAME" nullable="true" type="id_String"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="544" posY="1056">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_2"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:Si+eMgKuYnyIsfxOAq39enMgasKfyY3T+GMrTcX8"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;CONTRACT_CLAUSES&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_4Pbn4O3CEe6FWsyE3GHr-A - CONTRACT_CLAUSES"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
+    <elementParameter field="TABLE" name="ADD_COLS"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSE_NAME"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_CROP_GROUP"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="TABLE_NAME"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="CONTRACT_CLAUSES"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="CONTRACT_CLAUSES" name="tHSQLDbOutput_2">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="REJECT" label="CONTRACT_CLAUSES" name="REJECT">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row12" lineStyle="0" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tHSQLDbOutput_12">
@@ -2415,9 +2614,17 @@
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk6"/>
   </connection>
+  <connection connectorName="FLOW" label="inClauses" lineStyle="0" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tMap_5">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="inClauses"/>
+  </connection>
+  <connection connectorName="FLOW" label="outCONTRACT_CLAUSES" lineStyle="0" metaname="outCONTRACT_CLAUSES" offsetLabelX="0" offsetLabelY="0" source="tMap_5" target="tHSQLDbOutput_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="outCONTRACT_CLAUSES"/>
+  </connection>
   <note opaque="true" posX="-96" posY="224" sizeHeight="64" sizeWidth="641" text="CUSTOMER DATA:"/>
   <note opaque="true" posX="1504" posY="192" sizeHeight="64" sizeWidth="385" text="TECHNICAL:"/>
-  <note opaque="true" posX="-64" posY="928" sizeHeight="64" sizeWidth="641" text="IDIT:"/>
+  <note opaque="true" posX="-64" posY="1376" sizeHeight="64" sizeWidth="641" text="IDIT:"/>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_4"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -2519,13 +2726,20 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_09f9fc3f-b873-4649-8b1e-d6cd0dc4fa9e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>27m6NJ6hImQj64r3Q5KCLF6FaMV07UjewlwI87ilZIajRkHooSSBHpFmr4L1hal3gN6L+ox2ANey&#13;
-JCp+AJdq2A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_89d9db65-504b-432b-9062-b22796f084cc"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Cq8TgI7kNnArPN04cKiSJ1hTDxQT2vAwQj6Z0SBbbU1jWhNCbndw4xkZuGBJ/QrEpqJDWyeigXNT&#13;
-FNYVLpPLjQ==</DigestValue></Reference></SignedInfo><SignatureValue>A5/GUWHmNSFgRSGI8BeqjLyTUIlBVSf/5aLogR79MbmOfanvxL5miRnwhKRc4mNOs9moP4p/ncwZ&#13;
-CoD2sFn5zSmYffG9cqKFt0oKIaomo5NDMmAbvi9MIMlq/6SpvWzMN6C7UQvoa4hbQybo5bP6Zseb&#13;
-V9Jcvvgcv68xJJknpA3IB5U8IHgqZ8+WlMmiNFzUTvRVNmiQUrPyIanLgEtSpt4Zar3PZt0hxnyJ&#13;
-3SpJLeTt1eIwmVuYmBwPa124mN8jEzMvMArqiPN6Uejg8Klv2bDDZLdqpGdvNoLo7403Fj77Tpx+&#13;
-JvJz385Q9avjttd/w7z+tcjToV771kgpkxya/w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_2"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="CONTRACT_CLAUSES_v56"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_169f14a6-a055-4042-a896-1cd319326754"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>cUw+37C6s3jVFYZWjllXZf+o8jACSIHrKHfPYSpGO7UDfyt7dWT8WC4yH3rmR23OJ+YnxiwKd7F4&#13;
+ZrXWhgUPiw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_e778af45-2cf1-4d9b-846b-40bae6d26cd4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Dxv2JfcVFx/WmU7gxusSYtG4pPNnP8x2LeJewQG8vePRemmk9U4cyOUfhnUDZ50W7lchwMMZX9n5&#13;
+gTTPuui5UA==</DigestValue></Reference></SignedInfo><SignatureValue>OM8Iq0+qJlP4XtzrVw53C+YKqvWvfCdKlKVYNp4BF8N9dPISIQATHLiXPNclPkwvwuUgdJrBiSBR&#13;
+G+0dAhImAzNWXnrJvV+dYeezSP0bmArzXuL/SS1dc5A3sLk3Qtg+WlfWbv1px6S5VYplmdxHUsF1&#13;
+BKdPgKTXFOfRBFAPineo3UTvUJnafhDqskDjfhjWWngdrICx1EsJYceFiunkmniK8H7oxX6Z+J8q&#13;
+k60xLBiLEp/7kcUX6e4XhC9mx5Be5zhSS8xJmcHGuhKMIAXMb+5GWxdaYf1kq+s/13tNqjNTfUeJ&#13;
+B7e2RM6r2qPR0CXUXOAC6FLnPebKWDWvK6xksQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2547,4 +2761,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_89d9db65-504b-432b-9062-b22796f084cc" Target="#_09f9fc3f-b873-4649-8b1e-d6cd0dc4fa9e"><Timestamp>2024-03-18 15:51:27</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_e778af45-2cf1-4d9b-846b-40bae6d26cd4" Target="#_169f14a6-a055-4042-a896-1cd319326754"><Timestamp>2024-03-29 12:03:06</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
