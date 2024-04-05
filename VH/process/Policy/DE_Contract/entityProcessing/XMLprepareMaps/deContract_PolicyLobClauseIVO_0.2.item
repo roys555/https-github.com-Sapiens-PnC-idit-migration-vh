@@ -246,7 +246,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT CONTRACT_CLAUSES.POLICE,&#10;&#9;&#9;CONTRACT_CLAUSES.VERTRAG,&#13;&#10;POLICY_VERSION_SELECTION .policy_version,&#10;&#9;&#9;CONTRACT_CLAUSES.START_DATE,&#10;&#9;&#9;CONTRACT_CLAUSES.END_DATE,&#10;&#9;&#9;CONTRACT_CLAUSES.CLAUSE_NAME,&#10;&#9;&#9;CONTRACT_CLAUSES.V_CROP_GROUP,&#10;&#9;&#9;CONTRACT_CLAUSES.TABLE_NAME&#10;FROM&#9;CONTRACT_CLAUSES &#13;&#10;inner join POLICY_VERSION_SELECTION  on CONTRACT_CLAUSES.POLICE = POLICY_VERSION_SELECTION.POLICE  and &#13;&#10;  CONTRACT_CLAUSES.VERTRAG = POLICY_VERSION_SELECTION.VERTRAG and &#9;&#9;&#13;&#10;CONTRACT_CLAUSES.START_DATE = &#9;&#9;POLICY_VERSION_SELECTION.V_START_DATE&#13;&#10;WHERE  CONTRACT_CLAUSES.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND &#9;&#9;CONTRACT_CLAUSES.VERTRAG = &quot;+context.p_id &#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT CONTRACT_CLAUSES.POLICE,&#10;&#9;&#9;CONTRACT_CLAUSES.VERTRAG,&#13;&#10;POLICY_VERSION_SELECTION .policy_version,&#10;&#9;&#9;CONTRACT_CLAUSES.START_DATE,&#10;&#9;&#9;CONTRACT_CLAUSES.END_DATE,&#10;&#9;&#9;CONTRACT_CLAUSES.CLAUSE_NAME,&#10;&#9;&#9;CONTRACT_CLAUSES.V_CROP_GROUP,&#10;&#9;&#9;CONTRACT_CLAUSES.TABLE_NAME,&#13;&#10;POLICY_VERSION_SELECTION.V_END_DATE&#10;FROM&#9;CONTRACT_CLAUSES &#13;&#10;inner join POLICY_VERSION_SELECTION  on CONTRACT_CLAUSES.POLICE = POLICY_VERSION_SELECTION.POLICE  and &#13;&#10;  CONTRACT_CLAUSES.VERTRAG = POLICY_VERSION_SELECTION.VERTRAG and &#9;&#9;&#13;&#10;CONTRACT_CLAUSES.START_DATE = &#9;&#9;POLICY_VERSION_SELECTION.V_START_DATE&#13;&#10;WHERE  CONTRACT_CLAUSES.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND &#9;&#9;CONTRACT_CLAUSES.VERTRAG = &quot;+context.p_id &#13;&#10;"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -266,6 +266,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="TABLE_NAME"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="&quot;CONTRACT_CLAUSES&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -278,6 +280,7 @@
       <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="480" posY="256">
@@ -313,6 +316,7 @@
         <mapperTableEntries expression="trnClause.Output==null?0:2; " name="clauseTypeVORefID" type="id_Long"/>
         <mapperTableEntries expression="trnClause.Output==null?null:&quot;Optional&quot;; " name="clauseTypeVORefDesc" type="id_String"/>
         <mapperTableEntries expression="trnClause.Output==null?trnClause.Description:null; " name="bespokeSubject" type="id_String"/>
+        <mapperTableEntries expression="row1.END_DATE==row1.V_END_DATE?row1.V_END_DATE:null; " name="cancelDate" type="id_Date"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_fDbOQO3JEe6FWsyE3GHr-A - PolicyLobClauseIVO" name="PolicyLobClauseIVO" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.POLICE " name="POLICE" nullable="true" type="id_Long"/>
@@ -323,7 +327,7 @@
         <mapperTableEntries expression="Var.clauseTypeVORefID " name="clauseTypeRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="Var.clauseTypeVORefDesc " name="clauseTypeRefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="isExistedClause" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries name="cancelDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="Var.cancelDate " name="cancelDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="Var.bespokeSubject " name="bespokeSubject" nullable="true" type="id_String"/>
         <mapperTableEntries expression="Var.bespokeSubject " name="additionalText" nullable="true" type="id_String"/>
       </outputTables>
@@ -336,6 +340,7 @@
         <mapperTableEntries name="CLAUSE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries name="V_CROP_GROUP" nullable="true" type="id_String"/>
         <mapperTableEntries name="TABLE_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries name="V_END_DATE" nullable="true" type="id_Date"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trnClause" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.CLAUSE_NAME " name="Input" nullable="true" operator="=" type="id_String"/>
@@ -492,6 +497,11 @@
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tMap_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="V_END_DATE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
@@ -513,13 +523,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3f10933e-b98f-4aed-b093-716ab1be733b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>WN/MlJj0EHsl5j9I3h/lXALK7ZDJVSOs1MJCb/mNXYYWl7qxxN1eSfJ+asqawIqrSgS2nD1A/8ay&#13;
-m7Wmtg7NIQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_40d006ee-4c50-4afa-8d68-2d50c95994c5"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/no3VnzB04c/HY2gsICCtXPQfPjucr8uIDHZ9JulQFcLO2yUQ6jjXKRGYKJUESdIfLIQEHuAWAX5&#13;
-PvbSPNWSQw==</DigestValue></Reference></SignedInfo><SignatureValue>k2QLeCH7I0Pbbj3xmLHr4FDFp/3SrF158BA/mzBmtQXdiB/bvZuIQnZSbgxzvsjB2tOMsETWVcBr&#13;
-/4ozfRVnHJ0YDNSuvW+Us9h/1+U2SLNaGvm8dorOFTfvEol0tPGUkFV74TpbMFpODAejCkjzFfWU&#13;
-yyRL3yIE+7VTb7x5xnWhiZd1wp0KaLEbOMriqn4ysQIIc8xyS18wqI2a7Ygi+SLHwqVInISEowYj&#13;
-4LWkBqT+Or66QTHPsf7hhHNMUidAOjweI2k8/H6P5ab1xMOSrB0iJoNHIJvnFS1Bq3FJEfCgnzSY&#13;
-LKB3ItiZ6olhRh9JB06XQBQ9v9fvZRIHcbLWQg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_d2bd4e50-3863-445f-be93-7f3bf513e864"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>bRJtpp2VYrOUIXCx/R1CVY6GiZs/58iMVAkfJ4QAFaCx+KRrd86W+5f0jUwHV3uAV2BNLvQreriC&#13;
+2dFBUwc2bA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_282cc87b-cc6e-4efe-a7e9-00ba42e05742"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>KZB+84LZpKli8yNcq1KYQlIfb8ly/8jgpf6r2BA0md/5uVdxci20p7QmOIDeoOpUpINcRxAfGLAx&#13;
+s73gfUlLyw==</DigestValue></Reference></SignedInfo><SignatureValue>Nq6E0Ccu7RAroto+BZQE8/Dy2vO+lZG77wjsZwkT4jP3oDVD6TMhp5d4V8WJ4/s8EwcRVf1W6/Z4&#13;
+p/roXLyTbmWN4/0HbSUmlPLwulIrOCItf3YaHR0aRfoAHUJgLcelLNEFuNpyCXvC5DTNt9LuSHrx&#13;
+IvZLh5mGv43J4fUm9BddgSXLDo96HM5B1ZBOuFs9Yw7pKtKl8PRnWvesk/IQ6GssyDVktXXuQk8o&#13;
+ptU+GPlHat+IsUqqBq4wHbU7YCwgkvewFXPGszcnjpxMlNijPtwc0kyo/Rb9PMGxty4GQPCPNSPV&#13;
+/yWXOsenvQB3iFLyHt0P+SOPA3ArIvgEWr6LIQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -541,4 +551,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_40d006ee-4c50-4afa-8d68-2d50c95994c5" Target="#_3f10933e-b98f-4aed-b093-716ab1be733b"><Timestamp>2024-04-05 09:12:52</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_282cc87b-cc6e-4efe-a7e9-00ba42e05742" Target="#_d2bd4e50-3863-445f-be93-7f3bf513e864"><Timestamp>2024-04-05 10:16:47</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
