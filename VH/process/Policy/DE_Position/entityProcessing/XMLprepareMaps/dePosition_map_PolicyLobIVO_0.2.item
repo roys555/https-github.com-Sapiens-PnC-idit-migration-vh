@@ -9,7 +9,7 @@
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
-    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="0"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="32"/>
     <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="0"/>
     <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" show="false" value=""/>
@@ -104,26 +104,11 @@
     <elementParameter field="TEXT" name="FOOTER_LIBRARY" show="false" value=""/>
     <elementParameter field="TEXT" name="FOOTER_CODE" show="false" value=""/>
     <elementParameter field="TEXT" name="FOOTER_IMPORT" show="false" value=""/>
-    <routinesParameter id="_Hrmq0MTBEe2LZ8ocRxnWzw" name="DataOperation"/>
-    <routinesParameter id="_Hr9QIMTBEe2LZ8ocRxnWzw" name="Mathematical"/>
-    <routinesParameter id="_HsmJUMTBEe2LZ8ocRxnWzw" name="Numeric"/>
-    <routinesParameter id="_Hs0LwMTBEe2LZ8ocRxnWzw" name="Relational"/>
-    <routinesParameter id="_Hvo2QMTBEe2LZ8ocRxnWzw" name="SQLike"/>
-    <routinesParameter id="_HtSs4MTBEe2LZ8ocRxnWzw" name="StringHandling"/>
-    <routinesParameter id="_Htln0MTBEe2LZ8ocRxnWzw" name="TalendDataGenerator"/>
-    <routinesParameter id="_Ht2GgMTBEe2LZ8ocRxnWzw" name="TalendDate"/>
-    <routinesParameter id="_HvDAYMTBEe2LZ8ocRxnWzw" name="TalendStringUtil"/>
-    <routinesParameter id="_HubVUMTBEe2LZ8ocRxnWzw" name="TalendString"/>
     <routinesParameter id="_k7BjcMcTEe2DoJT7zYL8TA" name="ContactProcessingVHP"/>
-    <routinesParameter id="_tGmqUMlvEe2pvuBUnRcxzQ" name="DataQuality"/>
-    <routinesParameter id="_tHCvMMlvEe2pvuBUnRcxzQ" name="DQTechnical"/>
-    <routinesParameter id="_tGeHcMlvEe2pvuBUnRcxzQ" name="DataMasking"/>
-    <routinesParameter id="_tG6zYMlvEe2pvuBUnRcxzQ" name="DqStringHandling"/>
-    <routinesParameter id="_tGumIMlvEe2pvuBUnRcxzQ" name="DataQualityDependencies"/>
     <routinesParameter id="_mKGCMNOWEe2V4YqPxc1dgg" name="functionLibrary"/>
     <routinesParameter id="_ul8JQM_JEe2M9_himD71ag" name="ContactProcessingAGR"/>
   </parameters>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="256">
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="416">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -326,7 +311,7 @@
       <column comment="" key="false" length="60" name="GFM_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="288" posY="256">
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="288" posY="416">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_1"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
@@ -358,6 +343,7 @@
       <column comment="" key="false" length="50" name="cropTypeRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="locationDescription" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="preliminaryCover" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="claimsFreeGradeRenewalTermsRef" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="DECN0021_BonusMalus">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -408,6 +394,7 @@
         <mapperTableEntries expression="crop_type.Desc " name="cropTypeRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="crop_type.Desc " name="locationDescription" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="preliminaryCover" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="claimsFreeGradeRenewalTermsRef.claimsFreeGradeRenewalTermsRef " name="claimsFreeGradeRenewalTermsRef" nullable="true" type="id_Long"/>
       </outputTables>
       <outputTables activateExpressionFilter="true" expressionFilter="bonus_malus.out_desc ==null" name="DECN0021_BonusMalus" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="(int)context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -507,9 +494,14 @@
         <mapperTableEntries name="Output" nullable="true" type="id_Long"/>
         <mapperTableEntries name="Desc" nullable="true" type="id_String"/>
       </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="claimsFreeGradeRenewalTermsRef" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="policyIVO.BUNDLE_POLICY_ID " name="POLICE" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="policyIVO.POLICY_ID " name="VERTRAG" operator="=" type="id_Long"/>
+        <mapperTableEntries name="claimsFreeGradeRenewalTermsRef" nullable="true" type="id_Long"/>
+      </inputTables>
     </nodeData>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="640" posY="256">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="800" posY="416">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_1"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -619,6 +611,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="claimsFreeGradeRenewalTermsRef"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;PolicyLobIVO&quot;"/>
@@ -641,6 +638,7 @@
       <column comment="" key="false" length="50" name="cropTypeRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="locationDescription" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="preliminaryCover" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="claimsFreeGradeRenewalTermsRef" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="PolicyLobIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -660,11 +658,12 @@
       <column comment="" key="false" length="50" name="cropTypeRefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="locationDescription" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="preliminaryCover" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="claimsFreeGradeRenewalTermsRef" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="224" posY="160">
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="224" posY="320">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
     <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
     <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
@@ -690,7 +689,7 @@
       <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="704" posY="128">
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="704" posY="288">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_2"/>
     <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
     <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
@@ -716,7 +715,7 @@
       <column comment="" key="false" length="100" name="Desc" nullable="true" originalLength="100" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHashOutput" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="960" posY="512">
+  <node componentName="tHashOutput" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="960" posY="672">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashOutput_1"/>
     <elementParameter field="CHECK" name="LINK_WITH" value="false"/>
     <elementParameter field="COMPONENT_LIST" name="LIST" show="false" value=""/>
@@ -742,7 +741,7 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHashOutput" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="960" posY="640">
+  <node componentName="tHashOutput" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="960" posY="800">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashOutput_2"/>
     <elementParameter field="CHECK" name="LINK_WITH" value="true"/>
     <elementParameter field="COMPONENT_LIST" name="LIST" value="tHashOutput_1"/>
@@ -766,6 +765,111 @@
       <column comment="" key="false" length="1" name="SEVERITY" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="64" posY="96">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:DPXNJ9wz+sKINeA+Tdq5xBwWCNR2KtPVnFvGE2Qy"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;POLICY_CONTRACT_SELECTION&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT POLICE, VERTRAG, VER_PRODUKT_TYP&#10;FROM&#9;POLICY_CONTRACT_SELECTION&#13;&#10;WHERE POLICY_CONTRACT_SELECTION.POLICE = &quot; + context.bp_id &#13;&#10;+ &quot; AND POLICY_CONTRACT_SELECTION.VERTRAG = &quot; + context.p_id   &#13;&#10;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VER_PRODUKT_TYP"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;POLICY_CONTRACT_SELECTION&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POLICY_CONTRACT_SELECTION" name="tHSQLDbInput_1">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="VER_PRODUKT_TYP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="288" posY="128">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_2"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_RZaXYL6MEe6jcPiMlGgGPA-tMap_2-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="out" name="claimsFreeGradeRenewalTermsRef">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="claimsFreeGradeRenewalTermsRef" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties shellMaximized="true"/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables name="claimsFreeGradeRenewalTermsRef" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row1.POLICE " name="POLICE" type="id_Long"/>
+        <mapperTableEntries expression="row1.VERTRAG " name="VERTRAG" type="id_Long"/>
+        <mapperTableEntries expression="crop_group.add_params_1 == 1000007 &amp;&amp; crop_group.out_value == 1000027?(long)1000002:(long)1000001 " name="claimsFreeGradeRenewalTermsRef" nullable="true" type="id_Long"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="POLICE" type="id_Long"/>
+        <mapperTableEntries name="VERTRAG" type="id_Long"/>
+        <mapperTableEntries name="VER_PRODUKT_TYP" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="crop_group" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row1.VER_PRODUKT_TYP " name="in_value" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
+        <mapperTableEntries name="add_params_1" nullable="true" type="id_Long"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="64" posY="224">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_3"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="in_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_desc"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="add_params_1"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
+    <elementParameter field="TABLE" name="INTABLE" show="false"/>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" value="000_001|1000010|Cereals|1000008&#13;&#10;000_001x|1000010|Cereals|1000008&#13;&#10;000_002|1000010|Cereals|1000008&#13;&#10;000_003|1000010|Cereals|1000008&#13;&#10;000_004|1000010|Cereals|1000008&#13;&#10;001_001|1000011|Legumes|1000008&#13;&#10;001_002|1000011|Legumes|1000008&#13;&#10;020_002x|1000010|Cereals|1000008&#13;&#10;021_001x|1000011|Legumes|1000008&#13;&#10;021_002x|1000011|Legumes|1000008&#13;&#10;030_002x|1000010|Cereals|1000008&#13;&#10;031_001x|1000011|Legumes|1000008&#13;&#10;040_002x|1000010|Cereals|1000008&#13;&#10;041_001x|1000011|Legumes|1000008&#13;&#10;100_001|TBC|Special Insurance|1000008&#13;&#10;100_002x|TBC|Special Insurance|1000008&#13;&#10;100_003x|TBC|Special Insurance|1000008&#13;&#10;201_001|1000017|Special energy/forage crops|1000008&#13;&#10;201_002|1000017|Special energy/forage crops|1000008&#13;&#10;201_003|1000017|Special energy/forage crops|1000008&#13;&#10;201_004|1000017|Special energy/forage crops|1000008&#13;&#10;221_001x|1000017|Special energy/forage crops|1000008&#13;&#10;221_002x|1000017|Special energy/forage crops|1000008&#13;&#10;221_004x|1000017|Special energy/forage crops|1000008&#13;&#10;230_001x|1000017|Special energy/forage crops|1000008&#13;&#10;230_002x|1000017|Special energy/forage crops|1000008&#13;&#10;240_001x|1000017|Special energy/forage crops|1000008&#13;&#10;271_006x|1000052|Grünland|1000008&#13;&#10;300_001|1000013|Corn|1000008&#13;&#10;300_002|1000013|Corn|1000008&#13;&#10;302_002|1000013|Corn|1000008&#13;&#10;320_001x|1000013|Corn|1000008&#13;&#10;330_001x|1000013|Corn|1000008&#13;&#10;330_002x|1000013|Corn|1000008&#13;&#10;340_001x|1000013|Corn|1000008&#13;&#10;400_001|1000027|Pome fruit|1000007&#13;&#10;400_100|1000028|Pome fruit under hail net|1000007&#13;&#10;400_102|1000025|Industrial fruit / cider fruit|1000007&#13;&#10;401_001|1000019|Leafy vegetables / stem vegetables|1000007&#13;&#10;401_101|1000022|Fruiting vegetables|1000007&#13;&#10;401_102|1000024|Legumes for green harvest|1000007&#13;&#10;401_103|1000029|Cabbage vegetables|1000007&#13;&#10;401_105|1000039|Root/tuber vegetables|1000007&#13;&#10;401_106|1000040|Onion vegetables|1000007&#13;&#10;401_113|1000023|Vegetables small areas|1000007&#13;&#10;401_114|1000034|Shoot vegetables|1000007&#13;&#10;401_115|1000019|Leafy vegetables / stem vegetables|1000007&#13;&#10;402_001|1000032|Plants for ornamental production|1000007&#13;&#10;402_103|1000018|Medicinal herbs and spice plants|1000007&#13;&#10;402_104|1000033|Seed extraction of special crops|1000007&#13;&#10;402_105|1000021|Fruiting and yielding wood|1000007&#13;&#10;402_106|1000026|Young plant production|1000007&#13;&#10;402_107|1000032|Plants for ornamental production|1000007&#13;&#10;403_001|1000020|Strawberries|1000007&#13;&#10;403_100|1000035|Stone fruit|1000007&#13;&#10;403_103|1000037|Bush berries|1000007&#13;&#10;403_107|1000020|Strawberries|1000007&#13;&#10;403_109|1000031|Fruit under rain protection|1000007&#13;&#10;403_110|1000038|Table grapes|1000007&#13;&#10;420_001x|1000027|Pome fruit|1000007&#13;&#10;420_100x|1000028|Pome fruit under hail net|1000007&#13;&#10;420_103x|1000036|Stone fruit and table grapes under hail net|1000007&#13;&#10;420_104x|1000028|Pome fruit under hail net|1000007&#13;&#10;421_001x|1000019|Leafy vegetables / stem vegetables|1000007&#13;&#10;421_113x|1000022|Fruiting vegetables|1000007&#13;&#10;421_115x|1000029|Cabbage vegetables|1000007&#13;&#10;421_117x|1000024|Legumes for green harvest|1000007&#13;&#10;421_119x|1000026|Young plant production|1000007&#13;&#10;421_121x|1000033|Seed extraction of special crops|1000007&#13;&#10;421_123x|1000034|Shoot vegetables|1000007&#13;&#10;421_125x|1000039|Root/tuber vegetables|1000007&#13;&#10;421_127x|1000040|Onion vegetables|1000007&#13;&#10;421_129x|1000023|Vegetables small areas|1000007&#13;&#10;421_135x|1000023|Vegetables small areas|1000007&#13;&#10;421_145x|1000033|Seed extraction of special crops|1000007&#13;&#10;421_146x|1000040|Onion vegetables|1000007&#13;&#10;422_001x|1000018|Medicinal herbs and spice plants|1000007&#13;&#10;422_005x|1000021|Fruiting and yielding wood|1000007&#13;&#10;422_007x|1000021|Fruiting and yielding wood|1000007&#13;&#10;422_009x|1000032|Plants for ornamental production|1000007&#13;&#10;422_013x|1000032|Plants for ornamental production|1000007&#13;&#10;423_001x|1000020|Strawberries|1000007&#13;&#10;423_002x|1000020|Strawberries|1000007&#13;&#10;423_007x|1000025|Industrial fruit / cider fruit|1000007&#13;&#10;423_009x|1000030|Chestnuts/Nuts|1000007&#13;&#10;423_011x|1000035|Stone fruit|1000007&#13;&#10;423_013x|1000037|Bush berries|1000007&#13;&#10;423_015x|1000038|Table grapes|1000007&#13;&#10;423_109x|1000031|Fruit under rain protection|1000007&#13;&#10;423_111x|1000031|Fruit under rain protection|1000007&#13;&#10;430_001x|1000027|Pome fruit|1000007&#13;&#10;430_003x|1000027|Pome fruit|1000007&#13;&#10;430_004x|1000027|Pome fruit|1000007&#13;&#10;430_005x|1000028|Pome fruit under hail net|1000007&#13;&#10;431_001x|1000019|Leafy vegetables / stem vegetables|1000007&#13;&#10;431_002x|1000019|Leafy vegetables / stem vegetables|1000007&#13;&#10;431_113x|1000022|Fruiting vegetables|1000007&#13;&#10;431_114x|1000022|Fruiting vegetables|1000007&#13;&#10;431_115x|1000029|Cabbage vegetables|1000007&#13;&#10;431_116x|1000029|Cabbage vegetables|1000007&#13;&#10;431_117x|1000024|Legumes for green harvest|1000007&#13;&#10;431_118x|1000024|Legumes for green harvest|1000007&#13;&#10;431_120x|1000026|Young plant production|1000007&#13;&#10;431_123x|1000034|Shoot vegetables|1000007&#13;&#10;431_124x|1000034|Shoot vegetables|1000007&#13;&#10;431_125x|1000039|Root/tuber vegetables|1000007&#13;&#10;431_126x|1000039|Root/tuber vegetables|1000007&#13;&#10;431_127x|1000040|Onion vegetables|1000007&#13;&#10;432_001x|1000018|Medicinal herbs and spice plants|1000007&#13;&#10;432_002x|1000018|Medicinal herbs and spice plants|1000007&#13;&#10;432_007x|1000021|Fruiting and yielding wood|1000007&#13;&#10;433_007x|1000025|Industrial fruit / cider fruit|1000007&#13;&#10;433_008x|1000025|Industrial fruit / cider fruit|1000007&#13;&#10;433_010x|1000030|Chestnuts/Nuts|1000007&#13;&#10;433_011x|1000035|Stone fruit|1000007&#13;&#10;433_012x|1000035|Stone fruit|1000007&#13;&#10;433_013x|1000037|Bush berries|1000007&#13;&#10;433_014x|1000037|Bush berries|1000007&#13;&#10;433_016x|1000038|Table grapes|1000007&#13;&#10;500_001|1000015|Beets|1000008&#13;&#10;500_002|1000015|Beets|1000008&#13;&#10;501_001|1000012|Potatoes|1000008&#13;&#10;501_002|1000012|Potatoes|1000008&#13;&#10;502_001|1000012|Potatoes|1000008&#13;&#10;502_002|1000012|Potatoes|1000008&#13;&#10;520_001x|1000015|Beets|1000008&#13;&#10;520_002x|1000015|Beets|1000008&#13;&#10;521_001x|1000012|Potatoes|1000008&#13;&#10;521_002x|1000012|Potatoes|1000008&#13;&#10;530_001x|1000015|Beets|1000008&#13;&#10;531_001x|1000012|Potatoes|1000008&#13;&#10;540_001x|1000015|Beets|1000008&#13;&#10;541_001x|1000012|Potatoes|1000008&#13;&#10;600_001|1000014|Oil crops|1000008&#13;&#10;600_002|1000014|Oil crops|1000008&#13;&#10;600_003|1000014|Oil crops|1000008&#13;&#10;600_004|1000014|Oil crops|1000008&#13;&#10;601_001|1000016|Seeds|1000008&#13;&#10;601_002|1000016|Seeds|1000008&#13;&#10;602_001|1000009|Spider plants|1000008&#13;&#10;602_002|1000009|Spider plants|1000008&#13;&#10;620_002x|1000014|Oil crops|1000008&#13;&#10;620_004x|1000014|Oil crops|1000008&#13;&#10;621_001x|1000016|Seeds|1000008&#13;&#10;621_002x|1000016|Seeds|1000008&#13;&#10;622_001x|1000009|Spider plants|1000008&#13;&#10;622_002x|1000009|Spider plants|1000008&#13;&#10;630_002x|1000014|Oil crops|1000008&#13;&#10;631_002x|1000016|Seeds|1000008&#13;&#10;640_002x|1000014|Oil crops|1000008&#13;&#10;700_001|1000041|Hops|1000006&#13;&#10;720_001x|1000041|Hops|1000006&#13;&#10;720_002x|1000041|Hops|1000006&#13;&#10;800_001|1000044|Wine|1000006&#13;&#10;800_002|1000044|Wine|1000006&#13;&#10;801_001|1000042|Vine wood|1000006&#13;&#10;801_002|1000042|Vine wood|1000006&#13;&#10;820_001x|1000044|Wine|1000006&#13;&#10;820_002x|1000044|Wine|1000006&#13;&#10;821_001x|1000042|Vine wood|1000006&#13;&#10;821_002x|1000042|Vine wood|1000006&#13;&#10;822_001x|1000044|Wine|1000006&#13;&#10;830_001x|1000044|Wine|1000006&#13;&#10;900_001|1000043|Tobacco|1000006&#13;&#10;920_001x|1000043|Tobacco|1000006&#13;&#10;920_002x|1000043|Tobacco|1000006"/>
+    <elementParameter field="TEXT" name="LABEL" value="crop_group"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_3">
+      <column comment="" key="false" length="10" name="in_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="out_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="add_params_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHashInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="128" posY="768">
@@ -934,6 +1038,18 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="crop_type"/>
   </connection>
+  <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
+  </connection>
+  <connection connectorName="FLOW" label="claimsFreeGradeRenewalTermsRef" lineStyle="8" metaname="claimsFreeGradeRenewalTermsRef" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="claimsFreeGradeRenewalTermsRef"/>
+  </connection>
+  <connection connectorName="FLOW" label="crop_group" lineStyle="8" metaname="tFixedFlowInput_3" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_3" target="tMap_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="crop_group"/>
+  </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHashInput_1" offsetLabelX="0" offsetLabelY="0" source="tHashInput_1" target="tHSQLDbOutput_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
@@ -948,13 +1064,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_efe5cf7b-635c-4714-8841-8b003d50a9fd"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>4+2mkdqyAe1vkNKkHopGvkLfU1+lxOIKTGc6vZVielP2EeP+eJQ/lB6406RJtx4T9oaKQT0PndPn&#13;
-slKcSWQ3nA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_719c83f1-4c07-4aa2-864a-8422239bcb1f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ZAv+NrRsmqm6qRG9CK6Lhr1QiSH5mHMzIjE+jp1g+UtjVEXMaDGpeQ2TFHTAKcPn85ZHrWP9nl+N&#13;
-wjtYV2cyXQ==</DigestValue></Reference></SignedInfo><SignatureValue>LRbSoJdd5g0ECUaw1uUfhYDCanbyyyuj6KvnPQvZTFFRJYsoOydoEjVdfAhTUKPcCXMq/DGa/orp&#13;
-TcrvJYc0uIB83ifhYF+wWMqNz+TOpW2SlsWQwF0adqh7MR8lSLETpKBZV6yPEtHBIjeeFYXq8yZv&#13;
-N9gWmDU/vXwLMWMPIA/9SiiDpM9vWM3rKE1pTkNDVbqsJ5sAwDhs592V9Kwh3p2/8ETV3mt2D5he&#13;
-NRL6+dOY/c87CCk0yPRhei5fj6lqwILpsLMPzJoA5CTSLDAwhRJwoACzH4w88vGT6ANn3NPGBv59&#13;
-/VkSfkWPgZN8c1PRcFtnmE6XvqBHsAbGOVrX9Q==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5f6f0f30-efe4-425d-b27e-305713b19ee0"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qJRvj/xJpOin97Ayz5RNo5oy8HScZB+DX6dssBya9fmf2K8P/WCJacanfMO+by1BMa8VWZbR0cEt&#13;
+2Zn94Jh+qw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9a0dd387-0f23-4038-9168-9b49fa6db086"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>k4GzYfc0GvJ/0iAKCDH/ywroOcFs+PyKINR/QB/oPBB/cMGdpA+cB4JGH2MN1ClnZt28BcP9CH3s&#13;
+rpJdxAWSSQ==</DigestValue></Reference></SignedInfo><SignatureValue>EwVk8b2CrfuuXTuc4Z/egR/Eff7oTV/UIIAsGEDO+xKUW58sVX84OxbztyHgeXeADDnAbZ2ofEbe&#13;
+wcbJcqYbfHBDuZ5taC+JYcIbedmqBBzDCtvFCRFiiCSoJSNX2J5UXAdN9KHHODTT3y/xRudeoFQo&#13;
+lUwhpvl9VAyfswIczogrxNjbOfv7cCwEEkG3B26x3oRvK2G167AT7leR+gUQHIS5rKsd0u0MNy5P&#13;
+0NwE9Fqddj5MPSrPOBLAxCh+B+sG3DDSIEPJTPvib35ELMwGH/gdegA+pvOiHbCqlc1GuKJ1lGC3&#13;
+66yU9G6L/Bwmv+zFbRfguHK93tkfE3zkSoMsuQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -976,4 +1092,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_719c83f1-4c07-4aa2-864a-8422239bcb1f" Target="#_efe5cf7b-635c-4714-8841-8b003d50a9fd"><Timestamp>2024-03-08 14:39:56</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9a0dd387-0f23-4038-9168-9b49fa6db086" Target="#_5f6f0f30-efe4-425d-b27e-305713b19ee0"><Timestamp>2024-04-09 09:46:44</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
