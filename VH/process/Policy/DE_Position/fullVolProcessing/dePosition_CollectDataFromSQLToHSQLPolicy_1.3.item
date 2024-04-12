@@ -4289,6 +4289,9 @@
       <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="cropGroupRefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="cropGroupRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="cropGroupADD_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
@@ -4299,13 +4302,16 @@
       <column comment="" key="false" length="50" name="clauseADD_3" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateExpressionFilter="true" expressionFilter="clause_lookup.Output !=null &amp;&amp; clause_lookup.Output ==1000004" name="contract_clauses_cropGroup" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row16.POLICE " name="POLICE" type="id_Long"/>
         <mapperTableEntries expression="row16.VERTRAG " name="VERTRAG" type="id_Long"/>
         <mapperTableEntries expression="row16.START_DATE " name="START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row16.END_DATE " name="END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="row16.CLAUSE_NAME " name="CLAUSE_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row16.V_CROP_GROUP " name="V_CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row16.TABLE_NAME " name="TABLE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries expression="cropGroup_lookup.out_value " name="cropGroupRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="cropGroup_lookup.out_desc " name="cropGroupRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="cropGroup_lookup.add_params_1 " name="cropGroupADD_1" nullable="true" type="id_Long"/>
@@ -4435,7 +4441,7 @@
       <column comment="" key="false" length="255" name="totalLossRefDesc" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Numeric.sequence(String.valueOf(row17.CROP_GROUP_ID),1,1) " name="cropGroupSeq" type="id_Integer"/>
       </varTables>
@@ -4460,6 +4466,9 @@
         <mapperTableEntries name="VERTRAG" type="id_Long"/>
         <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="CLAUSE_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries name="V_CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries name="TABLE_NAME" nullable="true" type="id_String"/>
         <mapperTableEntries name="cropGroupRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="cropGroupRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries name="cropGroupADD_1" nullable="true" type="id_Long"/>
@@ -4904,6 +4913,17 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row16"/>
   </connection>
   <connection connectorName="FLOW" label="contract_clauses_cropGroup" lineStyle="0" metaname="contract_clauses_cropGroup" offsetLabelX="0" offsetLabelY="0" source="tMap_13" target="tMap_14">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="TABLE_NAME"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="V_CROP_GROUP"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="CLAUSE_NAME"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="contract_clauses_cropGroup"/>
   </connection>
@@ -5081,13 +5101,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b6ae9808-652b-4d8f-baa3-8cb225105dcf"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>PgYlSfwbJKlGqpzkXLXUiLohbO2vc4Ql7RNkmkCCSAo0F1U45MYynl1sNAZSrD7XC0nD623V/l/Z&#13;
-+SbpEFO1EA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_060e5a3d-140d-421a-a557-eb25f3d5f3a1"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>6CR1kWBoBd2aEgnEIgFWnrx8gCDrt5QIWYaEnAz1BqtIKJRTNHJYTfFrgKHJCerS5JvdP66o79zP&#13;
-92ctDHn0Sw==</DigestValue></Reference></SignedInfo><SignatureValue>DbTELjapGqOXcZoMkwh5MR4fJlke5weWy3pcYbqf0QCdxYZXX6dypHIatnrq1ATk6odX7IGua3BF&#13;
-n7+ahyCA4C/0NbdPLViwG+7ckWefLcCMB2AjjLrv6iM6GAVcZgrL/giHg7WuA0p6RBKJ7SGCV9/l&#13;
-fL0qDkeVTgp0tjWppLzszP7rAqdZhhFv+5FrbydLDSwEatP4SaDqCdp0prGumfVq1IIEKbYiMjZp&#13;
-pDfMErJD1PJo/c79mm26Ag7gKioPKts67ziQE28RsBvn43qrNU4PCEsCw/uqa0+8MlEbqGVfvbmX&#13;
-Z2tKQAAj4fNECYbVXaoF3/SyXnlPnl3MPmuT3A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_78073887-eaae-4c73-9af6-74b6f7a5a5d0"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>A/HlNgDtVBv9LR1P9kZyk9DcgQIZ/IcvRtBIkdzsRp+03utggCwqqOgpcDAuzEsv14Vcl5YjKa5+&#13;
+/S0tEqXckg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5ec67527-18ea-4d48-8ca0-09d42946e633"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>XK4YHJX6/oAd28Bh6zD5JIr/NKsrYPOt/FMCfdmGQC1hXsqBGLiaN4uf7ADPzn6d1I1sw62yITwB&#13;
+qWBPY9kbgQ==</DigestValue></Reference></SignedInfo><SignatureValue>n5Qj0aRvVSY0jD76xE1denPgG1G33zcKJrB9WmpkICVOfiMGps1arwgMxlUvtJ/Ip4z8ZjCEVV3R&#13;
+wYbvUhxQoPO7EOPT5MSM8lk3KHahaXAQtIf6lxSalCapISjzXmyzpB0Pons1U+/QestZyf4OKyw9&#13;
+3tuNV+7exekj7/D+wM2xhw+cL2wGp5wohDjp8L2BiaEOe9Imq9J9bh0jv8XeQ+T4ualmx26DjKuY&#13;
+I2DAGql/cV5pgYjLQKsuwNyuruD6xYbX/PKpP+E8q6eDpzL8JxLEK62U5Px2ku9j8YfIPlJBYDLt&#13;
+7IDBAzcR+1bWpeZRdM/kRc1gMqGt2ThlxFpVlA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5109,4 +5129,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_060e5a3d-140d-421a-a557-eb25f3d5f3a1" Target="#_b6ae9808-652b-4d8f-baa3-8cb225105dcf"><Timestamp>2024-04-11 14:26:50</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5ec67527-18ea-4d48-8ca0-09d42946e633" Target="#_78073887-eaae-4c73-9af6-74b6f7a5a5d0"><Timestamp>2024-04-12 09:37:05</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
