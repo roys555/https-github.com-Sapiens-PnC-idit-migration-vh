@@ -104,22 +104,7 @@
     <elementParameter field="TEXT" name="FOOTER_LIBRARY" show="false" value=""/>
     <elementParameter field="TEXT" name="FOOTER_CODE" show="false" value=""/>
     <elementParameter field="TEXT" name="FOOTER_IMPORT" show="false" value=""/>
-    <routinesParameter id="_Hrmq0MTBEe2LZ8ocRxnWzw" name="DataOperation"/>
-    <routinesParameter id="_Hr9QIMTBEe2LZ8ocRxnWzw" name="Mathematical"/>
-    <routinesParameter id="_HsmJUMTBEe2LZ8ocRxnWzw" name="Numeric"/>
-    <routinesParameter id="_Hs0LwMTBEe2LZ8ocRxnWzw" name="Relational"/>
-    <routinesParameter id="_Hvo2QMTBEe2LZ8ocRxnWzw" name="SQLike"/>
-    <routinesParameter id="_HtSs4MTBEe2LZ8ocRxnWzw" name="StringHandling"/>
-    <routinesParameter id="_Htln0MTBEe2LZ8ocRxnWzw" name="TalendDataGenerator"/>
-    <routinesParameter id="_Ht2GgMTBEe2LZ8ocRxnWzw" name="TalendDate"/>
-    <routinesParameter id="_HvDAYMTBEe2LZ8ocRxnWzw" name="TalendStringUtil"/>
-    <routinesParameter id="_HubVUMTBEe2LZ8ocRxnWzw" name="TalendString"/>
     <routinesParameter id="_k7BjcMcTEe2DoJT7zYL8TA" name="ContactProcessingVHP"/>
-    <routinesParameter id="_tGmqUMlvEe2pvuBUnRcxzQ" name="DataQuality"/>
-    <routinesParameter id="_tHCvMMlvEe2pvuBUnRcxzQ" name="DQTechnical"/>
-    <routinesParameter id="_tGeHcMlvEe2pvuBUnRcxzQ" name="DataMasking"/>
-    <routinesParameter id="_tG6zYMlvEe2pvuBUnRcxzQ" name="DqStringHandling"/>
-    <routinesParameter id="_tGumIMlvEe2pvuBUnRcxzQ" name="DataQualityDependencies"/>
     <routinesParameter id="_mKGCMNOWEe2V4YqPxc1dgg" name="functionLibrary"/>
     <routinesParameter id="_ul8JQM_JEe2M9_himD71ag" name="ContactProcessingAGR"/>
   </parameters>
@@ -1421,7 +1406,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" label="XMLPolicyIVO" name="PolicyIVO">
+    <metadata comment="" connector="FLOW" label="XMLPolicyIVO" name="PolicyIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1496,7 +1481,7 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;, TalendDate.getCurrentDate() ) ) " name="v_current_timestamp" type="id_Date"/>
         <mapperTableEntries expression="TalendDate.addDate(&#13;&#10;TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;, &#13;&#13;&#10;&#13;&#13;&#10;TalendDate.addDate(TalendDate.getCurrentDate(), 31, &quot;dd&quot;)) ) ,-1,&quot;ss&quot;) " name="v_current_timestamp_p30d" type="id_Date"/>
@@ -1652,6 +1637,9 @@
         <mapperTableEntries name="isAnnualPayer" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="masterHeaderExternalNumber" nullable="true" type="id_String"/>
         <mapperTableEntries name="IDIT_bundlePolicyId" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="ownContributionARef" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="ownContributionSRef" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="ownContributionWRef" nullable="true" type="id_Long"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="FIRST_MATCH" name="contract_version" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="POSITIONS.BUNDLE_POLICY_ID " name="POLICE" operator="=" type="id_Long"/>
@@ -2229,6 +2217,12 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="IDIT_bundlePolicyId"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ownContributionARef"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ownContributionSRef"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ownContributionWRef"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="policyHeaderXml"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -2274,6 +2268,9 @@
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="masterHeaderExternalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="IDIT_bundlePolicyId" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="ownContributionARef" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="ownContributionSRef" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="ownContributionWRef" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="224" posY="128">
@@ -2623,13 +2620,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5348ea35-4515-4468-92fe-d6b3f173960b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3najSUcFzfW8ms0Q8p4vWwGTAG8nnTKhhJc5MRGDF31s7PHPpfBQA9hQFB4UsYk582pVoMsntrsX&#13;
-2o0l6onHaA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d4e63896-8d23-4c54-a2b3-48c5c90fce00"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RsfvZr8aXpx31/TJkeMJIjxHj7AJt+4b2h86u8ADFjaluTnZFkXIbZm9vrqiEO6udNAkfcPtoGID&#13;
-GdMwwEsZ+Q==</DigestValue></Reference></SignedInfo><SignatureValue>MOkIMzHgH/M87inKjIKYy8z0wlN9xvA/Sgvg5RtFBZBRnpUWUHG/o3nyV3VeZB+aTiz2xOdf2Hm4&#13;
-r00DFw5Z/FV/Rq6rZSalu7M4tSVtEvwEFeMRxYHHeCk02xmLY/4grGQUUQqlkeY37FTLcMkXJIoX&#13;
-inEw+F6WhLndwA1e5CCXeNq6quVS1hJoYmGz7avvVzAgc4/QsimTvtWAqOfXQGfdBv1OMQIe/WV/&#13;
-BQaGlo+iF962Z+XvRtap6e9GDmVRR5KN8SAdkWSFFPZRaEN8zv6UI6Cf+57TjzqYvJBhp9uMfFkx&#13;
-fFJoyKyFH0pp+G3b9GS9Plo5Kkn6FwWTknmL8A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_1fbc33bf-7669-4b08-bf7e-75ee27bdcce2"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VoKKcyyIWTsE6IQZtdUNe4jndzgLg+W7q7Mhgp0BhjLdIEHEB/R2sNIWAZAIyBiPJUXEKBtIxa7l&#13;
+GdzF40JtCA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_65ab8cdc-43c1-427a-888c-7d1bd018e831"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>rk92Upu8HRlAMhnEVfvbkzMpmpEZLI6q0ekXpMrGHrTQpYYdvE+gj6Xed+x6B1lSeKJOweC9lfyX&#13;
+1AkpqRFHRA==</DigestValue></Reference></SignedInfo><SignatureValue>Fek59vBujpi/3Ac/sLdio2gIxy+y5VypbzhbL0TtBXAoJHuDqxG9/ITKbwExMd1QLMelrQkwVnuf&#13;
+OWeZMsZaMMw1ybp9gWrMyxcwwCuP61A87l0jWmN8Rj17W/gvcZ8KKll+B65PHiW7KM3qKoDlZpTB&#13;
+3XGAFg/acoWNaeV2fHCGhqFsiMcmkyptcE0icbBJF5ZXqEmzKSQYler2wbWzBXPtb+WVKisRNCoV&#13;
+AMdtNKuF6f9/xkacZCSLPC4hLtm59s9UU2INNwJuy99/xRjyo+81wnKe2we4s+Ix9hkh2bhMr5Uz&#13;
+LVG0kGG4jC0xAPQX8dhtjbWPOgVABJwK8cM7lA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2651,4 +2648,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d4e63896-8d23-4c54-a2b3-48c5c90fce00" Target="#_5348ea35-4515-4468-92fe-d6b3f173960b"><Timestamp>2024-02-29 10:27:21</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_65ab8cdc-43c1-427a-888c-7d1bd018e831" Target="#_1fbc33bf-7669-4b08-bf7e-75ee27bdcce2"><Timestamp>2024-04-15 13:21:41</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
