@@ -266,7 +266,7 @@
         <mapperTableEntries expression="&quot;Agriculture&quot;" name="productVersionLobVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="Var.l_claimsFreeGradeRenewalTermsRef " name="claimsFreeGradeRenewalTermsRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="claimsFreeGradeRenewalTermsRefDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries name="plusSurchargeRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="Clauses.CLAUSEREFID " name="plusSurchargeRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="plusSurchargeRefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries name="totalLossFlatRateRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="totalLossFlatRateRefDESC" nullable="true" type="id_String"/>
@@ -367,11 +367,28 @@
         <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
         <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_CropGroup" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" minimized="true" name="trn_CropGroup" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="versionSelection.CROP_GROUP " name="in_value" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
         <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
         <mapperTableEntries name="add_params_1" nullable="true" type="id_Long"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="Clauses" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="versionSelection.POLICE " name="POLICE" operator="=" type="id_Long"/>
+        <mapperTableEntries name="VERTRAG" type="id_Long"/>
+        <mapperTableEntries expression="versionSelection.V_START_DATE " name="START_DATE" nullable="true" operator="=" type="id_Date"/>
+        <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="CLAUSE_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries name="V_CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries name="TABLE_NAME" nullable="true" type="id_String"/>
+        <mapperTableEntries name="CROPGROUPREFID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="CROPGROUPREFDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries name="CROPGROUPADD_1" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="CLAUSEREFID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="CLAUSEREFDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries name="CLAUSEADD_1" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="CLAUSEADD_2" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="CLAUSEADD_3" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -890,6 +907,80 @@
       <column comment="" key="false" length="10" name="add_params_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="224" posY="128">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:gZfRfs4G4EzSkTWEIxIrxLYIz7uhDCQ/pL0p3tds"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_8Q-hUPiwEe6p3sP16CONSw - ALL_DE_CONTRACT_CLAUSES"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;ALL_DE_CONTRACT_CLAUSES&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ALL_DE_CONTRACT_CLAUSES.POLICE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.VERTRAG,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.START_DATE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.END_DATE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSE_NAME,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.V_CROP_GROUP,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.TABLE_NAME,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPREFID,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPREFDESC,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPADD_1,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEREFID,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEREFDESC,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_1,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_2,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_3&#10;FROM&#9;ALL_DE_CONTRACT_CLAUSES&#13;&#10;WHERE  &#9;ALL_DE_CONTRACT_CLAUSES.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND &#9;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.VERTRAG = &quot;+context.p_id &#13;&#10;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSE_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_CROP_GROUP"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="TABLE_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPREFID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPREFDESC"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPADD_1"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEREFID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEREFDESC"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_1"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_2"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_3"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;CONTRACT_CLAUSES&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="ALL_DE_CONTRACT_CLAUSES" name="tHSQLDbInput_1">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CROPGROUPREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CLAUSEREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_2" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CLAUSEADD_3" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="864" posY="288">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
     <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
@@ -993,6 +1084,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_CropGroup"/>
   </connection>
+  <connection connectorName="FLOW" label="Clauses" lineStyle="8" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="Clauses"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -1003,13 +1098,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_28b8b5ed-2563-4f69-88ec-22c03cefde3b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>BDkjEvLpo1c5kb56Y8RjzGpi80IeG8I+mcZorl4d04y+6qAl/rHHje2mh9cZYr7U+Gps/KSkUyB6&#13;
-Iex+4KTgOg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_6a1a3b2c-6928-43fc-a25e-7e906460e1de"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>jrrCSoK9gaeq0mvNLEz6DBzEzXwj3Lii2/qALNfx/zPBxk94n8uMfwvXdRcrQgBuzCicerwwTRvo&#13;
-OZtrzWM24g==</DigestValue></Reference></SignedInfo><SignatureValue>l2Gtr7VejT/IA1N9I/YruZ2UXAdC/0NicihJlrQ13ZS/II7MuVLV3v4bq005U8ub3bysi7njvHUh&#13;
-8mt52VXa2f/0NSxQlT5urEnGvVfIUD7RfDFH94LY0WoJK/SgkA5lVOAqkZD2pRpXeC/cBU26tCNG&#13;
-WeRXLVJEH5o3hTxrmg7Lwz71auur6ZQ1nxX+zdnRi0i8K98L6pb4xg5iljPYAuVJctMc6VBZVoxw&#13;
-u35KkDp3RZyxIp6JDmpeJg7WKOJrjDvXUJinrV8HSczK3c3vyn8az2wzyHv6wZ+nenXBFBpVYAHP&#13;
-VajE1ZzMMI7PHD6Oc/PCuu5PnOh9ktuh8aShPA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_502c575e-b6fa-4db9-bd00-f1f32fb571ae"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>E493VwFJf83FMq3gjVK3OT9BdqhKS7E/WwrM02QLqufuC3fTHJwQbipfnCklboTmO8jEeDenNymo&#13;
+szHUMCDBnA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_7388a383-750a-45c7-8665-f4470497b634"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ZkNf+EeC5vMg7CqFUpMP9XkZWoKMZ0ectMBVw787r9Xf+Pf3k5k75ekG07lB/rLmFMAwVb2Lj/kY&#13;
+9unIb8zxHw==</DigestValue></Reference></SignedInfo><SignatureValue>KcMWbUCaIxqL2tEnyaRGjGVLPFej8h3Tbzm6IH6f15yTcUIP+VvTcUq0Q/vG/LBaX9y6FfB2jzo0&#13;
+8fsDA9o4uIZ438N8EpuH4hT4S6GAVeaf78cWPO1eAFICIUEBVbdVIpgLSpdoyH0eehImZK8zcgVl&#13;
+vsEwkc0rt4MAoOL3sBE9wJSzSEgnzLORo5GE4r2skTi5I0oPTHkSJfc1LT5hKXDZn+2NLpDWKTch&#13;
+lq1cHnLxVtshWvDl105+5xkDgCjmyS8r05rxZbVBaNQZZgBWAKeVUaSjpTosug2SwtE6Ie62dT5H&#13;
+AyGCYdR4xgp2w7NRZg0K2eBIwJoxSt3bJNruVg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1031,4 +1126,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_6a1a3b2c-6928-43fc-a25e-7e906460e1de" Target="#_28b8b5ed-2563-4f69-88ec-22c03cefde3b"><Timestamp>2024-04-17 11:14:47</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_7388a383-750a-45c7-8665-f4470497b634" Target="#_502c575e-b6fa-4db9-bd00-f1f32fb571ae"><Timestamp>2024-04-17 11:54:39</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
