@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="" internalId="_m8GG0P40Ee6xo9FcoemsuQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="452"/>
+    <contextParameter comment="" internalId="_m8GG0P40Ee6xo9FcoemsuQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="454"/>
     <contextParameter comment="" internalId="_CpB9Z_40Ee6xo9FcoemsuQ" name="parentLaunch" prompt="parentLaunch?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
     <contextParameter comment="" internalId="_gOPSAAFFEe-N5cT7Hd82dw" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="false"/>
     <contextParameter comment="" internalId="_gOPSAQFFEe-N5cT7Hd82dw" name="addFileNameSuffix" prompt="addFileNameSuffix?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
@@ -658,7 +658,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT distinct pb.PBE_PARTNER_NR   ,0&#13;&#10;FROM sev.PARTNER_BEZIEHUNG pb&#13;&#10;join K2V_DEV.DE_REGRESSION_SCOPE drs on drs.PAR_PARTNER_NR = pb.PAR_PARTNER_NR &#13;&#10;where EXISTS ( SELECT * FROM K2V_DEV.ALL_DE_CONTACT adc WHERE adc.PAR_PARTNER_NR = pb.PBE_PARTNER_NR  )&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT distinct pb.PBE_PARTNER_NR   ,0&#13;&#10;FROM sev.PARTNER_BEZIEHUNG pb&#13;&#10;join K2V_DEV.DE_REGRESSION_SCOPE drs on drs.PAR_PARTNER_NR = pb.PAR_PARTNER_NR and drs.ISPRIMARYSELECTION =1 &#13;&#10;where EXISTS ( SELECT * FROM K2V_DEV.ALL_DE_CONTACT adc WHERE adc.PAR_PARTNER_NR = pb.PBE_PARTNER_NR  )&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -758,7 +758,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT distinct p.PAR_PARTNER_NR_VM ,0&#13;&#10;FROM SEV.PARTNER p&#13;&#10;INNER JOIN sev.vm vm ON vm.PAR_PARTNER_NR = p.PAR_PARTNER_NR_VM  &#13;&#10;inner join K2V_DEV.DE_REGRESSION_SCOPE drs on drs.PAR_PARTNER_NR = p.PAR_PARTNER_NR &#13;&#10;WHERE vm.VMR_HIERARCHIE IN (1,2,3) &#13;&#10;AND p.PAR_PARTNER_NR_VM&lt;&gt; p.PAR_PARTNER_NR&#13;&#10;and EXISTS ( SELECT * FROM K2V_DEV.ALL_DE_CONTACT adc WHERE adc.PAR_PARTNER_NR = p.PAR_PARTNER_NR_VM  )&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT distinct p.PAR_PARTNER_NR_VM ,0&#13;&#10;FROM SEV.PARTNER p&#13;&#10;INNER JOIN sev.vm vm ON vm.PAR_PARTNER_NR = p.PAR_PARTNER_NR_VM  &#13;&#10;inner join K2V_DEV.DE_REGRESSION_SCOPE drs on drs.PAR_PARTNER_NR = p.PAR_PARTNER_NR and drs.ISPRIMARYSELECTION =1 &#13;&#10;WHERE vm.VMR_HIERARCHIE IN (1,2,3) &#13;&#10;AND p.PAR_PARTNER_NR_VM&lt;&gt; p.PAR_PARTNER_NR&#13;&#10;and EXISTS ( SELECT * FROM K2V_DEV.ALL_DE_CONTACT adc WHERE adc.PAR_PARTNER_NR = p.PAR_PARTNER_NR_VM  )&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -875,7 +875,24 @@
       <column comment="" key="false" length="1" name="isPrimaryselection" nullable="true" originalLength="1" pattern="" precision="0" sourceType="BIT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tUniqRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="320" posY="352">
+  <node componentName="tSortRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="352">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tSortRow_1"/>
+    <elementParameter field="TABLE" name="CRITERIA">
+      <elementValue elementRef="COLNAME" value="isPrimaryselection"/>
+      <elementValue elementRef="SORT" value="num"/>
+      <elementValue elementRef="ORDER" value="desc"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="EXTERNAL" value="false"/>
+    <elementParameter field="DIRECTORY" name="TEMPFILE" show="false" value="&quot;C:/Users/Tomasz.Korneluk/vh_new_workspace/temp&quot;"/>
+    <elementParameter field="CHECK" name="CREATEDIR" show="false" value="true"/>
+    <elementParameter field="TEXT" name="EXTERNAL_SORT_BUFFERSIZE" show="false" value="1000000"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tSortRow_1">
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="10" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="1" name="isPrimaryselection" nullable="true" originalLength="1" pattern="" precision="0" sourceType="BIT" type="id_Integer" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tUniqRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="544" posY="352">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tUniqRow_1"/>
     <elementParameter field="TABLE" name="UNIQUE_KEY">
       <elementValue elementRef="SCHEMA_COLUMN" value="PAR_PARTNER_NR"/>
@@ -885,7 +902,7 @@
       <elementValue elementRef="KEY_ATTRIBUTE" value="false"/>
       <elementValue elementRef="CASE_SENSITIVE" value="false"/>
     </elementParameter>
-    <elementParameter field="CHECK" name="ONLY_ONCE_EACH_DUPLICATED_KEY" value="false"/>
+    <elementParameter field="CHECK" name="ONLY_ONCE_EACH_DUPLICATED_KEY" value="true"/>
     <elementParameter field="CHECK" name="IS_VIRTUAL_COMPONENT" value="false"/>
     <elementParameter field="OPENED_LIST" name="BUFFER_SIZE" show="false" value="M"/>
     <elementParameter field="DIRECTORY" name="TEMP_DIRECTORY" show="false" value=""/>
@@ -904,7 +921,7 @@
       <column comment="" key="false" length="1" name="isPrimaryselection" nullable="true" originalLength="1" pattern="" precision="0" sourceType="BIT" type="id_Integer" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="576" posY="352">
+  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="768" posY="352">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_2"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
@@ -1000,7 +1017,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT p.PAR_PARTNER_NR ,  PAR_PARTNER_NR_EO, PAR_KUNDENGRUPPE &#13;&#10;FROM sev.PARTNER p &#13;&#10;WHERE p.PAR_KUNDENGRUPPE IS NOT NULL&#13;&#10;and EXISTS ( SELECT * FROM K2V_DEV.ALL_DE_CONTACT adc WHERE adc.PAR_PARTNER_NR = p.PAR_PARTNER_NR_EO  )&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT p.PAR_PARTNER_NR ,  PAR_PARTNER_NR_EO, PAR_KUNDENGRUPPE &#13;&#10;FROM sev.PARTNER p &#13;&#10;WHERE p.PAR_KUNDENGRUPPE IS NOT NULL&#13;&#10;and EXISTS ( SELECT * FROM K2V_DEV.ALL_DE_CONTACT adc WHERE adc.PAR_PARTNER_NR = p.PAR_PARTNER_NR  ) &#13;&#10;AND EXISTS (SELECT 1 FROM K2V_DEV.DE_REGRESSION_SCOPE drs WHERE drs.PAR_PARTNER_NR = p.PAR_PARTNER_NR AND drs.ISPRIMARYSELECTION =1) &#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1294,12 +1311,16 @@
   <connection connectorName="SYNCHRONIZE" label="Synchronize" lineStyle="12" metaname="tParallelize_1" offsetLabelX="0" offsetLabelY="0" source="tParallelize_1" target="tHSQLDbInput_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="Synchronize"/>
   </connection>
-  <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tUniqRow_1">
+  <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tSortRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_1" offsetLabelX="7" offsetLabelY="-2" source="tHSQLDbInput_1" target="tJava_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk6"/>
+  </connection>
+  <connection connectorName="FLOW" label="row7" lineStyle="0" metaname="tSortRow_1" offsetLabelX="0" offsetLabelY="0" source="tSortRow_1" target="tUniqRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row7"/>
   </connection>
   <connection connectorName="UNIQUE" label="row5" lineStyle="0" metaname="UNIQUE" offsetLabelX="0" offsetLabelY="0" source="tUniqRow_1" target="tDBOutput_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1426,13 +1447,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="128;255;128"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_4247a54b-1876-4340-afab-40d41d4e3402"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Zc+mOLK52t6J90ZAr/DZB6SeoM4gG0ilF0KelqZeM5aViQF8de8+n/8dBcklUsBWfQVRctRid6Vg&#13;
-Biqy0rKFTg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_75f43625-ac8d-4839-85b4-14186130628b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>scsWwfcyB+BJmjdKeim9loKGfHQd5SN5Rrtd8jVpZK9eeIjeYeA3BHdCbL6hVW3UddZQ1u2IeBfi&#13;
-Mt3WLHFFWQ==</DigestValue></Reference></SignedInfo><SignatureValue>WHctzKAaNZUbIoRJgmFnWQGBWmNv1SaGpxanom+zS21aMV/KdunVXl0tvmxnaELoVHh8whUjaWdk&#13;
-R7yp6jghHtAojVvas3dbUDOWomQMXssUXKiw339J7mpBfYu7B3FNBFlKhMgVX2b10roc8A8RtCuf&#13;
-539YcEdNzilwACWvqnG6lS4zYc8jEBgGMCmsX3OHg+fviCewqt+9bqc0XbcCICafAJOFIYBzF1Dm&#13;
-KjDPjk6XnUVD8to8ie6DQQfQl/kGmSW3mKDQW9iYkXqwaGP2S+LYnpdNAGl0ehnzWY2dvFoepM9u&#13;
-PzIFhBdfvLXWFZAcHt4DiqPLMzh3PZCCcCvJnA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ea772691-79e0-4b79-a519-de444ef45f86"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ARCYTtzUNLvLnOHs/p//jIx29nAMkG/Kjf7cpAcyfT9NzTfFvC6B6suCeW3iwJjagb8N+PR7tS60&#13;
+6ArLfaxrKg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_1b05d103-ba15-4153-95d8-d84ba5c2ef9d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vaSAMeTFXbcBG1LhLr1k1RF2u3Dv7RMZfbWn103OMFVtcZZVenT2gzRqxQtK9tk7YFyWqje274b3&#13;
+EnoC13hV+g==</DigestValue></Reference></SignedInfo><SignatureValue>U2hVrKtyW3a0Mq7IfMk9Y2prrpBtaIXTH3DsnsjZK/2pMf4f0n9jjfpdcG4pYDjjIhT30joSBcZR&#13;
+tYXzXxgoQiUxFgrC0pNQd/9xnzLts/azVzY2YOnIOeyaRPq8I9OVp036gChYKhfrOA5zucqszIJD&#13;
+G8QYEI42Dg3YF/eAtbLzdQuktEsPTATEJuHz8I21FFr2O+dIOZnIsOKxMhYsgGnwYkXF3Ulc86YD&#13;
+wjfGhkb3+pX8OBSMcHWuqVOGeoD77Mh2U9QtOX4WjUBtk/TOlYGGDzdXidQdvt4am2UwBh2kRy7Y&#13;
+P+7GBgRuKgXwhtTbvo1ak7W/DioRkTHzVk6bfQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1454,4 +1475,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_75f43625-ac8d-4839-85b4-14186130628b" Target="#_4247a54b-1876-4340-afab-40d41d4e3402"><Timestamp>2024-04-23 08:58:58</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_1b05d103-ba15-4153-95d8-d84ba5c2ef9d" Target="#_ea772691-79e0-4b79-a519-de444ef45f86"><Timestamp>2024-04-23 09:14:31</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
