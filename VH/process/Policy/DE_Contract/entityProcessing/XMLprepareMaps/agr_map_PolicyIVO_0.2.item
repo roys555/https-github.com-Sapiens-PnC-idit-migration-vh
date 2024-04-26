@@ -245,7 +245,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" label="XMLPolicyIVO" name="out">
+    <metadata comment="" connector="FLOW" label="XMLPolicyIVO" name="out">
       <column comment="" key="false" length="10" name="POLICE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="VERTRAG" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="POLICY_VERSION" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
@@ -303,7 +303,7 @@
       <column comment="" key="false" length="-1" name="ownContributionARef_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="&quot;DP-&quot;+versionSelection.POLICE+String.format(&quot;%03d&quot;, versionSelection.VERTRAG)&#13;&#10;+&quot;/&quot; + String.format(&quot;%02d&quot;,versionSelection.POLICY_VERSION-1) " name="policyNumber" type="id_String"/>
         <mapperTableEntries expression="(long)100" name="currentChannelVORefID" type="id_Long"/>
@@ -365,9 +365,9 @@
         <mapperTableEntries expression="policyHeadrerIVO.productVORefID " name="lobVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="policyHeadrerIVO.productVORefDesc " name="lobVORefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="versionSelection.IS_ANNUAL_PAYER==(long)0?Boolean.FALSE:Boolean.TRUE; " name="isAnnualPayer" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="contracl_clauses.CROPGROUPREFID " name="ownContributionWRef_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="contracl_clauses.CROPGROUPREFID " name="ownContributionSRef_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="contracl_clauses.CROPGROUPREFID " name="ownContributionARef_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="contract_clauses_enriched.OWN_CONTRIBUTION_SELECT_W " name="ownContributionWRef_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="contract_clauses_enriched.OWN_CONTRIBUTION_SELECT_S " name="ownContributionSRef_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="contract_clauses_enriched.OWN_CONTRIBUTION_SELECT_A " name="ownContributionARef_ID" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="versionSelection" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
@@ -447,7 +447,7 @@
         <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
         <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="contracl_clauses" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="contract_clauses_enriched" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="versionSelection.POLICE " name="POLICE" operator="=" type="id_Long"/>
         <mapperTableEntries expression="(long)versionSelection.VERTRAG " name="VERTRAG" operator="=" type="id_Long"/>
         <mapperTableEntries expression="versionSelection.V_START_DATE " name="START_DATE" nullable="true" operator="=" type="id_Date"/>
@@ -463,10 +463,13 @@
         <mapperTableEntries name="CLAUSEADD_1" nullable="true" type="id_Long"/>
         <mapperTableEntries name="CLAUSEADD_2" nullable="true" type="id_Long"/>
         <mapperTableEntries name="CLAUSEADD_3" nullable="true" type="id_String"/>
+        <mapperTableEntries name="OWN_CONTRIBUTION_SELECT_A" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="OWN_CONTRIBUTION_SELECT_S" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="OWN_CONTRIBUTION_SELECT_W" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="416" posY="224">
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="672" posY="224">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -736,6 +739,8 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;XMLPolicyIVO&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="CREATE_IF_NOT_EXISTS"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_DKkmgC-nEe6ex-N9gYFlRA - XMLPolicyIVO"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -1141,7 +1146,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="800" posY="224">
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="224">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -1213,6 +1218,32 @@
       <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_2" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="CLAUSEADD_3" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="384" posY="256">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_2"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.POLICE = input_row.POLICE;&#13;&#10;output_row.VERTRAG = input_row.VERTRAG;&#13;&#10;output_row.START_DATE = input_row.START_DATE;&#13;&#10;output_row.END_DATE = input_row.END_DATE;&#13;&#10;output_row.CLAUSE_NAME = input_row.CLAUSE_NAME;&#13;&#10;output_row.V_CROP_GROUP = input_row.V_CROP_GROUP;&#13;&#10;output_row.TABLE_NAME = input_row.TABLE_NAME;&#13;&#10;output_row.CROPGROUPREFID = input_row.CROPGROUPREFID;&#13;&#10;output_row.CROPGROUPREFDESC = input_row.CROPGROUPREFDESC;&#13;&#10;output_row.CROPGROUPADD_1 = input_row.CROPGROUPADD_1;&#13;&#10;output_row.CLAUSEREFID = input_row.CLAUSEREFID;&#13;&#10;output_row.CLAUSEREFDESC = input_row.CLAUSEREFDESC;&#13;&#10;output_row.CLAUSEADD_1 = input_row.CLAUSEADD_1;&#13;&#10;output_row.CLAUSEADD_2 = input_row.CLAUSEADD_2;&#13;&#10;output_row.CLAUSEADD_3 = input_row.CLAUSEADD_3;&#10;&#10;long owc_a =-1;&#10;long owc_s =-1;&#10;long owc_w =-1;&#10;&#10;&#10;if (output_row.CLAUSEADD_1 == (long)1000008 )&#10;{&#10;   owc_a = (long)1000010;&#10;&#10;} else {&#10;owc_a=(long)1000010;&#10;} &#10;&#10;&#10;if (output_row.CLAUSEADD_1 == (long)1000007 )&#10;{&#10;   owc_s = (long)1000012;&#10;&#10;} else {&#10;owc_s=(long)1000012;&#10;} &#10;&#10;&#10;if (output_row.CLAUSEADD_1 == (long)1000006 )&#10;{&#10;   owc_w = (long)1000011;&#10;&#10;} else {&#10;owc_w=(long)1000011;&#10;} &#10;&#10;&#10;output_row.OWN_CONTRIBUTION_SELECT_A = owc_a;&#10;output_row.OWN_CONTRIBUTION_SELECT_S = owc_s;&#10;output_row.OWN_CONTRIBUTION_SELECT_W = owc_w;&#10;&#10;&#10;&#13;&#10;"/>
+    <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="ALL_DE_CONTRACT_CLAUSES" name="tJavaRow_2">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CROPGROUPREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CLAUSEREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_2" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CLAUSEADD_3" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="OWN_CONTRIBUTION_SELECT_A" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="OWN_CONTRIBUTION_SELECT_S" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="OWN_CONTRIBUTION_SELECT_W" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="864" posY="96">
@@ -1403,6 +1434,81 @@
       <column comment="" key="false" length="-1" name="ownContributionARef_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1120" posY="192">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:Qo92tkOqqGjVOzYqg6lW9w3N5A6xucaeuHhKoRr+"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_8Q-hUPiwEe6p3sP16CONSw - ALL_DE_CONTRACT_CLAUSES"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;ALL_DE_CONTRACT_CLAUSES&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ALL_DE_CONTRACT_CLAUSES.POLICE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.VERTRAG,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.START_DATE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.END_DATE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSE_NAME,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.V_CROP_GROUP,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.TABLE_NAME,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPREFID,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPREFDESC,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPADD_1,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEREFID,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEREFDESC,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_1,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_2,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_3&#10;FROM&#9;ALL_DE_CONTRACT_CLAUSES&#13;&#10;WHERE  &#9;1=1&#13;&#10;AND ALL_DE_CONTRACT_CLAUSES.CLAUSEREFID =1000002&#13;&#10;AND ALL_DE_CONTRACT_CLAUSES.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND &#9;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.VERTRAG = &quot;+context.p_id &#13;&#10;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSE_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_CROP_GROUP"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="TABLE_NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPREFID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPREFDESC"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPADD_1"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEREFID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEREFDESC"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_1"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_2"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_3"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;CONTRACT_CLAUSES&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="ALL_DE_CONTRACT_CLAUSES" name="tHSQLDbInput_5">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CROPGROUPREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CLAUSEREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_2" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CLAUSEADD_3" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="versionSelection_1" lineStyle="0" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="versionSelection_1"/>
@@ -1464,9 +1570,13 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
-  <connection connectorName="FLOW" label="contracl_clauses" lineStyle="8" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tMap_1">
+  <connection connectorName="FLOW" label="contracl_clauses" lineStyle="0" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tJavaRow_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="contracl_clauses"/>
+  </connection>
+  <connection connectorName="FLOW" label="contract_clauses_enriched" lineStyle="8" metaname="tJavaRow_2" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_2" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="contract_clauses_enriched"/>
   </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
@@ -1478,13 +1588,18 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_012edc77-d05a-403a-bc8e-955cf448ec73"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>E14GjMOqJfN/C93ti5ZGFWTpJuo81K7SjXs0P23TXW87H6QX1C4lWRAxPF3WCgiIic3mwK1C2CdQ&#13;
-dvwohdWiZg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_e48c7f2c-b9e0-4342-8942-d3dbf2ae64d6"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>FyWjs2muPXvLFTrTccIUJpIyutPQRNYEchaSdCxQb1F6hXoAS28Bx6Y//PNdxECvYOE/T+j2JdC5&#13;
-6jCcD61w5w==</DigestValue></Reference></SignedInfo><SignatureValue>LtG29Q7H/mJ9G3/3JMhefRBST3ukDpstoPc2pLKe7Pq6OQscfZJHHgJGP0P2zSgI1vZbYWYCQHV+&#13;
-Bm9Wz5Eb78FXmOZWUFh8RtGBWpIoSY6kq3u2OGZtdjlqOvQNd8QrgmgLBv4smmKemWqklUIwxUYo&#13;
-hhHNoZif/xRFnPgomIeozVI8FRkPHgY+BR+aaJKCqiipObGJGoSvZBq1UAItW8Gxf8r9IcBMYduE&#13;
-idHO9251u1YT15EsX3AIyhIWnu4qfPmdbGbE5PeIF1ZRKWhsLWhY/Nq8BhMcNXsgYuIYe6Cz23w2&#13;
-ntbB4r2tsDVTEr3TQ6ulTkmRDwc6K+E+6zmm6w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_1b9099a7-40bb-48ac-b208-2575f144c725"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>g8nNAyYleYZkUZxoaWNvcsx/GHBSYhlLcvFh93GpiuUyrrRkUCLlz0wxV8xubX8LrwG9fD7mlqkY&#13;
+qfPXQrlmrw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a8d91435-6c7e-4bbc-a137-702db91a9d25"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ISW9EwVphxw0+KT+aT1asXCz2GkuiTdrK+XXbvvxENh1hq0nzo6o5eYKOpGf783FEWmUVYLZTN8q&#13;
+hX7xYUjlmg==</DigestValue></Reference></SignedInfo><SignatureValue>AQAPn3U0fhv3yInTA1t3GgBmNQjVhGPYIc3g4iUXudBfS/OF5NOT6/966hKuMBspIjPP62OzVgPc&#13;
+D7iLrUx9SLU6Elvd5nQwnEJ6g3WF+W7n3G/bSjvCvv1qeIaD9YhKELoFToTJQ+dWJHImhKjoef0k&#13;
+PLxkx/HyVDuFntnqDntCv99nyhzKqgLDyMWHFslr4m/0pheYn0DFWxSxJcITvMm+iamy5BQhd4Un&#13;
+fDAdD+8yYjfcv/WTCfASQ5qSu6JkTsMxrlvnBQeN/GG0KU0IiAqxRy+6lTlilzu3pHBZ+n2gSRzK&#13;
+ejdnIjHRFA3DXzSLSGTGnlcaqIrvIUi0x8MyDQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1506,4 +1621,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_e48c7f2c-b9e0-4342-8942-d3dbf2ae64d6" Target="#_012edc77-d05a-403a-bc8e-955cf448ec73"><Timestamp>2024-04-25 13:11:03</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a8d91435-6c7e-4bbc-a137-702db91a9d25" Target="#_1b9099a7-40bb-48ac-b208-2575f144c725"><Timestamp>2024-04-26 08:23:20</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
