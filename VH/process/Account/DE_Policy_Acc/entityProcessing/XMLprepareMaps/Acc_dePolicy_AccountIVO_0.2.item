@@ -104,22 +104,7 @@
     <elementParameter field="TEXT" name="FOOTER_LIBRARY" show="false" value=""/>
     <elementParameter field="TEXT" name="FOOTER_CODE" show="false" value=""/>
     <elementParameter field="TEXT" name="FOOTER_IMPORT" show="false" value=""/>
-    <routinesParameter id="_Hrmq0MTBEe2LZ8ocRxnWzw" name="DataOperation"/>
-    <routinesParameter id="_Hr9QIMTBEe2LZ8ocRxnWzw" name="Mathematical"/>
-    <routinesParameter id="_HsmJUMTBEe2LZ8ocRxnWzw" name="Numeric"/>
-    <routinesParameter id="_Hs0LwMTBEe2LZ8ocRxnWzw" name="Relational"/>
-    <routinesParameter id="_Hvo2QMTBEe2LZ8ocRxnWzw" name="SQLike"/>
-    <routinesParameter id="_HtSs4MTBEe2LZ8ocRxnWzw" name="StringHandling"/>
-    <routinesParameter id="_Htln0MTBEe2LZ8ocRxnWzw" name="TalendDataGenerator"/>
-    <routinesParameter id="_Ht2GgMTBEe2LZ8ocRxnWzw" name="TalendDate"/>
-    <routinesParameter id="_HvDAYMTBEe2LZ8ocRxnWzw" name="TalendStringUtil"/>
-    <routinesParameter id="_HubVUMTBEe2LZ8ocRxnWzw" name="TalendString"/>
     <routinesParameter id="_k7BjcMcTEe2DoJT7zYL8TA" name="ContactProcessingVHP"/>
-    <routinesParameter id="_tGmqUMlvEe2pvuBUnRcxzQ" name="DataQuality"/>
-    <routinesParameter id="_tHCvMMlvEe2pvuBUnRcxzQ" name="DQTechnical"/>
-    <routinesParameter id="_tGeHcMlvEe2pvuBUnRcxzQ" name="DataMasking"/>
-    <routinesParameter id="_tG6zYMlvEe2pvuBUnRcxzQ" name="DqStringHandling"/>
-    <routinesParameter id="_tGumIMlvEe2pvuBUnRcxzQ" name="DataQualityDependencies"/>
     <routinesParameter id="_mKGCMNOWEe2V4YqPxc1dgg" name="functionLibrary"/>
     <routinesParameter id="_ul8JQM_JEe2M9_himD71ag" name="ContactProcessingAGR"/>
   </parameters>
@@ -196,6 +181,7 @@
       <column comment="" key="false" length="50" name="policyExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="processingStatusVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="processingStatusVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="externalNumber" nullable="true" originalLength="50" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
@@ -206,12 +192,13 @@
         <mapperTableEntries expression="&quot;Policy&quot;" name="accountTypeVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries name="bankAccountExtNum" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;24371&quot;" name="brandCompanyExtNum" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="String.valueOf(context.contactID)" name="contactExtNum" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(row1.PAR_PARTNER_NR) " name="contactExtNum" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)1" name="currencyVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Euro&quot;" name="currencyVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="String.valueOf(  row1.POLICE )" name="policyExtNum" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long) 10000" name="processingStatusVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;Available for the processing&quot;" name="processingStatusVORefDesc" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="String.valueOf(  row1.POLICE )" name="externalNumber" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -303,6 +290,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="externalNumber"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
@@ -319,6 +311,7 @@
       <column comment="" key="false" length="50" name="policyExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="processingStatusVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="processingStatusVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="externalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLAccountIVO" name="REJECT">
       <column comment="" key="false" length="-1" name="accountID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -332,6 +325,7 @@
       <column comment="" key="false" length="50" name="policyExtNum" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="processingStatusVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="processingStatusVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="externalNumber" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -345,6 +339,7 @@
   </node>
   <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="352" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_2"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
@@ -375,6 +370,7 @@
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="512" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="// code sample:&#13;&#10;//&#13;&#10;// multiply by 2 the row identifier&#13;&#10;// output_row.id = input_row.id * 2;&#13;&#10;//&#13;&#10;// lowercase the name&#13;&#10;// output_row.name = input_row.name.toLowerCase();&#10;context.contactID = input_row.ID;&#10;System.out.println(input_row.ID);"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -385,17 +381,25 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
   <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tHSQLDbOutput_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="externalNumber"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tJavaRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tHSQLDbInput_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
   </connection>
   <subjob>
@@ -413,13 +417,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_d7d81a76-e420-4c0d-bfb8-4d8b9f3ebb83"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8g0C9PFlsWD7N0dq8qAr0Dr+/cOLkM1foHXhcy9DFbzvBtPDEweOctlw1jx0ZFOjmgJ+tMDy7Sj3&#13;
-QblVmMIkGw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_eebbae7c-51b2-4730-be28-2ae4ebdcdae6"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>h0PUIvacWLBh/U2nAxCyx1tyeAJUOFZ8gcQnYrmryGItuoa23Wf4iH6YDA4729g1W60jlB171dPj&#13;
-TsXUro24vQ==</DigestValue></Reference></SignedInfo><SignatureValue>IEPi0s86AlELDF984uUCBkFu0mD4WfIQNVPgNjSsFQHO8msGkM52sRX8oO6rFE3cN03DznA7io2M&#13;
-vEdZvRiVPRZHT0Pl71Wy8655QfAeZ3QYMspbO5GywdihVe8XYt9FtBAQuBKi/lw3I4TIxsCDXg7K&#13;
-o8OkpoT4nMR5Bt9ysEGUTW8xs4mxxfKKHbsiqF7zfkYqsztYXwVbUCZwIPyxrsjavJVzwc2P27IL&#13;
-PCLMfDSbJ360TB7TsOHE+ZL16Cg8iIGKrKU2wUHDyggNG0ejjCOCPZTanysnpTjHroVt05b6U6qi&#13;
-wogf9jbT2y602x6Ov/5QSGEU83Miyvzf2k/L/Q==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9d28ba61-bce0-458a-a1ee-8f1edc4f1c9c"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mf3Fzk5W8bgBZLt40TToXBMI4pkj6Rk4u9zh4GLJVVtQheqWc8XEwSQpVmUD4XuZdfsOA6C5mbpj&#13;
+Zinjiu+1OA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0924bbc9-3aeb-4b5b-a2fb-5314e049a780"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>IU9eHP353ioIGVxFX5mWursdrpn9QF10cymBpz6dN2gW3Yr0wh0QdloHvZLMCWzxje9cZAxVysxe&#13;
+Sb7DyUgBEA==</DigestValue></Reference></SignedInfo><SignatureValue>ORjZy866ZGEFmXK2ytnvLRZGPhx9VcjUy8iOdxaB3nMro8JX1t4bXapuu2wFXkJTYiFTraZUE0p9&#13;
+hz0kqIZ5W4V8YtdBu09eWSrUdUvbB1rurtYmg7lO+9DVD1zkGXP2iVLrvg1Ur8xrlAQgs3kx3Vvv&#13;
+HlcEZ7SO4eqT8U3WIWLxBJcBa+JRJpX1nNm5RNw598yYnXTsM8ShwErgHpnn6qnVXq0uKQlCY7M4&#13;
+BtlL/Aqok3/BzPrgfyyOEwNxTZlFF1T3RhZOcQXge39jooylKjn98TjqDbOGhXZUa0NfFFYYfszw&#13;
+zEBIn9qOGRBnNsTtgu2nn8vVo3onuArgOws5nQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -441,4 +445,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_eebbae7c-51b2-4730-be28-2ae4ebdcdae6" Target="#_d7d81a76-e420-4c0d-bfb8-4d8b9f3ebb83"><Timestamp>2024-03-12 09:19:07</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0924bbc9-3aeb-4b5b-a2fb-5314e049a780" Target="#_9d28ba61-bce0-458a-a1ee-8f1edc4f1c9c"><Timestamp>2024-05-06 12:17:16</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
