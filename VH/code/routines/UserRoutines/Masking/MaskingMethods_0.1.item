@@ -195,14 +195,16 @@ public static String ChangeDayAndMonth(String params) {
 // Create date: 2023-04-17
 // Description:	ZipCodeMaskingLogic(<String TableName, String ColumnName, String EntityID, String currentValue>)
 //		 			parameters in <> are given by masking engine, parameters defined in control tables are concatenated after them. 
-//					Method to change last 3 chars in zip code to randomly generated.
+//					Method to change last 3 chars in zip code to randomly generated digits.
 // =============================================					
 		
   public static String ZipCodeMaskingLogic(String params) {
 	  String[] args = params.split("\\;");
 	  String originalZip = args[3];
 	  int originalZipLength = originalZip.length();
-	  String replace = DataMasking.createRandomString(3);
+	  //String replace = DataMasking.createRandomString(3); --modified according to new requirements - replace only with random digits
+	  String input_params = ";;;;3;4";
+	  String replace = MaskingMethods.returnRandomDigitsGivenLength(input_params);
 	  String maskedZip = originalZip.substring(0,originalZipLength-3) + replace;
 	  return maskedZip;
   }
