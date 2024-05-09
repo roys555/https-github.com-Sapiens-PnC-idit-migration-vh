@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="" internalId="_gaBZcMTOEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="529"/>
+    <contextParameter comment="" internalId="_gaBZcMTOEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="532"/>
     <contextParameter comment="" internalId="_qTgcgLtiEe65_pL7HwxoNg" name="Oracle_staging_Server" prompt="Oracle_staging_Server?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value="10.86.77.7"/>
     <contextParameter comment="" internalId="_qTgcgbtiEe65_pL7HwxoNg" name="Oracle_staging_AdditionalParams" prompt="Oracle_staging_AdditionalParams?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value=""/>
     <contextParameter comment="" internalId="_qTgcgrtiEe65_pL7HwxoNg" name="Oracle_staging_Login" prompt="Oracle_staging_Login?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value="system"/>
@@ -676,7 +676,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT b.POLICE AS BUNDLE, b.VERTRAG, CONCAT(CONCAT('DP-', POLICE), TRIM(TO_CHAR(VERTRAG, '000'))) AS GA_EXT_Number, &#13;&#10;CONCAT('MIG_AP-', b.PAR_PARTNER_NR) AS POLICYHOLDER, b.COLLECTION_METHOD, b.PAYMENT_TERM, b.POLICY_VERSION  &#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b &#13;&#10;WHERE b.POLICY_VERSION IN (SELECT max(b2.POLICY_VERSION) &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b2 WHERE b.POLICE = b2.POLICE GROUP BY b2.POLICE)&#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.DE_REGRESSION_SCOPE drs WHERE drs.PAR_PARTNER_NR = b.PAR_PARTNER_NR AND drs.ISPRIMARYSELECTION = 1)&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH contract AS (&#13;&#10;SELECT DISTINCT b.POLICE AS BUNDLE, b.VERTRAG, --CONCAT(CONCAT('DP-', POLICE), TRIM(TO_CHAR(VERTRAG, '000'))) AS GA_EXT_Number, &#13;&#10;b.PAR_PARTNER_NR, b.COLLECTION_METHOD, b.PAYMENT_TERM, b.POLICY_VERSION  &#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b &#13;&#10;WHERE b.POLICY_VERSION IN (SELECT max(b2.POLICY_VERSION) &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b2 WHERE b.POLICE = b2.POLICE GROUP BY b2.POLICE)&#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.DE_REGRESSION_SCOPE drs WHERE drs.PAR_PARTNER_NR = b.PAR_PARTNER_NR AND drs.ISPRIMARYSELECTION = 1)&#13;&#10;)&#13;&#10;SELECT adp.ENTITY_ID ,adp.BUNDLE_POLICY_ID, adp.POLICY_ID, adp.POSITION_ID, adp.POSITION_EXTERNAL_HEADER_NUMBER, &#13;&#10;CONCAT('MIG_AP-', x.PAR_PARTNER_NR) AS POLICYHOLDER, x.COLLECTION_METHOD, x.PAYMENT_TERM&#13;&#10;FROM K2V_DEV.ALL_DE_POSITION adp&#13;&#10;JOIN contract x ON x.BUNDLE = adp.BUNDLE_POLICY_ID AND x.VERTRAG = adp.POLICY_ID &#13;&#10;WHERE EXISTS (SELECT 1 FROM K2V_DEV.DE_REGRESSION_SCOPE drs2 WHERE drs2.PAR_PARTNER_NR = x.PAR_PARTNER_NR AND drs2.ISPRIMARYSELECTION = 1)&#13;&#10;and rownum&lt;31&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -691,11 +691,15 @@
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="GA_EXT_Number"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POSITION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POS_EXT_Number"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_HOLDER"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -703,21 +707,20 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PAYMENT_TERM"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
-      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="Select inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_2">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="VERTRAG" nullable="true" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="GA_EXT_Number" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="POSITION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="POS_EXT_Number" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="POLICY_HOLDER" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="COLLECTION_METHOD" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="PAYMENT_TERM" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="POLICY_VERSION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="352" posY="320">
@@ -775,11 +778,11 @@
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="out1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID " name="MIGRATION_ID" type="id_Integer"/>
-        <mapperTableEntries expression="String.valueOf(  row2.POLICE )+&quot;_&quot;+String.valueOf(  row2.VERTRAG )" name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries expression="row2.GA_EXT_Number " name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row2.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="row2.POS_EXT_Number " name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.POLICE " name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.VERTRAG " name="POLICY_ID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="POSITION_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row2.POSITION " name="POSITION_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;dePosition&quot;" name="POLICY_TYPE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="100" name="MIGRATION_STATUS" type="id_Integer"/>
         <mapperTableEntries expression="TalendDate.getCurrentDate() " name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
@@ -787,13 +790,14 @@
         <mapperTableEntries name="ERROR_CODE" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries name="POLICE" type="id_Long"/>
         <mapperTableEntries name="VERTRAG" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="GA_EXT_Number" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POSITION" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="POS_EXT_Number" nullable="true" type="id_String"/>
         <mapperTableEntries name="POLICY_HOLDER" nullable="true" type="id_String"/>
         <mapperTableEntries name="COLLECTION_METHOD" nullable="true" type="id_Long"/>
         <mapperTableEntries name="PAYMENT_TERM" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="POLICY_VERSION" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1333,7 +1337,13 @@
       <elementValue elementRef="TRACE_COLUMN" value="VERTRAG"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="GA_EXT_Number"/>
+      <elementValue elementRef="TRACE_COLUMN" value="POS_EXT_Number"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="POSITION"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -1406,13 +1416,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_55603166-4b66-47d1-9e18-7424d109c3c1"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>YMoMbr+UASocO8+DXUPvWgce6zPWqC5be3mTIVi15v7CGB60F75OJTFWgckdTacNKW8Jlz+IfAgr&#13;
-KEYrNK1lSw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_1bd5b030-1df6-4b5c-a262-73efcd7d639d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ZD8SLRkKUjwCLoMQabnjRTjOh6SsUdpbnlf//ErxHaQldMRE9JAOmXqY4YTC6o/8gANvWYEav9rw&#13;
-+PjtOo2l8w==</DigestValue></Reference></SignedInfo><SignatureValue>a5tJ4GMwyOYgJjmM1QMRpl80HgPus9dJ+mHGHEdnfRai6YmiW4rc+19xqcIWY6+1fqkNrDr6GRW6&#13;
-Jc75mDO3Jr0C5exXvhigFYUULRMrkJW5n9Psnv2jEKhSZFWdv7S7e9YGC/TJrvXVBlgCjP0HnHtf&#13;
-UreN5Hw+mvNBn3WJ0dubp1LxXFT41eN4/e1M+FvVKH4ilGtw/afoKRE3kgZyazdAHaTW7yC8+Q5E&#13;
-mRsP+ZPNRUDoSauTcNbksyC5jfQbNQYb4iKq3hS0ETnWNZCtB5EjpeC2C0hjyrcjVCr0E+1u0ZXD&#13;
-jSzW+F8WaoCzQXUl6069c5fTQ1mZ0Nu7vU0qnw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5e022476-e7fc-42e8-aafd-4a6261625698"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>fqrFiDyBvRtprwXghD0WhFl2N5+7cmmI+xzMnbSBeggip9fiQ+FdY9K/JcMx6Fac/VsEBOhIe3XD&#13;
+284RVJzMTg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_1198121a-4c23-4feb-9edd-bba3d7e8e655"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>4IcJfkdBrxwbUN1iFOJ0jrPqyonrzGdQUQ4kXEOP69+jShG3mKdtqXR1qvL+qVTTU1zcXhrD/pMc&#13;
+tp3RoOxNhg==</DigestValue></Reference></SignedInfo><SignatureValue>Eay9YvcdZFoYh33I8PRq5XzVGtDhIc2Ep1KR1NpD16AgecRvptNL+h3R2kBqqrgYF+8FBGgF7E3o&#13;
+clRAmFhBFqWWp+xXF5e1ClcZk3+PbSRbRcLeXWZJyo+Iaka+LHW3aYFPOnLAS3GFTlTnVYCBl3yy&#13;
+pL9smf+r+G7bS/Z03/ZI1mS6A9WzuxYTSDEnhj7QqHdxye82yCduAwdSyJ2kDbNlWQwJvRuUA0bO&#13;
+gQlz57sYFUcUhZ2nSlJc8oZlqk9vkd3+yp/uBPXtGi/gH4fmKYR7yL/NEHl0M0BQ1bz+9C0oYh06&#13;
+I5zeqgF+DaFoXP8pSyv49SB+K8tiEDcu4akHIg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1434,4 +1444,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_1bd5b030-1df6-4b5c-a262-73efcd7d639d" Target="#_55603166-4b66-47d1-9e18-7424d109c3c1"><Timestamp>2024-05-09 12:18:21</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_1198121a-4c23-4feb-9edd-bba3d7e8e655" Target="#_5e022476-e7fc-42e8-aafd-4a6261625698"><Timestamp>2024-05-09 13:45:27</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
