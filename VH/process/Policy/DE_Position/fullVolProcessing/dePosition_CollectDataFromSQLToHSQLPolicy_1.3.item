@@ -3884,405 +3884,6 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="928" posY="1408">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_13"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
-    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
-    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_2"/>
-    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
-    <elementParameter field="CLOSED_LIST" name="DB_VERSION" show="false" value="ORACLE_18"/>
-    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.7&quot;"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1521&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;ORCL&quot;"/>
-    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
-    <elementParameter field="TEXT" name="SCHEMA_DB" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="USER" show="false" value="&quot;system&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:YeY8GNj2R1Xukla/SE42qpL5MpuGEWOjTeK0IrJBP/5KAtaaugJddA=="/>
-    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
-    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH CLAUSES AS &#13;&#10;(&#9;SELECT * FROM  &#13;&#10;&#9;(  &#9;&#13;&#10;&#9;&#9;SELECT &#9;v.POL_POLICEN_NR AS POLICE, v.VER_VERTRAG_NR AS VERTRAG, v.POL_GUELTIG_AB AS V_START_DATE,  &#13;&#10;                                        v.VER_UNGUELTIG_AB AS V_END_DATE, v.ver_produkt_typ AS v_crop_group,   &#13;&#10;&#9;&#9;&#9;&#9;        a.CLAUSE_NAME, a.start_date, a.end_date, a.table_name  &#13;&#10;&#9;&#9;FROM SEV.VERTRAG v  &#13;&#10;&#9;&#9;JOIN SEV.POLICE p on p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'  &#13;&#10;&#9;&#9;JOIN (&#9;SELECT POL_POLICEN_NR AS POLICE , VER_VERTRAG_NR AS VERTRAG , POL_GUELTIG_AB AS START_DATE ,   &#13;&#10;                                ZAB_UNGUELTIG_AB AS END_DATE , ZAB_ZU_ABSCHLAG_TYP AS CLAUSE_NAME, 'ZU_ABSCHLAG' TABLE_NAME   &#13;&#10;&#9;&#9;&#9;&#9;FROM sev.ZU_ABSCHLAG za WHERE ZAB_HISTORIE &lt;&gt; 'HT' AND ZAB_ZUSTAND = 'lebend'    &#13;&#10;&#9;&#9;&#9;&#9;union   &#13;&#10;&#9;&#9;&#9;&#9;SELECT POL_POLICEN_NR AS POLICE , VER_VERTRAG_NR AS VERTRAG , POL_GUELTIG_AB AS START_DATE ,     &#13;&#10;                                BKP_UNGUELTIG_AB AS END_DATE, BKL_DATEINAME AS CLAUSE_NAME, 'BEDINGUNG_KLAUSEL_POLICE' TABLE_NAME   &#13;&#10;&#9;&#9;&#9;&#9;FROM sev.BEDINGUNG_KLAUSEL_POLICE bkp &#13;&#10;&#9;&#9;&#9;&#9;WHERE BKP_HISTORIE &lt;&gt; 'HT' AND BKP_ZUSTAND = 'lebend'  &#13;&#10;&#9;&#9;&#9; ) a ON a.police = v.POL_POLICEN_NR AND a.vertrag = v.VER_VERTRAG_NR AND v.POL_GUELTIG_AB = a.start_date   &#13;&#10;                                                                                         AND a.end_date &gt;= v.VER_UNGUELTIG_AB   &#13;&#10;&#9;&#9;WHERE 1=1    &#13;&#10;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' AND v.VER_ZUSTAND = 'lebend' AND v.POL_GUELTIG_AB &gt;=  timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;                AND p.POL_POLICE_TYP in ('VH', 'KH')   &#13;&#10;&#9;)     &#13;&#10;)   &#13;&#10;  &#13;&#10;SELECT &#9;POLICE, VERTRAG, START_DATE, END_DATE, CLAUSE_NAME, v_crop_group, TABLE_NAME  &#13;&#10;FROM CLAUSES V  &#13;&#10;WHERE 1=1   &#13;&#10;AND EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms    &#13;&#10;&#9;         WHERE v.POLICE = cms.BUNDLE_POLICY_ID    &#13;&#10;&#9;           AND v.VERTRAG = cms.POLICY_ID    &#13;&#10;               AND cms.MIGRATION_STATUS  =100   &#13;&#10;               AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;&#13;&#10;     ) &#13;&#10;ORDER BY POLICE , VERTRAG , START_DATE&quot;"/>
-    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
-    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
-    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
-    <elementParameter field="LABEL" name="NOTE" show="false" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
-    <elementParameter field="CHECK" name="IS_CONVERT_XMLTYPE" value="false"/>
-    <elementParameter field="TABLE" name="CONVERT_XMLTYPE" show="false"/>
-    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
-    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" show="false" value="ISO-8859-15"/>
-    <elementParameter field="CHECK" name="USE_CURSOR" value="false"/>
-    <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSE_NAME"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="V_CROP_GROUP"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="TABLE_NAME"/>
-      <elementValue elementRef="TRIM" value="false"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
-    <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_CONTRACT_CLAUSES"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tDBInput_13">
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1184" posY="1408">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_13"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="EXTERNAL" name="MAP" value=""/>
-    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
-    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
-    <elementParameter field="IMAGE" name="PREVIEW" value="_rjU8AL6LEe6jcPiMlGgGPA-tMap_13-PREVIEW.bmp"/>
-    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
-    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
-    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
-    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
-    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="contract_clauses_cropGroup">
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="cropGroupRefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="cropGroupRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="cropGroupADD_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseRefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="clauseRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseADD_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseADD_2" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="clauseADD_3" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-    <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables activateExpressionFilter="true" expressionFilter="clause_lookup.Output !=null &amp;&amp; clause_lookup.Output ==1000004" name="contract_clauses_cropGroup" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row16.POLICE " name="POLICE" type="id_Long"/>
-        <mapperTableEntries expression="row16.VERTRAG " name="VERTRAG" type="id_Long"/>
-        <mapperTableEntries expression="row16.START_DATE " name="START_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="row16.END_DATE " name="END_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="row16.CLAUSE_NAME " name="CLAUSE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row16.V_CROP_GROUP " name="V_CROP_GROUP" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row16.TABLE_NAME " name="TABLE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="cropGroup_lookup.out_value " name="cropGroupRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="cropGroup_lookup.out_desc " name="cropGroupRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="cropGroup_lookup.add_params_1 " name="cropGroupADD_1" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="clause_lookup.Output " name="clauseRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="clause_lookup.Description " name="clauseRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="clause_lookup.ADD1 " name="clauseADD_1" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="clause_lookup.ADD2 " name="clauseADD_2" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="clause_lookup.ADD3 " name="clauseADD_3" nullable="true" type="id_String"/>
-      </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row16" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="POLICE" type="id_Long"/>
-        <mapperTableEntries name="VERTRAG" type="id_Long"/>
-        <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="CLAUSE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries name="V_CROP_GROUP" nullable="true" type="id_String"/>
-        <mapperTableEntries name="TABLE_NAME" nullable="true" type="id_String"/>
-      </inputTables>
-      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="ALL_MATCHES" name="cropGroup_lookup" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row16.V_CROP_GROUP " name="in_value" nullable="true" operator="=" type="id_String"/>
-        <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="add_params_1" nullable="true" type="id_Long"/>
-      </inputTables>
-      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="ALL_MATCHES" name="clause_lookup" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row16.CLAUSE_NAME " name="Input" nullable="true" operator="=" type="id_String"/>
-        <mapperTableEntries name="Output" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="Description" nullable="true" type="id_String"/>
-        <mapperTableEntries name="ADD1" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="ADD2" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="ADD3" nullable="true" type="id_String"/>
-      </inputTables>
-    </nodeData>
-  </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1088" posY="1568">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_4"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
-    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
-    <elementParameter field="TABLE" name="VALUES" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="in_value"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="out_value"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="out_desc"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="add_params_1"/>
-      <elementValue elementRef="VALUE" value=""/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
-    <elementParameter field="TABLE" name="INTABLE" show="false"/>
-    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
-    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;\t&quot;"/>
-    <elementParameter field="MEMO" name="INLINECONTENT" value="000_001&#9;1000010&#9;Cereals&#9;1000008&#13;&#10;000_001x&#9;1000010&#9;Cereals&#9;1000008&#13;&#10;000_002&#9;1000010&#9;Cereals&#9;1000008&#13;&#10;000_003&#9;1000010&#9;Cereals&#9;1000008&#13;&#10;000_004&#9;1000010&#9;Cereals&#9;1000008&#13;&#10;001_001&#9;1000011&#9;Legumes&#9;1000008&#13;&#10;001_002&#9;1000011&#9;Legumes&#9;1000008&#13;&#10;020_002x&#9;1000010&#9;Cereals&#9;1000008&#13;&#10;021_001x&#9;1000011&#9;Legumes&#9;1000008&#13;&#10;021_002x&#9;1000011&#9;Legumes&#9;1000008&#13;&#10;030_002x&#9;1000010&#9;Cereals&#9;1000008&#13;&#10;031_001x&#9;1000011&#9;Legumes&#9;1000008&#13;&#10;040_002x&#9;1000010&#9;Cereals&#9;1000008&#13;&#10;041_001x&#9;1000011&#9;Legumes&#9;1000008&#13;&#10;100_001&#9;&#9;Special Insurance&#9;1000008&#13;&#10;100_002x&#9;&#9;Special Insurance&#9;1000008&#13;&#10;100_003x&#9;&#9;Special Insurance&#9;1000008&#13;&#10;201_001&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;201_002&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;201_003&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;201_004&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;221_001x&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;221_002x&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;221_004x&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;230_001x&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;230_002x&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;240_001x&#9;1000017&#9;Special energy/forage crops&#9;1000008&#13;&#10;271_006x&#9;1000052&#9;Grünland&#9;1000008&#13;&#10;300_001&#9;1000013&#9;Corn&#9;1000008&#13;&#10;300_002&#9;1000013&#9;Corn&#9;1000008&#13;&#10;302_002&#9;1000013&#9;Corn&#9;1000008&#13;&#10;320_001x&#9;1000013&#9;Corn&#9;1000008&#13;&#10;330_001x&#9;1000013&#9;Corn&#9;1000008&#13;&#10;330_002x&#9;1000013&#9;Corn&#9;1000008&#13;&#10;340_001x&#9;1000013&#9;Corn&#9;1000008&#13;&#10;400_001&#9;1000027&#9;Pome fruit&#9;1000007&#13;&#10;400_100&#9;1000028&#9;Pome fruit under hail net&#9;1000007&#13;&#10;400_102&#9;1000025&#9;Industrial fruit / cider fruit&#9;1000007&#13;&#10;401_001&#9;1000019&#9;Leafy vegetables / stem vegetables&#9;1000007&#13;&#10;401_101&#9;1000022&#9;Fruiting vegetables&#9;1000007&#13;&#10;401_102&#9;1000024&#9;Legumes for green harvest&#9;1000007&#13;&#10;401_103&#9;1000029&#9;Cabbage vegetables&#9;1000007&#13;&#10;401_105&#9;1000039&#9;Root/tuber vegetables&#9;1000007&#13;&#10;401_106&#9;1000040&#9;Onion vegetables&#9;1000007&#13;&#10;401_113&#9;1000023&#9;Vegetables small areas&#9;1000007&#13;&#10;401_114&#9;1000034&#9;Shoot vegetables&#9;1000007&#13;&#10;401_115&#9;1000019&#9;Leafy vegetables / stem vegetables&#9;1000007&#13;&#10;402_001&#9;1000032&#9;Plants for ornamental production&#9;1000007&#13;&#10;402_103&#9;1000018&#9;Medicinal herbs and spice plants&#9;1000007&#13;&#10;402_104&#9;1000033&#9;Seed extraction of special crops&#9;1000007&#13;&#10;402_105&#9;1000021&#9;Fruiting and yielding wood&#9;1000007&#13;&#10;402_106&#9;1000026&#9;Young plant production&#9;1000007&#13;&#10;402_107&#9;1000032&#9;Plants for ornamental production&#9;1000007&#13;&#10;403_001&#9;1000020&#9;Strawberries&#9;1000007&#13;&#10;403_100&#9;1000035&#9;Stone fruit&#9;1000007&#13;&#10;403_103&#9;1000037&#9;Bush berries&#9;1000007&#13;&#10;403_107&#9;1000020&#9;Strawberries&#9;1000007&#13;&#10;403_109&#9;1000031&#9;Fruit under rain protection&#9;1000007&#13;&#10;403_110&#9;1000038&#9;Table grapes&#9;1000007&#13;&#10;420_001x&#9;1000027&#9;Pome fruit&#9;1000007&#13;&#10;420_100x&#9;1000028&#9;Pome fruit under hail net&#9;1000007&#13;&#10;420_103x&#9;1000036&#9;Stone fruit and table grapes under hail net&#9;1000007&#13;&#10;420_104x&#9;1000028&#9;Pome fruit under hail net&#9;1000007&#13;&#10;421_001x&#9;1000019&#9;Leafy vegetables / stem vegetables&#9;1000007&#13;&#10;421_113x&#9;1000022&#9;Fruiting vegetables&#9;1000007&#13;&#10;421_115x&#9;1000029&#9;Cabbage vegetables&#9;1000007&#13;&#10;421_117x&#9;1000024&#9;Legumes for green harvest&#9;1000007&#13;&#10;421_119x&#9;1000026&#9;Young plant production&#9;1000007&#13;&#10;421_121x&#9;1000033&#9;Seed extraction of special crops&#9;1000007&#13;&#10;421_123x&#9;1000034&#9;Shoot vegetables&#9;1000007&#13;&#10;421_125x&#9;1000039&#9;Root/tuber vegetables&#9;1000007&#13;&#10;421_127x&#9;1000040&#9;Onion vegetables&#9;1000007&#13;&#10;421_129x&#9;1000023&#9;Vegetables small areas&#9;1000007&#13;&#10;421_135x&#9;1000023&#9;Vegetables small areas&#9;1000007&#13;&#10;421_145x&#9;1000033&#9;Seed extraction of special crops&#9;1000007&#13;&#10;421_146x&#9;1000040&#9;Onion vegetables&#9;1000007&#13;&#10;422_001x&#9;1000018&#9;Medicinal herbs and spice plants&#9;1000007&#13;&#10;422_005x&#9;1000021&#9;Fruiting and yielding wood&#9;1000007&#13;&#10;422_007x&#9;1000021&#9;Fruiting and yielding wood&#9;1000007&#13;&#10;422_009x&#9;1000032&#9;Plants for ornamental production&#9;1000007&#13;&#10;422_013x&#9;1000032&#9;Plants for ornamental production&#9;1000007&#13;&#10;423_001x&#9;1000020&#9;Strawberries&#9;1000007&#13;&#10;423_002x&#9;1000020&#9;Strawberries&#9;1000007&#13;&#10;423_007x&#9;1000025&#9;Industrial fruit / cider fruit&#9;1000007&#13;&#10;423_009x&#9;1000030&#9;Chestnuts/Nuts&#9;1000007&#13;&#10;423_011x&#9;1000035&#9;Stone fruit&#9;1000007&#13;&#10;423_013x&#9;1000037&#9;Bush berries&#9;1000007&#13;&#10;423_015x&#9;1000038&#9;Table grapes&#9;1000007&#13;&#10;423_109x&#9;1000031&#9;Fruit under rain protection&#9;1000007&#13;&#10;423_111x&#9;1000031&#9;Fruit under rain protection&#9;1000007&#13;&#10;430_001x&#9;1000027&#9;Pome fruit&#9;1000007&#13;&#10;430_003x&#9;1000027&#9;Pome fruit&#9;1000007&#13;&#10;430_004x&#9;1000027&#9;Pome fruit&#9;1000007&#13;&#10;430_005x&#9;1000028&#9;Pome fruit under hail net&#9;1000007&#13;&#10;431_001x&#9;1000019&#9;Leafy vegetables / stem vegetables&#9;1000007&#13;&#10;431_002x&#9;1000019&#9;Leafy vegetables / stem vegetables&#9;1000007&#13;&#10;431_113x&#9;1000022&#9;Fruiting vegetables&#9;1000007&#13;&#10;431_114x&#9;1000022&#9;Fruiting vegetables&#9;1000007&#13;&#10;431_115x&#9;1000029&#9;Cabbage vegetables&#9;1000007&#13;&#10;431_116x&#9;1000029&#9;Cabbage vegetables&#9;1000007&#13;&#10;431_117x&#9;1000024&#9;Legumes for green harvest&#9;1000007&#13;&#10;431_118x&#9;1000024&#9;Legumes for green harvest&#9;1000007&#13;&#10;431_120x&#9;1000026&#9;Young plant production&#9;1000007&#13;&#10;431_123x&#9;1000034&#9;Shoot vegetables&#9;1000007&#13;&#10;431_124x&#9;1000034&#9;Shoot vegetables&#9;1000007&#13;&#10;431_125x&#9;1000039&#9;Root/tuber vegetables&#9;1000007&#13;&#10;431_126x&#9;1000039&#9;Root/tuber vegetables&#9;1000007&#13;&#10;431_127x&#9;1000040&#9;Onion vegetables&#9;1000007&#13;&#10;432_001x&#9;1000018&#9;Medicinal herbs and spice plants&#9;1000007&#13;&#10;432_002x&#9;1000018&#9;Medicinal herbs and spice plants&#9;1000007&#13;&#10;432_007x&#9;1000021&#9;Fruiting and yielding wood&#9;1000007&#13;&#10;433_007x&#9;1000025&#9;Industrial fruit / cider fruit&#9;1000007&#13;&#10;433_008x&#9;1000025&#9;Industrial fruit / cider fruit&#9;1000007&#13;&#10;433_010x&#9;1000030&#9;Chestnuts/Nuts&#9;1000007&#13;&#10;433_011x&#9;1000035&#9;Stone fruit&#9;1000007&#13;&#10;433_012x&#9;1000035&#9;Stone fruit&#9;1000007&#13;&#10;433_013x&#9;1000037&#9;Bush berries&#9;1000007&#13;&#10;433_014x&#9;1000037&#9;Bush berries&#9;1000007&#13;&#10;433_016x&#9;1000038&#9;Table grapes&#9;1000007&#13;&#10;500_001&#9;1000015&#9;Beets&#9;1000008&#13;&#10;500_002&#9;1000015&#9;Beets&#9;1000008&#13;&#10;501_001&#9;1000012&#9;Potatoes&#9;1000008&#13;&#10;501_002&#9;1000012&#9;Potatoes&#9;1000008&#13;&#10;502_001&#9;1000012&#9;Potatoes&#9;1000008&#13;&#10;502_002&#9;1000012&#9;Potatoes&#9;1000008&#13;&#10;520_001x&#9;1000015&#9;Beets&#9;1000008&#13;&#10;520_002x&#9;1000015&#9;Beets&#9;1000008&#13;&#10;521_001x&#9;1000012&#9;Potatoes&#9;1000008&#13;&#10;521_002x&#9;1000012&#9;Potatoes&#9;1000008&#13;&#10;530_001x&#9;1000015&#9;Beets&#9;1000008&#13;&#10;531_001x&#9;1000012&#9;Potatoes&#9;1000008&#13;&#10;540_001x&#9;1000015&#9;Beets&#9;1000008&#13;&#10;541_001x&#9;1000012&#9;Potatoes&#9;1000008&#13;&#10;600_001&#9;1000014&#9;Oil crops&#9;1000008&#13;&#10;600_002&#9;1000014&#9;Oil crops&#9;1000008&#13;&#10;600_003&#9;1000014&#9;Oil crops&#9;1000008&#13;&#10;600_004&#9;1000014&#9;Oil crops&#9;1000008&#13;&#10;601_001&#9;1000016&#9;Seeds&#9;1000008&#13;&#10;601_002&#9;1000016&#9;Seeds&#9;1000008&#13;&#10;602_001&#9;1000009&#9;Spider plants&#9;1000008&#13;&#10;602_002&#9;1000009&#9;Spider plants&#9;1000008&#13;&#10;620_002x&#9;1000014&#9;Oil crops&#9;1000008&#13;&#10;620_004x&#9;1000014&#9;Oil crops&#9;1000008&#13;&#10;621_001x&#9;1000016&#9;Seeds&#9;1000008&#13;&#10;621_002x&#9;1000016&#9;Seeds&#9;1000008&#13;&#10;622_001x&#9;1000009&#9;Spider plants&#9;1000008&#13;&#10;622_002x&#9;1000009&#9;Spider plants&#9;1000008&#13;&#10;630_002x&#9;1000014&#9;Oil crops&#9;1000008&#13;&#10;631_002x&#9;1000016&#9;Seeds&#9;1000008&#13;&#10;640_002x&#9;1000014&#9;Oil crops&#9;1000008&#13;&#10;700_001&#9;1000041&#9;Hops&#9;1000006&#13;&#10;720_001x&#9;1000041&#9;Hops&#9;1000006&#13;&#10;720_002x&#9;1000041&#9;Hops&#9;1000006&#13;&#10;800_001&#9;1000044&#9;Wine&#9;1000006&#13;&#10;800_002&#9;1000044&#9;Wine&#9;1000006&#13;&#10;801_001&#9;1000042&#9;Vine wood&#9;1000006&#13;&#10;801_002&#9;1000042&#9;Vine wood&#9;1000006&#13;&#10;820_001x&#9;1000044&#9;Wine&#9;1000006&#13;&#10;820_002x&#9;1000044&#9;Wine&#9;1000006&#13;&#10;821_001x&#9;1000042&#9;Vine wood&#9;1000006&#13;&#10;821_002x&#9;1000042&#9;Vine wood&#9;1000006&#13;&#10;822_001x&#9;1000044&#9;Wine&#9;1000006&#13;&#10;830_001x&#9;1000044&#9;Wine&#9;1000006&#13;&#10;900_001&#9;1000043&#9;Tobacco&#9;1000006&#13;&#10;920_001x&#9;1000043&#9;Tobacco&#9;1000006&#13;&#10;920_002x&#9;1000043&#9;Tobacco&#9;1000006&#13;&#10;"/>
-    <elementParameter field="TEXT" name="LABEL" value="crop_group transformation"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tFixedFlowInput_4">
-      <column comment="" key="false" length="10" name="in_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="out_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="add_params_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1312" posY="1568">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_5"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
-    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
-    <elementParameter field="TABLE" name="VALUES" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="Input"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="Output"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="Description"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ADD1"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ADD2"/>
-      <elementValue elementRef="VALUE" value=""/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="ADD3"/>
-      <elementValue elementRef="VALUE" value=""/>
-    </elementParameter>
-    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
-    <elementParameter field="TABLE" name="INTABLE" show="false"/>
-    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
-    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;\t&quot;"/>
-    <elementParameter field="MEMO" name="INLINECONTENT" value="bes_Verwertungsint_Gemuese.rtf&#9;1000031&#9;Plus Surcharge&#9;1000208&#9;&#9;&#13;&#10;Bes_Verwertungsinteresse14.rtf&#9;1000031&#9;Plus Surcharge&#9;1000208&#9;&#9;&#13;&#10;Energiepflanzen_2007.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Energiepflanzen_2007_B.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Energiepflanzen_2007_SF.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;ErdbeerenQ_QVE_14.rtf&#9;1000005&#9;Strawberries (QVE)&#9;&#9;&#9;&#13;&#10;ErdbeerFrost_10_16.rtf&#9;1000005&#9;Strawberries (QVE)&#9;&#9;&#9;&#13;&#10;ErdbeerFrost_20_16.rtf&#9;1000005&#9;Strawberries (QVE)&#9;&#9;&#9;&#13;&#10;ErdbeerPlus_ZVEPB07.rtf&#9;1000031&#9;Plus Surcharge&#9;1000208&#9;&#9;&#13;&#10;ErdbeerQ_QVEB07.rtf&#9;1000005&#9;Strawberries (QVE)&#9;&#9;&#9;&#13;&#10;ErdbeerQ_QVES107.rtf&#9;1000005&#9;Strawberries (QVE)&#9;&#9;&#9;&#13;&#10;GurkeTop_14.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;GurkeTop_B07.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;GurkeTop_SF07.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;HBV_Gemüse_SF_14.rtf&#9;1000015&#9;HBV Vegetables&#9;&#9;&#9;&#13;&#10;HBV-Gemüse_SF.rtf&#9;1000015&#9;HBV Vegetables&#9;&#9;&#9;&#13;&#10;HFB_L_FVSL_14.rtf&#9;1000028&#9;HFB_L&#9;&#9;&#9;&#13;&#10;HFB_LW_05.rtf&#9;1000016&#9;HFB_S&#9;&#9;&#9;&#13;&#10;HFB_LW_SF.rtf&#9;1000016&#9;HFB_S&#9;&#9;&#9;&#13;&#10;HFB_W_FVSW_14.rtf&#9;1000017&#9;HFB_W&#9;&#9;&#9;&#13;&#10;HFB_Wein.rtf&#9;1000017&#9;HFB_W&#9;&#9;&#9;&#13;&#10;HFB_Wein_SF.rtf&#9;1000017&#9;HFB_W&#9;&#9;&#9;&#13;&#10;individuelle Klauseln&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_B.rtf&#9;1000031&#9;Plus Surcharge&#9;1000208&#9;&#9;&#13;&#10;KartoffelPlus_SF.rtf&#9;1000031&#9;Plus Surcharge&#9;1000208&#9;&#9;&#13;&#10;KernobstG_ZVKB07.rtf&#9;1000006&#9;Pome Fruit G&#9;&#9;&#9;&#13;&#10;KernobstGP_ZVKPS112.rtf&#9;1000008&#9;Pome Fruit G Plus&#9;&#9;&#9;&#13;&#10;KernobstGPlus_ZVKGP14.rtf&#9;1000008&#9;Pome Fruit G Plus&#9;&#9;&#9;&#13;&#10;KernobstS.rtf&#9;1000007&#9;Pome Fruit S&#9;&#9;&#9;&#13;&#10;KernobstS_QVKB07.rtf&#9;1000007&#9;Pome Fruit S&#9;&#9;&#9;&#13;&#10;KernobstS_QVKS107.rtf&#9;1000007&#9;Pome Fruit S&#9;&#9;&#9;&#13;&#10;KernobstS_QVKS14.rtf&#9;1000007&#9;Pome Fruit S&#9;&#9;&#9;&#13;&#10;KohlPlus_14.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;KohlPlus_B07.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;KohlPlus_SF07.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;Möhren_Extra.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;Möhren_Extra_14.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;Obst_IM_B_12.rtf&#9;1000000&#9;Deductibles per position&#9;&#9;&#9;&#13;&#10;Obst_IM_S_12.rtf&#9;1000000&#9;Deductibles per position&#9;&#9;&#9;&#13;&#10;Obst_SB10_14.rtf&#9;1000000&#9;Deductibles per position&#9;&#9;&#9;&#13;&#10;Obst_SB10_SB07.rtf&#9;1000000&#9;Deductibles per position&#9;&#9;&#9;&#13;&#10;Obst_unter_Regenschutz_14.rtf&#9;1000020&#9;Fruit under rain protection&#9;&#9;&#9;&#13;&#10;Obst_unter_Regenschutz_B12.rtf&#9;1000020&#9;Fruit under rain protection&#9;&#9;&#9;&#13;&#10;Obst_unter_Regenschutz_SF12.rtf&#9;1000020&#9;Fruit under rain protection&#9;&#9;&#9;&#13;&#10;ObstHagelnetz_B07.rtf&#9;1000019&#9;Fruit under hail net&#9;&#9;&#9;&#13;&#10;ObstHagelnetz_S_14.rtf&#9;1000019&#9;Fruit under hail net&#9;&#9;&#9;&#13;&#10;ObstHagelnetz_SF07.rtf&#9;1000019&#9;Fruit under hail net&#9;&#9;&#9;&#13;&#10;SB_Gemuese_14.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;SB_Gemuese_neu_SB07.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;SB_Hülsenfrüchte_2011_SF.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB_Rebschulen_B_14.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB_Rebschulen_S_14.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB_Salat_R_14.rtf&#9;1000025&#9;Salad Soiling Max 50&#9;&#9;&#9;&#13;&#10;SB_sonst_SK_SB_14.rtf&#9;1000021&#9;Special Crops (QVS)&#9;&#9;&#9;&#13;&#10;SB_sonst_SK_SB07.rtf&#9;1000021&#9;Special Crops (QVS)&#9;&#9;&#9;&#13;&#10;SBRebschulen.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBRebschulen_SB07.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Stärkeertragsverlust_Industriekartoffeln.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;StarkregenPlus_Kartoffeln_14.rtf&#9;1000031&#9;Plus Surcharge&#9;1000208&#9;&#9;&#13;&#10;StarkregenPlus_Spinat 17.rtf&#9;1000031&#9;Plus Surcharge&#9;1000208&#9;&#9;&#13;&#10;SteinobstQ_QVS_14.rtf&#9;1000010&#9;Stone Fruit&#9;&#9;&#9;&#13;&#10;StrauchbeerenQ_QVB_14.rtf&#9;1000009&#9;Bush berries (QVB)&#9;&#9;&#9;&#13;&#10;Sturmversicherung_Mais.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SV_Spinat_14.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;SV_Spinat_B07.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;SV_Spinat_SF07.rtf&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;TabakT10individuell.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TafeltraubenQ_QVT_14.rtf&#9;1000012&#9;Table grapes (QVT)&#9;&#9;&#9;&#13;&#10;Umbruch_15_14.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Umbruch_15_2012.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Umbruch_15_BEL.rtf&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;ZwiebelPlus60_ZVZPB07.rtf&#9;1000031&#9;Plus Surcharge&#9;1000208&#9;&#9;&#13;&#10;ZwiebelQ_14.rtf&#9;1000029&#9;Onion (QVZ)&#9;&#9;&#9;&#13;&#10;ZwiebelQ_QVZB07.rtf&#9;1000029&#9;Onion (QVZ)&#9;&#9;&#9;&#13;&#10;ZwiebelQ_QVZS107.rtf&#9;1000029&#9;Onion (QVZ)&#9;&#9;&#9;&#13;&#10;SB10_Max100&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;BP_SB20_Max80&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;BP_SB20_Max80_S-R-F_SB30_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;EA1_L_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000008&#9;1&#9;&#13;&#10;EA1_S_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000007&#9;1&#9;&#13;&#10;EA1_W_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000006&#9;1&#9;&#13;&#10;EA3_L_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000008&#9;3&#9;&#13;&#10;EA3_S_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000007&#9;3&#9;&#13;&#10;EA3_W_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000006&#9;3&#9;&#13;&#10;EA5_L_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000008&#9;5&#9;&#13;&#10;EA5_S_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000007&#9;5&#9;&#13;&#10;EA5_W_S_DE_2017&#9;1000002&#9;Own Contribution&#9;1000006&#9;5&#9;&#13;&#10;ErdbeerQ_DE_2017&#9;1000005&#9;Strawberries (QVE)&#9;&#9;&#9;&#13;&#10;FB3&#9;1000038&#9;Fixed Contribution 3 (FB3)&#9;&#9;&#9;&#13;&#10;FB5&#9;1000039&#9;Fixed Contribution 5 (FB5)&#9;&#9;&#9;&#13;&#10;Frost/Hagel_Schutz_FBW_20&#9;1000023&#9;Frost/Hail Protection&#9;&#9;&#9;&#13;&#10;Frost_ObstWein_ZusatzversFBW22&#9;1000044&#9;Frost_ObstWein_ZusatzversFBW22&#9;&#9;&#9;&#13;&#10;Frost_ObstWein_ZusatzversFBW23&#9;1000043&#9;Frost_ObstWein_ZusatzversFBW23&#9;&#9;&#9;&#13;&#10;Frost_ObstWein_ZusatzversFBY22&#9;1000048&#9;Frost_ObstWein_ZusatzversFBY22.rtf&#9;&#9;&#9;&#13;&#10;Frost_Obst_Zusatzvers&#9;1000024&#9;Frost Fruit Additional Insurance&#9;&#9;&#9;&#13;&#10;GemüseQ_DE_2017&#9;1000014&#9;Vegetables (QVG)&#9;&#9;&#9;&#13;&#10;HBV_Gemüse_DE_2017&#9;1000015&#9;HBV Vegetables&#9;&#9;&#9;&#13;&#10;HFB_L_DE_2017&#9;1000040&#9;Fixed Contribution Agriculture (HFB_L)&#9;&#9;&#9;&#13;&#10;HFB_S_DE_2017&#9;1000041&#9;Fixed Contribution Special Crops (HFB_S)&#9;&#9;&#9;&#13;&#10;HFB_W_DE_2017&#9;1000042&#9;Fixed Contribution Wine Tobacco Hops (HFB_W)&#9;&#9;&#9;&#13;&#10;KernobstG_DE_2017&#9;1000006&#9;Pome Fruit G&#9;&#9;&#9;&#13;&#10;KernobstGPlus_DE_2017&#9;1000008&#9;Pome Fruit G Plus&#9;&#9;&#9;&#13;&#10;KernobstS_DE_2017&#9;1000007&#9;Pome Fruit S&#9;&#9;&#9;&#13;&#10;Mehrgefahren_ZusatzbedBPBY23&#9;1000045&#9;Mehrgefahren_ZusatzbedBPBY23&#9;&#9;&#9;&#13;&#10;Obst_unter_Hagelnetz_DE_2017&#9;1000019&#9;Fruit under hail net&#9;&#9;&#9;&#13;&#10;Obst_unter_Regenschutz_DE_2017&#9;1000020&#9;Fruit under rain protection&#9;&#9;&#9;&#13;&#10;Plus_30&#9;1000031&#9;Plus surcharge&#9;1000209&#9;&#9;&#13;&#10;Plus_50&#9;1000031&#9;Plus surcharge&#9;1000210&#9;&#9;&#13;&#10;Rabatt_Netz_DE_2017&#9;1000015&#9;HBV Vegetables&#9;1000211&#9;&#9;&#13;&#10;Salat_Verschmutzung_Max_50&#9;1000025&#9;Salad Soiling Max 50&#9;&#9;&#9;&#13;&#10;SB_gleitend_20_0_Max100_DE_17&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB_gleitend_20_0_Max80_DE_2017&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB_gleitend_20_0_Max80_Frost_D&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB_gleitend80_S-R-F_SB20_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB_gleitend80_S-R-F_SB20_Max80&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB_gleitend80_S-R-F_SB30_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB10_Max100_2020&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB10_Max80_Frost_SB20_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB10_Max80_Frost_SB20_Max80_20&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB10_Max80&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB10_Max80_S-R-F_SB20_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB10_Max80_S-R-F_SB20_Max80&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB10_Max80_S-R-F_SB30_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB10_Max80_2020&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB_20_ASP&#9;&#9;&#9;&#9;&#9;&#13;&#10;SB20_Max60_2020&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB20_Max60_2023&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB20_Max80_2020&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB20_Max80_2023&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SB30_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;SonderkulturenQ_DE_2017&#9;1000021&#9;Special Crops (QVS)&#9;&#9;&#9;&#13;&#10;Spargel_DE_2017&#9;1000009&#9;Asparagus&#9;&#9;&#9;&#13;&#10;Umbruch_15_DE_2017&#9;1000004&#9;Total Loss Flat Fee&#9;&#9;&#9;UP15&#13;&#10;Umbruch_25_DE_2017&#9;1000004&#9;Total Loss Flat Fee&#9;&#9;&#9;UP25&#13;&#10;Umbruch_35_DE_2017&#9;1000004&#9;Total Loss Flat Fee&#9;&#9;&#9;UP35&#13;&#10;Umbruch_45_DE_2017&#9;1000004&#9;Total Loss Flat Fee&#9;&#9;&#9;UP45&#13;&#10;U8_Max100_Frost_SB20_Max60&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_Frost_SB20Max60_2023&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_Frost_SB20_Max80&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_Frost_SB20Max80_2023&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_Frost_SB30_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_S-R-F_SB20_Max80&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_S-R-F_SB20Max80_2023&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_S-R-F_SB30_Max70&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_S-R-F_SB30Max70_2023&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max100_2020&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max60_2020&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_Max80_2020&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_SB5_Max100&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;U8_SB5_Max80&#9;1000001&#9;Maximum compensation per position&#9;&#9;&#9;&#13;&#10;VerwertungPlus_15_Blatt_Stiel&#9;1000031&#9;Plus surcharge&#9;1000211&#9;&#9;&#13;&#10;VerwertungPlus_15&#9;1000031&#9;Plus surcharge&#9;1000211&#9;&#9;&#13;&#10;ZwiebelQ_DE_2017&#9;1000029&#9;Onion (QVZ)&#9;&#9;&#9;&#13;&#10;BB03_15&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;BB03_35&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;BB03_5&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;ErdbeerPlus_ZVEPS111&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;ErdbeerPlus_ZVEP_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Frostversicherung_Rebholz11&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Hagel_Sturm_Starkregen&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Hopfen-SB10-PN20&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Hopfen-SB20-PN35&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;H20_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;H20_B_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;H20&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;H20_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;H20_SF_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_B_50&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_B_50_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_B_70&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_B_70_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_SF_50&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_SF_50_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_SF_50_15&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_SF_70&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_SF_70_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KartoffelPlus_SF_70_15&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KernobstG_ZVKG14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;KernobstG_ZVKS111&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBBW&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBBW_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBBW_B10&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB_gleitend_20_0_Max80_Frost&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBLW1_2012&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBLW1_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS1_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS1_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS11_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS11_SF3_2015&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS12_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS12_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS13_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS13_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS15_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS15_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS15_SF3_2015&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS16_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS16_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS16_SF3_2015&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS2_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS2_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS3_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS3_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS4_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS4_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS5_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS5_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS6_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS6_SF3_2015&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS8_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS9_SF3_2013&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SBS9_SF3_2014&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB_Wein_Frost_SF_VH&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB10_Max80_Frost_SB20_Max80&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB10&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB20_Max60&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SB20_Max80&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_Ackerbau_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_Ackerbau_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_L_B_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_L_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_Sonderkultur_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_Sonderkultur_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_W_B_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_WeinHopfenTabak_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_WeinHopfenTabak_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB1_W_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_Ackerbau_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_Ackerbau_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_L_B_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_L_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_Sonderkultur_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_Sonderkultur_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_WeinHopfenTabak_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB3_W_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_Ackerbau_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_Ackerbau_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_L_B_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_L_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_Sonderkultur_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_Sonderkultur_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_WeinHopfenTabak_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SchadenSB5_W_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Starkregen_Getreide_verk_Haft&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Starkregen_Kartoffel_verk_Haft&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Starkregen_Mais_verk_Haftung&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Starkregen_Ölfrüchte_verk_Haft&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;StarkregenPlus_Getr_ZVGRPS_16&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;StarkregenPlus_Kart_ZVKRPS_15&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;StarkregenPlus_Kartoffeln_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;StarkregenPlus_Mais_ZVMRPS_16&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;StarkregenPlus_Ölfr_ZVORPS_16&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;StarkregenPlus_Rüben_ZVRRPS_17&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Starkregen_Rüben_verk_Haftung&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Starkregen_spez_En_Fu_verkHaft&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SV_Zwiebel_Stoetze_DE_2017&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SV_Zwiebel_Stoetze&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;SV_Zwiebel_Stoetze_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;T10&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TabakT15_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TabakT15_B_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TabakT15_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TabakT15_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TraubenPlus_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TraubenPlus_B_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TraubenPlus&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TraubenPlus_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;TraubenPlus_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Umbruch_25_DE_2015&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Umbruch_25_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Umbruch_25_2012&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;U8_Max60&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;U8_Max80&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;WB30&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;W10&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;W30_B&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;W30_B_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;W30_SF&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;W30_S_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;ZVSF2WHEF80_16&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;ZwiebelPlus_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;ZwiebelPlus60_ZVZPS111&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Abschlag Frostrute&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;Abschlag_Ölfrüchte_Erh_14&#9;&#9;Manual&#9;&#9;&#9;&#13;&#10;"/>
-    <elementParameter field="TEXT" name="LABEL" value="clause_transformation"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tFixedFlowInput_5">
-      <column comment="" key="false" length="100" name="Input" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="Output" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="Description" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="ADD1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="ADD2" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="ADD3" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1472" posY="1408">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_14"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="EXTERNAL" name="MAP" value=""/>
-    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
-    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
-    <elementParameter field="IMAGE" name="PREVIEW" value="_rjU8AL6LEe6jcPiMlGgGPA-tMap_14-PREVIEW.bmp"/>
-    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
-    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
-    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
-    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
-    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="copyOfout2">
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="cropGroupRefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="cropGroupRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="cropGroupADD_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseRefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="clauseRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseADD_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseADD_2" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="clauseADD_3" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="totalLossRefID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="totalLossRefDesc" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-    <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables name="Var" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="Numeric.sequence(String.valueOf(row17.CROP_GROUP_ID),1,1) " name="cropGroupSeq" type="id_Integer"/>
-      </varTables>
-      <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="row17.DESCRIPTION.equals(contract_clauses_cropGroup.clauseADD_3) ||  (row17.DESCRIPTION.equals(&quot;None&quot;) &amp;&amp;  Var.cropGroupSeq ==1)" name="copyOfout2" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="contract_clauses_cropGroup.POLICE " name="POLICE" type="id_Long"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.VERTRAG " name="VERTRAG" type="id_Long"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.START_DATE " name="START_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.END_DATE " name="END_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.cropGroupRefID " name="cropGroupRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.cropGroupRefDesc " name="cropGroupRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.cropGroupADD_1 " name="cropGroupADD_1" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.clauseRefID " name="clauseRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.clauseRefDesc " name="clauseRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.clauseADD_1 " name="clauseADD_1" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.clauseADD_2 " name="clauseADD_2" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.clauseADD_3 " name="clauseADD_3" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row17.id " name="totalLossRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row17.DESCRIPTION " name="totalLossRefDesc" nullable="true" type="id_String"/>
-      </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="contract_clauses_cropGroup" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="POLICE" type="id_Long"/>
-        <mapperTableEntries name="VERTRAG" type="id_Long"/>
-        <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="CLAUSE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries name="V_CROP_GROUP" nullable="true" type="id_String"/>
-        <mapperTableEntries name="TABLE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries name="cropGroupRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="cropGroupRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="cropGroupADD_1" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="clauseRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="clauseRefDesc" nullable="true" type="id_String"/>
-        <mapperTableEntries name="clauseADD_1" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="clauseADD_2" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="clauseADD_3" nullable="true" type="id_String"/>
-      </inputTables>
-      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="ALL_MATCHES" name="row17" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="id" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="contract_clauses_cropGroup.cropGroupRefID " name="CROP_GROUP_ID" nullable="true" operator="=" type="id_Long"/>
-        <mapperTableEntries expression="" name="DESCRIPTION" nullable="true" type="id_String"/>
-      </inputTables>
-    </nodeData>
-  </node>
-  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1472" posY="1568">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_11"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
-    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_16b-YL2xEe2IaexRWdMOsQ"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.4&quot;"/>
-    <elementParameter field="CLOSED_LIST" name="DRIVER" show="false" value="JTDS"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="MSSQL"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1433&quot;"/>
-    <elementParameter field="TEXT" name="DB_SCHEMA" show="false" value="&quot;dbo&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;VH_DEVMIG&quot;"/>
-    <elementParameter field="TEXT" name="USER" show="false" value="&quot;K2View_vhetl&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:jX5myRcaSDKKuFRICceyLPfby+jgz9CA2Hqm2rB0LXEormRxYa0KTqJd"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
-    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select id, CROP_GROUP_ID , DESCRIPTION  from T_TOTAL_LOSS_FLAT_RATE_VH &#13;&#10;order by 1,2,3 desc&quot;"/>
-    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
-    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="id_MSSQL"/>
-    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
-    <elementParameter field="CHECK" name="ACTIVE_DIR_AUTH" show="false" value="false"/>
-    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
-    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="id"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_GROUP_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="DESCRIPTION"/>
-      <elementValue elementRef="TRIM" value="false"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="SET_QUERY_TIMEOUT" value="false"/>
-    <elementParameter field="TEXT" name="QUERY_TIMEOUT_IN_SECONDS" show="false" value="30"/>
-    <elementParameter field="TEXT" name="LABEL" value="T_TOTAL_LOSS_FLAT_RATE_VH"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tDBInput_11">
-      <column comment="" defaultValue="" key="false" length="19" name="id" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="CROP_GROUP_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="DESCRIPTION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1632" posY="1408">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_2"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
-    <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
-    <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
-    <elementParameter field="RADIO" name="VERTICAL" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE" show="false" value="true"/>
-    <elementParameter field="RADIO" name="PRINT_LABEL" show="false" value="false"/>
-    <elementParameter field="RADIO" name="PRINT_UNIQUE_LABEL" show="false" value="false"/>
-    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;|&quot;"/>
-    <elementParameter field="CHECK" name="PRINT_HEADER" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_UNIQUE_NAME" show="false" value="false"/>
-    <elementParameter field="CHECK" name="PRINT_COLNAMES" show="false" value="false"/>
-    <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
-    <elementParameter field="TABLE" name="LENGTHS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="cropGroupRefID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="cropGroupRefDesc"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="cropGroupADD_1"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="clauseRefID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="clauseRefDesc"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="clauseADD_1"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="clauseADD_2"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="clauseADD_3"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="totalLossRefID"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="totalLossRefDesc"/>
-      <elementValue elementRef="LENGTH" value="10"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
-    <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tLogRow_2">
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="cropGroupRefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="cropGroupRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="cropGroupADD_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseRefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="clauseRefDesc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseADD_1" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="clauseADD_2" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="clauseADD_3" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="totalLossRefID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="totalLossRefDesc" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1056" posY="736">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_10"/>
     <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
@@ -4434,287 +4035,6 @@
     <elementParameter field="TEXT" name="LABEL" value="create_index"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tHSQLDbRow_8"/>
-    <metadata connector="REJECT" name="REJECT">
-      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
-      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="800" posY="1216">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
-    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
-    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
-    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
-    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:gCN4ORicVrMTSyYT+fI3S4UmHOOWNyMa0Emtm0rs"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_8Q-hUPiwEe6p3sP16CONSw - ALL_DE_CONTRACT_CLAUSES"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;ALL_DE_CONTRACT_CLAUSES&quot;"/>
-    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ALL_DE_CONTRACT_CLAUSES.POLICE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.VERTRAG,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.START_DATE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.END_DATE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSE_NAME,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.V_CROP_GROUP,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.TABLE_NAME,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPREFID,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPREFDESC,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPADD_1,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEREFID,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEREFDESC,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_1,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_2,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_3&#10;FROM&#9;ALL_DE_CONTRACT_CLAUSES &#13;&#10;WHERE CLAUSEREFID = 1000004 &quot;"/>
-    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSE_NAME"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="V_CROP_GROUP"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="TABLE_NAME"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPREFID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPREFDESC"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPADD_1"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEREFID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEREFDESC"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_1"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_2"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_3"/>
-      <elementValue elementRef="TRIM" value="false"/>
-    </elementParameter>
-    <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" label="ALL_DE_CONTRACT_CLAUSES" name="tHSQLDbInput_4">
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="V_CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="24" name="TABLE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="CROPGROUPREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="CLAUSEREFDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_1" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEADD_2" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="CLAUSEADD_3" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1024" posY="1216">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_15"/>
-    <elementParameter field="EXTERNAL" name="MAP" value=""/>
-    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
-    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
-    <elementParameter field="IMAGE" name="PREVIEW" value="_rjU8AL6LEe6jcPiMlGgGPA-tMap_15-PREVIEW.bmp"/>
-    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
-    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
-    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
-    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
-    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="out3">
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="totalLossRefID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="totalLosRefDesc" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-    <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables name="Var" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="Numeric.sequence(String.valueOf(row20.CROP_GROUP_ID),1,1) " name="cropGroupSeq" type="id_Integer"/>
-      </varTables>
-      <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="row20.DESCRIPTION.equals(row19.CLAUSEADD_3) ||  (row20.DESCRIPTION.equals(&quot;None&quot;) &amp;&amp;  Var.cropGroupSeq ==1)" name="out3" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="row19.POLICE " name="POLICE" type="id_Long"/>
-        <mapperTableEntries expression="row19.VERTRAG " name="VERTRAG" type="id_Long"/>
-        <mapperTableEntries expression="row19.START_DATE " name="START_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries expression="row20.id " name="totalLossRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row20.DESCRIPTION " name="totalLosRefDesc" nullable="true" type="id_String"/>
-      </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row19" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="POLICE" type="id_Long"/>
-        <mapperTableEntries name="VERTRAG" type="id_Long"/>
-        <mapperTableEntries name="START_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
-        <mapperTableEntries name="CLAUSE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries name="V_CROP_GROUP" nullable="true" type="id_String"/>
-        <mapperTableEntries name="TABLE_NAME" nullable="true" type="id_String"/>
-        <mapperTableEntries name="CROPGROUPREFID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="CROPGROUPREFDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries name="CROPGROUPADD_1" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="CLAUSEREFID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="CLAUSEREFDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries name="CLAUSEADD_1" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="CLAUSEADD_2" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="CLAUSEADD_3" nullable="true" type="id_String"/>
-      </inputTables>
-      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="ALL_MATCHES" name="row20" sizeState="INTERMEDIATE">
-        <mapperTableEntries name="id" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="row19.CROPGROUPREFID " name="CROP_GROUP_ID" nullable="true" operator="=" type="id_Long"/>
-        <mapperTableEntries name="DESCRIPTION" nullable="true" type="id_String"/>
-      </inputTables>
-    </nodeData>
-  </node>
-  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="928" posY="1120">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_14"/>
-    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
-    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_16b-YL2xEe2IaexRWdMOsQ"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.4&quot;"/>
-    <elementParameter field="CLOSED_LIST" name="DRIVER" show="false" value="JTDS"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="MSSQL"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1433&quot;"/>
-    <elementParameter field="TEXT" name="DB_SCHEMA" show="false" value="&quot;dbo&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;VH_DEVMIG&quot;"/>
-    <elementParameter field="TEXT" name="USER" show="false" value="&quot;K2View_vhetl&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:ikk9ciwHp1Arz32EL2qFRAOKRmy/6Fyfb3k7P0eznEdMRUj4M7RPPp/U"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
-    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select id, CROP_GROUP_ID , DESCRIPTION  from T_TOTAL_LOSS_FLAT_RATE_VH &#13;&#10;order by 1,2,3 desc&quot;"/>
-    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
-    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="id_MSSQL"/>
-    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
-    <elementParameter field="CHECK" name="ACTIVE_DIR_AUTH" show="false" value="false"/>
-    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
-    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN">
-      <elementValue elementRef="SCHEMA_COLUMN" value="id"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_GROUP_ID"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="DESCRIPTION"/>
-      <elementValue elementRef="TRIM" value="false"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="SET_QUERY_TIMEOUT" value="false"/>
-    <elementParameter field="TEXT" name="QUERY_TIMEOUT_IN_SECONDS" show="false" value="30"/>
-    <elementParameter field="TEXT" name="LABEL" value="T_TOTAL_LOSS_FLAT_RATE_VH"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tDBInput_14">
-      <column comment="" defaultValue="" key="false" length="19" name="id" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="CROP_GROUP_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="DESCRIPTION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1152" posY="1216">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_13"/>
-    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
-    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
-    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
-    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:fv6/z5cPAcZnAjudZHIBqBhMLUGncRssAmcQUyAs"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;totalLoss&quot;"/>
-    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
-    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
-    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
-    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
-    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
-    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
-    <elementParameter field="TABLE" name="ADD_COLS"/>
-    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
-    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="totalLossRefID"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="totalLosRefDesc"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="totalLoss"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tHSQLDbOutput_13">
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="totalLossRefID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="totalLosRefDesc" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-    <metadata connector="REJECT" name="REJECT">
-      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="19" name="totalLossRefID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="255" name="totalLosRefDesc" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-    </metadata>
-  </node>
-  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1344" posY="1216">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_6"/>
-    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
-    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
-    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
-    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
-    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
-    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
-    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:WiU44uApM1Zg6F+vklQ/zWV3/rlhg0jkK4YF/wUI"/>
-    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
-    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
-    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX totalLoss_i1&#13;&#10;ON totalLoss   (POLICE,VERTRAG,START_DATE)&quot;"/>
-    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
-    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
-    <elementParameter field="CHECK" name="PROPAGATE_RECORD_SET" value="false"/>
-    <elementParameter field="COLUMN_LIST" name="RECORD_SET_COLUMN" show="false" value=""/>
-    <elementParameter field="CHECK" name="USE_PREPAREDSTATEMENT" value="false"/>
-    <elementParameter field="TABLE" name="SET_PREPAREDSTATEMENT_PARAMETERS" show="false"/>
-    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
-    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
-    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
-    <elementParameter field="TEXT" name="LABEL" value="create_index"/>
-    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="tHSQLDbRow_6"/>
     <metadata connector="REJECT" name="REJECT">
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
@@ -4970,6 +4290,507 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="736" posY="1248">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:6FxpSco3rHp7iVlGzNbNIU3z1bsAAbJ16jPktOGg"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;POLICY_VERSION_SELECTION&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT POLICY_VERSION_SELECTION.POLICE,&#10;&#9;&#9;POLICY_VERSION_SELECTION.VERTRAG,&#10;&#9;&#9;POLICY_VERSION_SELECTION.V_START_DATE,&#10;&#9;&#9;POLICY_VERSION_SELECTION.CROP_GROUP&#10;FROM&#9;POLICY_VERSION_SELECTION&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_GROUP"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;POLICY_VERSION_SELECTION&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POLICY_VERSION_SELECTION" name="tHSQLDbInput_3">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1056" posY="1152">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="in_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_value"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out_desc"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
+    <elementParameter field="TABLE" name="INTABLE" show="false"/>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;\t&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" value="000_001x&#9;1000010&#9;Cereals&#13;&#10;021_002x&#9;1000011&#9;Legumes&#13;&#10;221_001x&#9;1000017&#9;Special energy/forage crops&#13;&#10;330_002x&#9;1000013&#9;Corn&#13;&#10;420_103x&#9;1000036&#9;Stone fruit and table grapes under hail net&#13;&#10;420_104x&#9;1000028&#9;Pome fruit under hail net&#13;&#10;421_135x&#9;1000023&#9;Vegetables small areas&#13;&#10;421_145x&#9;1000033&#9;Seed extraction of special crops&#13;&#10;421_146x&#9;1000040&#9;Onion vegetables&#13;&#10;422_005x&#9;1000021&#9;Fruiting and yielding wood&#13;&#10;422_013x&#9;1000032&#9;Plants for ornamental production&#13;&#10;423_002x&#9;1000020&#9;Strawberries&#13;&#10;423_111x&#9;1000031&#9;Fruit under rain protection&#13;&#10;430_003x&#9;1000027&#9;Pome fruit&#13;&#10;431_002x&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;431_114x&#9;1000022&#9;Fruiting vegetables&#13;&#10;431_116x&#9;1000029&#9;Cabbage vegetables&#13;&#10;431_118x&#9;1000024&#9;Legumes for green harvest&#13;&#10;431_120x&#9;1000026&#9;Young plant production&#13;&#10;431_124x&#9;1000034&#9;Shoot vegetables&#13;&#10;431_126x&#9;1000039&#9;Root/tuber vegetables&#13;&#10;432_002x&#9;1000018&#9;Medicinal herbs and spice plants&#13;&#10;433_008x&#9;1000025&#9;Industrial fruit / cider fruit&#13;&#10;433_010x&#9;1000030&#9;Chestnuts/Nuts&#13;&#10;433_012x&#9;1000035&#9;Stone fruit&#13;&#10;433_014x&#9;1000037&#9;Bush berries&#13;&#10;433_016x&#9;1000038&#9;Table grapes&#13;&#10;520_002x&#9;1000015&#9;Beets&#13;&#10;521_002x&#9;1000012&#9;Potatoes&#13;&#10;620_004x&#9;1000014&#9;Oil crops&#13;&#10;621_002x&#9;1000016&#9;Seeds&#13;&#10;622_002x&#9;1000009&#9;Spider plants&#13;&#10;720_002x&#9;1000041&#9;Hops&#13;&#10;820_002x&#9;1000044&#9;Wine&#13;&#10;821_002x&#9;1000042&#9;Vine wood&#13;&#10;920_002x&#9;1000043&#9;Tobacco&#13;&#10;000_001&#9;1000010&#9;Cereals&#13;&#10;000_002&#9;1000010&#9;Cereals&#13;&#10;000_003&#9;1000010&#9;Cereals&#13;&#10;000_004&#9;1000010&#9;Cereals&#13;&#10;001_001&#9;1000011&#9;Legumes&#13;&#10;001_002&#9;1000011&#9;Legumes&#13;&#10;020_002x&#9;1000010&#9;Cereals&#13;&#10;021_001x&#9;1000011&#9;Legumes&#13;&#10;030_002x&#9;1000010&#9;Cereals&#13;&#10;031_001x&#9;1000011&#9;Legumes&#13;&#10;040_002x&#9;1000010&#9;Cereals&#13;&#10;041_001x&#9;1000011&#9;Legumes&#13;&#10;201_001&#9;1000017&#9;Special energy/forage crops&#13;&#10;201_002&#9;1000017&#9;Special energy/forage crops&#13;&#10;201_003&#9;1000017&#9;Special energy/forage crops&#13;&#10;201_004&#9;1000017&#9;Special energy/forage crops&#13;&#10;221_002x&#9;1000017&#9;Special energy/forage crops&#13;&#10;221_004x&#9;1000017&#9;Special energy/forage crops&#13;&#10;230_001x&#9;1000017&#9;Special energy/forage crops&#13;&#10;230_002x&#9;1000017&#9;Special energy/forage crops&#13;&#10;240_001x&#9;1000017&#9;Special energy/forage crops&#13;&#10;271_006x&#9;-1&#9;Grünland&#13;&#10;300_001&#9;1000013&#9;Corn&#13;&#10;300_002&#9;1000013&#9;Corn&#13;&#10;302_002&#9;1000013&#9;Corn&#13;&#10;320_001x&#9;1000013&#9;Corn&#13;&#10;330_001x&#9;1000013&#9;Corn&#13;&#10;340_001x&#9;1000013&#9;Corn&#13;&#10;400_001&#9;1000027&#9;Pome fruit&#13;&#10;400_100&#9;1000028&#9;Pome fruit under hail net&#13;&#10;400_102&#9;1000025&#9;Industrial fruit / cider fruit&#13;&#10;401_001&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;401_101&#9;1000022&#9;Fruiting vegetables&#13;&#10;401_102&#9;1000024&#9;Legumes for green harvest&#13;&#10;401_103&#9;1000029&#9;Cabbage vegetables&#13;&#10;401_105&#9;1000039&#9;Root/tuber vegetables&#13;&#10;401_106&#9;1000040&#9;Onion vegetables&#13;&#10;401_113&#9;1000023&#9;Vegetables small areas&#13;&#10;401_114&#9;1000034&#9;Shoot vegetables&#13;&#10;401_115&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;402_001&#9;1000032&#9;Plants for ornamental production&#13;&#10;402_103&#9;1000018&#9;Medicinal herbs and spice plants&#13;&#10;402_104&#9;1000033&#9;Seed extraction of special crops&#13;&#10;402_105&#9;1000021&#9;Fruiting and yielding wood&#13;&#10;402_106&#9;1000026&#9;Young plant production&#13;&#10;402_107&#9;1000032&#9;Plants for ornamental production&#13;&#10;403_001&#9;1000020&#9;Strawberries&#13;&#10;403_100&#9;1000035&#9;Stone fruit&#13;&#10;403_103&#9;1000037&#9;Bush berries&#13;&#10;403_107&#9;1000020&#9;Strawberries&#13;&#10;403_109&#9;1000031&#9;Fruit under rain protection&#13;&#10;403_110&#9;1000038&#9;Table grapes&#13;&#10;420_001x&#9;1000027&#9;Pome fruit&#13;&#10;420_100x&#9;1000028&#9;Pome fruit under hail net&#13;&#10;421_001x&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;421_113x&#9;1000022&#9;Fruiting vegetables&#13;&#10;421_115x&#9;1000029&#9;Cabbage vegetables&#13;&#10;421_117x&#9;1000024&#9;Legumes for green harvest&#13;&#10;421_119x&#9;1000026&#9;Young plant production&#13;&#10;421_121x&#9;1000033&#9;Seed extraction of special crops&#13;&#10;421_123x&#9;1000034&#9;Shoot vegetables&#13;&#10;421_125x&#9;1000039&#9;Root/tuber vegetables&#13;&#10;421_127x&#9;1000040&#9;Onion vegetables&#13;&#10;421_129x&#9;1000023&#9;Vegetables small areas&#13;&#10;422_001x&#9;1000018&#9;Medicinal herbs and spice plants&#13;&#10;422_007x&#9;1000021&#9;Fruiting and yielding wood&#13;&#10;422_009x&#9;1000032&#9;Plants for ornamental production&#13;&#10;423_001x&#9;1000020&#9;Strawberries&#13;&#10;423_007x&#9;1000025&#9;Industrial fruit / cider fruit&#13;&#10;423_009x&#9;1000030&#9;Chestnuts/Nuts&#13;&#10;423_011x&#9;1000035&#9;Stone fruit&#13;&#10;423_013x&#9;1000037&#9;Bush berries&#13;&#10;423_015x&#9;1000038&#9;Table grapes&#13;&#10;423_109x&#9;1000031&#9;Fruit under rain protection&#13;&#10;430_001x&#9;1000027&#9;Pome fruit&#13;&#10;430_004x&#9;1000027&#9;Pome fruit&#13;&#10;430_005x&#9;1000028&#9;Pome fruit under hail net&#13;&#10;431_001x&#9;1000019&#9;Leafy vegetables / stem vegetables&#13;&#10;431_113x&#9;1000022&#9;Fruiting vegetables&#13;&#10;431_115x&#9;1000029&#9;Cabbage vegetables&#13;&#10;431_117x&#9;1000024&#9;Legumes for green harvest&#13;&#10;431_123x&#9;1000034&#9;Shoot vegetables&#13;&#10;431_125x&#9;1000039&#9;Root/tuber vegetables&#13;&#10;431_127x&#9;1000040&#9;Onion vegetables&#13;&#10;432_001x&#9;1000018&#9;Medicinal herbs and spice plants&#13;&#10;432_007x&#9;1000021&#9;Fruiting and yielding wood&#13;&#10;433_007x&#9;1000025&#9;Industrial fruit / cider fruit&#13;&#10;433_011x&#9;1000035&#9;Stone fruit&#13;&#10;433_013x&#9;1000037&#9;Bush berries&#13;&#10;500_001&#9;1000015&#9;Beets&#13;&#10;500_002&#9;1000015&#9;Beets&#13;&#10;501_001&#9;1000012&#9;Potatoes&#13;&#10;501_002&#9;1000012&#9;Potatoes&#13;&#10;502_001&#9;1000012&#9;Potatoes&#13;&#10;502_002&#9;1000012&#9;Potatoes&#13;&#10;520_001x&#9;1000015&#9;Beets&#13;&#10;521_001x&#9;1000012&#9;Potatoes&#13;&#10;530_001x&#9;1000015&#9;Beets&#13;&#10;531_001x&#9;1000012&#9;Potatoes&#13;&#10;540_001x&#9;1000015&#9;Beets&#13;&#10;541_001x&#9;1000012&#9;Potatoes&#13;&#10;600_001&#9;1000014&#9;Oil crops&#13;&#10;600_002&#9;1000014&#9;Oil crops&#13;&#10;600_003&#9;1000014&#9;Oil crops&#13;&#10;600_004&#9;1000014&#9;Oil crops&#13;&#10;601_001&#9;1000016&#9;Seeds&#13;&#10;601_002&#9;1000016&#9;Seeds&#13;&#10;602_001&#9;1000009&#9;Spider plants&#13;&#10;602_002&#9;1000009&#9;Spider plants&#13;&#10;620_002x&#9;1000014&#9;Oil crops&#13;&#10;621_001x&#9;1000016&#9;Seeds&#13;&#10;622_001x&#9;1000009&#9;Spider plants&#13;&#10;630_002x&#9;1000014&#9;Oil crops&#13;&#10;631_002x&#9;1000016&#9;Seeds&#13;&#10;640_002x&#9;1000014&#9;Oil crops&#13;&#10;700_001&#9;1000041&#9;Hops&#13;&#10;720_001x&#9;1000041&#9;Hops&#13;&#10;800_001&#9;1000044&#9;Wine&#13;&#10;800_002&#9;1000044&#9;Wine&#13;&#10;801_001&#9;1000042&#9;Vine wood&#13;&#10;801_002&#9;1000042&#9;Vine wood&#13;&#10;820_001x&#9;1000044&#9;Wine&#13;&#10;821_001x&#9;1000042&#9;Vine wood&#13;&#10;822_001x&#9;1000044&#9;Wine&#13;&#10;830_001x&#9;1000044&#9;Wine&#13;&#10;900_001&#9;1000043&#9;Tobacco&#13;&#10;920_001x&#9;1000043&#9;Tobacco&#13;&#10;"/>
+    <elementParameter field="TEXT" name="LABEL" value="trnCropGroup"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_1">
+      <column comment="" key="false" length="10" name="in_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="out_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="out_desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1248" posY="1152">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_11"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_16b-YL2xEe2IaexRWdMOsQ"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.4&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="DRIVER" show="false" value="JTDS"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="MSSQL"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1433&quot;"/>
+    <elementParameter field="TEXT" name="DB_SCHEMA" show="false" value="&quot;dbo&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;VH_DEVMIG&quot;"/>
+    <elementParameter field="TEXT" name="USER" show="false" value="&quot;K2View_vhetl&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:6LzsSQaIWwM+sSuPAEXV1xHaedFq1ZaFIV2aeOYc3jfGPhHaPftQQdHG"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select id, CROP_GROUP_ID , DESCRIPTION  from T_TOTAL_LOSS_FLAT_RATE_VH &#13;&#10;order by 1,2,3 desc&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="id_MSSQL"/>
+    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="ACTIVE_DIR_AUTH" show="false" value="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_GROUP_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DESCRIPTION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="SET_QUERY_TIMEOUT" value="false"/>
+    <elementParameter field="TEXT" name="QUERY_TIMEOUT_IN_SECONDS" show="false" value="30"/>
+    <elementParameter field="TEXT" name="LABEL" value="T_TOTAL_LOSS_FLAT_RATE_VH"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tDBInput_11">
+      <column comment="" defaultValue="" key="false" length="19" name="id" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="CROP_GROUP_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="DESCRIPTION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1440" posY="1152">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:+Q6fB1LFr1oGxHdGkGHaegJGfiduHLFSxjVvYRKZ"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;ALL_DE_CONTRACT_CLAUSES&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ALL_DE_CONTRACT_CLAUSES.POLICE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.VERTRAG,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.START_DATE,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CROPGROUPREFID,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEREFID,&#10;&#9;&#9;ALL_DE_CONTRACT_CLAUSES.CLAUSEADD_3&#10;FROM&#9;ALL_DE_CONTRACT_CLAUSES&#13;&#10;where  ALL_DE_CONTRACT_CLAUSES.CLAUSEREFID = 1000004&#13;&#10;&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROPGROUPREFID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEREFID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSEADD_3"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;ALL_DE_CONTRACT_CLAUSES&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="ALL_DE_CONTRACT_CLAUSES" name="tHSQLDbInput_4">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CROPGROUPREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="CLAUSEREFID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="CLAUSEADD_3" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1056" posY="1248">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_11"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_QkxSgCV6Ee6aAfhWDAh9_A-tMap_10-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="Total_lr1">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="CROP_GROUP_ID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables name="Total_lr1" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="contract_version.POLICE " name="POLICE" type="id_Long"/>
+        <mapperTableEntries expression="contract_version.VERTRAG " name="VERTRAG" type="id_Integer"/>
+        <mapperTableEntries expression="contract_version.V_START_DATE " name="V_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="contract_version.CROP_GROUP " name="CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="trnCropGroup2.out_value " name="CROP_GROUP_ID" nullable="true" type="id_Long"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="contract_version" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="POLICE" type="id_Long"/>
+        <mapperTableEntries name="VERTRAG" type="id_Integer"/>
+        <mapperTableEntries name="V_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="CROP_GROUP" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trnCropGroup2" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="contract_version.CROP_GROUP " name="in_value" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1248" posY="1248">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_12"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_QkxSgCV6Ee6aAfhWDAh9_A-tMap_11-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="total_lr2">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="CROP_GROUP_ID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="TOTAL_LOSS_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="TOTAL_LOSS_DESCRIPTION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables name="total_lr2" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="Total_lr1.POLICE " name="POLICE" type="id_Long"/>
+        <mapperTableEntries expression="Total_lr1.VERTRAG " name="VERTRAG" type="id_Integer"/>
+        <mapperTableEntries expression="Total_lr1.V_START_DATE " name="V_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="Total_lr1.CROP_GROUP " name="CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="Total_lr1.CROP_GROUP_ID " name="CROP_GROUP_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="T_TOTAL_LOSS1.id !=null?T_TOTAL_LOSS1.id:(long)-1; " name="TOTAL_LOSS_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="T_TOTAL_LOSS1.DESCRIPTION " name="TOTAL_LOSS_DESCRIPTION" nullable="true" type="id_String"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="Total_lr1" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="POLICE" type="id_Long"/>
+        <mapperTableEntries name="VERTRAG" type="id_Integer"/>
+        <mapperTableEntries name="V_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries name="CROP_GROUP_ID" nullable="true" type="id_Long"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="T_TOTAL_LOSS1" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="" name="id" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="Total_lr1.CROP_GROUP_ID " name="CROP_GROUP_ID" nullable="true" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="&quot;None&quot;" name="DESCRIPTION" nullable="true" type="id_String"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="1472" posY="1248">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_13"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_QkxSgCV6Ee6aAfhWDAh9_A-tMap_12-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata comment="" connector="FLOW" label="TOTAL_LOSS_REF" name="total_lr3">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="CROP_GROUP_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="TOTAL_LOSS_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="TOTAL_LOSS_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="CLAUSE_REF_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="TOTAL_LOSS_ID_2" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="TOTAL_LOSS_DESCRIPTION_2" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables activateCondensedTool="true" id="_VCMbIACnEe-PfNltVfVWUw - TOTAL_LOSS_REF" name="total_lr3" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="total_lr2.POLICE " name="POLICE" type="id_Long"/>
+        <mapperTableEntries expression="total_lr2.VERTRAG " name="VERTRAG" type="id_Integer"/>
+        <mapperTableEntries expression="total_lr2.V_START_DATE " name="V_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="total_lr2.CROP_GROUP " name="CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="total_lr2.CROP_GROUP_ID " name="CROP_GROUP_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="total_lr2.TOTAL_LOSS_ID " name="TOTAL_LOSS_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="total_lr2.TOTAL_LOSS_DESCRIPTION " name="TOTAL_LOSS_DESCRIPTION" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="clauses.CLAUSEREFID " name="CLAUSE_REF_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row16.id !=null?row16.id :(long)-1; " name="TOTAL_LOSS_ID_2" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row16.DESCRIPTION " name="TOTAL_LOSS_DESCRIPTION_2" nullable="true" type="id_String"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="total_lr2" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="POLICE" type="id_Long"/>
+        <mapperTableEntries name="VERTRAG" type="id_Integer"/>
+        <mapperTableEntries name="V_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="CROP_GROUP" nullable="true" type="id_String"/>
+        <mapperTableEntries name="CROP_GROUP_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="TOTAL_LOSS_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="TOTAL_LOSS_DESCRIPTION" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="clauses" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="total_lr2.POLICE " name="POLICE" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="(long)total_lr2.VERTRAG " name="VERTRAG" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="total_lr2.V_START_DATE " name="START_DATE" nullable="true" operator="=" type="id_Date"/>
+        <mapperTableEntries name="CROPGROUPREFID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="CLAUSEREFID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="CLAUSEADD_3" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row16" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="id" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="clauses.CROPGROUPREFID " name="CROP_GROUP_ID" nullable="true" operator="=" type="id_Long"/>
+        <mapperTableEntries expression="clauses.CLAUSEADD_3 " name="DESCRIPTION" nullable="true" operator="=" type="id_String"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tMSSqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1632" posY="1152">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_13"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_16b-YL2xEe2IaexRWdMOsQ"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.4&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="DRIVER" show="false" value="JTDS"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="MSSQL"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1433&quot;"/>
+    <elementParameter field="TEXT" name="DB_SCHEMA" show="false" value="&quot;dbo&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;VH_DEVMIG&quot;"/>
+    <elementParameter field="TEXT" name="USER" show="false" value="&quot;K2View_vhetl&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:9Vkppf803RcWINED2BYC0wiW/ntrXBjvnF7MA07woXdCQmy9S1jG6tAm"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select id, CROP_GROUP_ID , DESCRIPTION  from T_TOTAL_LOSS_FLAT_RATE_VH &#13;&#10;order by 1,2,3 desc&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="id_MSSQL"/>
+    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="ACTIVE_DIR_AUTH" show="false" value="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_GROUP_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="DESCRIPTION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="SET_QUERY_TIMEOUT" value="false"/>
+    <elementParameter field="TEXT" name="QUERY_TIMEOUT_IN_SECONDS" show="false" value="30"/>
+    <elementParameter field="TEXT" name="LABEL" value="T_TOTAL_LOSS_FLAT_RATE_VH"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tDBInput_13">
+      <column comment="" defaultValue="" key="false" length="19" name="id" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="CROP_GROUP_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="DESCRIPTION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1728" posY="1248">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_13"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:OhHC5uL98dX93Tlm5ZAJpHiv/lJaHQFwaLen6tJ0"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;TOTAL_LOSS_REF&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_VCMbIACnEe-PfNltVfVWUw - TOTAL_LOSS_REF"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
+    <elementParameter field="TABLE" name="ADD_COLS"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_START_DATE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_GROUP"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_GROUP_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="TOTAL_LOSS_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="TOTAL_LOSS_DESCRIPTION"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CLAUSE_REF_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="TOTAL_LOSS_ID_2"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="TOTAL_LOSS_DESCRIPTION_2"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;TOTAL_LOSS_REF&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="TOTAL_LOSS_REF" name="tHSQLDbOutput_13">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="CROP_GROUP_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="TOTAL_LOSS_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="TOTAL_LOSS_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="CLAUSE_REF_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="TOTAL_LOSS_ID_2" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="TOTAL_LOSS_DESCRIPTION_2" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="REJECT" label="TOTAL_LOSS_REF" name="REJECT">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CROP_GROUP" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="CROP_GROUP_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="TOTAL_LOSS_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="TOTAL_LOSS_DESCRIPTION" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="CLAUSE_REF_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="TOTAL_LOSS_ID_2" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="255" name="TOTAL_LOSS_DESCRIPTION_2" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1984" posY="1248">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_6"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:e8Db4BzedRkTBUUwHRr9l3FvBdfzICbKP+KB+E6H"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;CREATE  INDEX TOTAL_LOSS_REF_i1&#13;&#10;ON TOTAL_LOSS_REF  (police, vertrag, v_start_date)&quot;"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="PROPAGATE_RECORD_SET" value="false"/>
+    <elementParameter field="COLUMN_LIST" name="RECORD_SET_COLUMN" show="false" value=""/>
+    <elementParameter field="CHECK" name="USE_PREPAREDSTATEMENT" value="false"/>
+    <elementParameter field="TABLE" name="SET_PREPAREDSTATEMENT_PARAMETERS" show="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tHSQLDbRow_6"/>
+    <metadata connector="REJECT" name="REJECT">
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tMap_4">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="IS_ANNUAL_PAYER"/>
@@ -5166,6 +4987,9 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_7" offsetLabelX="0" offsetLabelY="0" source="tDBInput_7" target="tHSQLDbInput_3">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
+  </connection>
   <connection connectorName="FLOW" label="contact_version_selection" lineStyle="0" metaname="contact_version_selection" offsetLabelX="0" offsetLabelY="0" source="tMap_6" target="tHSQLDbOutput_7">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="NEXT_NUM_IN_BUNDLE"/>
@@ -5240,52 +5064,8 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row18"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_10" offsetLabelX="0" offsetLabelY="0" source="tDBInput_10" target="tHSQLDbInput_4">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk7"/>
-  </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_11" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_11" target="tHSQLDbRow_8">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk11"/>
-  </connection>
-  <connection connectorName="FLOW" label="row16" lineStyle="0" metaname="tDBInput_13" offsetLabelX="0" offsetLabelY="0" source="tDBInput_13" target="tMap_13">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row16"/>
-  </connection>
-  <connection connectorName="FLOW" label="contract_clauses_cropGroup" lineStyle="0" metaname="contract_clauses_cropGroup" offsetLabelX="0" offsetLabelY="0" source="tMap_13" target="tMap_14">
-    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
-      <elementValue elementRef="TRACE_COLUMN" value="TABLE_NAME"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="V_CROP_GROUP"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-      <elementValue elementRef="TRACE_COLUMN" value="CLAUSE_NAME"/>
-      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
-      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
-    </elementParameter>
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="contract_clauses_cropGroup"/>
-  </connection>
-  <connection connectorName="FLOW" label="cropGroup_lookup" lineStyle="8" metaname="tFixedFlowInput_4" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_4" target="tMap_13">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="cropGroup_lookup"/>
-  </connection>
-  <connection connectorName="FLOW" label="clause_lookup" lineStyle="8" metaname="tFixedFlowInput_5" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_5" target="tMap_13">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="clause_lookup"/>
-  </connection>
-  <connection connectorName="FLOW" label="copyOfout2" lineStyle="0" metaname="copyOfout2" offsetLabelX="0" offsetLabelY="0" source="tMap_14" target="tLogRow_2">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="copyOfout2"/>
-  </connection>
-  <connection connectorName="FLOW" label="row17" lineStyle="8" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tMap_14">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row17"/>
   </connection>
   <connection connectorName="FLOW" label="out1" lineStyle="0" metaname="out1" offsetLabelX="0" offsetLabelY="0" source="tMap_10" target="tHSQLDbOutput_10">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -5306,21 +5086,6 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk10"/>
   </connection>
-  <connection connectorName="FLOW" label="row19" lineStyle="0" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tMap_15">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row19"/>
-  </connection>
-  <connection connectorName="FLOW" label="out3" lineStyle="0" metaname="out3" offsetLabelX="0" offsetLabelY="0" source="tMap_15" target="tHSQLDbOutput_13">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out3"/>
-  </connection>
-  <connection connectorName="FLOW" label="row20" lineStyle="8" metaname="tDBInput_14" offsetLabelX="0" offsetLabelY="0" source="tDBInput_14" target="tMap_15">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row20"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_13" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_13" target="tHSQLDbRow_6">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk13"/>
-  </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tDBInput_12" offsetLabelX="0" offsetLabelY="0" source="tDBInput_12" target="tHSQLDbOutput_14">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="product_line_type"/>
@@ -5336,6 +5101,49 @@
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_12" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_12" target="tRunJob_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk12"/>
+  </connection>
+  <connection connectorName="FLOW" label="contract_version" lineStyle="0" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tMap_11">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="contract_version"/>
+  </connection>
+  <connection connectorName="FLOW" label="trnCropGroup2" lineStyle="8" metaname="tFixedFlowInput_1" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_1" target="tMap_11">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trnCropGroup2"/>
+  </connection>
+  <connection connectorName="FLOW" label="T_TOTAL_LOSS1" lineStyle="8" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tMap_12">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="T_TOTAL_LOSS1"/>
+  </connection>
+  <connection connectorName="FLOW" label="clauses" lineStyle="8" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tMap_13">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="clauses"/>
+  </connection>
+  <connection connectorName="FLOW" label="Total_lr1" lineStyle="0" metaname="Total_lr1" offsetLabelX="0" offsetLabelY="0" source="tMap_11" target="tMap_12">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="Total_lr1"/>
+  </connection>
+  <connection connectorName="FLOW" label="total_lr2" lineStyle="0" metaname="total_lr2" offsetLabelX="0" offsetLabelY="0" source="tMap_12" target="tMap_13">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="total_lr2"/>
+  </connection>
+  <connection connectorName="FLOW" label="total_lr3" lineStyle="0" metaname="total_lr3" offsetLabelX="0" offsetLabelY="0" source="tMap_13" target="tHSQLDbOutput_13">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="CLAUSEREFID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="CLAUSE_REF_ID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="total_lr3"/>
+  </connection>
+  <connection connectorName="FLOW" label="row16" lineStyle="8" metaname="tDBInput_13" offsetLabelX="0" offsetLabelY="0" source="tDBInput_13" target="tMap_13">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row16"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_13" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_13" target="tHSQLDbRow_6">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk13"/>
   </connection>
   <note opaque="true" posX="-96" posY="160" sizeHeight="64" sizeWidth="641" text="CUSTOMER DATA:"/>
   <note opaque="true" posX="1504" posY="192" sizeHeight="64" sizeWidth="385" text="TECHNICAL:"/>
@@ -5367,7 +5175,7 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPrejob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
@@ -5378,7 +5186,7 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPostjob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
@@ -5476,27 +5284,12 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_13"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
-    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
-  </subjob>
-  <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_10"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_8"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
-    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
-  </subjob>
-  <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
-    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
-  </subjob>
-  <subjob>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_6"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
@@ -5510,13 +5303,23 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5e1e51e3-b82c-498f-9161-3f20c797951a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>98VZKi96MhkTa+nAom1QVPa+KBJNeTRZq+fw9bhAp2nWsHtwg9NAJq5RbTtKFvpy1EPPU7ODau7j&#13;
-lR1x5iBYgg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_988197d1-f13a-4e88-b2b0-16d5407867cf"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>tVt8++P2/8da1NzMuWvxogErAoQo6JjRAPtj+RGJaykc1/mGrv/6ETDvOTNezbdI0bjqtnZj1sH2&#13;
-hYse7zLmWA==</DigestValue></Reference></SignedInfo><SignatureValue>khoBoU4fXp1PLjZuCXXRjKR6t8aLthqWFy1XFAwWxmuK8XXoHrHbhyj3Y/f80tVywNDw0pOyPgt2&#13;
-HEO1BYEvTJPE/NTyi29z6WT/Pvm5ilCIc1444nkuje2SrfsMgbv+VfDj3QUp+VezFSkOY7ntUeDx&#13;
-yU+fJ7vR0dgSivtwkNYV3V07lq2fxpC8MxBdylCBs6rhMNDhWljFxNxENEw8T6zgHfViC2B5a/6O&#13;
-ABpWOTy4AKD2jCqkf5vL0fYtp7S6OgIUQEknQAJwTXpQXLTZdsaUDKdsm46I74KUZTIGaKtpncii&#13;
-k/caHOHMg0Op7OLUJnOgCbenPO8fUVxsVNIMzw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_6"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_700915e1-8a4d-48ae-8d37-c22dbda2ba20"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>c0C/1cEDAbcZERqqQGrsljeyB1G0D7hsxQ1Qo9wrXU0V+MUyoyPwvTaAn/7b0mKMTxbQHd0kd95W&#13;
+SJgFgp+fIg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_58d9df89-befb-4131-945b-100f7fc41f2f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>bfm423XY47EVy+T1aan7BCjc1Fqjkt8BvxPdDt5e/Atzr8yWEI1pJkicjQRR1VU+Q4fCV7I03G4O&#13;
+MLxkJUH+/g==</DigestValue></Reference></SignedInfo><SignatureValue>LYtOE0ofo3LBRYOCUhn5G4qT9SqIJ7kClB/pQCocVptMyH+ru8I3LaYaDMPqmO2Y5ajpe+mm48Zm&#13;
+QBaWBJm3FL+99a1WlOTW52JCa+bdSdQ3o7sZaPx0F08BXo7l3Rwp/JFFFUurBrxJl6zDKqUat4nw&#13;
+AmWygEI05nP6TEX+7Dtet+0soK9AKDIOm2APvoDF+ZN2zVZxIq+srgqKFeN331+pXxLed3E+d+2G&#13;
+ywWBna4jlWQRISW4qIKsh2krjc+VJnmG1waCsxpD9GXWRfXZke+YWcr1vAukXKFMMyKOvbTi5D4W&#13;
+8hnSWMW/QxLzZT8K0zzQEzPWEyAymK8pKjB4ZA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5538,4 +5341,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_988197d1-f13a-4e88-b2b0-16d5407867cf" Target="#_5e1e51e3-b82c-498f-9161-3f20c797951a"><Timestamp>2024-05-07 12:55:02</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_58d9df89-befb-4131-945b-100f7fc41f2f" Target="#_700915e1-8a4d-48ae-8d37-c22dbda2ba20"><Timestamp>2024-05-10 13:32:55</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
