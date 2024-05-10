@@ -322,8 +322,8 @@
         <mapperTableEntries expression="row1.POLICE " name="POLICE" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row1.VERTRAG " name="VERTRAG" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row1.POLICY_VERSION " name="POLICY_VERSION" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="trnClause.Output " name="lobClauseRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="lobClauseRefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row2.product_lob_clause_id " name="lobClauseRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="" name="lobClauseRefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="Var.clauseTypeVORefID " name="clauseTypeRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="Var.clauseTypeVORefDesc " name="clauseTypeRefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="isExistedClause" nullable="true" type="id_Boolean"/>
@@ -348,6 +348,11 @@
         <mapperTableEntries name="Description" nullable="true" type="id_String"/>
         <mapperTableEntries name="ADD1" nullable="true" type="id_String"/>
         <mapperTableEntries name="ADD2" nullable="true" type="id_Long"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="trnClause.Output " name="clause_id" operator="=" type="id_Long"/>
+        <mapperTableEntries name="product_lob_clause_id" type="id_Long"/>
+        <mapperTableEntries name="clause_header_id" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -496,6 +501,44 @@
       <column comment="" key="false" length="10" name="ADD2" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="672" posY="64">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:lYvElTGAQko7XkGmzpBv1XLeGno1y+phEhJYiMz1"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_rP9o4A4QEe-mT62gYBmirg - idit_CONTRACT_CLAUSE_LOB"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;idit_CONTRACT_CLAUSE_LOB&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT idit_CONTRACT_CLAUSE_LOB.clause_id,&#10;&#9;&#9;idit_CONTRACT_CLAUSE_LOB.product_lob_clause_id,&#10;&#9;&#9;idit_CONTRACT_CLAUSE_LOB.clause_header_id&#10;FROM&#9;idit_CONTRACT_CLAUSE_LOB&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="clause_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="product_lob_clause_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="clause_header_id"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;idit_CONTRACT_CLAUSE_LOB&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="idit_CONTRACT_CLAUSE_LOB" name="tHSQLDbInput_1">
+      <column comment="" defaultValue="" key="false" length="19" name="clause_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="product_lob_clause_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="clause_header_id" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+    </metadata>
+  </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tMap_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="V_END_DATE"/>
@@ -513,6 +556,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trnClause"/>
   </connection>
+  <connection connectorName="FLOW" label="row2" lineStyle="8" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
+  </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_2"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
@@ -523,13 +570,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ba724011-2241-4c1c-b43a-5c14f5cb92f8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>shGO+qXrLat6XOPX8xAt4QzoWhUGrazIxrNMTaG6WOoMy7tX+uFnXeb5zcv8md4lF1ckJGIvNtHV&#13;
-fWtgvmjehg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_950ca406-652b-413a-ab64-2c27593cfdfb"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>O/nJJjVUagIe9iZWZRIrjZGySDzHYFtSMcLpGmPhb7E3NbhvCsak3Sn1bEG3GdJ3yU78MuHGxlxX&#13;
-d3AXKRi5sw==</DigestValue></Reference></SignedInfo><SignatureValue>YiMrQgu2o42I1X0JJbC6q7YQWvRqMGtRGTtepDLS1C5wTVRf5eJoiA3RFPs7A94YOa1NQQeO4BK2&#13;
-zKq9c707Xb3zuO+Qr6rRg/KXLW/TgKkWpRyx4+2NFWgHFPgxREWaD4Esc7bJ0pQ2gKFNS72Gkwmj&#13;
-Hme7xXz6WqPjzUev7865aYkCh4uWjGO7LZMALT/czIrOmLCRRwzBON+GLLAinuKs9f0S0qde2pOb&#13;
-RBsfv3OsEPZGYZuyIT+UlVunq1t1i5/tx15lqeY4yXI8l9wHk8lNVvS6C/DgKvZF4sxFn9+vlIi1&#13;
-G9PvuShwoKDMJLl/PiHAYhvjnOgzr/7fRHkG1Q==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_990f63de-35e2-443e-8fde-27d686e82d1e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>5riAXDIdSaZCsKfGWJcjoLmPqfEYIz4B5T3SfiBDFcHlOi7z1reCzj3PsZhNr/1mPEFIxiOiyyG/&#13;
+9mRZd6+jAg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_e430b2b2-5266-4be4-a1dd-df116a2dc8e0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>7S5xzWsowd/seUWTSjbwYnQQiDHgLE2/o+omyRkE04tubPGQ7piqP3cLT/l6v9aJpD7qPBRKFHon&#13;
+3Ib5cXTA0w==</DigestValue></Reference></SignedInfo><SignatureValue>QAAIVaL/hZsamA8D5v3GpwxgKBZ73hVxX9wpHDLyM8iTSTlcTyeyaCoOwoyeYwv3WqCRa1olTUoe&#13;
+PF4g54ltzInWOREgyiPkmO2mbyf/f1zEWiLkOsck3v7fC44gK7/KEvZg1FSNqr4j16UU2QoPVdhl&#13;
+D2u+cHEg408bKu4cWBmQDL9NBHEAKbR25r4m5OKLg8NW+K8F7342yAD59adF9HCc/nunMwo47cvS&#13;
+QjWHq4it96iCvqLgt+ImyFBSLTsYnaFKpwzrgN0X3zqw6tS8ZaexftK1aJCSIhDmQmfIakK1tykf&#13;
+vLKmt4ROjuPL9a4XneXCUEQ6oy0TN8oPlWdPkw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -551,4 +598,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_950ca406-652b-413a-ab64-2c27593cfdfb" Target="#_ba724011-2241-4c1c-b43a-5c14f5cb92f8"><Timestamp>2024-05-09 13:32:33</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_e430b2b2-5266-4be4-a1dd-df116a2dc8e0" Target="#_990f63de-35e2-443e-8fde-27d686e82d1e"><Timestamp>2024-05-10 07:11:42</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
