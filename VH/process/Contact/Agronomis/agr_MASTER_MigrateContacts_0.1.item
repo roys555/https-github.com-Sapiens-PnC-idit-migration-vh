@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="534"/>
+    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="552"/>
     <contextParameter comment="Path to directory where you want to save generated contact XMLs." internalId="_s-hx8cTFEe2kmaNIdZptpQ" name="PATH_contactXMLOutputDirectory" prompt="PATH_contactXMLOutputDirectory?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:/VHmigration/ContactXMLs/AGR&quot;"/>
     <contextParameter comment="Prefix used for identyfing migration scope" internalId="_s-hx8sTFEe2kmaNIdZptpQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
     <contextParameter comment="Name for 'total' HSQLDB" internalId="_q44TEMTQEe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;projAGR&quot;"/>
     <contextParameter comment="Set to true to add migrationID to externals and filename" internalId="_tqFAcMciEe2DoJT7zYL8TA" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="false"/>
     <contextParameter comment="" internalId="_7XL4kNhYEe2V4YqPxc1dgg" name="addFileNameSuffix" prompt="addFileNameSuffix?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
-    <contextParameter comment="" internalId="_y2EAINz6Ee2V84x0nDMnFw" name="maskFlag" prompt="maskFlag?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="false"/>
+    <contextParameter comment="" internalId="_y2EAINz6Ee2V84x0nDMnFw" name="maskFlag" prompt="maskFlag?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
     <contextParameter comment="" internalId="_uCj_gKu8Ee60Q5DjXNlSlg" name="ProcessName" prompt="ProcessName?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;ContactAGR&quot;"/>
     <contextParameter comment="" internalId="_rc5tgLtiEe65_pL7HwxoNg" name="Oracle_staging_Server" prompt="Oracle_staging_Server?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value="10.86.77.7"/>
     <contextParameter comment="" internalId="_rc5tgbtiEe65_pL7HwxoNg" name="Oracle_staging_AdditionalParams" prompt="Oracle_staging_AdditionalParams?" promptNeeded="false" repositoryContextId="_UzQAELtiEe65_pL7HwxoNg" type="id_String" value=""/>
@@ -273,7 +273,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#10;  K2V_DEV.CONTACT_MIGRATION_STATUS.ENTITY_ID, &#10;  K2V_DEV.CONTACT_MIGRATION_STATUS.PARTNER_ID  &#10;FROM K2V_DEV.CONTACT_MIGRATION_STATUS&#13;&#10;WHERE  K2V_DEV.CONTACT_MIGRATION_STATUS.MIGRATION_STATUS = 100 AND  K2V_DEV.CONTACT_MIGRATION_STATUS.MIGRATION_ID = &quot; + context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#10;  K2V_DEV.CONTACT_MIGRATION_STATUS.ENTITY_ID, &#10;  K2V_DEV.CONTACT_MIGRATION_STATUS.PARTNER_ID  &#10;FROM K2V_DEV.CONTACT_MIGRATION_STATUS&#13;&#10;WHERE  K2V_DEV.CONTACT_MIGRATION_STATUS.MIGRATION_STATUS = 100 AND  K2V_DEV.CONTACT_MIGRATION_STATUS.MIGRATION_ID = &quot; + context.migrationID +&quot;&#13;&#10;order by ENTITY_ID &quot;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -723,7 +723,7 @@
   </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="896" posY="224">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="String num = String.valueOf((Integer)globalMap.get(&quot;tFlowToIterate_1_CURRENT_ITERATION&quot;));&#10;String cr = &quot;\r&quot;;&#10;&#10;//System.out.print(cr+&quot;actual value: &quot;+num+&quot; out of &quot;+((String)globalMap.get(&quot;varTotalNum&quot;)));&#10;&#10;double time2;&#10;Integer rate = ((Integer)globalMap.get(&quot;tFlowToIterate_1_CURRENT_ITERATION&quot;));&#10;Long time = (Long)globalMap.get(&quot;tChronometerStop_1_DURATION&quot;);&#10;if (time == null) {time2 = 0.0;} else {time2 = (double)time/1000.0;}&#10;double roundOff = rate/time2;&#10;String SroundOff = String.format(&quot;%.2f&quot;, roundOff);&#10;//System.out.print(&quot; Speed rate: &quot;+SroundOff+&quot; rec/sec&quot;);"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="String num = String.valueOf((Integer)globalMap.get(&quot;tFlowToIterate_1_CURRENT_ITERATION&quot;));&#10;String cr = &quot;\r&quot;;&#10;&#10;//System.out.print(cr+&quot;actual value: &quot;+num+&quot; out of &quot;+((String)globalMap.get(&quot;varTotalNum&quot;)));&#10;System.out.print(cr+&quot;EntityID: &quot;+((String)globalMap.get(&quot;row1.ENTITY_ID&quot;)));&#10;&#10;double time2;&#10;Integer rate = ((Integer)globalMap.get(&quot;tFlowToIterate_1_CURRENT_ITERATION&quot;));&#10;Long time = (Long)globalMap.get(&quot;tChronometerStop_1_DURATION&quot;);&#10;if (time == null) {time2 = 0.0;} else {time2 = (double)time/1000.0;}&#10;double roundOff = rate/time2;&#10;String SroundOff = String.format(&quot;%.2f&quot;, roundOff);&#10;//System.out.print(&quot; Speed rate: &quot;+SroundOff+&quot; rec/sec&quot;);"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="LABEL" value="performance print"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -1326,8 +1326,8 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
   </connection>
   <connection connectorName="ITERATE" label="Iterate" lineStyle="7" metaname="tFlowToIterate_1" offsetLabelX="0" offsetLabelY="0" source="tFlowToIterate_1" target="tRunJob_4">
-    <elementParameter field="CHECK" name="ENABLE_PARALLEL" value="true"/>
-    <elementParameter field="TEXT" name="NUMBER_PARALLEL" value="3"/>
+    <elementParameter field="CHECK" name="ENABLE_PARALLEL" value="false"/>
+    <elementParameter field="TEXT" name="NUMBER_PARALLEL" show="false" value="3"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="iterate1"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tRunJob_4" offsetLabelX="0" offsetLabelY="0" source="tRunJob_4" target="tJava_1">
@@ -1361,14 +1361,14 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk12"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tFileInputDelimited_1" offsetLabelX="0" offsetLabelY="0" source="tFileInputDelimited_1" target="tFileInputDelimited_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk11"/>
+  </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tFileInputDelimited_1" offsetLabelX="0" offsetLabelY="0" source="tFileInputDelimited_1" target="tMap_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tFileInputDelimited_1" offsetLabelX="0" offsetLabelY="0" source="tFileInputDelimited_1" target="tFileInputDelimited_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk11"/>
   </connection>
   <connection connectorName="FLOW" label="OUT" lineStyle="0" metaname="OUT" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tDBOutput_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -1481,13 +1481,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9a4591db-bb6a-4f54-a370-3c71a466f466"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>I1OTP/Du490XpbMAmAi2UrAyKhc/ysBgpSOkYCwlgOIqgbnoVUKyBL6QIJrq/3T/7uj/qIIbMSVi&#13;
-/RjhuuKbRw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b3d0d413-6bff-46ec-af24-1a763d579a20"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NX0C/Kz1lGkc44r8YK8o32wQr1kWhRLxg0Rcwpcb+Zf+9OdxN+OTj9nrxz0U+ncQZqA0aNjKn44i&#13;
-d/yswR5e/w==</DigestValue></Reference></SignedInfo><SignatureValue>ZM/+2VhMPrlGfCPtli3sT8MkpuzsBWO6/luZEwanrgdj+BaRD7DBQqS4fQhc/OgDllJBqa+M2UMG&#13;
-2cYcwGYqnblsvJmsEdQ3ZPO1jfBaD0JuIuy28+8msr1dZvb8mdu5em/g7fBw5UgRrdJX0KNhx/sA&#13;
-Syh03vsiwFe6OjSD4P5Y9nSwi7n1TwfRNlEfPVVpjyUODOY9swQyOC37FjvirrepeJZQ0A5t+l86&#13;
-u1FAjXw4Cjn8RlzL/gYgG0P1UnqM9oa/7jtkyFJmXX8aeoS1ZRngFNMzU1/J9hhX6wkeS4XA7Gpe&#13;
-+5qEjn1k+PDbaDXeaPwgqThTvZBJW5YEqhuUxg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_f2fedbe2-fade-4f2c-a5ef-41633140ad1e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>tawWGR5pyd8fhHaLcH+iAG8a8Is4MWrEeNpXYOg1LtZOND7gM5M8ZfOFP4/KdohQW7VjcQJKo6qd&#13;
+gbXC+zVrPg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_3da54128-5cb2-476e-b75f-56750c1ce06e"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>dTlrlHE6tFeqAFI++4LsVjaaMbUdYjqftFWgJUBi97uTYRtqMDpQ7m14FyHG0RCE7Ct1XLFG0AkR&#13;
+GJB5K42KCg==</DigestValue></Reference></SignedInfo><SignatureValue>KEcpeiCwAPLKQYzrtgd/He+uRcf2M67xvHaab/FAKS9D95wrBAu8vBvAoc60QaeYDwxTWNAUlAsY&#13;
+uNE5zL3FMVJ/Hs/GN3Wdu6kOTDRQyGbDx0ZB+mbh+wcP7BrDLOfyr4kVwBrb8RtSs2iqgpkHuhKP&#13;
+DuhhxPWQm8wmnGw1ox7CG5eFVb2zZI5jqvSXcvLMrQ24SxwGsdjU50SIM0zAs2D/EV3gGcfTJ+tE&#13;
+0uzcVgKfh3osWjZe2skek5EHZSJicgBhIAxM1d2cSS1OUeOG3fgll8WgmY8KUYXPmfFm2g2fIc4Q&#13;
+yF/pIDMPmkphN9C4I13+Z95XhENqRA3vlvuXlA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1509,4 +1509,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b3d0d413-6bff-46ec-af24-1a763d579a20" Target="#_9a4591db-bb6a-4f54-a370-3c71a466f466"><Timestamp>2024-05-10 07:20:46</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_3da54128-5cb2-476e-b75f-56750c1ce06e" Target="#_f2fedbe2-fade-4f2c-a5ef-41633140ad1e"><Timestamp>2024-05-13 11:28:54</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
