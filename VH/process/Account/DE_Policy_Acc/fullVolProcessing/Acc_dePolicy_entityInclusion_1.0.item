@@ -676,7 +676,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT b.POLICE AS BUNDLE, CONCAT('MIG_AP-', b.PAR_PARTNER_NR) AS POLICYHOLDER, b.COLLECTION_METHOD, b.PAYMENT_TERM, b.POLICY_VERSION  &#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b &#13;&#10;WHERE b.POLICY_VERSION IN (SELECT max(b2.POLICY_VERSION) &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b2 WHERE b.POLICE = b2.POLICE GROUP BY b2.POLICE)&#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.DE_REGRESSION_SCOPE drs WHERE drs.PAR_PARTNER_NR = b.PAR_PARTNER_NR AND drs.ISPRIMARYSELECTION = 1)&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT b.POLICE AS BUNDLE&#13;&#10;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b WHERE b.V_START_DATE IN (SELECT max(b2.V_START_DATE) &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b2 WHERE b.POLICE = b2.POLICE GROUP BY b2.POLICE)&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AND VERTRAG = 1 --TEMPORARY solution, subject to cleansing&#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.DE_REGRESSION_SCOPE drs WHERE drs.PAR_PARTNER_NR = b.PAR_PARTNER_NR AND drs.ISPRIMARYSELECTION = 1)&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -693,14 +693,6 @@
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICYHOLDER"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="COLLECTION_METHOD"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="PAYMENT_TERM"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
-      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -708,10 +700,6 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_2">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="POLICYHOLDER" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="COLLECTION_METHOD" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="10" name="PAYMENT_TERM" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="38" name="POLICY_VERSION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="352" posY="320">
@@ -782,10 +770,6 @@
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
-        <mapperTableEntries name="POLICYHOLDER" nullable="true" type="id_String"/>
-        <mapperTableEntries name="COLLECTION_METHOD" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="PAYMENT_TERM" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="POLICY_VERSION" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1395,13 +1379,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_07de0b3b-99af-4bf8-af40-5ff93c12e634"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>LdYFA9+eSi9qf44K1IU87Errtsx3dCB09byZucShkThU4HtiDmFonB8URUMajJcimY79hFN7R0g0&#13;
-662W7w5Bdg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ff0169eb-3a2f-4021-9dfc-ce8206a1e0c6"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>J3zVb27C5N98u3HYVdbRLTuLP/Azr9wlbn3YU0Y27teDWHu2cZZ+VlAjRl+Fwr2Qr7DE53ueM9wL&#13;
-q1DSC/N7QQ==</DigestValue></Reference></SignedInfo><SignatureValue>X+dNbz2t0HLvKpY9JqCONQD+nQlZ7WOFIobsXPFdUsNx6Tvz7nBFSoss7fYlmPGfl161L5T+UXQ4&#13;
-FXXI8uJFFp9szrKovNj3r3OPsqGpeHh/OJXtao7vGIcmBNACG7VuAetPnds8cwtuXTlSB6Y5BusF&#13;
-fDtumoA++B/goAD2o9adn1oEDBXgwhncpKySvfPOZR4H/zf9jIGjnYM/vg3WtZdLZFST1PHdLArM&#13;
-0Q7FNCF3ilxClT7g33r+YT8oFQqCaDitfYgVjdFVZuCw5B9dJQeDJla2mIMsCV2HrVkD4MiFPhuf&#13;
-ayhXh8LorD442yX7+fhwRM47WB5rvGktWAOf7w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a6b766a1-2a38-44ec-bf95-4c4454060267"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>PxwARNNQpY30j0ysYGMR3TDCKOwao5X/nInoxQbLosT5EGon/TyZiPf2fKZmyouu6gvxiGdeyF7J&#13;
+1TGuPTe05w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_bb47012f-6ae5-4a3c-a30a-91cc7dc41ae1"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>xfl9ddTGgx5pE+Qz7OWXkHPVj5ndHPD55GnVpUn77dpVSc9s8oLM0UvwT4fqrc/sUCfpqa9K1PFe&#13;
+vw0aKMCsfw==</DigestValue></Reference></SignedInfo><SignatureValue>azpny7xJG0OYrZAZ1u1EmJyVJB1CIfRgH9TkT0ZiLzBm/wgt3+1S/XMbL/KreOB/IMqaPpH+IiAa&#13;
+8fsiJk8YQSyDz+erj1ZkKJBiEVrKyui2vkZ0IgEN3ljWpI1jrvCQTRVc1lYU34ZHnYvVkQapgAZl&#13;
+2LmzoKb0CMU9AahpwOuLZOsMxiQkmSNLt0tj3FYtCwIvl7BkQWSPLswpwGMavPidLwOZ1tYnNyqO&#13;
+cb9rSD2jYY32Y4wmqsdnetEtKeRiqVMnQF5DgOq3KkpwhxhQKZWwaSHcg9i9J+5ZAfffydqldw3k&#13;
+eiRhJcPAa+TJyV2DyhEwKCONgFMTGjOej3OhhQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1423,4 +1407,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ff0169eb-3a2f-4021-9dfc-ce8206a1e0c6" Target="#_07de0b3b-99af-4bf8-af40-5ff93c12e634"><Timestamp>2024-05-08 12:36:33</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_bb47012f-6ae5-4a3c-a30a-91cc7dc41ae1" Target="#_a6b766a1-2a38-44ec-bf95-4c4454060267"><Timestamp>2024-05-14 09:17:42</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
