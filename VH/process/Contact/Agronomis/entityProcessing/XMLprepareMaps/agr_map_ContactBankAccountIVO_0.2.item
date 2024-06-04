@@ -723,14 +723,16 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="out1">
-      <column comment="" key="false" length="-1" name="bankAccountTypesRefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="bankAccountTypesRefDesc" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    <metadata comment="" label="bankAccountTypeIVO" name="out1">
+      <column comment="" key="false" length="-1" name="bankAccountID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="bankAccountTypesRefID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="bankAccountTypesRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables name="out1" sizeState="INTERMEDIATE">
+      <outputTables activateCondensedTool="true" id="_FDXrwCJ5Ee-5D5lpRTPMTQ - bankAccountTypeIVO" name="out1" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="bankAccount_type.BKO_ID " name="bankAccountID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="bankAccount_type.BKO_KONTOART != null?(long)1002255:null " name="bankAccountTypesRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="bankAccount_type.BKO_KONTOART != null?&quot;claim&quot;:null " name="bankAccountTypesRefDesc" nullable="true" type="id_String"/>
       </outputTables>
@@ -803,8 +805,6 @@
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;bankAccountTypeIVO&quot;"/>
     <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="CREATE_IF_NOT_EXISTS"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA_FLOW:REPOSITORY_SCHEMA_TYPE" show="false" value="_FDXrwCJ5Ee-5D5lpRTPMTQ - bankAccountTypeIVO"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
     <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="hsqldb_id"/>
@@ -814,6 +814,11 @@
     <elementParameter field="TABLE" name="ADD_COLS"/>
     <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="bankAccountID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="bankAccountTypesRefID"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -829,10 +834,12 @@
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="bankAccountTypeIVO" name="tHSQLDbOutput_2">
+      <column comment="" key="false" length="-1" name="bankAccountID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="bankAccountTypesRefID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="bankAccountTypesRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
-    <metadata connector="REJECT" label="bankAccountTypeIVO" name="REJECT">
+    <metadata connector="REJECT" name="REJECT">
+      <column comment="" key="false" length="-1" name="bankAccountID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="bankAccountTypesRefID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="bankAccountTypesRefDesc" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -886,6 +893,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
   </connection>
   <connection connectorName="FLOW" label="out1" lineStyle="0" metaname="out1" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tHSQLDbOutput_2">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="bankAccountID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out1"/>
   </connection>
@@ -908,13 +920,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_680c2e53-b5a8-4e82-a893-7835f0f21199"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/3mwLe7GqEC4v/xQaXA0X9AztyApi1XtpZ/0uvFRcfdq/Xl3FmXigaxPoyyEPfXZNc/cai9RqL8O&#13;
-YtaUfQf1VA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9391d211-541c-4cd0-9d55-63d64f5ab0b5"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>noFwFGKUsa995ewzeWArdpKYtPKFvkJMoRrMVb2iif/BZwMOAMmBd0yif1N7Cde+WPUfzlYPum3A&#13;
-3yDiQbpO6g==</DigestValue></Reference></SignedInfo><SignatureValue>djZhPDcdPsqCFfkKOBd3OS2GLkzmNnX6fA/697c35XoHs6CHs7ZQgUtMp0uGUfVhQNTbADcB5SeG&#13;
-jwzTolBihg/YotX7RgRWWwiAK5nmKFHsrekZHaDoB39pl7KjxSU8qQHNjKmePrGuc6uzUcUuabOI&#13;
-U6PdlTPxR29S5STmrCOmpyBoHP62gsWOkdVOZNjxVf1Oy2AW1Dp5FsY6nwHSBykYYD2yaLulctqL&#13;
-YO5afWcukxLBUTMk6qYPWw8YK4L3XLGTailuf1EK4HDfXYr5yfAQ50iu/dwPBqn2bexFYFsMoUC9&#13;
-Drpk+LY4VK4pu7YMV0SL/DXo416/blnkMxvTXw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_cb6c47c7-376a-41e6-b527-3c40543a1a6a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>phfDbw3v8HC7bk90Y4j2ecMFgeXaIv8jpb88OXZHJL2KyVpFvZtTzV2WfQpxs3lqhfpmxgSoU3Hw&#13;
+hmH5gkQDzw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_7a335940-6fa1-49ba-a25d-46a0a66ac15f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Kg+yPT3iJFDetk90m+SKHTTPLH2tRetzoONFfBJ01Or5/V0YDXT6OAx5xXtoEJfjaMjDajGfePRj&#13;
+U14yse8wcQ==</DigestValue></Reference></SignedInfo><SignatureValue>Z2Hl5ijVUf3OX/mYFFgyk2gp6oPu2aEIJXDs+L0/Uti3DicDaBIkSkLsAFREp9z/Lvh0hLp6Lume&#13;
+BXMjz6N2IgixysZ+sbuKZUB5sMycSXDTVrQtwUGld8draaFQiYhSpzHRM/O4eDSi6vnLguAgg0mq&#13;
+IlRpdBDZzruzujnBSq/MF5sFCIKrZ2js67DNsC/hv6/rQ91ON9HIAi6FaNLlW6ttrmuJRELkkjkq&#13;
+iGQ3jVkSy2ok6fR7mbr3TPVqSIqNO3mAvEjwdrGybKr2i+3tPWDZVC6nEY8IxxqlQ+RfaXM9tGC2&#13;
+MD5VlbFp1aAwN3V2uicP5mjWdwQS4WbGOx4uGA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -936,4 +948,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9391d211-541c-4cd0-9d55-63d64f5ab0b5" Target="#_680c2e53-b5a8-4e82-a893-7835f0f21199"><Timestamp>2024-06-04 13:49:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_7a335940-6fa1-49ba-a25d-46a0a66ac15f" Target="#_cb6c47c7-376a-41e6-b527-3c40543a1a6a"><Timestamp>2024-06-04 14:03:35</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
