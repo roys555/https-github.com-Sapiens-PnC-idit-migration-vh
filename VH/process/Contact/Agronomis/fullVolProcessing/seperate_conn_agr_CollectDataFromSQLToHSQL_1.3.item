@@ -43,7 +43,7 @@
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
-    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="192"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="160"/>
     <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="0"/>
     <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" show="false" value=""/>
@@ -1378,7 +1378,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="1120">
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="1088">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_6"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
@@ -1401,7 +1401,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10; pb.PAR_PARTNER_NR AS partnerID&#13;&#10;,pb.BKO_ID &#9;&#9;   AS bankAccountID&#13;&#10;,b.BKO_IBAN_NR &#9;   AS ibanNumber&#13;&#10;,pb.PBA_MANDAT_GUELTIG_AB&#13;&#10;,pb.PBA_MANDATSREFERENZ_NR&#13;&#10;,pb.PBA_DATUM_LETZTE_NUTZUNG&#13;&#10;,b.BKO_GUELTIG_BIS&#13;&#10;FROM sev.PARTNER_BANKKONTO pb&#13;&#10;INNER JOIN sev.BANKKONTO b ON b.bko_id= pb.BKO_ID&#13;&#10;WHERE b.BKO_IBAN_NR IS NOT NULL&#13;&#10;AND EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = pb.PAR_PARTNER_NR&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH inhaber AS (&#13;&#10;SELECT pb.PAR_PARTNER_NR, pb.BKO_ID, bko.BKO_INHABER FROM sev.bankkonto bko&#13;&#10;INNER JOIN sev.PARTNER_BANKKONTO pb ON bko.bko_id= pb.BKO_ID&#13;&#10;INNER JOIN sev.PARTNER par ON par.PAR_PARTNER_NR =pb.PAR_PARTNER_NR &#13;&#10;WHERE 1=1&#13;&#10;--pb.PAR_PARTNER_NR = :partner NUMBER&#13;&#10;--AND pb.BKO_ID = :bko_id&#13;&#10;AND NVL (bko.bko_inhaber, 'nein') NOT LIKE 'nein'&#13;&#10;AND bko.bko_inhaber NOT like TRIM (par.par_name)|| ', ' || TRIM (par.par_vorname)&#13;&#10;AND bko.bko_inhaber NOT like TRIM (par.par_name) || ' ' || TRIM (par.par_vorname)&#13;&#10;AND bko.bko_inhaber NOT like TRIM (par.par_vorname) || ' ' || TRIM (par.par_name)&#13;&#10;AND TRIM (bko.bko_inhaber) NOT like TRIM (par.par_name)&#13;&#10;AND bko_inhaber NOT like TRIM(par_name_upper) || TRIM(par_vorname_upper)&#13;&#10;AND TO_CHAR(bko_inhaber) NOT like TRIM(par_name_upper) || TRIM(par_vorname_upper)&#13;&#10;--TO_CHAR is a VH-Function that changes German Umlaut Character in English Character (For Example: Ü -&gt; U)&#13;&#10;)&#13;&#10;SELECT &#13;&#10; pb.PAR_PARTNER_NR AS partnerID&#13;&#10;,pb.BKO_ID &#9;&#9;   AS bankAccountID&#13;&#10;,b.BKO_IBAN_NR &#9;   AS ibanNumber&#13;&#10;,pb.PBA_MANDAT_GUELTIG_AB&#13;&#10;,pb.PBA_MANDATSREFERENZ_NR&#13;&#10;,pb.PBA_DATUM_LETZTE_NUTZUNG&#13;&#10;,b.BKO_GUELTIG_BIS&#13;&#10;,i.BKO_INHABER&#13;&#10;FROM sev.PARTNER_BANKKONTO pb&#13;&#10;INNER JOIN sev.BANKKONTO b ON b.bko_id= pb.BKO_ID&#13;&#10;LEFT JOIN inhaber i ON i.PAR_PARTNER_NR = pb.PAR_PARTNER_NR AND i.BKO_ID = pb.BKO_ID &#13;&#10;WHERE b.BKO_IBAN_NR IS NOT NULL&#13;&#10;AND EXISTS (SELECT 1 &#13;&#10;&#9;&#9;&#9;  FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;&#9;&#9;&#9;  WHERE       cms.PARTNER_ID = pb.PAR_PARTNER_NR&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_STATUS = 100&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.CONTACT_TYPE     = 'AGR'&#13;&#10;&#9;&#9;&#9;&#9;&#9;  AND cms.MIGRATION_ID     = &quot;+context.migrationID+&quot;&#13;&#10;&#9;&#9;&#9;)&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1430,10 +1430,12 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="BKO_GUELTIG_BIS"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BKO_INHABER"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_AGRONOMIS_BANK_ACCOUNT_SELECTION"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_AGR_BANK_ACCOUNT_SELECTION"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_6">
       <column comment="" defaultValue="" key="false" length="10" name="PARTNERID" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -1443,9 +1445,10 @@
       <column comment="" key="false" length="50" name="PBA_MANDATSREFERENZ_NR" nullable="true" originalLength="50" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="PBA_DATUM_LETZTE_NUTZUNG" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="BKO_GUELTIG_BIS" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="BKO_INHABER" nullable="true" originalLength="60" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="160" posY="1120">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="288" posY="1088">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_6"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -1505,9 +1508,14 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BKO_INHABER"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="AGRONOMIS_BANK_ACCOUNT_SELECTION"/>
+    <elementParameter field="TEXT" name="LABEL" value="BANK_ACCOUNT_SELECTION"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="AGRONOMIS_BANK_ACCOUNT_SELECTION" name="tHSQLDbOutput_6">
       <column comment="" defaultValue="" key="false" length="10" name="PARTNERID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1517,6 +1525,7 @@
       <column comment="" key="false" length="50" name="PBA_MANDATSREFERENZ_NR" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="PBA_DATUM_LETZTE_NUTZUNG" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="BKO_GUELTIG_BIS" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="BKO_INHABER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="AGRONOMIS_BANK_ACCOUNT_SELECTION" name="REJECT">
       <column comment="" defaultValue="" key="false" length="10" name="PARTNERID" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1526,11 +1535,12 @@
       <column comment="" key="false" length="50" name="PBA_MANDATSREFERENZ_NR" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="PBA_DATUM_LETZTE_NUTZUNG" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="BKO_GUELTIG_BIS" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="BKO_INHABER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="576" posY="1120">
+  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="576" posY="1088">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_7"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -1556,7 +1566,7 @@
     <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
     <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
     <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
-    <elementParameter field="TEXT" name="LABEL" value="INDEX_AGRONOMIS_BANK_ACCOUNT_SELECTION"/>
+    <elementParameter field="TEXT" name="LABEL" value="INDEX_BANK_ACCOUNT_SELECTION"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tHSQLDbRow_7"/>
     <metadata connector="REJECT" name="REJECT">
@@ -4735,7 +4745,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="992">
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="960">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_23"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
@@ -4799,7 +4809,7 @@
       <column comment="" key="false" length="0" name="AEN_DATUM" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="288" posY="992">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="288" posY="960">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_19"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -4875,7 +4885,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="544" posY="992">
+  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="544" posY="960">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_17"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -6163,6 +6173,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="BKO_GUELTIG_BIS"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="BKO_INHABER"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row8"/>
@@ -6810,13 +6823,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_65345680-6e81-4ab7-b34f-df528431872d"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>7JVN1PXdrnyrsYpRqqr1dWCTvBFI46fvlxrz2BtameEDhjCZnvWNNKYVWKJuGxm7qjIXPDLbCiLm&#13;
-rTlDngk3sA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_bfbd61cd-40a1-4d56-928b-014fa2220265"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>GRFO/ECz2vD4lxCgvgt+VGt2DtIIv3IIq60xUONRHCGKwXqPqgCl3BTXJaNs7VuVxdS7rwCO7uxP&#13;
-g4zP2hvCyA==</DigestValue></Reference></SignedInfo><SignatureValue>CyaJKuj7LAxOPYCE0JbQ6WSQVlFfZ7/KO26hNvqvxrJlFpyBD0rlaQECpsg7Hc+IpdfeiycNfpC+&#13;
-SqYIQgUvQ4g6afhkB0TE2xs+u96c+B4EO8h6ZGI0RwtuJLO1OZ/TJ1GEFgueoh+DVdN0m66KtuYv&#13;
-5e43IslZqEjhMstU5INoysFGAj/t844PrDcafT1cY5NhJxuXE9+C4+MXXBVZXLhD88t1e3bvRD2C&#13;
-WLjj9kCAKTgJ1RbnzW5qo7q3XjjqpamtKHKfABzXESqqo6n4dde22CFLp3oqSJlahCmYhTcK5TPi&#13;
-TOuPnFRcN9J6JktcpnD8mQQsbZb/3BV1R3zYGA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9fd570dd-6cc6-4b08-aaf9-271a67367ab4"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>sdtF+hN2WrrbC9eznz3hSZ6A1LVIzvKcztXCiQN2srEhFHt+rpGiURrCDcsLxSpb0bEI/Dk75BaA&#13;
+3yTAkIDgcg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_07d33faf-c700-4c88-8c52-40af8b1f59f0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Am7ITsbU6OJ9oeTQFxJGK7/LPuklFvCRH+0ZkXeQfI6znsCO9NeWzxgHUkxszbJVXfzf9c7ojhok&#13;
+1fW55kr/sw==</DigestValue></Reference></SignedInfo><SignatureValue>T+O3sLHy1jZNLTYoTbD86TRAICvO04Rm7z+3BllKvp/yah6SiwP14i55L7qUpUSMR8kU40dKtqBm&#13;
+SRjnCJ5xZGWVXrzAQ7eQV3XHmALIuy2rMhw79+keiPbPwiUseIztpVTNT9xvhmVJ3T+sODMjwodJ&#13;
+J1s7aEFe1qAm1o2M0y8haj0MCl3fSqpnPAC2mMUDw/3mb4YJWudf9UbpxkAkfnYfdJ04gawSTcF+&#13;
+P2HBWoG4a1afa7x2h0Sbnhi7KeNULSoNqnTnlFtd5FNqO4Ksn4Dae2jd6Olb+QW5zjDnfOr6rXNu&#13;
+9qdm/ZTBt4jBoksrIZXoFLMEOWt6wI7jpG2Yyw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -6838,4 +6851,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_bfbd61cd-40a1-4d56-928b-014fa2220265" Target="#_65345680-6e81-4ab7-b34f-df528431872d"><Timestamp>2024-05-21 07:15:25</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_07d33faf-c700-4c88-8c52-40af8b1f59f0" Target="#_9fd570dd-6cc6-4b08-aaf9-271a67367ab4"><Timestamp>2024-06-04 10:33:42</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
