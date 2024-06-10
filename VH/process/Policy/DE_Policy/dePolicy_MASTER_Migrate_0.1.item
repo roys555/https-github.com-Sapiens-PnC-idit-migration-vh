@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
-    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="379"/>
+    <contextParameter comment="MigrationID [int] - must be uniqe. Some kind of identifier of migration" internalId="_s-hx8MTFEe2kmaNIdZptpQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="617"/>
     <contextParameter comment="" internalId="_egzGQAbLEe-C__iboVVqhw" name="parentLaunch" prompt="parentLaunch?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="false"/>
     <contextParameter comment="Path to directory where you want to save generated contact XMLs." internalId="_s-hx8cTFEe2kmaNIdZptpQ" name="PATH_contactXMLOutputDirectory" prompt="PATH_contactXMLOutputDirectory?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;C:/VHmigration/PolicyXMLs/dePolicy&quot;"/>
     <contextParameter comment="" internalId="_eXSXsOqtEe6TU5zlGANpnw" name="borderDate" prompt="borderDate?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;2015-01-01 00:00:00.000&quot;"/>
@@ -286,21 +286,7 @@
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAIM_NUMBER"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_NUMBER"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CLAIM_DATE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="RISK"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="CROP_TYPE_CODE"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="VOIVODESHIP"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="COUNTY"/>
-      <elementValue elementRef="TRIM" value="false"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="COMMUNE"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_POLICY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
@@ -309,14 +295,7 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_1">
       <column comment="" key="true" length="20" name="ENTITY_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="20" name="CLAIM_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="POLICY_NUMBER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="0" name="CLAIM_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="RISK" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="3" name="CROP_TYPE_CODE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="VOIVODESHIP" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="COUNTY" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="50" name="COMMUNE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="BUNDLE_POLICY_ID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tFlowToIterate" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="448" posY="224">
@@ -749,6 +728,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
   </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tFlowToIterate_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="BUNDLE_POLICY_ID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
@@ -793,13 +777,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_7781dac2-7c28-4886-aec1-a8ec29909dde"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>G172QEmpil3bTIQf4S+QcWxX3PmHD7LGhcE39ZiNEJaFbBsXge65tFL/X3W9qKcqpg26ngdUuI90&#13;
-8ppC2CzR7Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_94afca6a-357e-4c3f-b63f-b56025ce0bf3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>u0Oo7wvrr4ltYV4CehIrvkR11g1CVdRM1M1HPDBKCgJMh79hmGQpB4uRpiceArAkmcIImyWUjLrE&#13;
-j9OhvC46sg==</DigestValue></Reference></SignedInfo><SignatureValue>bctmLSgEsFiNu+W6qHFlFHDf1ihn3iXkRiFV3QrLvGAmjAJlkIetM7bQl26KYxxTDII3246IWM/R&#13;
-w2F8uw7TT/p4BKN/MwVQnohA3su0hQF7A/Rna6PrLCTzXP53MRLaKV0umi+i2iZEtpd8qE2APGDH&#13;
-HGU6RjQqxtdg0tyLYkTmKxNgY5oBe6K/YgF2bn2SW33vj64/ywcWx40lSN5qnAMmSpVaBk5ESAzE&#13;
-uybjKCmpmh3S/O+QiVhPhit0nIYzaYmqOrWx4jermdHNyjBwSL+IIDhDTdCRPfElwosjipN7kez8&#13;
-5+J/QFoEIxUh7xejuI6k/zJAcQBdJBld4wx1kA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b29256a1-fbf0-4a2c-a3f5-0eec9ea87d27"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>yJP8E25SV8qX7YVhNbI0wSvfVoxUIDu372r3K6QGixXq/3IOmRaO0dtJLmWBdjduIGm6ORtJYin3&#13;
+o9Qa3x1t2A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9db5d55e-ef28-40d5-9161-6080fa8d94ab"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Z6iNij8LTVCKFwOc36kW/Z6cXA89WQb8l3sMlQeK+QLOLB2GcpTPCkP2IvQ0YL2E5WFFIuFndjGH&#13;
+LKOhzi88mA==</DigestValue></Reference></SignedInfo><SignatureValue>ecfQvDFpZ2e5h+lFka+OhZVgLTE5x905mU+dcsBJpnifqv9YK05LeaZmXObLtNx2fQrLfAGrsCLX&#13;
+hSgsKXy0GidIWJ4Wq2uvMJxzZCWZbe8my3/TiFRBAwPuWOM25YAfP8VcyDRmR/OXwHZoFyTrZaKt&#13;
+h5ULHGROimkNMwtf943QTeFatFMNQdAVT3gJbkO06JS0cpvhBufAHCf/o5YgVM2vhLnpyTjHMyD7&#13;
+1RjSrZ91nrHiBQsmaENmK6SIvdzS5D4EewelDJGZPtetQesQ0AruSGlFfLtxjOqcygnYC3dm3VKc&#13;
+7K0ai68E4u6TBHyr9gwq9zyl/Ej0nLouH/6hOQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -821,4 +805,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_94afca6a-357e-4c3f-b63f-b56025ce0bf3" Target="#_7781dac2-7c28-4886-aec1-a8ec29909dde"><Timestamp>2024-04-30 08:28:04</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9db5d55e-ef28-40d5-9161-6080fa8d94ab" Target="#_b29256a1-fbf0-4a2c-a3f5-0eec9ea87d27"><Timestamp>2024-06-05 06:52:55</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
