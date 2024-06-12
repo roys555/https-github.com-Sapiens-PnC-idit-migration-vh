@@ -124,10 +124,10 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT BUNDLE_VERSIONS.ENTITY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.LEGACY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.POLICY,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_START_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_END_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.ECONOMY_REF,&#10;&#9;&#9;BUNDLE_VERSIONS.PREMIUMSYSTEM,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_REMARKS,&#10;&#9;&#9;BUNDLE_VERSIONS.IS_ANNUAL_PAYER,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_POLICY_STATUS,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_STATUS,&#10;&#9;&#9;BUNDLE_VERSIONS.CANCELLED,&#10;&#9;&#9;BUNDLE_VERSIONS.PA_DISCOUNT,&#10;&#9;&#9;BUNDLE_VERSIONS.WEBAVREF,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_VERSION,&#13;&#10;Case BUNDLE_VERSIONS.WEBAVREF&#13;&#10;When 'AD' Then 1002214&#13;&#10;When 'Agent' Then 1002215&#13;&#10;When 'VN' Then 1002216&#13;&#10;ELSE null &#13;&#10;END webAVRefID&#13;&#10;&#10;FROM&#9;BUNDLE_VERSIONS&#13;&#10;where entity_id = &quot; + context.EntityID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT BUNDLE_VERSIONS.ENTITY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.LEGACY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.POLICY,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_START_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_END_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.ECONOMY_REF,&#10;&#9;&#9;BUNDLE_VERSIONS.PREMIUMSYSTEM,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_REMARKS,&#10;&#9;&#9;BUNDLE_VERSIONS.IS_ANNUAL_PAYER,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_POLICY_STATUS,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_STATUS,&#10;&#9;&#9;BUNDLE_VERSIONS.CANCELLED,&#10;&#9;&#9;BUNDLE_VERSIONS.PA_DISCOUNT,&#10;&#9;&#9;BUNDLE_VERSIONS.WEBAVREF,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_VERSION,&#13;&#10;Case BUNDLE_VERSIONS.WEBAVREF&#13;&#10;When 'AD' Then 1002214&#13;&#10;When 'Agent' Then 1002215&#13;&#10;When 'VN' Then 1002216&#13;&#10;ELSE null &#13;&#10;END webAVRefID,&#13;&#10;Case BUNDLE_VERSIONS.WEBAVREF&#13;&#10;When 'AD' Then 'Account Manager'&#13;&#10;When 'Agent' Then 'Agent'&#13;&#10;When 'VN' Then 'Customer'&#13;&#10;ELSE null &#13;&#10;END webAVRefDESC&#13;&#10;&#10;FROM&#9;BUNDLE_VERSIONS&#13;&#10;where entity_id = &quot; + context.EntityID"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
-    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
-    <elementParameter field="TABLE" name="TRIM_COLUMN">
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="LEGACY_ID"/>
@@ -160,6 +160,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="webAVRefID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="webAVRefDESC"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="BUNDLE_VERSIONS"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -180,6 +182,7 @@
       <column comment="" key="false" length="30" name="WEBAVREF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="webAVRefID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="webAVRefDESC" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="384" posY="288">
@@ -320,7 +323,7 @@
         <mapperTableEntries name="premiumSystemRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="VERSIONS.BUNDLE_REMARKS " name="remarks" nullable="true" type="id_String"/>
         <mapperTableEntries expression="VERSIONS.webAVRefID " name="webAVRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="webAVRefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="VERSIONS.webAVRefDESC " name="webAVRefDESC" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="VERSIONS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -339,6 +342,7 @@
         <mapperTableEntries name="WEBAVREF" nullable="true" type="id_String"/>
         <mapperTableEntries name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
         <mapperTableEntries name="webAVRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="webAVRefDESC" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" minimized="true" name="policyHeader" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.ENTITY_ID " name="ENTITY_ID" operator="=" type="id_String"/>
@@ -1212,6 +1216,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="webAVRefID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="webAVRefDESC"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="VERSIONS"/>
@@ -1261,13 +1268,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_0ea264cc-6368-405a-b325-e22ac95c175e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>81k9fu1RwiKWwU3aQL6bozOadxJh/Mr5LiSMqcMoCqpD/NBQvt6LCoPCtTLsTJ8Sq2atgs1yD739&#13;
-ycqcXwnFZA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8a43b68b-7ee1-4aa8-872e-4b39c4c10ab6"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>jzheACEYtb2j9+XI9jPeII3bDOw+15kfIApSoxdhyqcf+ecWz5fwcoMs2hJYmqnopphJ+KUO6aYt&#13;
-lhI/cu3PNQ==</DigestValue></Reference></SignedInfo><SignatureValue>VcYfTFaaV4svN8Tj3ULwP+2sSppI+SLlIm4hd7wg+gfjs4YY/UCkhdmryNeXVeE7Np3fAINcCP3p&#13;
-BeEZyviP1IuUTMysj3fetMK1X/P/jHPjiNsrfwAihp1ZL++5CzXB/UKu9jfsjpEOXmLZgLzprNrE&#13;
-cwvT7nE1mWgQHlhqgvjIJwmbVXGkjzujxQgFmfkgWbP/j1o5yJSZkhSH8ms4ZXg+8FkSMXDcBkM7&#13;
-wKC7bJa4IyK14DOcjR/GZOmUGk3oFocDWiGyCbCLeHbFaugxnP2kxwUSTAXV5ns3Olob0Yn68zg6&#13;
-Mt957d6MWhLIR+bc+PFPQ0bebfMJTQozwGbLyg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3df76b75-937f-4dc6-b197-4e797f6ba845"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/7LC2gGwls0Xnfol+2FnMJIPBcYpVc1VcjG/oaVqtShufmhmSZnu37m9Uh8KXxszkrsSK0x8Pfel&#13;
+z9ESbDLh0Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f0b42fde-1846-43b9-a004-a09798e398ef"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>L2xmqw1eoPPZgUyNwlx48RtufdwkCPEtRJjvsWFMXVxsrn3Kuev3aQLgpAFNz/HumEaIYjI5Upyi&#13;
+aQMSKVzaaw==</DigestValue></Reference></SignedInfo><SignatureValue>d/VodlAhQRdwR63Ybs/Pys301JFHKawkLFEa3LZqLKLCf3Ptxc5rqEwU24AOcDO1IqoD4qAOmUHe&#13;
+tIq7cGLv+KwKNPip6cViJGhZ5O2i300QgYoNFwgXU4/Rw4tH4wAUC0tGmAGhQBG0mj65mlRTQC3V&#13;
+ycI0L5J8i4jQwvKFWuvJQknKx5MoRsnDpT1TkdtxHdN0VeR6btzMdaPHKnJsQ2fPeLa6y1xp8UR4&#13;
+WFSjzzpWMvrfGLTJgE4y2dFCnY8fxQc060PzTRmzsQeY33TZts5gLpVk1DCwsm5or0jRglntBu95&#13;
+BuqQVu4lDceD/gRt4RZGBD/jdAI2qPZol1QB/g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1289,4 +1296,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8a43b68b-7ee1-4aa8-872e-4b39c4c10ab6" Target="#_0ea264cc-6368-405a-b325-e22ac95c175e"><Timestamp>2024-06-12 09:17:06</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f0b42fde-1846-43b9-a004-a09798e398ef" Target="#_3df76b75-937f-4dc6-b197-4e797f6ba845"><Timestamp>2024-06-12 10:23:48</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
