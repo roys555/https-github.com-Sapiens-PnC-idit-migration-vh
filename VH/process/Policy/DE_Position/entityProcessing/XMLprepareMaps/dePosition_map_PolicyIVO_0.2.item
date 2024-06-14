@@ -1456,7 +1456,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLPolicyIVO" name="PolicyIVO">
+    <metadata comment="" label="XMLPolicyIVO" name="PolicyIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1522,6 +1522,7 @@
       <column comment="" key="false" length="10" name="ownContributionSRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="ownContributionWRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="OFR_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="rejectNoContractVersion">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -1538,7 +1539,7 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;, TalendDate.getCurrentDate() ) ) " name="v_current_timestamp" type="id_Date"/>
         <mapperTableEntries expression="TalendDate.addDate(&#13;&#10;TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;, &#13;&#13;&#10;&#13;&#13;&#10;TalendDate.addDate(TalendDate.getCurrentDate(), 31, &quot;dd&quot;)) ) ,-1,&quot;ss&quot;) " name="v_current_timestamp_p30d" type="id_Date"/>
@@ -1614,6 +1615,7 @@
         <mapperTableEntries expression="(contrib.contribType!=null &amp;&amp; contrib.contribType.equals(&quot;S&quot;))?contrib.contribRefID:(long)1000012 " name="ownContributionSRef" type="id_Long"/>
         <mapperTableEntries expression="(contrib.contribType!=null &amp;&amp; contrib.contribType.equals(&quot;W&quot;))?contrib.contribRefID:(long)1000011 " name="ownContributionWRef" type="id_Long"/>
         <mapperTableEntries expression="POSITIONS.POL_GUELTIG_AB " name="POL_GUELTIG_AB" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="POSITIONS.OFR_STATUS " name="OFR_STATUS" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="contract_version.POLICE == 0" name="rejectNoContractVersion" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -2092,6 +2094,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="OFR_STATUS"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;XMLPolicyIVO&quot;"/>
@@ -2162,6 +2169,7 @@
       <column comment="" key="false" length="10" name="ownContributionSRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="ownContributionWRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="OFR_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLPolicyIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -2229,6 +2237,7 @@
       <column comment="" key="false" length="10" name="ownContributionSRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="ownContributionWRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="OFR_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2781,13 +2790,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_24e555be-d3d0-4bcf-a308-dfbffae608b6"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ej5e+5HnjV/2gHK7z1In8ty3+Pv0eX0EcyRcFwR77xeBkr3pVbO8O4QAtGdAWMYnv+Un5eXOcs45&#13;
-WrhRmWwxoQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c342f924-0a5e-4e74-a488-ff9f27c60c67"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>LrJ4YWEXPozVZCGlI+WIOqSU7i/m8R85pqhGp8wB6JMKqwM8bhjqXOxPECEGAGwYGho+J85p8AgB&#13;
-56+52KHt6Q==</DigestValue></Reference></SignedInfo><SignatureValue>Od+WPadhdA8Wt8w4N8yTn2CzM7lZijcZmVuj0WkPDlfVW6z6uX0KS0KT7GPcT4wJG2PPjjqs3MeD&#13;
-zkr8Tc5FJmFPvcQr18JYXCeNcTAWJcMgvZ6KN40rShBUM5vYVseMjmYaTyzIhkxy2OlrIWF6dJW0&#13;
-yg2IBU5m/QyVaIxdqlREGs1DAsuDo3sau/yArb8avqEYhvNYYBrFMb8ePRGNtU8kBfh+vKLRHcJX&#13;
-mlDcP5LQVpCtcOesiF48xIXPVQa6Kt6OSomI0Uxgi8ZBSy7ZTq7/QEF5lir2gX6NVWw4UgdIcwIJ&#13;
-igGecmgZ2cLvFOpCXBI9GkPH1Xio4XxsVIk6nA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9e5d9038-c6b0-46ce-900f-5c8887b7720b"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>LXocP9MYK0v9snxBF9/Efk5MpqK+NWcAznF6eRaUc3o1XOyAip8n/PCxOQZT9u0a5sVDKWDn/5Z2&#13;
+MdKxrBCxOg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_710809c3-41c7-4d90-bab6-9c6f84cbff35"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>f55nYuOokzUoDQoiIVXwww4VlFRL+SmqrWk+ZGta54QI82AyDGjSUkU5zPz0+CI034OJen+bBmND&#13;
+R7t6ONQeBQ==</DigestValue></Reference></SignedInfo><SignatureValue>XK6XjfdfS4LPzhFt1Ok/pUYAlXcoRcDWAHJwwfDIDrA0uUEcCbR0C+s+7eMNX2bIgfuIUTK+/ujk&#13;
+Q/S2pzDntJXPN9J0ZR45dqHNcHgltG1ZeuJ7o8AJi7fDVYmqvCEnsUPh2FY+zs/2nC9A05SnWb3J&#13;
+/kLfn+6IaKzw5NqjPCYlT7Ymsrm297+xGSxt7hVktz++LpebxxQDb2Cz5TpURSfi9xTutYs4sQjU&#13;
+PMoTWmSKOQALu9rERIWcXL97tGrnLbZu8gbVzj/7Ux9xmm+CRO2bIPb8OPzmtsXxeqDgyjXQdk02&#13;
+qLg0pnXUwSaGiWHloRYX8XIBBbh1Zx0N8pZkpw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2809,4 +2818,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c342f924-0a5e-4e74-a488-ff9f27c60c67" Target="#_24e555be-d3d0-4bcf-a308-dfbffae608b6"><Timestamp>2024-06-14 09:11:26</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_710809c3-41c7-4d90-bab6-9c6f84cbff35" Target="#_9e5d9038-c6b0-46ce-900f-5c8887b7720b"><Timestamp>2024-06-14 09:55:24</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
