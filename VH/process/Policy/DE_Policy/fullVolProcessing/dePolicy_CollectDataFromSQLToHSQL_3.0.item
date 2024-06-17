@@ -975,7 +975,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH inc AS ( &#13;&#10;SELECT adp.entity_id, adp.BUNDLE_POLICY_ID , adp.PAR_PARTNER_NR , adp.START_DATE &#13;&#10;FROM K2V_DEV.ALL_DE_POLICY adp &#13;&#10;),&#13;&#10;ver AS (&#13;&#10;SELECT DISTINCT p.POL_POLICEN_NR AS BUNDLE_POLICY_ID,  &#13;&#10;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#13;&#10;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#13;&#10;p.POL_WIRTSCHAFTSWEISE AS economy_ref,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM &#13;&#10;&#9;WHEN 'Secufarm' THEN 1000198&#13;&#10;&#9;WHEN 'Basis' THEN 1000198&#13;&#10;&#9;WHEN 'Garant' THEN 1000199&#13;&#10;END AS premiumSystem,&#13;&#10;CASE  &#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Secufarm' AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NOT NULL THEN concat(concat(p.POL_PRODUKT_OBERGRUPPE,', '), p.pol_beschreibung)&#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NULL THEN p.POL_PRODUKT_OBERGRUPPE &#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NULL AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;ELSE NULL&#13;&#10;END AS bundle_remarks,&#13;&#10;CASE p.POL_RECHNUNGSTYP WHEN '1' THEN 1 ELSE 0 END IS_ANNUAL_PAYER,&#13;&#10;CASE WHEN p.POL_STORNOGRUND IS NOT NULL AND p.POL_HISTORIE = 'AN' THEN 40 -- 'Cancelled'&#13;&#10;ELSE 20 --'Policy'&#13;&#10;END AS bundle_policy_status,&#13;&#10;p.POL_HISTORIE AS bundle_Status,&#13;&#10;p.POL_STORNOGRUND AS cancelled,&#13;&#10;p.pol_praemienbonus AS pa_discount,&#13;&#10;p.POL_PC_ANBAUVERZEICHNIS AS webavref&#13;&#10;FROM sev.POLICE p  &#13;&#10;WHERE 1=1&#13;&#10;--AND p.POL_GUELTIG_AB &gt;= [start_date from POLICY_LEGACY_SELECTION]&#13;&#10;--AND p.POL_POLICEN_NR = [external_policy_number from POLICY_LEGACY_SELECTION&#13;&#10;AND p.pol_ungueltig_ab &gt; timestamp '&quot;+context.borderDate+&quot;' &#13;&#10;--AND p.POL_ZUSTAND = 'lebend' -- removed to ensure we get cancelled row&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;) &#13;&#10;SELECT inc.entity_id, inc.bundle_policy_id, ver.B_VER_START_DATE, ver.B_VER_END_DATE, ver.economy_ref,&#13;&#10;ver.premiumSystem, ver.bundle_remarks, ver.IS_ANNUAL_PAYER  ,&#13;&#10;ver.bundle_policy_status, ver.bundle_Status, ver.cancelled,&#13;&#10;ver.pa_discount, ver.webavref,&#13;&#10;DENSE_RANK() OVER(PARTITION BY ver.BUNDLE_POLICY_ID ORDER BY ver.B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM  inc&#13;&#10;INNER JOIN ver ON inc.bundle_policy_id = ver.BUNDLE_POLICY_ID AND ver.B_VER_START_DATE &gt;= inc.start_date&#13;&#10;WHERE EXISTS (SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS pms WHERE pms.ENTITY_ID = inc.ENTITY_ID AND pms.MIGRATION_ID = &quot;+context.migrationID+&quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH inc AS ( &#13;&#10;SELECT adp.entity_id, adp.BUNDLE_POLICY_ID , adp.PAR_PARTNER_NR , adp.START_DATE &#13;&#10;FROM K2V_DEV.ALL_DE_POLICY adp &#13;&#10;),&#13;&#10;ver AS (&#13;&#10;SELECT DISTINCT p.POL_POLICEN_NR AS BUNDLE_POLICY_ID,  &#13;&#10;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#13;&#10;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#13;&#10;p.POL_WIRTSCHAFTSWEISE AS economy_ref,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM &#13;&#10;&#9;WHEN 'Secufarm' THEN 1000198&#13;&#10;&#9;WHEN 'Basis' THEN 1000198&#13;&#10;&#9;WHEN 'Garant' THEN 1000199&#13;&#10;END AS premiumSystem,&#13;&#10;CASE  &#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Secufarm' AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NOT NULL THEN concat(concat(p.POL_PRODUKT_OBERGRUPPE,', '), p.pol_beschreibung)&#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NULL THEN p.POL_PRODUKT_OBERGRUPPE &#13;&#10;&#9;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NULL AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;ELSE NULL&#13;&#10;END AS bundle_remarks,&#13;&#10;CASE p.POL_RECHNUNGSTYP WHEN '1' THEN 1 ELSE 0 END IS_ANNUAL_PAYER,&#13;&#10;CASE WHEN p.POL_STORNOGRUND IS NOT NULL AND p.POL_HISTORIE = 'AN' THEN 40 -- 'Cancelled'&#13;&#10;ELSE 20 --'Policy'&#13;&#10;END AS bundle_policy_status,&#13;&#10;p.POL_HISTORIE AS bundle_Status,&#13;&#10;p.POL_STORNOGRUND AS cancelled,&#13;&#10;p.pol_praemienbonus AS pa_discount,&#13;&#10;p.POL_PC_ANBAUVERZEICHNIS AS webavref,&#13;&#10;p.pol_mitglied,&#13;&#10;p.POL_BEZIRKSKASSE&#13;&#10;FROM sev.POLICE p  &#13;&#10;WHERE 1=1&#13;&#10;--AND p.POL_GUELTIG_AB &gt;= [start_date from POLICY_LEGACY_SELECTION]&#13;&#10;--AND p.POL_POLICEN_NR = [external_policy_number from POLICY_LEGACY_SELECTION&#13;&#10;AND p.pol_ungueltig_ab &gt; timestamp '&quot;+context.borderDate+&quot;' &#13;&#10;--AND p.POL_ZUSTAND = 'lebend' -- removed to ensure we get cancelled row&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;) &#13;&#10;SELECT inc.entity_id, inc.bundle_policy_id, ver.B_VER_START_DATE, ver.B_VER_END_DATE, ver.economy_ref,&#13;&#10;ver.premiumSystem, ver.bundle_remarks, ver.IS_ANNUAL_PAYER  ,&#13;&#10;ver.bundle_policy_status, ver.bundle_Status, ver.cancelled,&#13;&#10;ver.pa_discount, ver.webavref,&#13;&#10;ver.pol_mitglied, ver.POL_BEZIRKSKASSE,&#13;&#10;DENSE_RANK() OVER(PARTITION BY ver.BUNDLE_POLICY_ID ORDER BY ver.B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM  inc&#13;&#10;INNER JOIN ver ON inc.bundle_policy_id = ver.BUNDLE_POLICY_ID AND ver.B_VER_START_DATE &gt;= inc.start_date&#13;&#10;WHERE EXISTS (SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS pms WHERE pms.ENTITY_ID = inc.ENTITY_ID AND pms.MIGRATION_ID = &quot;+context.migrationID+&quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -1016,12 +1016,16 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="WEBAVREF"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POL_MITGLIED"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POL_BEZIRKSKASSE"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_VERSION"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_BUNDLE_VERSIONS_v58"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_BUNDLE_VERSIONS_v85"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_2">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -1037,6 +1041,8 @@
       <column comment="" key="false" length="30" name="CANCELLED" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="PA_DISCOUNT" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="WEBAVREF" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_MITGLIED" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_BEZIRKSKASSE" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
@@ -1066,13 +1072,15 @@
       <column comment="" key="false" length="1" name="IS_ANNUAL_PAYER" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="1" name="BUNDLE_POLICY_STATUS" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="4" name="BUNDLE_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="CANCELLED" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="30" name="CANCELLED" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="PA_DISCOUNT" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="WEBAVREF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_MITGLIED" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_BEZIRKSKASSE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_5z01YIoCEe6-hOaZAw8M6g - BUNDLE_VERSIONS" name="versions" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row2.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
@@ -1089,6 +1097,8 @@
         <mapperTableEntries expression="row2.CANCELLED " name="CANCELLED" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.PA_DISCOUNT " name="PA_DISCOUNT" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.WEBAVREF " name="WEBAVREF" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POL_MITGLIED" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POL_BEZIRKSKASSE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.BUNDLE_VERSION " name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
@@ -1105,6 +1115,8 @@
         <mapperTableEntries name="CANCELLED" nullable="true" type="id_String"/>
         <mapperTableEntries name="PA_DISCOUNT" nullable="true" type="id_Long"/>
         <mapperTableEntries name="WEBAVREF" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POL_MITGLIED" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POL_BEZIRKSKASSE" nullable="true" type="id_String"/>
         <mapperTableEntries name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
@@ -1204,6 +1216,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POL_MITGLIED"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POL_BEZIRKSKASSE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_VERSION"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -1228,6 +1250,8 @@
       <column comment="" defaultValue="" key="false" length="30" name="CANCELLED" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="PA_DISCOUNT" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="WEBAVREF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_MITGLIED" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_BEZIRKSKASSE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="BUNDLE_VERSIONS" name="REJECT">
@@ -1245,6 +1269,8 @@
       <column comment="" defaultValue="" key="false" length="30" name="CANCELLED" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="PA_DISCOUNT" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="WEBAVREF" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_MITGLIED" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="POL_BEZIRKSKASSE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1759,6 +1785,12 @@
       <elementValue elementRef="TRACE_COLUMN" value="PA_DISCOUNT"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="POL_MITGLIED"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="POL_BEZIRKSKASSE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
@@ -1917,13 +1949,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5d829656-a150-4ee6-a36a-8490d3a27804"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>yeUr5tgQar9mYD8KXEe6YtzB9/wd6LivhUukQOM2FltKliRDDZSr3yF99CfhwOR/rhvA4TmohdSm&#13;
-YdPhcshnpw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_142eb0e8-7ed8-415a-85a6-1998a3ecf7d5"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vXEisBFZsfu9bTUiELEjzxdxO+X9cK7xMmOd7MSmm2LBeNFvJgzeJYtqt9ZzO/Iba5N6agtr3Mjy&#13;
-SGmijNJelg==</DigestValue></Reference></SignedInfo><SignatureValue>emD8VXFtsAd29L0MV6oddNqAB7iJbscqTpVffbeQSTD+mtG51mS+DnVcfeokUl+eep5tPYO0TJFR&#13;
-gfzdtLKmX3k/aoiBv16AAlsjuj4zQBqPaZMzMVezyUrUDLP9y2PyrCm+rEY9U7jPKZ+eKQkbtmSz&#13;
-CbWcLGe7EMr3h4aYcbQMB9zO2ZOtaTh1zlHgsICw7fTYAF3jgMJsJc1ioOTmiAcxJV1SwrGtzkp/&#13;
-5WN/FPoYsKh/vBRBlOnIUhn8th7m/HGO1rQAPdStRjTh+pJjDoO28gX1CznygXDgB1s2R/hgmwca&#13;
-5JJmmMWjSTnwwxvxM6TRPvsJC7EYFlJKn8YKuA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bff5a447-dc68-41c1-b1a9-c681fd2a3695"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>G851nY2nDtMdB3bukZlD6uffUgsXHqMlcj+94ivKXbfkEvSaLs2EZugHJbCOAPIXKTl7SQwg2wft&#13;
+ZthsrR0nmw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_19dd546b-5869-48f4-aa40-8ef868d4bb62"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>1OjLXdLI/o5II8dGROS6iusQ2Wm9FxCySGJ9T00ABOems/S/AX1CzJWHcdq5U9rD+IuNcer3296G&#13;
++4KHY/k4DA==</DigestValue></Reference></SignedInfo><SignatureValue>MF8VExWjeFEm5mvXM3ktRC3ewc9/dEpt4g0Ji8KtVKyouhAAn8WhiefNC+ncXFFvH6kX1rIhz1M1&#13;
+zp29F5I5K2zsYTuHCZLCPTI572KQtrxslitgnJHfjfVDBXBSmmT1eVX2EBrFIxKnTMXSlbyBcG39&#13;
+g9FsHtcpHSOLV+eYMYNoWcQ6enbewycs056EncDTE89fy/je6b+zO13oeSBe9120E6vRNAy9iRV8&#13;
+RBzljeZa3VrgaSuCcZ9xIepTgMCMrWU9sw+vohr4Waqgq31G0YtCFpU4OkdXjxm6sz9pEXk08zSm&#13;
+HFHlWoGrh4/9q/RCA/lRrULeE1+R8O0LHdz29A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1945,4 +1977,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_142eb0e8-7ed8-415a-85a6-1998a3ecf7d5" Target="#_5d829656-a150-4ee6-a36a-8490d3a27804"><Timestamp>2024-06-12 08:33:27</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_19dd546b-5869-48f4-aa40-8ef868d4bb62" Target="#_bff5a447-dc68-41c1-b1a9-c681fd2a3695"><Timestamp>2024-06-17 11:41:49</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
