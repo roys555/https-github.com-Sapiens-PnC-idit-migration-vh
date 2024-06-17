@@ -201,7 +201,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLPolicyIVO" name="policyIVO">
+    <metadata comment="" label="XMLPolicyIVO" name="policyIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="billingTypeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -258,9 +258,11 @@
       <column comment="" key="false" length="100" name="remarks" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="webAVRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="webAVRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="districtCashier" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="membership" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.VER_START_DATE " name="policyStartDate" type="id_Date"/>
         <mapperTableEntries expression="(long)100" name="currentChannelIVORefID" type="id_Long"/>
@@ -324,8 +326,10 @@
         <mapperTableEntries expression="VERSIONS.PREMIUMSYSTEM " name="premiumSystemRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="premiumSystemRefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="VERSIONS.BUNDLE_REMARKS " name="remarks" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="trn_webAVRef.Id " name="webAVRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="trn_webAVRef.Desc " name="webAVRefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="trn_DistrictCashier.Id " name="webAVRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="trn_DistrictCashier.Desc " name="webAVRefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row1.out " name="districtCashier" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="membership" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="VERSIONS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -391,10 +395,14 @@
         <mapperTableEntries expression="VERSIONS.BUNDLE_POLICY_STATUS " name="statusCodeRefId" nullable="true" operator="=" type="id_Long"/>
         <mapperTableEntries name="statusCodeRefDesc" nullable="true" type="id_String"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_webAVRef" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_DistrictCashier" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.WEBAVREF " name="in_value" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="Id" nullable="true" type="id_Long"/>
         <mapperTableEntries name="Desc" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="VERSIONS.POL_MITGLIED " name="in" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="out" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -869,6 +877,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="districtCashier"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="membership"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="XMLPolicyIVO"/>
@@ -930,6 +948,8 @@
       <column comment="" key="false" length="100" name="remarks" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="webAVRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="webAVRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="districtCashier" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="membership" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLPolicyIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -988,6 +1008,8 @@
       <column comment="" key="false" length="100" name="remarks" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="webAVRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="webAVRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="districtCashier" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="membership" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1057,6 +1079,34 @@
       <column comment="" key="false" length="10" name="in_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="Id" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="Desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="832" posY="32">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_4"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="in"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="in" value="&quot;ja&quot;"/>
+      <elementValue elementRef="out" value="(long)1"/>
+      <elementValue elementRef="in" value="&quot;nein&quot;"/>
+      <elementValue elementRef="out" value="(long)2"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="trn_JaNein"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_4">
+      <column comment="" key="false" length="10" name="in" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="out" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
@@ -1194,6 +1244,10 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="webAVRefDESC"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="districtCashier"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="membership"/>
+      <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
@@ -1255,6 +1309,8 @@
       <column comment="" key="false" length="100" name="remarks" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="webAVRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="webAVRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="districtCashier" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="membership" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="VERSIONS" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
@@ -1295,9 +1351,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="statusCodeVORef"/>
   </connection>
-  <connection connectorName="FLOW" label="trn_webAVRef" lineStyle="8" metaname="tFixedFlowInput_3" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_3" target="tMap_1">
+  <connection connectorName="FLOW" label="trn_DistrictCashier" lineStyle="8" metaname="tFixedFlowInput_3" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_3" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_webAVRef"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_DistrictCashier"/>
+  </connection>
+  <connection connectorName="FLOW" label="row1" lineStyle="8" metaname="tFixedFlowInput_4" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_4" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
@@ -1318,13 +1378,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_edaf0764-ae21-45a0-9746-addc23cea0d4"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>QeruxiE1wg6xPElf+rxWZlpnNR7wmlCB4FrbXSwzbGxTZYsT5P1Ox6b1R8MpkM2JJB8stm+Id6Ny&#13;
-E12AaBrO3A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a0f46e99-fcf6-4ba9-a166-439f6bbb50bf"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>TsLGKtXuAdi/XkjeoBdR48WSxeOsghO3LZS8lDwwcRf2NLsJdcPchezCbrUrwbb25LcRRPFA4PpF&#13;
-sKGsqUQgHw==</DigestValue></Reference></SignedInfo><SignatureValue>YZ6j4x66lFGWTuqLAITiu4s/ScyQH/fb7yeHvdreA76AlWn5Y6ETH6a1tIBioqE0oaV3VZq7pyb3&#13;
-JuE+4Vw2rFs5VTL3djeRoXrdviD4Z21dlAW8zvFsw55+5ZegWdSmZspus6m3pFyHTNlFTvzgrdwN&#13;
-IBeZWGzNA0YYpvIMp6paYs1s3+YgVDtib2cPZYGx7z2MhFiyfkEbp1cdl60JVbO9eboCpA2Lwd11&#13;
-s3b6NTT/Tk/vssHjRHo5hR5MZC4o+yUa/U/ZoWQ8QJ16cg1P0Kt5OLWkXwRtMcMtrY1EYiN/BpKN&#13;
-WuRQX6X2o0DYa3ThrySBrmJIVs1+8Frtj/yAZQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5f860a46-7ab2-4703-9c85-ffc8a5e4a35e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>COi4Zl8Gdm50VyGFRpFouJgHsWjOIZMYTwXMM/xbdzt0S8BsFWI9T4P85GcaKkNmIbVxIFCARceP&#13;
+K+yOgAXNFQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c74d0bb6-c402-43da-9a59-f001d2055ad2"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>wnf+JLFbZaAUscy/zw15F+r121Yw909gbWkAjbc20+WdqG+oznh71vrBX4hdDoqedOh53BqvznfN&#13;
+htBrVP9FjA==</DigestValue></Reference></SignedInfo><SignatureValue>eNaAkzuariOv6Aypx5SYE7qEjHHvaALf4wwF1uosqAXwIdYdontPsT8WbAusp4HqhEaY51CQ8jYC&#13;
+qchtLliI3wlNUpLtij7IFDerdg29jdh4o6xI7CSejoo8Zg041xB5d+o3Fszd/hRfnOrcbo2yzsVE&#13;
+uOCZ73qMhFbVPjteY/n5h5He3n9z26ln8WqeY8WA3EI+kcW508r9mROFl/HgYjTZk5W9W/dhMza5&#13;
+uhMu6MP86/cMjGKxualKeEABBkFczJctQ2n5WewXp+taOkRBiPmcEK5GiTrQHNaFOBMqYbQUBrmt&#13;
+4zlGQrzIdJVDEk2O7KWjElgECweP+Zm7QJvH9w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1346,4 +1406,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a0f46e99-fcf6-4ba9-a166-439f6bbb50bf" Target="#_edaf0764-ae21-45a0-9746-addc23cea0d4"><Timestamp>2024-06-17 11:44:12</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c74d0bb6-c402-43da-9a59-f001d2055ad2" Target="#_5f860a46-7ab2-4703-9c85-ffc8a5e4a35e"><Timestamp>2024-06-17 12:47:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
