@@ -328,8 +328,8 @@
         <mapperTableEntries expression="VERSIONS.BUNDLE_REMARKS " name="remarks" nullable="true" type="id_String"/>
         <mapperTableEntries expression="trn_DistrictCashier.Id " name="webAVRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="trn_DistrictCashier.Desc " name="webAVRefDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="row1.out " name="districtCashier" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="membership" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="trn_JaNein.out " name="districtCashier" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="trn_JaNein2.out " name="membership" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="VERSIONS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -400,8 +400,12 @@
         <mapperTableEntries name="Id" nullable="true" type="id_Long"/>
         <mapperTableEntries name="Desc" nullable="true" type="id_String"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_JaNein" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.POL_MITGLIED " name="in" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="out" nullable="true" type="id_Long"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_JaNein2" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="VERSIONS.POL_BEZIRKSKASSE " name="in" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="out" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
@@ -1081,7 +1085,7 @@
       <column comment="" key="false" length="50" name="Desc" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="832" posY="32">
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="800" posY="416">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_4"/>
     <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
     <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
@@ -1105,6 +1109,34 @@
     <elementParameter field="TEXT" name="LABEL" value="trn_JaNein"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tFixedFlowInput_4">
+      <column comment="" key="false" length="10" name="in" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="out" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="288" posY="480">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_5"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="in"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="true"/>
+    <elementParameter field="TABLE" name="INTABLE">
+      <elementValue elementRef="in" value="&quot;ja&quot;"/>
+      <elementValue elementRef="out" value="(long)1"/>
+      <elementValue elementRef="in" value="&quot;nein&quot;"/>
+      <elementValue elementRef="out" value="(long)2"/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="false"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" show="false" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
+    <elementParameter field="TEXT" name="LABEL" value="trn_JaNein2"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_5">
       <column comment="" key="false" length="10" name="in" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="out" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
@@ -1355,9 +1387,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_DistrictCashier"/>
   </connection>
-  <connection connectorName="FLOW" label="row1" lineStyle="8" metaname="tFixedFlowInput_4" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_4" target="tMap_1">
+  <connection connectorName="FLOW" label="trn_JaNein" lineStyle="8" metaname="tFixedFlowInput_4" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_4" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_JaNein"/>
+  </connection>
+  <connection connectorName="FLOW" label="trn_JaNein2" lineStyle="8" metaname="tFixedFlowInput_5" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_5" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_JaNein2"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
@@ -1378,13 +1414,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5f860a46-7ab2-4703-9c85-ffc8a5e4a35e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>COi4Zl8Gdm50VyGFRpFouJgHsWjOIZMYTwXMM/xbdzt0S8BsFWI9T4P85GcaKkNmIbVxIFCARceP&#13;
-K+yOgAXNFQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c74d0bb6-c402-43da-9a59-f001d2055ad2"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>wnf+JLFbZaAUscy/zw15F+r121Yw909gbWkAjbc20+WdqG+oznh71vrBX4hdDoqedOh53BqvznfN&#13;
-htBrVP9FjA==</DigestValue></Reference></SignedInfo><SignatureValue>eNaAkzuariOv6Aypx5SYE7qEjHHvaALf4wwF1uosqAXwIdYdontPsT8WbAusp4HqhEaY51CQ8jYC&#13;
-qchtLliI3wlNUpLtij7IFDerdg29jdh4o6xI7CSejoo8Zg041xB5d+o3Fszd/hRfnOrcbo2yzsVE&#13;
-uOCZ73qMhFbVPjteY/n5h5He3n9z26ln8WqeY8WA3EI+kcW508r9mROFl/HgYjTZk5W9W/dhMza5&#13;
-uhMu6MP86/cMjGKxualKeEABBkFczJctQ2n5WewXp+taOkRBiPmcEK5GiTrQHNaFOBMqYbQUBrmt&#13;
-4zlGQrzIdJVDEk2O7KWjElgECweP+Zm7QJvH9w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_39fe642a-ad7d-4795-9444-679e39ac8b67"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ds4WyVgCIvExT5vSILBJYG61mBLyJ0WuGJG0xKZ7poIOVrJ015An64NSjRL6aYGRQz0rElv/aAqs&#13;
+eGCXmk/cAg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_15a48377-5520-4c3a-807a-d0862cdb0e00"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>g/HbKXBnyzYRuOwjzjLsNepkfY0itX8dQQ+oCePICqRhULSi7MHYHj/WmdZgFkdZc9IuwsBSS+0v&#13;
++bGvhpiQHA==</DigestValue></Reference></SignedInfo><SignatureValue>UGgdF/by0bwlvYlwhmQbXmUQjhc08JSi3LhCCo0SVZY7g0+hsMkP2j3EM+JA0sJEoxpVcIbsxggZ&#13;
+7/R7OQk1LfeViEq4OR97CKO6A1t6KsolugaS+G7uipnSPKXq8FAWEOtwir3FxS4+tCIGjb7dumJ0&#13;
+PLc4PGkXsELKzl/RDLZOk0E6MzFbFZ07jJJEFPto2fvduL6y9gbUxnjTvaVsS0M/yoedVi6c9F3c&#13;
+LmOxDKjTJNHOHr8ITeg+Cqd+bSuez4EJ2VmFW1gDG69gq15nT3lxMb086Vraw63je64/OfmmFtLL&#13;
+pTMqLOfMwp/JEEXIhIghR8uIDm613JSDBFf2uw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1406,4 +1442,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c74d0bb6-c402-43da-9a59-f001d2055ad2" Target="#_5f860a46-7ab2-4703-9c85-ffc8a5e4a35e"><Timestamp>2024-06-17 12:47:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_15a48377-5520-4c3a-807a-d0862cdb0e00" Target="#_39fe642a-ad7d-4795-9444-679e39ac8b67"><Timestamp>2024-06-17 13:13:15</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
