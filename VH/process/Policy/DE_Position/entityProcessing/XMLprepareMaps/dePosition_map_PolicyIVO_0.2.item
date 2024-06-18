@@ -424,6 +424,8 @@
         <mapperTableEntries name="nextPolicyNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="nextProposalNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isAnnualPayer" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries name="predecessor" nullable="true" type="id_String"/>
+        <mapperTableEntries name="successor" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="String.valueOf(versionSelection.POLICE) " name="EXTERNAL_HEADER_NUMBER" nullable="true" operator="=" type="id_String"/>
@@ -542,6 +544,10 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="isAnnualPayer"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="predecessor"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="successor"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="&quot;XMLpolicyHeaderIVO&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -583,6 +589,8 @@
       <column comment="" key="false" length="-1" name="nextPolicyNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="224" posY="736">
@@ -1403,6 +1411,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_EXTERNAL_HEADER_NUMBER"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="OFR_STATUS"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="POSITON_LEGACY_SELECTION"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -1437,6 +1447,7 @@
       <column comment="" key="false" length="66" name="POSITION_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="100" name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="OFR_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="480" posY="416">
@@ -1519,6 +1530,7 @@
       <column comment="" key="false" length="10" name="ownContributionSRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="ownContributionWRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="OFR_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="rejectNoContractVersion">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -1611,6 +1623,7 @@
         <mapperTableEntries expression="(contrib.contribType!=null &amp;&amp; contrib.contribType.equals(&quot;S&quot;))?contrib.contribRefID:(long)1000012 " name="ownContributionSRef" type="id_Long"/>
         <mapperTableEntries expression="(contrib.contribType!=null &amp;&amp; contrib.contribType.equals(&quot;W&quot;))?contrib.contribRefID:(long)1000011 " name="ownContributionWRef" type="id_Long"/>
         <mapperTableEntries expression="POSITIONS.POL_GUELTIG_AB " name="POL_GUELTIG_AB" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="POSITIONS.OFR_STATUS " name="OFR_STATUS" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="contract_version.POLICE == 0" name="rejectNoContractVersion" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -1657,6 +1670,7 @@
         <mapperTableEntries name="POSITION_EXTERNAL_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries name="POSITION_EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries name="MASTER_EXTERNAL_HEADER_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries name="OFR_STATUS" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables activateCondensedTool="true" innerJoin="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyHeader" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="POSITIONS.ENTITY_ID " name="ENTITY_ID" nullable="true" operator="=" type="id_String"/>
@@ -2088,6 +2102,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="OFR_STATUS"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;XMLPolicyIVO&quot;"/>
@@ -2158,6 +2177,7 @@
       <column comment="" key="false" length="10" name="ownContributionSRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="ownContributionWRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="OFR_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLPolicyIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -2225,6 +2245,7 @@
       <column comment="" key="false" length="10" name="ownContributionSRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="ownContributionWRef" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="POL_GUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="OFR_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2777,13 +2798,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_4d8be9cb-6fba-4334-a3e2-2602cf56e5bd"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+zPPA3BzRjwL47nty2cb0V2C5P+VIuoHin1EPLjkhlw+ueyjN4mneNZEV3T4ICO1hSzyF+wFNOvU&#13;
-CeuDBFfu+w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_95890ef9-bb51-41f1-8377-56055c641e54"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>wimsAr5rEqfIMMV2T6WtPW2P1CoBwwaAMt1GUatPVwLeBagHwNcpiZH/02+iwE8cGOWTEfAheqC4&#13;
-TDqOqGXPcw==</DigestValue></Reference></SignedInfo><SignatureValue>Z1v0oUTciWlJXcfVE58Nd1UoPaV6JNI6NgWBWRfNRaqTOLTtZFnFnBh3JKdAPpsrJVywO6DHkU6g&#13;
-z0D+HFLxBiJiKnjVGJxacs90UEpJ4cZ6S7/WVOnHPDQLhEVV8IG6jI2+/9RaJfr99GI8dQt09oF6&#13;
-1DZEBiOaEB4F8ZFATi/fJQjyLpgs8DTJrcZZu+mApusQBIf+1FDCttDdJWJBo5WMm4HX5ekhJhyU&#13;
-8zNOa/Ww8jrx/liAJ1N1Qfk5HahPtzwvxQcTjs5BRNlRAzGYT1ru9W2ugJPGizkmeDyepK2Woqfq&#13;
-XZS8S6kHJ7BXjVVhZKEi+j+yuPwex686WcNPlw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a662155f-6f4b-4e30-8734-be7ac69c259c"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>fxnVLjcP/wbQjGqu+B5gPG5N+2N0TKmDy1gkxl+myT5A9lZNlr+cq5yorN6m72uBZWhrnaUVfoCW&#13;
+lH2BcA+2gA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b0b6d45e-8ddd-45a5-99a2-cef812563643"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+KbOJZr0CrBtFl/lZkCHz+yglEQJVydk7GFGewRm9DXQH+wK+QsUqgFCMjaABlqmzmDz5XjTpm81&#13;
+HKPFnSEYcA==</DigestValue></Reference></SignedInfo><SignatureValue>Leh84EPspaSLlpB1A36lVyag3CS/7exYOzidBlxoXO10N6nLGug0l7idF5r4mkY14uaaqR545k1w&#13;
+6cQ3dl8mKq3ZVMW1dhah7JU5C3cUjTLWosPd3BW65vUDEkujoVsTjhjE3MBm2v4B7UfwAgUx789C&#13;
+zy4AGfYXd4dyoU9CnmFMkU6n6oGvKFeaMPb4wGJVa9hW7cHo64XWWuFBWgXO7iVjm3tggIPU23Xq&#13;
+5/X/Pm41FQX3tdD+H8yT/QWbgvealThvtEAmsPksS8Hiz7cYJEAw1UpK4kLzXXagH6otPZ75c02i&#13;
+6sbu2uzkLMSrZNB4xE/UDEEiMkum5cdPQ/ivCw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2805,4 +2826,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_95890ef9-bb51-41f1-8377-56055c641e54" Target="#_4d8be9cb-6fba-4334-a3e2-2602cf56e5bd"><Timestamp>2024-06-07 13:14:52</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b0b6d45e-8ddd-45a5-99a2-cef812563643" Target="#_a662155f-6f4b-4e30-8734-be7ac69c259c"><Timestamp>2024-06-18 12:32:12</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>

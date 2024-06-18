@@ -121,8 +121,6 @@
     <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:x1+7mPQHFLk7YRtJafWYyUWuvY2UDOlAnWukJTwJ"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
-    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_caecYCfDEe6KVN0-Pu7ZoA - POLICY_CONTRACT_SELECTION"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;POLICY_CONTRACT_SELECTION&quot;"/>
     <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
@@ -160,6 +158,10 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ORIG_START_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="predecessor"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="successor"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="&quot;POLICY_CONTRACT_SELECTION&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -178,11 +180,13 @@
       <column comment="" key="false" length="-1" name="REFRESH_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="15" name="VER_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" originalLength="30" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" originalLength="30" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="320" posY="192">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.POLICE = input_row.POLICE;&#13;&#10;output_row.VERTRAG = input_row.VERTRAG;&#13;&#10;output_row.policyStartDate = input_row.policyStartDate;&#13;&#10;output_row.policyEndDate = input_row.policyEndDate;&#13;&#10;output_row.VER_ABL_DATUM = input_row.VER_ABL_DATUM;&#13;&#10;output_row.VER_STATUS = input_row.VER_STATUS;&#13;&#10;output_row.VER_HISTORIE = input_row.VER_HISTORIE;&#13;&#10;output_row.POL_WIRTSCHAFTSWEISE = input_row.POL_WIRTSCHAFTSWEISE;&#13;&#10;output_row.VER_KUENDIGUNG = input_row.VER_KUENDIGUNG;&#13;&#10;output_row.VER_PRODUKT_TYP = input_row.VER_PRODUKT_TYP;&#13;&#10;output_row.PAR_PARTNER_NR = input_row.PAR_PARTNER_NR;&#13;&#10;output_row.REFRESH_DATE = input_row.REFRESH_DATE;&#13;&#10;output_row.VER_ZUSTAND = input_row.VER_ZUSTAND;&#13;&#10;output_row.ORIG_START_DATE = input_row.ORIG_START_DATE;&#13;&#10;&#10;&#10;&#10;/*  CONTRACT_POLICY_HEADER_STATUS v28&#10;Case VER_KUENDIGUNG and VER_HISTORIE&#10;When VER_KUENDIGUNG is NULL and VER_HISTORIE = 'AN' then 20 - Policy&#10;When VER_KUENDIGUNG is NOT NULL and VER_HISTORIE = 'AN' then 40 - Cancelled&#10;END&#10;*/&#10;System.out.println(&quot;PolicyHEADER - JAVA ROW&quot;);&#10;System.out.println(input_row.VER_KUENDIGUNG);&#10;System.out.println(input_row.VER_HISTORIE);&#10;&#10;long statusCodeVORefID = -1;&#10;String statusCodeVORefDESC = &quot;UNDEFINED&quot;;&#10;&#10;//if ( input_row.VER_HISTORIE.equals(&quot;AN&quot;) ) { System.out.println(&quot;Ver historie = AN&quot;);}&#10;if ( input_row.VER_KUENDIGUNG == null &amp;&amp; input_row.VER_HISTORIE.equals(&quot;AN&quot;)) {&#10;&#9;System.out.println(&quot;case1&quot;);&#10;&#9;statusCodeVORefID = 20;&#10;&#9;statusCodeVORefDESC = &quot;Policy&quot;;&#10;} else if ( input_row.VER_KUENDIGUNG != null &amp;&amp; input_row.VER_HISTORIE.equals(&quot;AN&quot;) ) {&#10;&#9;System.out.println(&quot;case2&quot;);&#10;&#9;statusCodeVORefID = 40;&#10;&#9;statusCodeVORefDESC = &quot;Cancelled&quot;;&#10;}&#10;&#10;output_row.statusCodeVORefID =statusCodeVORefID;&#10;output_row.statusCodeVORefDESC =statusCodeVORefDESC;&#13;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.POLICE = input_row.POLICE;&#13;&#10;output_row.VERTRAG = input_row.VERTRAG;&#13;&#10;output_row.policyStartDate = input_row.policyStartDate;&#13;&#10;output_row.policyEndDate = input_row.policyEndDate;&#13;&#10;output_row.VER_ABL_DATUM = input_row.VER_ABL_DATUM;&#13;&#10;output_row.VER_STATUS = input_row.VER_STATUS;&#13;&#10;output_row.VER_HISTORIE = input_row.VER_HISTORIE;&#13;&#10;output_row.POL_WIRTSCHAFTSWEISE = input_row.POL_WIRTSCHAFTSWEISE;&#13;&#10;output_row.VER_KUENDIGUNG = input_row.VER_KUENDIGUNG;&#13;&#10;output_row.VER_PRODUKT_TYP = input_row.VER_PRODUKT_TYP;&#13;&#10;output_row.PAR_PARTNER_NR = input_row.PAR_PARTNER_NR;&#13;&#10;output_row.REFRESH_DATE = input_row.REFRESH_DATE;&#13;&#10;output_row.VER_ZUSTAND = input_row.VER_ZUSTAND;&#13;&#10;output_row.ORIG_START_DATE = input_row.ORIG_START_DATE;&#10;output_row.predecessor = input_row.predecessor;&#13;&#10;output_row.successor = input_row.successor;&#10;&#10;&#10;&#10;/*  CONTRACT_POLICY_HEADER_STATUS v28&#10;Case VER_KUENDIGUNG and VER_HISTORIE&#10;When VER_KUENDIGUNG is NULL and VER_HISTORIE = 'AN' then 20 - Policy&#10;When VER_KUENDIGUNG is NOT NULL and VER_HISTORIE = 'AN' then 40 - Cancelled&#10;END&#10;*/&#10;System.out.println(&quot;PolicyHEADER - JAVA ROW&quot;);&#10;System.out.println(input_row.VER_KUENDIGUNG);&#10;System.out.println(input_row.VER_HISTORIE);&#10;&#10;long statusCodeVORefID = -1;&#10;String statusCodeVORefDESC = &quot;UNDEFINED&quot;;&#10;&#10;//if ( input_row.VER_HISTORIE.equals(&quot;AN&quot;) ) { System.out.println(&quot;Ver historie = AN&quot;);}&#10;if ( input_row.VER_KUENDIGUNG == null &amp;&amp; input_row.VER_HISTORIE.equals(&quot;AN&quot;)) {&#10;&#9;System.out.println(&quot;case1&quot;);&#10;&#9;statusCodeVORefID = 20;&#10;&#9;statusCodeVORefDESC = &quot;Policy&quot;;&#10;} else if ( input_row.VER_KUENDIGUNG != null &amp;&amp; input_row.VER_HISTORIE.equals(&quot;AN&quot;) ) {&#10;&#9;System.out.println(&quot;case2&quot;);&#10;&#9;statusCodeVORefID = 40;&#10;&#9;statusCodeVORefDESC = &quot;Cancelled&quot;;&#10;}&#10;&#10;output_row.statusCodeVORefID =statusCodeVORefID;&#10;output_row.statusCodeVORefDESC =statusCodeVORefDESC;&#13;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_CONTRACT_SELECTION" name="tJavaRow_1">
@@ -200,6 +204,8 @@
       <column comment="" key="false" length="-1" name="REFRESH_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="15" name="VER_ZUSTAND" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="statusCodeVORefID" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="statusCodeVORefDESC" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -256,6 +262,8 @@
       <column comment="" key="false" length="-1" name="nextPolicyNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="error_DECN002">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -278,6 +286,7 @@
         <mapperTableEntries expression="TalendDate.ADD_TO_DATE(policy_version.V_START_DATE,&quot;Y&quot;,1) " name="renewal_date" type="id_Date"/>
         <mapperTableEntries expression="Long.valueOf(context.MAX_VERTRAG) +1 " name="max_vertrag_plus1" type="id_Long"/>
         <mapperTableEntries expression="&quot;DP-&quot; + String.valueOf(POLICY_HEADER.POLICE)+String.format(&quot;%03d&quot;,POLICY_HEADER.VERTRAG) " name="external_header_number" type="id_String"/>
+        <mapperTableEntries expression="POLICY_HEADER.predecessor != null? POLICY_HEADER.predecessor.substring(POLICY_HEADER.predecessor.indexOf(&quot;|&quot;)+1): null " name="l_predecessor_part2" type="id_String"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_-Jx2gCV8Ee6aAfhWDAh9_A - XMLpolicyHeaderIVO" name="out1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="POLICY_HEADER.POLICE " name="POLICY" type="id_Long"/>
@@ -317,6 +326,8 @@
         <mapperTableEntries expression="policy_version.NEXT_NUM_IN_BUNDLE " name="nextPolicyNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="policy_version.NEXT_NUM_IN_BUNDLE " name="nextProposalNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isAnnualPayer" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="Var.l_predecessor_part2 " name="predecessor" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="POLICY_HEADER.successor " name="successor" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="idit_P_POLICY.EXTERNAL_HEADER_NUMBER ==null" name="error_DECN002" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -347,6 +358,8 @@
         <mapperTableEntries name="REFRESH_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="VER_ZUSTAND" nullable="true" type="id_String"/>
         <mapperTableEntries name="ORIG_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="predecessor" nullable="true" type="id_String"/>
+        <mapperTableEntries name="successor" nullable="true" type="id_String"/>
         <mapperTableEntries name="statusCodeVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="statusCodeVORefDESC" nullable="true" type="id_String"/>
       </inputTables>
@@ -706,7 +719,7 @@
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="768" posY="96">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_2"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.POLICY = input_row.POLICY;&#13;&#10;output_row.VERTRAG = input_row.VERTRAG;&#13;&#10;output_row.activePolicyId = input_row.activePolicyId;&#13;&#10;output_row.consolidatedBillingFlag = input_row.consolidatedBillingFlag;&#13;&#10;output_row.bundlePolicy = input_row.bundlePolicy;&#13;&#10;output_row.bundlePolicyHeaderId = input_row.bundlePolicyHeaderId;&#13;&#10;output_row.cropGroupRefID = input_row.cropGroupRefID;&#13;&#10;output_row.cropGroupRefDesc = input_row.cropGroupRefDesc;&#13;&#10;output_row.currencyVORefID = input_row.currencyVORefID;&#13;&#10;output_row.currencyVORefDesc = input_row.currencyVORefDesc;&#13;&#10;output_row.externalHeaderNumber = input_row.externalHeaderNumber;&#13;&#10;output_row.isHealthUmbrellaPolicy = input_row.isHealthUmbrellaPolicy;&#13;&#10;output_row.isMasterPolicy = input_row.isMasterPolicy;&#13;&#10;output_row.mainRenewalDate = input_row.mainRenewalDate;&#13;&#10;output_row.multiplePayersFlag = input_row.multiplePayersFlag;&#13;&#10;output_row.paidByAgentFlag = input_row.paidByAgentFlag;&#13;&#10;output_row.policyEndDate = input_row.policyEndDate;&#13;&#10;output_row.policyProposalDate = input_row.policyProposalDate;&#13;&#10;output_row.policyStartDate = input_row.policyStartDate;&#13;&#10;output_row.processingStatusVORefID = input_row.processingStatusVORefID;&#13;&#10;output_row.processingStatusVORefDesc = input_row.processingStatusVORefDesc;&#13;&#10;output_row.productVersionVORefID = input_row.productVersionVORefID;&#13;&#10;output_row.productVersionVORefDesc = input_row.productVersionVORefDesc;&#13;&#10;output_row.productVORefID = input_row.productVORefID;&#13;&#10;output_row.productVORefDesc = input_row.productVORefDesc;&#13;&#10;output_row.sales1 = input_row.sales1;&#13;&#10;output_row.sales1Date = input_row.sales1Date;&#13;&#10;output_row.statusCodeVORefID = input_row.statusCodeVORefID;&#13;&#10;output_row.statusCodeVORefDesc = input_row.statusCodeVORefDesc;&#13;&#10;output_row.statusCollDate = input_row.statusCollDate;&#13;&#10;output_row.statusDate = input_row.statusDate;&#13;&#10;output_row.trackCoverBalancePerEndors = input_row.trackCoverBalancePerEndors;&#13;&#10;output_row.updateTotFlag = input_row.updateTotFlag;&#13;&#10;output_row.cancelFrom = input_row.cancelFrom;&#13;&#10;output_row.nextPolicyNumInBundle = input_row.nextPolicyNumInBundle;&#13;&#10;output_row.nextProposalNumInBundle = input_row.nextProposalNumInBundle;&#13;&#10;output_row.isAnnualPayer = input_row.isAnnualPayer;&#13;&#10;&#10;&#10;if (input_row.statusCodeVORefID == (long) 40) output_row.cancelFrom = input_row.cancelFrom;&#10;else output_row.cancelFrom = null;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="//Code generated according to input schema and output schema&#13;&#10;output_row.POLICY = input_row.POLICY;&#13;&#10;output_row.VERTRAG = input_row.VERTRAG;&#13;&#10;output_row.activePolicyId = input_row.activePolicyId;&#13;&#10;output_row.consolidatedBillingFlag = input_row.consolidatedBillingFlag;&#13;&#10;output_row.bundlePolicy = input_row.bundlePolicy;&#13;&#10;output_row.bundlePolicyHeaderId = input_row.bundlePolicyHeaderId;&#13;&#10;output_row.cropGroupRefID = input_row.cropGroupRefID;&#13;&#10;output_row.cropGroupRefDesc = input_row.cropGroupRefDesc;&#13;&#10;output_row.currencyVORefID = input_row.currencyVORefID;&#13;&#10;output_row.currencyVORefDesc = input_row.currencyVORefDesc;&#13;&#10;output_row.externalHeaderNumber = input_row.externalHeaderNumber;&#13;&#10;output_row.isHealthUmbrellaPolicy = input_row.isHealthUmbrellaPolicy;&#13;&#10;output_row.isMasterPolicy = input_row.isMasterPolicy;&#13;&#10;output_row.mainRenewalDate = input_row.mainRenewalDate;&#13;&#10;output_row.multiplePayersFlag = input_row.multiplePayersFlag;&#13;&#10;output_row.paidByAgentFlag = input_row.paidByAgentFlag;&#13;&#10;output_row.policyEndDate = input_row.policyEndDate;&#13;&#10;output_row.policyProposalDate = input_row.policyProposalDate;&#13;&#10;output_row.policyStartDate = input_row.policyStartDate;&#13;&#10;output_row.processingStatusVORefID = input_row.processingStatusVORefID;&#13;&#10;output_row.processingStatusVORefDesc = input_row.processingStatusVORefDesc;&#13;&#10;output_row.productVersionVORefID = input_row.productVersionVORefID;&#13;&#10;output_row.productVersionVORefDesc = input_row.productVersionVORefDesc;&#13;&#10;output_row.productVORefID = input_row.productVORefID;&#13;&#10;output_row.productVORefDesc = input_row.productVORefDesc;&#13;&#10;output_row.sales1 = input_row.sales1;&#13;&#10;output_row.sales1Date = input_row.sales1Date;&#13;&#10;output_row.statusCodeVORefID = input_row.statusCodeVORefID;&#13;&#10;output_row.statusCodeVORefDesc = input_row.statusCodeVORefDesc;&#13;&#10;output_row.statusCollDate = input_row.statusCollDate;&#13;&#10;output_row.statusDate = input_row.statusDate;&#13;&#10;output_row.trackCoverBalancePerEndors = input_row.trackCoverBalancePerEndors;&#13;&#10;output_row.updateTotFlag = input_row.updateTotFlag;&#13;&#10;output_row.cancelFrom = input_row.cancelFrom;&#13;&#10;output_row.nextPolicyNumInBundle = input_row.nextPolicyNumInBundle;&#13;&#10;output_row.nextProposalNumInBundle = input_row.nextProposalNumInBundle;&#13;&#10;output_row.isAnnualPayer = input_row.isAnnualPayer;&#10;&#10;output_row.predecessor = input_row.predecessor;&#10;output_row.successor = input_row.successor;&#10;&#13;&#10;&#10;&#10;if (input_row.statusCodeVORefID == (long) 40) output_row.cancelFrom = input_row.cancelFrom;&#10;else output_row.cancelFrom = null;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="XMLpolicyHeaderIVO" name="tJavaRow_2">
@@ -747,6 +760,8 @@
       <column comment="" key="false" length="-1" name="nextPolicyNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="864" posY="160">
@@ -959,6 +974,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="predecessor"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="successor"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;XMLpolicyHeaderIVO&quot;"/>
@@ -1001,6 +1026,8 @@
       <column comment="" key="false" length="-1" name="nextPolicyNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLpolicyHeaderIVO" name="REJECT">
       <column comment="" key="false" length="-1" name="POLICY" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1040,6 +1067,8 @@
       <column comment="" key="false" length="-1" name="nextPolicyNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1194,6 +1223,10 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="isAnnualPayer"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="predecessor"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="successor"/>
+      <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
@@ -1237,6 +1270,8 @@
       <column comment="" key="false" length="-1" name="nextPolicyNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="xxx" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tJavaRow_1">
@@ -1261,6 +1296,12 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="VER_ZUSTAND"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="successor"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="predecessor"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -1297,6 +1338,14 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="start_date"/>
   </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tJavaRow_2" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_2" target="tHSQLDbOutput_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="successor"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="predecessor"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
@@ -1342,13 +1391,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bf5641d1-8135-4885-aed5-23c48d0594e8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>I1LQXfMIF2JYFi/Ow1JMOxpSpwCvSHQqJJSkjVEzK/7Qf5YI5xXPzfiyu5uKpxV4ULkyQxcZyPVp&#13;
-bV0BuP75eA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_53565f60-580e-4dd2-a8f9-36c7d0bfcf86"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>12EdpsEXyXqAGRuRjGHNmGGi/YFTQ3aWkjmTEX7MV1g/iRjv8Z4jrR1PREtPTjM5Flby8bkSqBWT&#13;
-3YUrxyzKaA==</DigestValue></Reference></SignedInfo><SignatureValue>V6yJ5Q4hd4VISSsdgZiAxEZ9gjKQv4lSVdYl6rn+B/oOLiUoh2+B+ZD2oJA7T8S0G92CY71gZp7q&#13;
-XPBxXpnF9tGngIPp6HFUFbUSHVNWcyR9DH6I2nvDUdOPZe/Q0C2tnRiLjjdi5Z05bUMqjE1bRA1w&#13;
-fr5hY+xdndDo3UvWSjAdyGsNjCotT+8JiStdvEJojSu+mRVhLhFMKmvEKuRHYLcQCd3Qg0JIGVay&#13;
-AjsXZKv6jW6GLfXjR5PZFG2fPk1OqzETpkCjyuMxb9swaDNcmVpwHmtR9mQxDMtWLqnFG/cRkZuh&#13;
-WNYvcXZUXOnaTlBEF+8cW4tYunB+hl/shQeBcQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a5fa9429-e3fc-41b8-969f-6e1a79b304b0"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>jrPQxIUGu9+Id9BRObeVt8VSlgirvzZNI0fzOpAxhHm16XaVaHLeUNKyzlGWrIfHROZ64aPw2dTv&#13;
+sp9WesD/wQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f099b8d8-e380-400f-b1ee-f2c082731bc0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ympiX+9iZcJ5oFCYgpGvWzPdG+rkNcFWFX2nj2NT7IhHtSC8wv0DJi++t2zaRh2OGPpSrDmVBrPa&#13;
+2l0zoRFeDQ==</DigestValue></Reference></SignedInfo><SignatureValue>JdjqFBwDd1R4YHLyhBckNK45K+EZAVSi51TC3etLcRT9yLK8VUUqcwIkCVlJfjNqtQ/qg9m9QF6c&#13;
+j8rgET1STvQFED5KZX3bkG5I01ALr/Swnh7vZ5vBF6x9NcUrBoAN2QlT1OolZJNhSr1km28wYgjV&#13;
+8FPnPq6jQd7pl8Gvcg708sT05M6aXPJG7e6kv6xwnOPFfhQ+UY8cOhRn5ywmiTSxug4V8i2I4VY4&#13;
+UzE2nO9BQohIfO2wG2aNBhrWqItCE4R0dHCPxNHYyAJM7MSvhJvk+BjmmWJ8PLWCN3/2NkKXoAyo&#13;
+W5yy9EeGbgZIzuedw3euI5bmPIIVM4d7t4eTZQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1370,4 +1419,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_53565f60-580e-4dd2-a8f9-36c7d0bfcf86" Target="#_bf5641d1-8135-4885-aed5-23c48d0594e8"><Timestamp>2024-05-08 10:25:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f099b8d8-e380-400f-b1ee-f2c082731bc0" Target="#_a5fa9429-e3fc-41b8-969f-6e1a79b304b0"><Timestamp>2024-06-18 14:35:58</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
