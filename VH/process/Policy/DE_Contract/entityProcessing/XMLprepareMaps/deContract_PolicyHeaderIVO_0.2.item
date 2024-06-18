@@ -286,6 +286,7 @@
         <mapperTableEntries expression="TalendDate.ADD_TO_DATE(policy_version.V_START_DATE,&quot;Y&quot;,1) " name="renewal_date" type="id_Date"/>
         <mapperTableEntries expression="Long.valueOf(context.MAX_VERTRAG) +1 " name="max_vertrag_plus1" type="id_Long"/>
         <mapperTableEntries expression="&quot;DP-&quot; + String.valueOf(POLICY_HEADER.POLICE)+String.format(&quot;%03d&quot;,POLICY_HEADER.VERTRAG) " name="external_header_number" type="id_String"/>
+        <mapperTableEntries expression="POLICY_HEADER.predecessor != null? POLICY_HEADER.predecessor.replace('|', '00'): null " name="l_predecessor" type="id_String"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_-Jx2gCV8Ee6aAfhWDAh9_A - XMLpolicyHeaderIVO" name="out1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="POLICY_HEADER.POLICE " name="POLICY" type="id_Long"/>
@@ -325,7 +326,7 @@
         <mapperTableEntries expression="policy_version.NEXT_NUM_IN_BUNDLE " name="nextPolicyNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="policy_version.NEXT_NUM_IN_BUNDLE " name="nextProposalNumInBundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isAnnualPayer" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="POLICY_HEADER.predecessor " name="predecessor" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="Var.l_predecessor " name="predecessor" nullable="true" type="id_String"/>
         <mapperTableEntries expression="POLICY_HEADER.successor " name="successor" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="idit_P_POLICY.EXTERNAL_HEADER_NUMBER ==null" name="error_DECN002" sizeState="INTERMEDIATE">
@@ -759,8 +760,8 @@
       <column comment="" key="false" length="-1" name="nextPolicyNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="nextProposalNumInBundle" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isAnnualPayer" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="predecessor" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="successor" nullable="true" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="predecessor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="successor" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="864" posY="160">
@@ -1390,13 +1391,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_7c9aa2db-07db-444d-aa55-32062d403f25"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>TXzSa2nf1VSd9bnXS3CTSHECYUeZaBYiltwb+TaLgVlJV0vsrnfDsuuIshO0ZF34oOBK5EO+VSGu&#13;
-d9zJnTF3rA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_350e6f27-79e6-4a81-87c0-77f87a3c95c0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>lYcQiqS6+rZXtUwQioeXpl2LqVJGQHzZmVolC3FT1s6cRA7YOYGzRCVUK9OXH3dSyhWXgsiJWVjs&#13;
-N/LHP6vaMw==</DigestValue></Reference></SignedInfo><SignatureValue>NLIqky9P5F2D1mFdnNklwEQoFKyn27iTHMNIaVKehLBjPVMnhxuwsHJSQKSDmdYB0plIC3GOayLh&#13;
-twGNUkvYL5kBPz7YIem80AD2bkE27eepwdsKmgOj/gV7dNa5dTHJtkgsbeVM6EjFoJQLteTGfJWJ&#13;
-nIga4WYfb82J2YVriWMCKyvCGofekBhfNCjERH/Vq0/hHB3Hj8rHjRKD0zaVGWNZadLJH84wEIm0&#13;
-CYFucRjFrdxw+M3555glv751pjV++AWVQQNPycHDJw8cS/Gq/NDfJg++ZCv5C9vLTx2nw4bf6dnf&#13;
-ORajBanGI+x76bj+nLBZ4jjzdUH7oIUarEmFdQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_42c1fef9-9e8b-4e8a-adb0-2633e4673115"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>l1rJqKHd943O25KQ45n+9EZfxAAEmaS1QWieDxxrM4yRfCixwykrKYyeroKklIjwUspfw817pY89&#13;
+z+Mn9O6yAQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_b3f338f0-798c-4ef2-a8cc-89c57f9c287a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vHqbCNzeq8JU9wdpjvRXkrZPGW6DvPZAgkX9kkfeJpiKA/8UJzsSkmUSlA+SlLsLDtSrv26HMQS4&#13;
+GS1/P87rsA==</DigestValue></Reference></SignedInfo><SignatureValue>FwUxi8mRlKjgCeW1oo3wms419l+6ZeaUwxFw84UhLfDHf5NRcAsBBvv1svtGJka1gZ8DEqXQxyi0&#13;
+lO+ynIL2D4YvS5o/tD9xh+2dsHtKmtE+4z3bG5qMup12ALhnZiWlkkCbP73+oH1t/USW4AnDm7v/&#13;
+6K69G/Z/djoId3qfkPzG16xPqoZVH6DvnT1Totk0250mB120pjGwfkn/Pe9sYpll+bUfuD3Rfzy4&#13;
+xgqb+9134ywpLGbZCIPp+bJb3IzOBSuI/X9FtL02CkeUwA54U9mUBuL0DdaroKUgG1BxdJYUGiUi&#13;
+MXWYy6fVuOl/q5kpPkIcl+4E+bozG0Ish6OOdQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1418,4 +1419,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_350e6f27-79e6-4a81-87c0-77f87a3c95c0" Target="#_7c9aa2db-07db-444d-aa55-32062d403f25"><Timestamp>2024-06-18 12:36:29</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_b3f338f0-798c-4ef2-a8cc-89c57f9c287a" Target="#_42c1fef9-9e8b-4e8a-adb0-2633e4673115"><Timestamp>2024-06-18 13:08:51</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
