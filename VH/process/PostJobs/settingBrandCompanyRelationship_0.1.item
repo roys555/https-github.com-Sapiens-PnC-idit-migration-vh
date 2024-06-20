@@ -160,7 +160,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select min(id) from CN_CONTACT cc where cc.NAME ='&quot;+(context.domainID.equals==10?context.nameDE:context.namePL)+&quot;'&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select min(cc.id), min(cc.NAME) from CN_CONTACT cc where cc.NAME ='&quot;+(context.domainID==10?context.nameDE:context.namePL)+&quot;'&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -173,6 +173,8 @@
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="ID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="NAME"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="SET_QUERY_TIMEOUT" value="false"/>
     <elementParameter field="TEXT" name="QUERY_TIMEOUT_IN_SECONDS" show="false" value="30"/>
@@ -180,11 +182,12 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_1">
       <column comment="" key="false" length="-1" name="ID" nullable="false" originalLength="-1" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="200" name="NAME" nullable="true" originalLength="200" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJavaRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="384" posY="96">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJavaRow_1"/>
-    <elementParameter field="MEMO_JAVA" name="CODE" value="context.contactID = input_row.ID;&#10;System.out.println(&quot;Contact ID from IDIT: &quot;+context.contactID);&#10;&#10;"/>
+    <elementParameter field="MEMO_JAVA" name="CODE" value="context.contactID = input_row.ID;&#10;System.out.println(&quot;Contact ID from IDIT for &quot;+input_row.NAME+&quot; : &quot;+context.contactID);&#10;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJavaRow_1"/>
@@ -475,6 +478,11 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tJavaRow_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="NAME"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
   </connection>
@@ -567,13 +575,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ab345988-fee2-44e5-828e-9904be228f10"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>e980w5Vbl26kBkRhQcjjFd7WFANpZWiCmG56EgKRmpnCcEacQnrS6qZCPYZPCkAjviMX8pCCTgU5&#13;
-i1Gs5GWJhA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_51e3f38f-1efb-4761-ad30-430b46a8890f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>bNjt1kW0buT4Szx2dUGryFjD+pgfFuQudvuTsfw8IixNFrF2oiBw016L7fogvQ/VSuANYn97DAHP&#13;
-EYE8I6WcSw==</DigestValue></Reference></SignedInfo><SignatureValue>jIAOwfc5X/ws/mGz2L+VpC30DflncPXyfpHPQcvSPNwJkL8iqRrcmDoA0U2uVFh21kCPnh1xp8pb&#13;
-R9V7hkHeE/hezPpwzNEZVdQEF9Log5KwgHXXKkDxaMVezi/nU1lTkpjIWqZmHvOQuGgedcajet6x&#13;
-RYj2nTv2MSDGcdqWy5MSzVIvDvBgrmLuZ1vGg4KKlneCQkcL+V+ubLutjzvdKLLomkkAmVubmY/5&#13;
-BiltpMCvmRcDfi/c5RZW04bzbxwNw3cp4nHtu1hKfQ6pB3YJ8x/ZTzUNbkSOPnPFC9gAHnrOGAnJ&#13;
-FBdo2yDRSMqzXJKvdT2avTuNS789fhqz1OD2Lg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ba0764ea-f23b-469e-aa1c-ebea600e1867"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>iD0kAlDIVyBo4nn1JvX3jY3LIJTKg6H0LjcRiGPp0WoUZKbo0poGqVkJsEVqzJd1F3s8EC/MqzQw&#13;
+GFZCWcBbxw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_015b870a-9462-47a1-a113-81fc2e263609"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>xnWlBG7WPMlcVdxLOEwTvU4priy1Z8r3dgjENC+G1A5wanaaK1PKhp4PU8QXrd5sY1ziZz35brJB&#13;
+OrJU6ZQEkw==</DigestValue></Reference></SignedInfo><SignatureValue>M0qP6jPf32mHstPtiNfjEltYucSfCQl1hFagz2+oTJmuUylJOurz0KpX24BDfhBT2uJk5mh+TGuS&#13;
++gd8NyIHL2xwE2H+PaanaXiN1pX/r74ARL/r65ORlw6ERBNbHcMxhgLyB/V13TAV6i7KL7WiSOGr&#13;
+GOmpikSmh6x/cC3zcsEK1bPXHaa2spirh3VGUjVA+1T+DrzyTG/B95o5DGsS0YuIyF3ZYCXlZbP/&#13;
+cTJH9vHjljhmT5blTqrZ3njnYQ5o0MYmagULB3gy82Xxy/GIUoyWs+Ia51mWPpCHkXNzT9b8qbOl&#13;
+frbLF+b9D2IA41WgcB234xhFtOJWbk/BIQyImQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -595,4 +603,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_51e3f38f-1efb-4761-ad30-430b46a8890f" Target="#_ab345988-fee2-44e5-828e-9904be228f10"><Timestamp>2024-06-20 13:03:30</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_015b870a-9462-47a1-a113-81fc2e263609" Target="#_ba0764ea-f23b-469e-aa1c-ebea600e1867"><Timestamp>2024-06-20 13:15:06</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
