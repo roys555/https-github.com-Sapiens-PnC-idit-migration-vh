@@ -2400,7 +2400,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  v.POLICE, v.VERTRAG, v.V_START_DATE, v.V_END_DATE, v.CROP_GROUP, v.VER_ZUSTAND, v.VER_SCHADENFREIHEITSRABATT, v.VER_HISTORIE, v.POL_WIRTSCHAFTSWEISE, &#13;&#10;v.V_CONTRACT_START, v.V_CONTRACT_END, v.CONTRACT_DURATION, v.PAYMENT_TERM, v.IS_ANNUAL_PAYER, v.COLLECTION_METHOD, v.VER_STATUS, v.VER_KUENDIGUNG, v.PAR_PARTNER_NR, v.VERTRAG_REMARKS, &#13;&#10;v.POLICY_VERSION, v.NEXT_NUM_IN_BUNDLE&#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION v&#13;&#10;WHERE 1=1&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VERTRAG  = cms.POLICY_ID &#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  v.POLICE, v.VERTRAG, v.V_START_DATE, v.V_END_DATE, v.CROP_GROUP, v.VER_ZUSTAND, v.VER_SCHADENFREIHEITSRABATT, v.VER_HISTORIE, v.POL_WIRTSCHAFTSWEISE, &#13;&#10;v.V_CONTRACT_START, v.V_CONTRACT_END, v.CONTRACT_DURATION, v.PAYMENT_TERM, v.IS_ANNUAL_PAYER, v.COLLECTION_METHOD, v.VER_STATUS, v.VER_KUENDIGUNG, v.PAR_PARTNER_NR, v.VERTRAG_REMARKS, &#13;&#10;v.POLICY_VERSION, v.NEXT_NUM_IN_BUNDLE,&#13;&#10;v.GFM_FELDMARK, premiumSystem&#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION v&#13;&#10;WHERE 1=1&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VERTRAG  = cms.POLICY_ID &#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2457,6 +2457,10 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="Next_num_in_bundle"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GFM_FELDMARK"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="premiumSystem"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -2484,6 +2488,8 @@
       <column comment="" key="false" length="60" name="vertrag_remarks" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="128" posY="544">
@@ -2500,7 +2506,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="POLICY_VERSION_SELECTION" name="copyOfversions">
+    <metadata comment="" label="POLICY_VERSION_SELECTION" name="copyOfversions">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
@@ -2523,9 +2529,11 @@
       <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="NEXT_NUM_IN_BUNDLE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="CROP_GROUP_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="premiumSystem" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="__hJ3YDEoEe6Aiprvzu3JPQ - POLICY_VERSION_SELECTION" name="copyOfversions" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row7.POLICE" name="POLICE" type="id_Long"/>
@@ -2550,6 +2558,8 @@
         <mapperTableEntries expression="row7.POLICY_VERSION" name="POLICY_VERSION" type="id_Integer"/>
         <mapperTableEntries expression="row7.Next_num_in_bundle " name="NEXT_NUM_IN_BUNDLE" nullable="true" type="id_Long"/>
         <mapperTableEntries name="CROP_GROUP_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row7.GFM_FELDMARK " name="GFM_FELDMARK" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row7.premiumSystem " name="premiumSystem" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row7" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
@@ -2573,6 +2583,8 @@
         <mapperTableEntries name="vertrag_remarks" nullable="true" type="id_String"/>
         <mapperTableEntries name="POLICY_VERSION" nullable="true" type="id_Integer"/>
         <mapperTableEntries name="Next_num_in_bundle" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="GFM_FELDMARK" nullable="true" type="id_String"/>
+        <mapperTableEntries name="premiumSystem" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -2601,6 +2613,8 @@
       <column comment="" key="false" length="60" name="vertrag_remarks" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="544">
@@ -2738,6 +2752,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GFM_FELDMARK"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="premiumSystem"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;POLICY_VERSION_SELECTION&quot;"/>
@@ -2765,6 +2789,8 @@
       <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="NEXT_NUM_IN_BUNDLE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="CROP_GROUP_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="premiumSystem" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="POLICY_VERSION_SELECTION" name="REJECT">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -2789,6 +2815,8 @@
       <column comment="" key="false" length="-1" name="POLICY_VERSION" nullable="false" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="NEXT_NUM_IN_BUNDLE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="CROP_GROUP_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="premiumSystem" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2809,7 +2837,7 @@
     <elementParameter field="TEXT" name="USER" show="false" value="&quot;&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:ww11nWlktN2r5YpJu7RORkYCyR2z8bQ8tbql25ow"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;K2V_DEV.int_CONTRACT_VERSION_SELECTION&quot;"/>
-    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="TRUNCATE"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_CREATE"/>
     <elementParameter field="LABEL" name="NOTE" value="Warning : this component configuration will automatically generate a commit before data insert/update/delete"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
@@ -2933,6 +2961,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GFM_FELDMARK"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="premiumSystem"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
@@ -2970,6 +3008,8 @@
       <column comment="" key="false" length="60" name="vertrag_remarks" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" name="REJECT">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -2993,6 +3033,8 @@
       <column comment="" key="false" length="60" name="vertrag_remarks" nullable="true" originalLength="60" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="7" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -3591,7 +3633,7 @@
       <column comment="" key="false" length="10" name="ADD1" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_4X6JUC77Ee-HoPA-5EbYLg - trn_CROP_GROUP" name="trn_CropGroup_out" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="trn_CropGroup.INPUT_VALUE " name="in_value" nullable="true" type="id_String"/>
@@ -3861,6 +3903,12 @@
       <elementValue elementRef="TRACE_COLUMN" value="Next_num_in_bundle"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="premiumSystem"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="GFM_FELDMARK"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row6"/>
@@ -4093,13 +4141,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_2f7d30bd-1666-45f7-a9df-d3340d50f0ee"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>hpC+K0yXPyQhz7fJXpj74Y/XZkbUBrgOd44X/8zg0CGjnK1ymznbpbVBeMwcO6vs+pL657mwowJ8&#13;
-a7P/d++0Ag==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_73ebb090-5ad6-4f32-a520-374563b07e5a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VNNppN/IhMGrDon5G0ki8dYQr4kkQ/Zyrx9xT0R4Lo9/bevJc/HcME8h3EjWx3Hz5VwKwOYmIbk5&#13;
-DRG6ErHSVQ==</DigestValue></Reference></SignedInfo><SignatureValue>evTTtKbCPSt3ucyH4Jhhrdwdfb568tXOWhLOFm0TcSqhXnTI9mKFFM3xRvaEuHhucQZQiwyMNdL3&#13;
-7OY3dlSJBECxRHXeZ2qZ+K/4BINv9FIZQZafrkOYFRKksMWQl4hUn2Q0pMZs1KrUt5Wl8hrIZWj/&#13;
-Md24EWKlaq+vp5G+o8NTZK2U/GtfwkxUqp9t78YnqcZeh4xQZWdPKm+XfK1u3ozvUfYAig0k3vIL&#13;
-kT11c1dU1rQ4Jry8Yjj0bMfDl+zr/1QL3xFP7n7n3YtrXd9jiO/sNKyPBvQFyq3azcGjh6bBsquf&#13;
-ysvvKN9jj50KUxhynjSwp0eX5d3bhGVBEIJNpw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_94d1ee3e-c6bb-4330-abaf-2a47ce0fc074"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>g6UEl9vlev9x/oRn8TVOHswwLzPTmBlPpsQj56W+Mj2JGIFgkf9WG+/0ViA2Kxgo/4mt3BoV40Rr&#13;
+As0KBfoQnA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f30e6cf9-e24a-412f-a78f-08f19f10c3f6"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>hS3iqYXkwHAA/luKZFH0ugk+HPCmffyIdFJTjVDisXfjMINKalBuF5REMyf/TA/ERplPvy8oYO97&#13;
+lgHQKVLxRw==</DigestValue></Reference></SignedInfo><SignatureValue>dEXA5YcYiDPCs7LVLoyLgD62MChsQso/Lf3Efg6UsRXw6e2ZpbfQQyJa7Iv3r858HWMiJXOYPxTt&#13;
+kn/4gpWMh6/usLksLHq4QbmIpIIxB8nu28DwFVM8J0qb1z+bsGyXwRk2M5aKzNoAXQpSM0z7Pdeq&#13;
+56N43azdopPdXnpPL6wZRUee4W9Su9RqN7tl81IPpMlutR16XK3Xk+qtp4k7WL4ZAeXxyYSiC6om&#13;
+rgWpoHShE0FlZ/HggWMHpQG0epA24vby3/OYEGxIORJuIQN0CnhE9hyttN7wpjrpwqwfi5wEoojf&#13;
+uD+Jo/H0tlQW9ihTBhnmKb+o6Qfpnn3GZr7XAA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4121,4 +4169,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_73ebb090-5ad6-4f32-a520-374563b07e5a" Target="#_2f7d30bd-1666-45f7-a9df-d3340d50f0ee"><Timestamp>2024-06-20 11:55:32</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f30e6cf9-e24a-412f-a78f-08f19f10c3f6" Target="#_94d1ee3e-c6bb-4330-abaf-2a47ce0fc074"><Timestamp>2024-06-21 12:03:36</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
