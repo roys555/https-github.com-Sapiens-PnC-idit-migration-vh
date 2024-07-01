@@ -142,6 +142,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LATEST_END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ORIG_START_DATE"/>
@@ -156,6 +158,7 @@
       <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAR_PARTNERNR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="VERTRAG_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
@@ -210,10 +213,11 @@
       <column comment="" key="false" length="-1" name="cancelFrom" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.START_DATE " name="policyStartDate" type="id_Date"/>
         <mapperTableEntries expression="TalendDate.ADD_TO_DATE(TalendDate.ADD_TO_DATE(row1.START_DATE ,&quot;Y&quot;,1),&quot;SS&quot;,-1) " name="policyEndDate" type="id_Date"/>
+        <mapperTableEntries expression="TalendDate.ADD_TO_DATE(TalendDate.ADD_TO_DATE(row1.LATEST_END_DATE ,&quot;Y&quot;,1),&quot;SS&quot;,-1) " name="l_policyEndDate_2" type="id_Date"/>
       </varTables>
       <outputTables name="policyHeader" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
@@ -226,10 +230,10 @@
         <mapperTableEntries expression="row1.ENTITY_ID " name="externalHeaderNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="isHealthUmbrellaPolicy" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="isMasterPolicy" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="row1.END_DATE " name="mainRenewalDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="Var.l_policyEndDate_2 " name="mainRenewalDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="false" name="multiplePayersFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="false" name="paidByAgentFlag" nullable="true" type="id_Boolean"/>
-        <mapperTableEntries expression="row1.END_DATE " name="policyEndDate" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="Var.l_policyEndDate_2 " name="policyEndDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row1.ORIG_START_DATE " name="policyProposalDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row1.ORIG_START_DATE " name="policyStartDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="(long)10000" name="processingStatusVORefID" nullable="true" type="id_Long"/>
@@ -257,6 +261,7 @@
         <mapperTableEntries name="LATEST_START" nullable="true" type="id_Date"/>
         <mapperTableEntries name="PAR_PARTNERNR" nullable="true" type="id_Long"/>
         <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="LATEST_END_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="VERTRAG_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries name="ORIG_START_DATE" nullable="true" type="id_Date"/>
       </inputTables>
@@ -876,13 +881,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8ad0bbe3-7eba-45e1-b84e-855c61e0ebdc"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>AaBMb2IcfkUaLSDw1nKWk4fKWMMYVV7tNAyzRkhaSE9ww4H60konAA5MY2au/QOHIeKuBlONmXMR&#13;
-D7NEgIGiJg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_7d8408ed-491a-45d9-a694-039f19a15cce"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>GJ0y5J2V+Pvl5dtDHdiS/lSI6uYplsPiO9AsgtNH1tfiBOLBC0E3gXcJYu/jNmxchvAzRdCd7VCB&#13;
-yGgRZPKmWQ==</DigestValue></Reference></SignedInfo><SignatureValue>YpxeuQrXHEAVcGI05w60X2X3zZlz39aolZfOBcAjQG+vAuLt+r9GOIsq4qFQGie8XEzrjzA2p37q&#13;
-V3eGuaJyFT5147fSsCPdv/B6SqdNhYfcwJasA0SxgAFrhVcRJ3ruQhh8YpjwQtVLqqkhJt+G9D7l&#13;
-1P2DCicIXOg4sYMW0k4fkGdSf/DsTJM6DwbHlbJcVcSZoVdH0HNSLUpd3WWJH85N92YioPNu8zdO&#13;
-pIE2GGEQnL8LFNHmgsZ/oiRtemT6wm9mcOEADWg4tlQS8rwUT4BWOxMQjT8wpXsIFC/IOGlDG2+I&#13;
-MjRMr5S8v08r8IuaS4pr/rSVwDnyHYjSEp0Khg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_a1bf76fb-3cd8-4f06-8895-3a82b6748ae0"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>tGel7YRn2yMrQWxVEbnsoNM74FqxIWraVk7PjODOvoPZrRQJQYJX9LqcmzzAPab46vtYGuSS7D82&#13;
+pLLgtlmoHQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8bf216d5-822f-4f9e-9bfa-5733bdcd02bc"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>hUAN7L7m9qQcDzcj3msQbv6wvyz4xUkG5AyWcWyz+XY1r7gwCtg3eRCDIrHkPdOPbvm7EsYgurJG&#13;
+vdlMWBQaZg==</DigestValue></Reference></SignedInfo><SignatureValue>A4f6422oPvFXecKxvYHG8XrTG0X3GaG6fUQSLZxTkUcjcD21F8gMp2xWePZMl45atQzDDyn12jUr&#13;
+osI8YcEDF7giWFTvR2yxnOB0pBXtOigEL73VonlaX3YZdBZ05hMfcjdcqT/v9i3vnbJpbso4AZlj&#13;
+yywuAGcDQBH/V8WSb2oEVOMyAFQQ5pyBGFWg+1Zahzc/PO5xAdk2aXN6hLUKeFVgrZaCgRyIoKM4&#13;
+iagX7sv6sMDur5B9u5IeRKucVhM5bgLVPP6b3mhLvg8S63bagZAha7XM5M2aLNI0Sh0zzv1ehwhu&#13;
+Qx7aiSTm8dN1pJvlFMG/w2k1qA78hVgVBgJ9qw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -904,4 +909,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_7d8408ed-491a-45d9-a694-039f19a15cce" Target="#_8ad0bbe3-7eba-45e1-b84e-855c61e0ebdc"><Timestamp>2024-04-30 09:13:22</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8bf216d5-822f-4f9e-9bfa-5733bdcd02bc" Target="#_a1bf76fb-3cd8-4f06-8895-3a82b6748ae0"><Timestamp>2024-07-01 13:51:08</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
