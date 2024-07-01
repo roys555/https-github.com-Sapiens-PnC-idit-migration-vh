@@ -21,7 +21,7 @@
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
-    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="288"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="320"/>
     <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="0"/>
     <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" show="false" value=""/>
@@ -972,7 +972,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT PAR_PARTNER_NR  FROM sev.partner par&#13;&#10;WHERE LENGTH(par_partner_nr) = 8&#13;&#10;  AND (par_partner_nr_bd BETWEEN 101 AND 108&#13;&#10;    OR EXISTS&#13;&#10;          (SELECT 1 FROM sev.police pol&#13;&#10;           WHERE pol.par_partner_nr = par.par_partner_nr&#13;&#10;             AND pol.pol_police_typ IN ('VH','KH')&#13;&#10;             AND pol.pol_zustand = 'lebend'&#13;&#10;             AND pol.pol_historie = 'HN'))&#13;&#10;  AND par_bezirksverein_nr IS NOT NULL&#13;&#10;  AND (EXISTS&#13;&#10;          (SELECT 1  FROM sev.partner_anschrift pan&#13;&#10;           WHERE pan.par_partner_nr = par.par_partner_nr) -- Es existiert eine Anschrift oder&#13;&#10;    OR EXISTS&#13;&#10;          (SELECT 1  FROM sev.police pol&#13;&#10;           WHERE pol.par_partner_nr = par.par_partner_nr&#13;&#10;             AND pol.pol_police_typ IN ('VH','KH')&#13;&#10;             AND pol.pol_zustand = 'lebend'&#13;&#10;             AND pol.pol_historie &lt; 'HT')) --  eine ehemals/aktuell lebende VH- oder KH Police&#13;&#10;  AND (LOWER(par.par_name) NOT LIKE 'x%'&#13;&#10;    OR EXISTS&#13;&#10;          (SELECT 1 FROM sev.police pol&#13;&#10;           WHERE pol.par_partner_nr = par.par_partner_nr&#13;&#10;             AND pol.pol_police_typ IN ('VH','KH')&#13;&#10;             AND pol.pol_zustand = 'lebend'&#13;&#10;             AND pol.pol_historie &lt; 'HT'))&#13;&#10;  AND (LOWER(par_name) NOT LIKE 'gelöscht'&#13;&#10;    OR EXISTS&#13;&#10;          (SELECT 1 FROM sev.police pol&#13;&#10;           WHERE pol.par_partner_nr = par.par_partner_nr&#13;&#10;             AND pol.pol_police_typ IN ('VH','KH')&#13;&#10;             AND pol.pol_zustand = 'lebend'&#13;&#10;             AND pol.pol_historie &lt; 'HT'))&#13;&#10;  AND par_partner_nr NOT IN (12086814,&#13;&#10;                             12086901,&#13;&#10;                             12086820,&#13;&#10;                             12086835,&#13;&#10;                             12086843,&#13;&#10;                             12086857,&#13;&#10;                             12086862,&#13;&#10;                             12086878,&#13;&#10;                             12086881,&#13;&#10;                             12086899,&#13;&#10;                             12028451) --Testkontakte&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT par.PAR_PARTNER_NR FROM sev.partner par&#13;&#10;left JOIN sev.vm vm ON par.PAR_PARTNER_NR = vm.PAR_PARTNER_NR&#13;&#10;WHERE nvl(vm.VMR_VERTRIEBSFORM,'leer')&lt;&gt;'Direktvertrieb' and LENGTH(par.par_partner_nr) = 8&#13;&#10;  AND (par_partner_nr_bd BETWEEN 101 AND 108&#13;&#10;    OR EXISTS&#13;&#10;          (SELECT * FROM sev.police pol&#13;&#10;           WHERE pol.par_partner_nr = par.par_partner_nr&#13;&#10;             AND pol.pol_police_typ IN ('VH','KH')&#13;&#10;             AND pol.pol_zustand = 'lebend'&#13;&#10;             AND pol.pol_historie = 'HN'))&#13;&#10;  AND par_bezirksverein_nr IS NOT NULL&#13;&#10;  AND (EXISTS&#13;&#10;          (SELECT *  FROM sev.partner_anschrift pan&#13;&#10;           WHERE pan.par_partner_nr = par.par_partner_nr) -- Es existiert eine Anschrift oder&#13;&#10;    OR EXISTS&#13;&#10;          (SELECT *  FROM sev.police pol&#13;&#10;           WHERE pol.par_partner_nr = par.par_partner_nr&#13;&#10;             AND pol.pol_police_typ IN ('VH','KH')&#13;&#10;             AND pol.pol_zustand = 'lebend'&#13;&#10;             AND pol.pol_historie &lt; 'HT')) --  eine ehemals/aktuell lebende VH- oder KH Police&#13;&#10;  AND (LOWER(par.par_name) NOT LIKE 'x%'&#13;&#10;    OR EXISTS&#13;&#10;          (SELECT * FROM sev.police pol&#13;&#10;           WHERE pol.par_partner_nr = par.par_partner_nr&#13;&#10;             AND pol.pol_police_typ IN ('VH','KH')&#13;&#10;             AND pol.pol_zustand = 'lebend'&#13;&#10;             AND pol.pol_historie &lt; 'HT'))&#13;&#10;  AND (LOWER(par_name) NOT LIKE 'gelöscht'&#13;&#10;    OR EXISTS&#13;&#10;          (SELECT * FROM sev.police pol&#13;&#10;           WHERE pol.par_partner_nr = par.par_partner_nr&#13;&#10;             AND pol.pol_police_typ IN ('VH','KH')&#13;&#10;             AND pol.pol_zustand = 'lebend'&#13;&#10;             AND pol.pol_historie &lt; 'HT'))&#13;&#10;  AND par.par_partner_nr NOT IN (12086814,&#13;&#10;                             12086901,&#13;&#10;                             12086820,&#13;&#10;                             12086835,&#13;&#10;                             12086843,&#13;&#10;                             12086857,&#13;&#10;                             12086862,&#13;&#10;                             12086878,&#13;&#10;                             12086881,&#13;&#10;                             12086899,&#13;&#10;                             12028451) --Testkontakte&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -992,7 +992,7 @@
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
-    <elementParameter field="TEXT" name="LABEL" value="stg_DE_CONTACT_v20"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_DE_CONTACT"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_4">
       <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -1261,7 +1261,7 @@
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
-    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value=""/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
     <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
     <elementParameter field="CLOSED_LIST" name="DB_VERSION" show="false" value="ORACLE_18"/>
     <elementParameter field="TEXT" name="RAC_URL" show="false" value="context.Oracle_staging_Server"/>
@@ -4265,6 +4265,10 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tDBInput_8">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
+  </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tMap_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ID"/>
@@ -4274,10 +4278,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tDBInput_8">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
   </connection>
   <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tDBOutput_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4392,6 +4392,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk8"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tDBInput_6">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
+  </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tMap_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ID"/>
@@ -4401,10 +4405,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tDBInput_6">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfcopyOfout" lineStyle="0" metaname="copyOfcopyOfout" offsetLabelX="0" offsetLabelY="0" source="tMap_5" target="tDBOutput_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4495,10 +4495,6 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk11"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tDBInput_3">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
-  </connection>
   <connection connectorName="FLOW" label="CLS_49" lineStyle="0" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tMap_8">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="orig_start_date"/>
@@ -4562,6 +4558,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CLS_49"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tDBInput_3">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
   </connection>
   <connection connectorName="FLOW" label="ALL_DE_CONTRACT_v49" lineStyle="0" metaname="ALL_DE_CONTRACT_v49" offsetLabelX="0" offsetLabelY="0" source="tMap_8" target="tDBOutput_8">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4823,7 +4823,7 @@
   <subjob>
     <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_4"/>
-    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="ALL_DE_CONTACT"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="ALL_DE_CONTACT_v104"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
@@ -4951,13 +4951,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_74899391-f6c5-45c3-84d9-b652b4fea373"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>K6hnfvIg/ogUYYGgLXVZimAAlaNIX8ff3YNV/Aj8mUsswZAb3y5xUNtasjuxDhLOhk/NRwLJfP+a&#13;
-JVAm4ss28A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_6d060186-d4e8-402e-a5d5-b7423c3840ff"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Jo+aUmQ+dMUAx3PnKl8uRAexFIRmtc5MsBnMJAF1I9eFLGYkdNRGAx63Le1Dg3iY/A/1FIDCpmFB&#13;
-Y55v9AtRjA==</DigestValue></Reference></SignedInfo><SignatureValue>BozKLYnLS3QBIgtY0GK0zuPEHIviPwcA1+qcXy1TN3djr1sJ3NMHvPlEtASJZ4Tix1cFeZVDRM2p&#13;
-qz0B78++VSOIJsvnMh+Q8rZ8nJZzsT6TnZabEKf4sDUzAefOnxv7e+IHwXmPpfIm2XrAwmnIU3cM&#13;
-JoOIQpmRW/YuvAFMclO8xklz5HdYfVZzFG6+n8je820DaB8w88aW3jiocXRFa6eFHUWo85DxrKUZ&#13;
-b6vaCqfUwjckZx+ixvwZMDAnfT76X6Fdg/dgNlRNrnrm5ufpAM4TT4FVv3BCET7DyJNUAC1mfQRI&#13;
-pqetbLORFXwB2Lngk6HSe9+DFBEkH5MFmsDZNA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_451d5abf-7a80-4c64-a7b5-cd2bf3540477"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>OZXyDlG5dNN0ayVqOB7fd2O8EFwaxp+if+TWWWuhfMEAnYnBYGWPJD9UuXxUoOrY74xZKIGjivfx&#13;
+jG9a/s56/Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_0aa19190-c77f-4d9b-a1ae-11500b1ba740"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NLHG8eux5nd1yjJm7mWsgzzi0TmNmr7S1LTOWXds3Jka2695Za+xM4z9Wjx2PRYnOJBDZCj8nb5+&#13;
+4AL4QSbKrA==</DigestValue></Reference></SignedInfo><SignatureValue>lcQm43TCzaMkz6p01eNs3msqreqdsniT+JqfcXXq8Wm0gH8QznkMDZ3+7cydNtJt8s6ESdcGdbPv&#13;
+9DofOSWGdN2Pb096OUHs6G1/GT9mUQcWHp5F/kAoH2l13KhtfNpFEdjVkQ7hZZ43/BKkTpYWhOpC&#13;
+S+0T2vHvtL32gt7RvXWCIv9cAmKVKTD+JHtEXR2umqx1GuUiuif5qp8epI4GSIaLBUQgJT2AusXV&#13;
+yYIsyytIMeOaMeHegCADv0p4t6MhGC43akcZJujGTNEOSKf6jTHBf/N9/8zeckQpd0k9uMS8NaWW&#13;
+dGdzwLcPFBRgfCQe6NWzaIM5R43JM3uS4SsGZQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4979,4 +4979,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_6d060186-d4e8-402e-a5d5-b7423c3840ff" Target="#_74899391-f6c5-45c3-84d9-b652b4fea373"><Timestamp>2024-06-21 09:58:45</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_0aa19190-c77f-4d9b-a1ae-11500b1ba740" Target="#_451d5abf-7a80-4c64-a7b5-cd2bf3540477"><Timestamp>2024-07-01 12:25:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
