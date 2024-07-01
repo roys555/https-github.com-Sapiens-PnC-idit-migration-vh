@@ -702,7 +702,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ENTITY_ID, BUNDLE_POLICY_ID, START_DATE, LATEST_START, PAR_PARTNER_NR, END_DATE, MAX_VERTRAG_NR, ORIG_START_DATE &#13;&#10;FROM K2V_DEV.ALL_DE_POLICY adp &#13;&#10;where exists (select 1 from k2v_dev.policy_migration_status a where adp.entity_id = a.entity_id and a.migration_status=100 and  a.migration_id = &quot;+ context.migrationID+&quot;)&quot;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT ENTITY_ID, BUNDLE_POLICY_ID, START_DATE, LATEST_START, PAR_PARTNER_NR, END_DATE,  LATEST_END_DATE, MAX_VERTRAG_NR, ORIG_START_DATE &#13;&#10;FROM K2V_DEV.ALL_DE_POLICY adp &#13;&#10;where exists (select 1 from k2v_dev.policy_migration_status a where adp.entity_id = a.entity_id and a.migration_status=100 and  a.migration_id = &quot;+ context.migrationID+&quot;)&quot;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -729,6 +729,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="END_DATE"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LATEST_END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="MAX_VERTRAG_NR"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="ORIG_START_DATE"/>
@@ -745,6 +747,7 @@
       <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_END_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="MAX_VERTRAG_NR" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
@@ -769,7 +772,8 @@
       <column comment="" key="false" length="-1" name="START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAR_PARTNERNR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="VERTRAG_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
@@ -783,6 +787,7 @@
         <mapperTableEntries expression="row5.LATEST_START " name="LATEST_START" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row5.PAR_PARTNER_NR " name="PAR_PARTNERNR" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row5.END_DATE " name="END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="LATEST_END_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="row5.MAX_VERTRAG_NR " name="VERTRAG_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row5.ORIG_START_DATE " name="ORIG_START_DATE" nullable="true" type="id_Date"/>
       </outputTables>
@@ -793,6 +798,7 @@
         <mapperTableEntries name="LATEST_START" nullable="true" type="id_Date"/>
         <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
         <mapperTableEntries name="END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="LATEST_END_DATE" nullable="true" type="id_Date"/>
         <mapperTableEntries name="MAX_VERTRAG_NR" nullable="true" type="id_Long"/>
         <mapperTableEntries name="ORIG_START_DATE" nullable="true" type="id_Date"/>
       </inputTables>
@@ -853,6 +859,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="LATEST_END_DATE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG_NR"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -874,6 +885,7 @@
       <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAR_PARTNERNR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="VERTRAG_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
     </metadata>
@@ -884,6 +896,7 @@
       <column comment="" key="false" length="-1" name="LATEST_START" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PAR_PARTNERNR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="LATEST_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="VERTRAG_NR" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="ORIG_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1060,7 +1073,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" label="BUNDLE_VERSIONS" name="versions">
+    <metadata comment="" connector="FLOW" label="BUNDLE_VERSIONS" name="versions">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="POLICY" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -1080,7 +1093,7 @@
       <column comment="" key="false" length="10" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_5z01YIoCEe6-hOaZAw8M6g - BUNDLE_VERSIONS" name="versions" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row2.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
@@ -1813,6 +1826,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="ORIG_START_DATE"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="LATEST_END_DATE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
@@ -1880,14 +1896,14 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="versions"/>
   </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk5"/>
+  </connection>
   <connection connectorName="FLOW" label="row7" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row7"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_1">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk5"/>
   </connection>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tPrejob_1" offsetLabelX="0" offsetLabelY="0" source="tPrejob_1" target="tDBConnection_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk6"/>
@@ -2032,13 +2048,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_4151ca7a-a0d2-4c2a-9ae0-a336446a579a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>MCcsXGtO48fzzTo2dHE8JeKuwY6MobeuxY/qET2MS+fCEnXFiOU3bh/thpABbOokWPFVoePpyBMH&#13;
-D4tCQXY/lg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f961255b-a06f-4897-b1de-69a53cd8e30d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ZOAjo9p4rgjiiypYbJ+futpwXovs7vA4G6io6jwyDY/MXrUHw9igBLLq+VMfCWxnmJ3M3xNaZOYJ&#13;
-2yjDwp2pRQ==</DigestValue></Reference></SignedInfo><SignatureValue>FFIeq7zR6EbWtRApM8wtE0CW39Tc3H93G2KjYJVAXqdUtVicFMK4/g0dENPak/LRax0xQ9Ma4Bf6&#13;
-tcrP1B+b9sUl5yn/MTyB4Iq5hlcpBidqzRUU/GEeWVBNdoUZUUdsXf4wJx32ip+Cx4D2Rcn2F6EA&#13;
-eJMp03vQnGBp8g5FTecvdYrbneGlExJoFha8CX6LeFSdXMiEZKpQA2mJGbRtmXOyALjvmOYPs0Jm&#13;
-Z2dqb7uDqTzV+7FEK/ziZsbZQCewPUaGK4nT3eXBNpxkrXKmMrPjg2FOLSIijF+VjkYY3cwF7TQ1&#13;
-Fwib+f69PnVwHSKm4p+M1rdDJPyq8xv7wh6DzA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_331b78e8-4c68-477c-88ed-0712d86af58d"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>shoP5ot49AiQq4rv0uaetOCWwg0S0nGdprkIbttCJWDWpowpZGZamp9fHWoeggc6CoZIfQWvirW8&#13;
+gfVxkZC18Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8fd29f12-8045-45a0-a865-6087baefb576"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>YTmZTE9mlGXn0Q9w8xGSU7ouQZphTeJ+JSlzlVkJvgbS7PZN1foXtAKJFCy+lURwsJCCfQTfrPQe&#13;
+VsveNbWFCg==</DigestValue></Reference></SignedInfo><SignatureValue>CXjYlWcaQnU+bsmKVJnhihOzMHGeLqKdVzPITmXCEjs+F78d3CvJg2qtqWBkx1HZoqwy0PKDUrtL&#13;
+NcirlvS/H0mGZJrg5of90qIlBNnxZWhPq+nmGvlG1g2dX+5qHteGv10qNhvI1FncJtkj1JXdF+/h&#13;
+oXlI53Ze1vAJcCTra3Z10GqpYOTKL/ypWfG2sZ+4i5lqBYrU2TUbnCOZ8K1nCNNLKfKV1LOLB8TB&#13;
+7AfYZjb6fS5dbKsVU2ANnw/dLW8fGaZAm39iDxfRR/J9Sa1LALWogmG5sw1plAhXEkMS5bJuDCuO&#13;
+voNljwFjHX1BWGIGk9fxblx1wZHaf+k61+VEVw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2060,4 +2076,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f961255b-a06f-4897-b1de-69a53cd8e30d" Target="#_4151ca7a-a0d2-4c2a-9ae0-a336446a579a"><Timestamp>2024-06-17 13:15:28</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8fd29f12-8045-45a0-a865-6087baefb576" Target="#_331b78e8-4c68-477c-88ed-0712d86af58d"><Timestamp>2024-07-01 13:22:06</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
