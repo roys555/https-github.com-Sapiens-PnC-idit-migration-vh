@@ -485,7 +485,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;A.entity_id,&#13;&#10;SUBSTR(p2.PARTNER_NUMBER,1,7)&#9;AS PARTNER_NUMBER,&#13;&#10;p.AEN_DATUM&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AS Update_Date,&#13;&#10;p.ID__MY_GLOBAL__POLICY_POLICY_STATUS&#9;AS Status,&#13;&#10;p.ID_POLICY__ORIGIN&#9;&#9;&#9;&#9;&#9;&#9;AS origin_policy_nr,&#13;&#10;p.ID&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AS policy_nr,&#13;&#10;p.ID_POLICY &#9;&#9;&#9;&#9;&#9;&#9;&#9;AS previous_policy_nr,&#13;&#10;p.ORIGIN_CONSECUTIVE_NUMBER &#9;&#9;&#9;AS policy_version,&#13;&#10;p.DATE_START_INSURANCE&#9;&#9;&#9;&#9;&#9;AS Start_Date,&#13;&#10;p.DATE_END_INSURANCE&#9;&#9;&#9;&#9;&#9;AS End_Date,&#13;&#10;p.DATE_START_VALID &#9;&#9;&#9;&#9;&#9;&#9;AS Proposal_Date&#13;&#10;FROM MY_POLICY.POLICY p&#13;&#10;INNER JOIN MY_PARTNER.PARTNER p2 ON p.ID__MY_PARTNER__PARTNER = SUBSTR(p2.PARTNER_NUMBER,1,7)&#13;&#10;INNER JOIN k2v_dev.pl_policy_migration_status a on p.id = a.policy_nr &#13;&#10;INNER JOIN ( SELECT coalesce(ID_POLICY__ORIGIN, id)&#9; id , count(*) +1 next_num_in_bundle&#13;&#10;               FROM my_policy.policy  GROUP BY coalesce(ID_POLICY__ORIGIN, id) &#13;&#10;             ) X ON x.id = coalesce(p.ID_POLICY__ORIGIN, p.id) &#13;&#10;      where  a.migration_status=100 and  a.migration_id =     &quot;+ context.migrationID&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;A.entity_id,&#13;&#10;coalesce(p.ID_POLICY__ORIGIN, p.id)&#9;    AS MASTER_POLICY_ID,&#13;&#10;X.next_num_in_bundle,&#13;&#10;SUBSTR(p2.PARTNER_NUMBER,1,7)&#9;AS PARTNER_NUMBER,&#13;&#10;p.AEN_DATUM&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AS Update_Date,&#13;&#10;p.ID__MY_GLOBAL__POLICY_POLICY_STATUS&#9;AS Status,&#13;&#10;p.ID_POLICY__ORIGIN&#9;&#9;&#9;&#9;&#9;&#9;AS origin_policy_nr,&#13;&#10;p.ID&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;AS policy_nr,&#13;&#10;p.ID_POLICY &#9;&#9;&#9;&#9;&#9;&#9;&#9;AS previous_policy_nr,&#13;&#10;p.ORIGIN_CONSECUTIVE_NUMBER &#9;&#9;&#9;AS policy_version,&#13;&#10;p.DATE_START_INSURANCE&#9;&#9;&#9;&#9;&#9;AS Start_Date,&#13;&#10;p.DATE_END_INSURANCE&#9;&#9;&#9;&#9;&#9;AS End_Date,&#13;&#10;p.DATE_START_VALID &#9;&#9;&#9;&#9;&#9;&#9;AS Proposal_Date&#13;&#10;FROM MY_POLICY.POLICY p&#13;&#10;INNER JOIN MY_PARTNER.PARTNER p2 ON p.ID__MY_PARTNER__PARTNER = SUBSTR(p2.PARTNER_NUMBER,1,7)&#13;&#10;INNER JOIN k2v_dev.pl_policy_migration_status a on p.id = a.policy_nr &#13;&#10;INNER JOIN ( SELECT coalesce(ID_POLICY__ORIGIN, id)&#9; id , count(*) +1 next_num_in_bundle&#13;&#10;               FROM my_policy.policy  GROUP BY coalesce(ID_POLICY__ORIGIN, id) &#13;&#10;             ) X ON x.id = coalesce(p.ID_POLICY__ORIGIN, p.id) &#13;&#10;      where  a.migration_status=100 and  a.migration_id =     &quot;+ context.migrationID&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -501,6 +501,10 @@
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_POLICY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="NEXT_NUM_IN_BUNDLE"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_NUMBER"/>
       <elementValue elementRef="TRIM" value="false"/>
@@ -529,6 +533,8 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_1">
       <column comment="" key="false" length="-1" name="ENTITY_ID" nullable="false" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="MASTER_POLICY_ID" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="NEXT_NUM_IN_BUNDLE" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PARTNER_NUMBER" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="UPDATE_DATE" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="STATUS" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -555,8 +561,10 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="POLICY_LEGACY_SELECTION" name="pl_POLICY_LEGACY_SELECTION">
+    <metadata comment="" label="POLICY_LEGACY_SELECTION" name="pl_POLICY_LEGACY_SELECTION">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="MASTER_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="NEXT_NUM_IN_BUNDLE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PARTNER_NUMBER" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="UPDATE_DATE" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="STATUS" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -571,10 +579,12 @@
       <column comment="" key="false" length="50" name="statusCodeVORefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="__trjADh9Ee-cipFhBIQQuA - POLICY_LEGACY_SELECTION" name="pl_POLICY_LEGACY_SELECTION" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row1.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries expression="row1.MASTER_POLICY_ID " name="MASTER_POLICY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row1.NEXT_NUM_IN_BUNDLE " name="NEXT_NUM_IN_BUNDLE" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row1.PARTNER_NUMBER " name="PARTNER_NUMBER" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row1.UPDATE_DATE " name="UPDATE_DATE" type="id_Date"/>
         <mapperTableEntries expression="row1.STATUS " name="STATUS" nullable="true" type="id_Long"/>
@@ -590,6 +600,8 @@
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row1" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
+        <mapperTableEntries name="MASTER_POLICY_ID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="NEXT_NUM_IN_BUNDLE" nullable="true" type="id_Long"/>
         <mapperTableEntries name="PARTNER_NUMBER" nullable="true" type="id_Long"/>
         <mapperTableEntries name="UPDATE_DATE" type="id_Date"/>
         <mapperTableEntries name="STATUS" nullable="true" type="id_Long"/>
@@ -629,6 +641,16 @@
     <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_POLICY_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="NEXT_NUM_IN_BUNDLE"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
@@ -699,6 +721,8 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_LEGACY_SELECTION" name="tHSQLDbOutput_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="MASTER_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="NEXT_NUM_IN_BUNDLE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PARTNER_NUMBER" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="UPDATE_DATE" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="STATUS" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -712,8 +736,10 @@
       <column comment="" key="false" length="10" name="statusCodeVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="statusCodeVORefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
-    <metadata connector="REJECT" name="REJECT">
+    <metadata connector="REJECT" label="POLICY_LEGACY_SELECTION" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="MASTER_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="NEXT_NUM_IN_BUNDLE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PARTNER_NUMBER" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="UPDATE_DATE" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="STATUS" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -755,6 +781,10 @@
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_POLICY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="NEXT_NUM_IN_BUNDLE"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_NUMBER"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="UPDATE_DATE"/>
@@ -784,6 +814,8 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_LEGACY_SELECTION" name="tHSQLDbInput_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="MASTER_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="NEXT_NUM_IN_BUNDLE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PARTNER_NUMBER" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="UPDATE_DATE" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="STATUS" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -813,6 +845,10 @@
     <elementParameter field="CHECK" name="USE_FIXED_LENGTH" show="false" value="false"/>
     <elementParameter field="TABLE" name="LENGTHS" show="false">
       <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="MASTER_POLICY_ID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="NEXT_NUM_IN_BUNDLE"/>
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PARTNER_NUMBER"/>
       <elementValue elementRef="LENGTH" value="10"/>
@@ -844,6 +880,8 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_LEGACY_SELECTION" name="tLogRow_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="MASTER_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="NEXT_NUM_IN_BUNDLE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="PARTNER_NUMBER" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="UPDATE_DATE" nullable="false" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="STATUS" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -891,6 +929,12 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="LATEST_END_DATE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="NEXT_NUM_IN_BUNDLE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="MASTER_POLICY_ID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -973,13 +1017,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_1cc88e43-c352-4a44-987e-89d6d0d3bfb5"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+y1CQpLdnuprDdM9lexbqHLre9tYm2aQ6Zs8af8UxszLvlZytOffh6VU2FBQ8KIViUEaP2JL1wDi&#13;
-MfpdZLgN8Q==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_01ecd80e-d6fd-44ca-a540-31396044c467"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>pFnsmf/OWd5uFm1vDuISjVZs5fgF+s/fY2iACNomjRL4HHuY5N1UGUHt495O6BPJc4YTwkJiQGEy&#13;
-y27UJhG/+A==</DigestValue></Reference></SignedInfo><SignatureValue>lu/aa9wRJlDSaJnftSu/m92g9fkS7ThgyJ0729GCHxk7Ul6sommFSk+idxu47qq6iquVG2oHN833&#13;
-3hl7AUitVsqV7+RVFUG1vHoVpvNNnb4kD+TzmXtjg9O+7j5r6Y1K2zfZ01twx/8LOA55b5XHY3Iy&#13;
-uKT49ocC/OG0y5aRxxYAa838jMe0uJW5LYSXrw4i2kWHnvghvqoEuZa3sUl9a0g+qt8caEmrM7yW&#13;
-mcoRhayNPAvoqZe42NLvE6POnpXOQA01PjZyXcroJ5vgqFhqX2uHWFF3PMJVywiZIDVskzd7nEug&#13;
-VJis5ab5B31MgEZln1KcqQX68kC/M12gSAnV/w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_145fd9e3-f30e-438d-a47a-3f965abaa855"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>UC99tP3KNiv0IniQQwW0dbAMKIj9xyxhyyTY3SnOt1r4USqDVpcloC7DDXqUYN7Bf6FQChhe8BwW&#13;
+uj3DMrNO+g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_afb8e64b-94e7-47a1-9349-4dd75d87c4e7"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>B12mZdOOKwkYfScTREXUM/jhO97AXiPyGQUomeowp6p1cezvD2cw2W5EoqAppj2aWImrovO11d5B&#13;
+OuZjpTSrKA==</DigestValue></Reference></SignedInfo><SignatureValue>pp4MLdyzBLWgr7QBozeq7CO58kfwJK5idtypZBvzi5dBmUfbJK8dxAYHinv+CG+LjxkEagDo3lMG&#13;
+YZy2Snqx+lv+XM+ZNd3AqKuPlwCud0S4qWOhKwQIHJZgKdVw+M3lDMrmJe3a/qqoAgtWzXy30kdA&#13;
+yer6tOs5GOkrUV2u9a7lO0zwWW+khoFChE6lMJ9ZK3+q4gKy/TmjzQh+6klNsrfNHlCy5YwuYMFO&#13;
+7DlS5GAKQ/m9kzno7r5eRliaDE9bEnYJ3wA4u/rkTxJ939vTQN7JtQ2YvkXHDTksl31VI04tcvz0&#13;
+w3z0Bz8rIUoezcfdR/WPxeToN6UL/SnmCeLKPA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1001,4 +1045,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_01ecd80e-d6fd-44ca-a540-31396044c467" Target="#_1cc88e43-c352-4a44-987e-89d6d0d3bfb5"><Timestamp>2024-07-09 14:04:15</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_afb8e64b-94e7-47a1-9349-4dd75d87c4e7" Target="#_145fd9e3-f30e-438d-a47a-3f965abaa855"><Timestamp>2024-07-09 14:11:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
