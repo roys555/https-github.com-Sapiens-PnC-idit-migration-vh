@@ -21,7 +21,7 @@
   </context>
   <parameters>
     <elementParameter field="CLOSED_LIST" name="LOG4J_RUN_LEVEL" show="false" value="Info"/>
-    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="320"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" show="false" value="288"/>
     <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" show="false" value="0"/>
     <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" show="false" value=""/>
     <elementParameter field="TEXT" name="OOZIE_PROPERTY_TYPENAME" show="false" value=""/>
@@ -2254,7 +2254,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH VERSIONS AS&#13;&#10;&#13;&#10;(SELECT v.POL_POLICEN_NR AS POLICE, &#13;&#10;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;v.VER_UNGUELTIG_AB AS V_END_DATE,&#13;&#10;v.VER_BEG_DATUM AS V_CONTRACT_START,&#13;&#10;v.VER_ABL_DATUM AS V_CONTRACT_END,&#13;&#10;v.VER_PRODUKT_TYP AS CROP_GROUP,&#13;&#10;v.VER_ZUSTAND,&#13;&#10;v.VER_HISTORIE,&#13;&#10;v.VER_STATUS,&#13;&#10;v.VER_SCHADENFREIHEITSRABATT,&#13;&#10;ROUND((v.VER_ABL_DATUM - v.VER_BEG_DATUM)/365) AS contract_duration,&#13;&#10;p.POL_WIRTSCHAFTSWEISE,&#13;&#10;CASE  &#13;&#10;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Selbst' THEN 1000012&#13;&#10;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Einzug' THEN 1000008&#13;&#10;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Selbst' THEN 1000009&#13;&#10;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Einzug' THEN 1000002&#13;&#10;END AS PAYMENT_TERM,&#13;&#10; CASE  WHEN p.POL_RECHNUNGSTYP = 1 THEN 1 ELSE 0 END as IS_ANNUAL_PAYER,&#13;&#10;CASE v.VER_INKASSOART &#13;&#10;WHEN 'Selbst' THEN 10019&#13;&#10;WHEN 'Einzug' THEN 2&#13;&#10;END AS COLLECTION_METHOD,&#13;&#10;v.VER_KUENDIGUNG,&#13;&#10;p.PAR_PARTNER_NR,&#13;&#10;v.ver_beschreibung vertrag_remarks,&#13;&#10;v.gfm_feldmark&#13;&#10;FROM SEV.VERTRAG v&#13;&#10;JOIN sev.police p ON p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE = 'AN'&#13;&#10;&#9;&#9;WHERE 1=1&#13;&#10;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;&#9;AND EXISTS ( SELECT 1 FROM K2V_DEV.ALL_DE_CONTRACT X WHERE X.BUNDLE_POLICY_ID = v.POL_POLICEN_NR AND X.POLICY_ID = v.VER_VERTRAG_NR)&#13;&#10;&#9;&#9;AND v.POL_GUELTIG_AB &gt;= timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH')&#13;&#10;)&#13;&#10;&#9;&#13;&#10;SELECT v.POLICE, v.VERTRAG, v.V_START_DATE, v.V_END_DATE, v.CROP_GROUP, v.VER_ZUSTAND, v.VER_SCHADENFREIHEITSRABATT, &#9;v.ver_historie, v.POL_WIRTSCHAFTSWEISE,&#13;&#10;v.V_CONTRACT_START, v.V_CONTRACT_END, v.contract_duration, v.PAYMENT_TERM, v.IS_ANNUAL_PAYER, v.COLLECTION_METHOD, v.VER_STATUS, v.VER_KUENDIGUNG, v.PAR_PARTNER_NR, v.vertrag_remarks,&#13;&#10;DENSE_RANK() OVER(partition BY v.POLICE, v.VERTRAG  ORDER BY v.V_START_DATE) AS POLICY_VERSION,&#13;&#10; max(vertrag+1) OVER (PARTITION BY POLICE ) AS NextNumInBundle,&#13;&#10;gfm_feldmark,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM WHEN 'Secufarm' THEN 1000198 WHEN 'Basis' THEN 1000198 WHEN 'Garant' THEN 1000199 END AS premiumSystem&#13;&#10;FROM VERSIONS V&#13;&#10;LEFT JOIN SEV.police p ON p.pol_policen_nr = v.police AND p.pol_gueltig_ab &lt;= v.v_start_date AND p.pol_ungueltig_ab &gt;= v.v_end_date AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;ORDER BY police, vertrag, V_START_DATE ASC&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH VERSIONS AS&#13;&#10;&#13;&#10;(SELECT v.POL_POLICEN_NR AS POLICE, &#13;&#10;v.VER_VERTRAG_NR AS VERTRAG,&#13;&#10;v.POL_GUELTIG_AB AS V_START_DATE,&#13;&#10;v.VER_UNGUELTIG_AB AS V_END_DATE,&#13;&#10;v.VER_BEG_DATUM AS V_CONTRACT_START,&#13;&#10;v.VER_ABL_DATUM AS V_CONTRACT_END,&#13;&#10;v.VER_PRODUKT_TYP AS CROP_GROUP,&#13;&#10;v.VER_ZUSTAND,&#13;&#10;v.VER_HISTORIE,&#13;&#10;v.VER_STATUS,&#13;&#10;v.VER_SCHADENFREIHEITSRABATT,&#13;&#10;ROUND((v.VER_ABL_DATUM - v.VER_BEG_DATUM)/365) AS contract_duration,&#13;&#10;p.POL_WIRTSCHAFTSWEISE,&#13;&#10;CASE  &#13;&#10;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Selbst' THEN 1000012&#13;&#10;WHEN p.POL_RECHNUNGSTYP = 1 AND v.VER_INKASSOART = 'Einzug' THEN 1000008&#13;&#10;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Selbst' THEN 1000009&#13;&#10;WHEN p.POL_RECHNUNGSTYP = 2 AND v.VER_INKASSOART = 'Einzug' THEN 1000002&#13;&#10;END AS PAYMENT_TERM,&#13;&#10; CASE  WHEN p.POL_RECHNUNGSTYP = 1 THEN 1 ELSE 0 END as IS_ANNUAL_PAYER,&#13;&#10;CASE v.VER_INKASSOART &#13;&#10;WHEN 'Selbst' THEN 10019&#13;&#10;WHEN 'Einzug' THEN 2&#13;&#10;END AS COLLECTION_METHOD,&#13;&#10;v.VER_KUENDIGUNG,&#13;&#10;p.PAR_PARTNER_NR,&#13;&#10;v.ver_beschreibung vertrag_remarks,&#13;&#10;v.gfm_feldmark,&#13;&#10;&#9;CASE WHEN vp.pol_policen_nr IS NOT NULL THEN 1 ELSE 0 END AS COINSURANCE_FLAG&#13;&#10;FROM SEV.VERTRAG v&#13;&#10;&#9;JOIN sev.police p ON p.POL_POLICEN_NR = v.POL_POLICEN_NR AND p.POL_HISTORIE in ( 'AN', 'HN') AND p.pol_gueltig_ab &lt;= v.pol_gueltig_ab AND p.pol_ungueltig_ab &gt;= v.ver_ungueltig_ab&#13;&#10;&#9;LEFT JOIN SEV.VU_POLICE vp ON v.pol_policen_nr = vp.pol_policen_nr AND v.ver_vertrag_nr = vp.VER_VERTRAG_NR AND vp.POL_GUELTIG_AB &lt;= v.pol_gueltig_ab AND vp.VPO_UNGUELTIG_AB &gt;= v.VER_UNGUELTIG_AB&#13;&#10;&#9;&#9;WHERE 1=1&#13;&#10;&#9;&#9;AND v.VER_HISTORIE &lt;&gt; 'HT' &#13;&#10;&#9;&#9;AND EXISTS ( SELECT 1 FROM K2V_DEV.ALL_DE_CONTRACT X WHERE X.BUNDLE_POLICY_ID = v.POL_POLICEN_NR AND X.POLICY_ID = v.VER_VERTRAG_NR)&#13;&#10;&#9;&#9;AND v.POL_GUELTIG_AB &gt;= timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;&#9;&#9;AND p.POL_POLICE_TYP in ('VH', 'KH')&#13;&#10;)&#13;&#10;&#9;&#13;&#10;SELECT v.POLICE, v.VERTRAG, v.V_START_DATE, v.V_END_DATE, v.CROP_GROUP, v.VER_ZUSTAND, v.VER_SCHADENFREIHEITSRABATT, &#9;v.ver_historie, v.POL_WIRTSCHAFTSWEISE,&#13;&#10;v.V_CONTRACT_START, v.V_CONTRACT_END, v.contract_duration, v.PAYMENT_TERM, v.IS_ANNUAL_PAYER, v.COLLECTION_METHOD, v.VER_STATUS, v.VER_KUENDIGUNG, v.PAR_PARTNER_NR, v.vertrag_remarks,&#13;&#10;DENSE_RANK() OVER(partition BY v.POLICE, v.VERTRAG  ORDER BY v.V_START_DATE) AS POLICY_VERSION,&#13;&#10; max(vertrag+1) OVER (PARTITION BY POLICE ) AS NextNumInBundle,&#13;&#10;gfm_feldmark,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM WHEN 'Secufarm' THEN 1000198 WHEN 'Basis' THEN 1000198 WHEN 'Garant' THEN 1000199 END AS premiumSystem,&#13;&#10;v.COINSURANCE_FLAG&#13;&#10;FROM VERSIONS V&#13;&#10;LEFT JOIN SEV.police p ON p.pol_policen_nr = v.police AND p.pol_gueltig_ab &lt;= v.v_start_date AND p.pol_ungueltig_ab &gt;= v.v_end_date AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;ORDER BY police, vertrag, V_START_DATE ASC&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2315,6 +2315,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="premiumSystem"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="COINSURANCE_FLAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -2344,6 +2346,7 @@
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="32" posY="544">
@@ -2386,9 +2389,10 @@
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row8.POLICE +&quot;_&quot; +row8.VERTRAG " name="entity_id" type="id_String"/>
       </varTables>
@@ -2417,6 +2421,7 @@
         <mapperTableEntries expression="row8.Next_num_in_bundle" name="Next_num_in_bundle" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row8.GFM_FELDMARK " name="GFM_FELDMARK" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row8.premiumSystem " name="premiumSystem" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row8.COINSURANCE_FLAG " name="COINSURANCE_FLAG" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row8" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
@@ -2442,6 +2447,7 @@
         <mapperTableEntries name="Next_num_in_bundle" nullable="true" type="id_Long"/>
         <mapperTableEntries name="GFM_FELDMARK" nullable="true" type="id_String"/>
         <mapperTableEntries name="premiumSystem" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="COINSURANCE_FLAG" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -2601,6 +2607,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="COINSURANCE_FLAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
@@ -2641,6 +2652,7 @@
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -2667,6 +2679,7 @@
       <column comment="" key="false" length="5" name="Next_num_in_bundle" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -4310,10 +4323,6 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tDBInput_8">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
-  </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tMap_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ID"/>
@@ -4326,6 +4335,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tDBInput_8">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
   </connection>
   <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tDBOutput_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4443,10 +4456,6 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk8"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tDBInput_6">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
-  </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tMap_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ID"/>
@@ -4456,6 +4465,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tDBInput_6">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfcopyOfout" lineStyle="0" metaname="copyOfcopyOfout" offsetLabelX="0" offsetLabelY="0" source="tMap_5" target="tDBOutput_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4546,6 +4559,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk11"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tDBInput_3">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
+  </connection>
   <connection connectorName="FLOW" label="CLS_49" lineStyle="0" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tMap_8">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="orig_start_date"/>
@@ -4609,10 +4626,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CLS_49"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tDBInput_3">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
   </connection>
   <connection connectorName="FLOW" label="ALL_DE_CONTRACT_v49" lineStyle="0" metaname="ALL_DE_CONTRACT_v49" offsetLabelX="0" offsetLabelY="0" source="tMap_8" target="tDBOutput_8">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4703,6 +4716,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="premiumSystem"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="COINSURANCE_FLAG"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
@@ -4720,6 +4736,9 @@
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
       <elementValue elementRef="TRACE_COLUMN" value="premiumSystem"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="COINSURANCE_FLAG"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
@@ -4955,7 +4974,7 @@
   <subjob>
     <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_9"/>
-    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="ALL_DE_CONTRACT_VERSION -  rule CONTRACT_VERSION_SELECTION v88"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="ALL_DE_CONTRACT_VERSION -  rule CONTRACT_VERSION_SELECTION v96"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
@@ -5020,13 +5039,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ba40b2b3-118c-4617-b3d1-f5d57fbfc6fb"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3PaVyJrg/DND+JVzqkrZazb1zEJ8g26h60bqLmc70bCFQtbd2nuh67MKIGPqtzUNuxr3s+kHehTG&#13;
-fZzP8Beb5A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_15a442fe-e668-4b83-b174-053a06f4467f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ix9+gAqiumoD8VPl0rtiynxw7A7/pIZvGwtZZSZYsCiU9C8QdiRRceoJXilRPG8zz0bZ2yectRQ9&#13;
-HRzzyZMFnw==</DigestValue></Reference></SignedInfo><SignatureValue>Ew1EZWQ9YR/zTYmYG7OObkXCsqnyHlZBYRl/1KOk+AX5D3CmrdpBuhg0N+5ijRRzd9uuOxzCR7U4&#13;
-Y0d5bnR5Tc2wJ2SLkxCSkub8j9OqW2pkqulKg6hgqtG3xpPjmU/4GW0vpi/KcIGOMliKU1MgNXds&#13;
-Rt9xsIXmtHvo7ZYEOLQhQJExEyxa8fDPmlHZPOwjnnlSTOw4F6GFw/W9vhBAHH2yPj+WtGwCoAxL&#13;
-thl/Nr5gL078uXKIZxzv1L6Kocp1myNCcjHOdbhSkUzunMPdb3HDAmL7CaeyeeGb2AYjBYYRwNI7&#13;
-iSqU82qBFDrQNiYAaByDCAqQeXmR8Akru4zCGw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_faa5ccbf-eb55-41be-a648-7e609c5b9edd"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>hpu1yQTPyzm0XIpu3BdrbOF6Zj8b//svRfTtCK4Oiiv1xC8yCpglLvW4FH7h00g6eTq4TenYrQK3&#13;
+r4wPUHH6bQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_254cea64-44ce-41d3-836b-ee05b5a84dc8"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>h08nGsKdS+vQz47pFk7pdv3EncaQRREQJizOvT+1FKkcKpjuTAbbQVlMpn/2CBe2AH9ZftIlcGIT&#13;
+Pgme8qMT8A==</DigestValue></Reference></SignedInfo><SignatureValue>lJjyWknUvXPd4CYv858+Nhgokp55xwKU80ckKlJpElP3aeKvGOV12o5jPBsQtJaiQlghi2HccT9+&#13;
+tv9QroZFDYGDTeVCGNcpmlgYpX08Lr+s89hnvAo11Mb3iL33zPpAQfM9f7TFp5uXjKnO2QeiJ3mg&#13;
+et8Fc8VmQx4m8fvStAF6FpWa+Kt6wNnAgPI8R1H19Pg+Fh+/h7B5Dd8/4NrdNUIvK0VoGGL3SIxP&#13;
+ivbRsYLCy9YqOGkWTKb2pV20F/qGLrwXPggvCO3rnvwJ0qDTkcjhjcVBDuxVmjn+8OuZFarTS8FF&#13;
+iU1kcY3IlC5lHjsV+L7vliw7pnFrPBoeb0pUIg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5048,4 +5067,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_15a442fe-e668-4b83-b174-053a06f4467f" Target="#_ba40b2b3-118c-4617-b3d1-f5d57fbfc6fb"><Timestamp>2024-07-01 14:59:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_254cea64-44ce-41d3-836b-ee05b5a84dc8" Target="#_faa5ccbf-eb55-41be-a648-7e609c5b9edd"><Timestamp>2024-07-16 13:44:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
