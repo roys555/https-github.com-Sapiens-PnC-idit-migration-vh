@@ -116,21 +116,6 @@
     <elementParameter field="TEXT" name="FOOTER_LIBRARY" show="false" value=""/>
     <elementParameter field="TEXT" name="FOOTER_CODE" show="false" value=""/>
     <elementParameter field="TEXT" name="FOOTER_IMPORT" show="false" value=""/>
-    <routinesParameter id="_Hrmq0MTBEe2LZ8ocRxnWzw" name="DataOperation"/>
-    <routinesParameter id="_Hr9QIMTBEe2LZ8ocRxnWzw" name="Mathematical"/>
-    <routinesParameter id="_HsmJUMTBEe2LZ8ocRxnWzw" name="Numeric"/>
-    <routinesParameter id="_Hs0LwMTBEe2LZ8ocRxnWzw" name="Relational"/>
-    <routinesParameter id="_Hvo2QMTBEe2LZ8ocRxnWzw" name="SQLike"/>
-    <routinesParameter id="_HtSs4MTBEe2LZ8ocRxnWzw" name="StringHandling"/>
-    <routinesParameter id="_Htln0MTBEe2LZ8ocRxnWzw" name="TalendDataGenerator"/>
-    <routinesParameter id="_Ht2GgMTBEe2LZ8ocRxnWzw" name="TalendDate"/>
-    <routinesParameter id="_HvDAYMTBEe2LZ8ocRxnWzw" name="TalendStringUtil"/>
-    <routinesParameter id="_HubVUMTBEe2LZ8ocRxnWzw" name="TalendString"/>
-    <routinesParameter id="_tGmqUMlvEe2pvuBUnRcxzQ" name="DataQuality"/>
-    <routinesParameter id="_tHCvMMlvEe2pvuBUnRcxzQ" name="DQTechnical"/>
-    <routinesParameter id="_tGeHcMlvEe2pvuBUnRcxzQ" name="DataMasking"/>
-    <routinesParameter id="_tG6zYMlvEe2pvuBUnRcxzQ" name="DqStringHandling"/>
-    <routinesParameter id="_tGumIMlvEe2pvuBUnRcxzQ" name="DataQualityDependencies"/>
     <routinesParameter id="_Mq46MNq4Ee2kI7SA8hRY3w" name="MaskingApp"/>
   </parameters>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="32" posY="192">
@@ -497,15 +482,19 @@
       <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
+      <column comment="" key="false" length="-1" name="EXTERNAL_NUMBER" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="FILE_NAME" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="OUT" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" type="id_Long"/>
         <mapperTableEntries expression="row3.Entity_ID " name="ENTITY_ID" type="id_String"/>
         <mapperTableEntries expression="(long)200" name="MIGRATION_STATUS" type="id_Long"/>
         <mapperTableEntries expression="TalendDate.getCurrentDate()" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
+        <mapperTableEntries expression="context.externalContactNumber" name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="context.PATH_contactXMLOutputDirectory + &quot;/&quot;+context.migrationID + &quot;/AGR_contact_&quot;+context.externalContactNumber +&quot;_&quot;+ (context.addFileNameSuffix?context.migrationID:&quot;&quot;)+&quot;.xml&quot; " name="FILE_NAME" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row3" sizeState="INTERMEDIATE">
         <mapperTableEntries name="Entity_ID" nullable="true" type="id_String"/>
@@ -569,6 +558,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="EXTERNAL_NUMBER"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="FILE_NAME"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
@@ -597,6 +596,8 @@
       <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
+      <column comment="" key="false" length="-1" name="EXTERNAL_NUMBER" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="FILE_NAME" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" name="REJECT">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -611,6 +612,8 @@
       <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
+      <column comment="" key="false" length="-1" name="EXTERNAL_NUMBER" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="FILE_NAME" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -869,6 +872,14 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
   <connection connectorName="FLOW" label="OUT" lineStyle="0" metaname="OUT" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tDBOutput_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="EXTERNAL_NUMBER"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="FILE_NAME"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OUT"/>
   </connection>
@@ -964,13 +975,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_24ae25e7-f475-4dba-953b-ece6225d6f26"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>XZEecUbSGC4fqXRJPYNIfr985IIhdHFPnGHjrnkfO+HLvu6gPN8eoWPbvfR8OyUvIMYLFfR1r89M&#13;
-lVoRsQTS+w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_427c360f-c354-41b3-ad92-7a37aa91e13f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>UDrJHXm5L6GYgGe0g5AxXz7cXNIInaLy12uMXo5Jv10/txMajpbkvLG2U0wcbnmX3T32Dz0wyLrP&#13;
-Uf3MBxLDUQ==</DigestValue></Reference></SignedInfo><SignatureValue>JXiPbd2qg8uZPX007QufFIheOu0k+2hZjKedqmfOcxGsPq+qGWTWEh+MxaIJgtahcNyoCz8WlQ8p&#13;
-fWtk1FYDQDAb5l1pIYvP0ZHAgsV7+gpPprrbQhheY2oRRdPIXPku7GGWfDHECgtpu5PDn8LpVxIF&#13;
-iOzbFiKF2Rg5j61m4cXh2/7LMr8n2EGNcd9oCZlsluhJOOn41bt+tSTLp7v15zjxm8BAwg6qyJpI&#13;
-3sYRwYFWZ28O6kFzPCIU6Og8YhOsSiTkH+3reh6Oo5Iqwgo/+CqGBjpOWFasahQMQOPayZKN/oAD&#13;
-bD2WAFy44fDQywawLdvaD/x97fpAXoTsgJOb5g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_325cb8ca-a74a-4419-adeb-26a73803c313"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qqNAFTAUMDlz3fUQ8aNL3sfWVOVeDNkUPVL75AGPU8yQw8v3MWYm1Z8iAUmkP95AoRZiQjWJm/cS&#13;
+MHq4vCVj5w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_23e79645-a196-4dce-b22a-4409a1ea3125"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>jAD1ORlOyHzfJ+imx1UURPvAgWtsN79pXj84srTFknPTKJdD2rZPenaP9qTUfSETwFWNfyZC9l52&#13;
+982PylWF2A==</DigestValue></Reference></SignedInfo><SignatureValue>jGDco//Ml/Qj8Tz6qGhgbs8wKU7sMzZqJ3oBDJ1VuIN/IRdiF+HRqBBTQYw9+/5oTdXnOIDtKVmY&#13;
+3gZzhhDwEdARP72ucHWHCyZGxsfEdFZRGHbransnj6I7Io7Y6quDLPNrZ5ibcN9rrfavQEfghywP&#13;
+7ir+hdPkCJqc92Zik4m2dLnHf6Z19fQerpzxxmWD4Sd4e/8HVG+BZ5jtUrfR6CakkCQjvNwQiLfF&#13;
+gy2yu5AYX8JgIwa02WTQUwdQJqUwt5SLBAz+PUgnUFEklroiAaV4X6/Xmg3aIMkzbU0TmglrERGO&#13;
+6qXPfCXBjdt/C1G4Z1OUcXQdrykOluOYqskL0A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -992,4 +1003,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_427c360f-c354-41b3-ad92-7a37aa91e13f" Target="#_24ae25e7-f475-4dba-953b-ece6225d6f26"><Timestamp>2024-03-22 12:16:01</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_23e79645-a196-4dce-b22a-4409a1ea3125" Target="#_325cb8ca-a74a-4419-adeb-26a73803c313"><Timestamp>2024-07-18 12:38:18</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
