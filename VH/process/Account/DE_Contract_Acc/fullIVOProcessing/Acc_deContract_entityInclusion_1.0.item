@@ -724,7 +724,7 @@
     <elementParameter field="TEXT" name="LABEL" value="map_inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="ACCOUNT_MIGRATION_STATUS" name="out1">
-      <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" key="false" length="10" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
@@ -745,10 +745,10 @@
       <column comment="" key="false" length="10" name="POLICY_TYPE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="-1" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
+      <column comment="" key="false" length="10" name="MIGRATION_STATUS" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
-      <column comment="" key="false" length="11" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="6" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
+      <column comment="" key="false" length="6" name="MIGRATION_STATUS_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="-1" sourceType="TIMESTAMP" type="id_Date" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
       <column comment="" key="false" length="2000" name="MIGRATION_ERROR" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
@@ -757,14 +757,17 @@
       <column comment="" key="false" length="10" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
+      <column comment="" key="false" length="300" name="FILE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true">
+        <additionalField key="Comment" value=""/>
+      </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
-      <outputTables name="out1" sizeState="INTERMEDIATE">
+      <outputTables activateCondensedTool="true" id="_tTaV8LnGEe2a4PO8eXSf6g - ACCOUNT_MIGRATION_STATUS" name="out1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID " name="MIGRATION_ID" type="id_Integer"/>
         <mapperTableEntries expression="&quot;de&quot;+String.valueOf(  row2.POLICE )+&quot;_&quot;+String.valueOf(  row2.VERTRAG )" name="ENTITY_ID" type="id_String"/>
-        <mapperTableEntries expression="row2.GA_EXT_Number " name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="" name="EXTERNAL_NUMBER" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row2.POLICE " name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row2.VERTRAG " name="POLICY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="POSITION_ID" nullable="true" type="id_Long"/>
@@ -773,6 +776,7 @@
         <mapperTableEntries expression="TalendDate.getCurrentDate() " name="MIGRATION_STATUS_TIMESTAMP" nullable="true" type="id_Date"/>
         <mapperTableEntries name="MIGRATION_ERROR" nullable="true" type="id_String"/>
         <mapperTableEntries name="ERROR_CODE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="FILE_NAME" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row2" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
@@ -1336,6 +1340,11 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
   <connection connectorName="FLOW" label="out1" lineStyle="0" metaname="out1" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tDBOutput_2">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="FILE_NAME"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out1"/>
   </connection>
@@ -1375,7 +1384,7 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPrejob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
@@ -1386,7 +1395,7 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
-    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPostjob_1"/>
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="230;100;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="255;220;180"/>
@@ -1401,13 +1410,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_087cd5ba-5d43-4ef7-8c45-b069a5be98b7"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>FS7DqggRaZSPu6qNxv0UCPSEBXKHdCkcoEhn5wwqFIzFeCp/jgZyBQy8Mp4qFwA0TxwrnHSrv9oU&#13;
-XIPu33wbnw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_cf6d7fb0-ed75-4a96-9c7f-4b3c43fccab8"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>xruwH+KameRjHulXIoc770iv2GwF+VPUa4552tQ/qkK5q321SwoyyIz/yiw/GqyD6JDhWq44vyx0&#13;
-fLtuvqFzhg==</DigestValue></Reference></SignedInfo><SignatureValue>KfnrHzyeVNL0PqgMvJEftIBhTf2llkqjTEsU0MlvR1aFx4FzcrSBpGNNj9D9HK1eh3V09wVuFwjs&#13;
-e24SHotBMUMymnEF07e1aOijOMNGm7lvVHt58oVX5cSnRGjfwtoi34WTCjmmVN3pZIvpxuXlmC2f&#13;
-9GOF0nWsSSEpP2kHiTuKUcLpKZJzgTTuv9Lqpg/l202MuZUoL6ZEcw4X+GzB1/kVGAZAUJVYjoi8&#13;
-JRBp5EAcG/vVfPfkyd1hmEOdBVOVuWYpZ86JMLA0Lxeney8TqYK2F69BFNE/xQRU+qjtW0XHeFy3&#13;
-OYRDAiWf+yYO+LQQ7WCUaCCTVc/fr7F5ABcykQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_f8c06772-6f51-48fe-9b8b-7c0c90507f40"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>57vM7Mcjt+tUEjafyLvbpPZFZJN1daShtzrqfH4IIkojwkCBQ66WTPc4hN2cbDY+Y50mveVrk5H8&#13;
+yNfFu+2QLg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_79dec0f5-c718-4ea6-a2ce-15901d7ea930"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>uWRIXRKqH9rjCJMF4xVX3+lI1Frzq3w4PFxKiEleJZk4RAl8RvjuntEWTXhViwl5bLIYC2uniJ5w&#13;
+nR29fIGEfg==</DigestValue></Reference></SignedInfo><SignatureValue>bS4aaO+uZqnTbNMzM+PgqiYhY1YpoTiBCVcmPYFA1WxNnJb8InfdS5UpL5WT7msXmjM8acc9MzK9&#13;
+sGJ04KXMqmJBqOQhqCXFt36LT+7PfOMz7TeUq8pIdEaaBhnpOtcLliW4H9nNYGDQb4ehFLWZBUHe&#13;
+PBrjC4nSKgj+DCGfkFtiNODOWlfOHHn8J9m+CFk1qYKJQ0yJobb/JsEhIyoKlUWZbmoUeJg9mlQb&#13;
+dy+zTqMnE7DbFRtLTFk0HE7p+f95Ot10IAcc1t/Be71YoTsgLqQ2IQTf/dq/0y1aM1a/WCyVgzJU&#13;
+Sb5XTUIF3N3iG7GuDYJwNYR5zL+Fj28wn0ExOQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1429,4 +1438,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_cf6d7fb0-ed75-4a96-9c7f-4b3c43fccab8" Target="#_087cd5ba-5d43-4ef7-8c45-b069a5be98b7"><Timestamp>2024-07-18 13:17:26</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_79dec0f5-c718-4ea6-a2ce-15901d7ea930" Target="#_f8c06772-6f51-48fe-9b8b-7c0c90507f40"><Timestamp>2024-07-18 14:16:39</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
