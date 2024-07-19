@@ -130,7 +130,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH contract AS (&#13;&#10;SELECT DISTINCT b.POLICE AS BUNDLE, b.VERTRAG, CONCAT(CONCAT('DP-', POLICE), TRIM(TO_CHAR(VERTRAG, '000'))) AS GA_EXT_Number &#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b &#13;&#10;WHERE 1=1&#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.DE_REGRESSION_SCOPE drs WHERE drs.PAR_PARTNER_NR = b.PAR_PARTNER_NR AND drs.ISPRIMARYSELECTION = 1)&#13;&#10;)&#13;&#10;SELECT adp.ENTITY_ID ,adp.BUNDLE_POLICY_ID, adp.POLICY_ID, adp.POSITION_ID, adp.POSITION_EXTERNAL_HEADER_NUMBER&#13;&#10;FROM K2V_DEV.ALL_DE_POSITION adp&#13;&#10;JOIN contract x ON x.BUNDLE = adp.BUNDLE_POLICY_ID AND x.VERTRAG = adp.POLICY_ID &#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;WITH contract AS (&#13;&#10;SELECT DISTINCT b.POLICE AS BUNDLE, b.VERTRAG, CONCAT(CONCAT('DP-', POLICE), TRIM(TO_CHAR(VERTRAG, '000'))) AS GA_EXT_Number &#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b &#13;&#10;WHERE b.V_START_DATE IN (SELECT max(b2.V_START_DATE) &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b2 WHERE b.POLICE = b2.POLICE GROUP BY b2.POLICE) &#13;&#10;and EXISTS (SELECT 1 FROM K2V_DEV.DE_REGRESSION_SCOPE drs WHERE drs.PAR_PARTNER_NR = b.PAR_PARTNER_NR AND drs.ISPRIMARYSELECTION = 1)&#13;&#10;)&#13;&#10;SELECT adp.ENTITY_ID ,adp.BUNDLE_POLICY_ID, adp.POLICY_ID, adp.POSITION_ID, adp.POSITION_EXTERNAL_HEADER_NUMBER&#13;&#10;FROM K2V_DEV.ALL_DE_POSITION adp&#13;&#10;JOIN contract x ON x.BUNDLE = adp.BUNDLE_POLICY_ID AND x.VERTRAG = adp.POLICY_ID &#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -183,7 +183,7 @@
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_inclusion"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" label="ACCOUNT_MIGRATION_STATUS" name="out1" type="TABLE">
+    <metadata comment="" connector="FLOW" label="ACCOUNT_MIGRATION_STATUS" name="out1" type="TABLE">
       <column comment="" key="false" length="10" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Integer" usefulColumn="true">
         <additionalField key="Comment" value=""/>
       </column>
@@ -222,7 +222,7 @@
       </column>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_tTaV8LnGEe2a4PO8eXSf6g - ACCOUNT_MIGRATION_STATUS" name="out1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID " name="MIGRATION_ID" type="id_Integer"/>
@@ -849,13 +849,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9c434a28-bb65-4883-9fa2-de4224ec91be"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>EbfBzIEsAQQGmZctj0ZPXTNJvVTUBrkU97kTRWHu/oPYYo37QXONr+xc59+tJA1yJPDHRukNijdF&#13;
-rwrSwrS0Kw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_02b98fd0-9c85-4cf7-8cae-65c7cbe4c107"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>eliectdYTQFECjhsqkB2QG5a+TMdEccgWvYGJHGKSIo76cnmlif/D3r6bb/TMcyP10JnrhOh7Jzm&#13;
-64RQ4IXwzw==</DigestValue></Reference></SignedInfo><SignatureValue>Vpck5lTxDE8uZckAiLxN9Nt5J4mgi+A7U+QN19o08+FQSr8ToD/VTG2AB57V/SZyJ2KpR3ou7c+O&#13;
-EbGtGbSyGC2eXYHWiG9CHDHY8LM86hGFCoTKTv3/+DfL9BeIhMy4GriA7N9ggfPlfznzlEvU+5IW&#13;
-8WsrbM9sVgBZNza71+DqyxtSuN4ioO4P5iGdp5DD7zrSnIu2MAb6u36idI/k27tjwYjHNL4jEZcl&#13;
-cJ4vrNybx1499BHLAe79vdkKRGSYIeQAcUAITno1oZFTsm1BzDw3RKl3Lx/Tm6GXAl4WMu5rDQup&#13;
-ZuyQSLwWv2PVtdrSNOwxoac8dzQseaHHAXkY7w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_932cb6aa-afd5-4978-a710-b6ff99ca5d91"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+0dIMQXvHsyIcaw+hmrVet/2lNl3jW12EDD9uokAyNIl+IlbWYjUNVyuSXkKlRUCI1VArXFgOBiX&#13;
+jG3hpzX+Qw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5ff57b52-69ff-4e47-8e9f-66842c63d5ed"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/uIEnBz3vNOrfbUK3vTI6zStkrOWn9ewyntfsekHRBQAVQ5vH+5KA2asHHzxMPLoFNk8K4msXBvb&#13;
+CrS16ESAzw==</DigestValue></Reference></SignedInfo><SignatureValue>J6VpCf6HgekNrLM7bS6oiF5SBCmJNbFAz1IN3DuqclRHMHLtVcAek2quMjOvCFo/uLKKBKOM+igX&#13;
+O8oDAaKk8tdwWBMOAw/eOmDmRszDgocgbf07FfeqUpX6K4tIjZq/8pFn5IpqCzy0U29HWTZbBzlK&#13;
+UYpB2Rw4dZZ2lrg6PPsORwloI9nVYvxXeGk2FeOEiJfuMdcgeM+ZBcM4qduRoAq/B62LQ2r5vVTl&#13;
+gCPtvUAKCEM2G0rBg473cTLmdpwswophZxLODPv/kfGwKxRVVaNJofxCVB6PDpOCgTdQ6KpxAem6&#13;
+vWWiijtwMC3v0U6WyRGWCXk6K71sYkC+Rh51AQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -877,4 +877,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_02b98fd0-9c85-4cf7-8cae-65c7cbe4c107" Target="#_9c434a28-bb65-4883-9fa2-de4224ec91be"><Timestamp>2024-07-18 14:32:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5ff57b52-69ff-4e47-8e9f-66842c63d5ed" Target="#_932cb6aa-afd5-4978-a710-b6ff99ca5d91"><Timestamp>2024-07-19 11:08:49</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
