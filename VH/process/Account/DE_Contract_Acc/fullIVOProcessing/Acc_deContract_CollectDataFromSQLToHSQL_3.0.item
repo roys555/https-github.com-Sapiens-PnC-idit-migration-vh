@@ -567,7 +567,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT ams.entity_id, b.POLICE AS BUNDLE, b.VERTRAG, CONCAT(CONCAT('DP-', POLICE), TRIM(TO_CHAR(VERTRAG, '000'))) AS GA_EXT_Number, &#13;&#10;CONCAT('MIG_AP-', b.PAR_PARTNER_NR) AS POLICYHOLDER, b.COLLECTION_METHOD, b.PAYMENT_TERM&#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b &#13;&#10;JOIN k2v_dev.account_migration_status ams ON ams.BUNDLE_POLICY_ID = b.POLICE and ams.POLICY_ID = b.vertrag &#13;&#10;WHERE 1=1 &#13;&#10;AND ams.MIGRATION_STATUS = 100 &#13;&#10;AND ams.MIGRATION_ID = &quot;+context.migrationID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT DISTINCT ams.entity_id, b.POLICE AS BUNDLE, b.VERTRAG, CONCAT(CONCAT('DP-', POLICE), TRIM(TO_CHAR(VERTRAG, '000'))) AS GA_EXT_Number, &#13;&#10;CONCAT('MIG_AP-', b.PAR_PARTNER_NR) AS POLICYHOLDER, b.COLLECTION_METHOD, b.PAYMENT_TERM&#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b &#13;&#10;JOIN k2v_dev.account_migration_status ams ON ams.BUNDLE_POLICY_ID = b.POLICE and ams.POLICY_ID = b.vertrag &#13;&#10;WHERE b.V_START_DATE IN (SELECT max(b2.V_START_DATE) &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION b2 WHERE b.POLICE = b2.POLICE GROUP BY b2.POLICE)&#13;&#10;AND ams.MIGRATION_STATUS = 100 &#13;&#10;AND ams.MIGRATION_ID = &quot;+context.migrationID"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -633,7 +633,6 @@
       <column comment="" key="false" length="50" name="POLICY_EXT_NUM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="COLLECTION_METHOD" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PAYMENT_TERM" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="POLICY_VERSION" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
@@ -646,7 +645,6 @@
         <mapperTableEntries expression="row5.GA_EXT_NUM " name="POLICY_EXT_NUM" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row5.COLLECTION_METHOD" name="COLLECTION_METHOD" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row5.PAYMENT_TERM" name="PAYMENT_TERM" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="" name="POLICY_VERSION" nullable="true" type="id_Long"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row5" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -719,11 +717,6 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
-      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
-      <elementValue elementRef="UPDATE_KEY" value="false"/>
-      <elementValue elementRef="DELETE_KEY" value="false"/>
-      <elementValue elementRef="UPDATABLE" value="true"/>
-      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
@@ -736,7 +729,6 @@
       <column comment="" key="false" length="50" name="POLICY_EXT_NUM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="COLLECTION_METHOD" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PAYMENT_TERM" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="POLICY_VERSION" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="de_contract_account" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -746,7 +738,6 @@
       <column comment="" key="false" length="50" name="POLICY_EXT_NUM" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="COLLECTION_METHOD" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="-1" name="PAYMENT_TERM" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="-1" name="POLICY_VERSION" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1408,13 +1399,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_184ab929-07c4-4945-a6fb-9c729b811b61"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>P65WnQ1+DSIHfdRFSC9sRvsr02ebmGfJIyi6088Iwjbq+6zljN3JwAuukfDZnjfq+htWA681Zg4k&#13;
-nqyx5fnqcg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_25b04c06-f5d1-4cea-aee4-640f600f8a69"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+kqjALwOzUXwLiPlNZNFEOIrepdWxc+KtzDiRpn7v9gWQkT5+YzRcYuVVeuXtEOlQdsWwZ9l2Gql&#13;
-3ZfLNVIZPg==</DigestValue></Reference></SignedInfo><SignatureValue>kp8KpCrRBVLoL7OZMgJ94XoQyAydJuIRDFaxWrILRegS+/o4+eM4p9aiz+oaEGPpuOcdNNzmHehb&#13;
-FVrvee09v3CBqcYBXVsvb/rlMb8vUGTBG463TAvErXsdvgv6915vln7L3IVFlg6fEVk1I/cRMUHx&#13;
-u2vSHFM4TjNn3IINYOjMwOtMTP8Q2K5uFvkuZEofBcjwrETKb2omlTCyNpbswwSxrS/ZMDlVmVMP&#13;
-vUFG/ei805gWbsniHXG3zc1tRoF24NqHZqcf00VnPk6sdDBbxPJ6fF5ty4X0ifwpMH2NSSZYIZGU&#13;
-yFivjF3aXFhAVyfRDkqsIqKzAsRrWfXF6Gbwyw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5ffd744d-a907-4a21-a8da-81ea8fe4b317"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>SChPu1s8A9rUTSFvtJzA7usIZWnKDXP8Y4xmShuXx9JQUTwa9Jg8fF8CBFpyZ06fyxEGsQobZf2z&#13;
+KNOz74aTog==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_1d1b1ec2-405c-4b60-8c93-c3deff0590d3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>D4NvBYyk2R91fiMUVBoMI0Fc2yV9aP+O8ws5j59TgOM2h55tyNaS/sEySkouG9vP0lfas3SVyvt9&#13;
+pVKD2noZdg==</DigestValue></Reference></SignedInfo><SignatureValue>JcpFhp0vB13g/+IGM4rEFayEh4bW8Y5dHF51G6LXaZF2kfCWn+o91p2CWFAuuJ4S1AD3ZhsOrw6u&#13;
+grc91lnN8Hnh6hTfjxpAzpqrth7+7bAGRK7TewixeO4MqkFwbKejCEAlsBEvfrbvvVwnm0N9/Opp&#13;
+SnlauGKgcOjKrsMlxv5wfEhnO2mC/vtg1N6FoRZIXqW6Y+zXy/eovu8PAJ8kgvEwRYrEmI2MrwND&#13;
+vTUNxziJVd2ZCD77+5dfvNc7ApvFYlNoq+BJ6fYBZvLQtV/YRF+lt7yqQZoKoHgpVI0kT219CyaD&#13;
+Q9h5tto/Aumb6MZTNPjRowr5RIfbnI7tvWuRyw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1436,4 +1427,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_25b04c06-f5d1-4cea-aee4-640f600f8a69" Target="#_184ab929-07c4-4945-a6fb-9c729b811b61"><Timestamp>2024-05-14 13:49:01</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_1d1b1ec2-405c-4b60-8c93-c3deff0590d3" Target="#_5ffd744d-a907-4a21-a8da-81ea8fe4b317"><Timestamp>2024-07-19 09:15:20</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
