@@ -126,7 +126,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT BUNDLE_VERSIONS.ENTITY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.LEGACY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.POLICY,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_START_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_END_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.ECONOMY_REF,&#10;&#9;&#9;BUNDLE_VERSIONS.PREMIUMSYSTEM,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_REMARKS,&#10;&#9;&#9;BUNDLE_VERSIONS.IS_ANNUAL_PAYER,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_POLICY_STATUS,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_STATUS,&#10;&#9;&#9;BUNDLE_VERSIONS.CANCELLED,&#10;&#9;&#9;BUNDLE_VERSIONS.PA_DISCOUNT,&#10;&#9;&#9;BUNDLE_VERSIONS.WEBAVREF,&#10;&#9;&#9;BUNDLE_VERSIONS.POL_MITGLIED,&#10;&#9;&#9;BUNDLE_VERSIONS.POL_BEZIRKSKASSE,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_VERSION&#10;FROM&#9;BUNDLE_VERSIONS&#13;&#10;where entity_id = &quot; + context.EntityID"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT BUNDLE_VERSIONS.ENTITY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.LEGACY_ID,&#10;&#9;&#9;BUNDLE_VERSIONS.POLICY,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_START_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.VER_END_DATE,&#10;&#9;&#9;BUNDLE_VERSIONS.ECONOMY_REF,&#10;&#9;&#9;BUNDLE_VERSIONS.PREMIUMSYSTEM,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_REMARKS,&#10;&#9;&#9;BUNDLE_VERSIONS.IS_ANNUAL_PAYER,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_POLICY_STATUS,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_STATUS,&#10;&#9;&#9;BUNDLE_VERSIONS.CANCELLED,&#10;&#9;&#9;case when  BUNDLE_VERSIONS.PA_DISCOUNT is null then -1 else BUNDLE_VERSIONS.PA_DISCOUNT end PA_DISCOUNT,&#10;&#9;&#9;BUNDLE_VERSIONS.WEBAVREF,&#10;&#9;&#9;BUNDLE_VERSIONS.POL_MITGLIED,&#10;&#9;&#9;BUNDLE_VERSIONS.POL_BEZIRKSKASSE,&#10;&#9;&#9;BUNDLE_VERSIONS.BUNDLE_VERSION&#10;FROM&#9;BUNDLE_VERSIONS&#13;&#10;where entity_id = &quot; + context.EntityID"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
@@ -260,6 +260,8 @@
       <column comment="" key="false" length="50" name="webAVRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="districtCashier" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="membership" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="paDiscountRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="paDiscountRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
@@ -269,7 +271,7 @@
         <mapperTableEntries expression="(String)&quot;Company Employee Channel&quot;" name="currentChannelIVORefDesc" type="id_String"/>
         <mapperTableEntries expression="VERSIONS.POLICY+&quot;/&quot;+String.format(&quot;%02d&quot;, VERSIONS.BUNDLE_VERSION) " name="externalPolicyNumber" type="id_String"/>
         <mapperTableEntries expression="TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.getCurrentDate() )) " name="currentDate" type="id_Date"/>
-        <mapperTableEntries expression="TalendDate.addDate(VERSIONS.VER_END_DATE,-1,&quot;ss&quot;) " name="endorsEndDate" type="id_Date"/>
+        <mapperTableEntries expression="TalendDate.compareDate(VERSIONS.VER_END_DATE ,TalendDate.parseDate(&quot;yyyy-MM-dd&quot;, &quot;2999-01-01&quot;))&lt;1?&#13;&#10;TalendDate.addDate(VERSIONS.VER_END_DATE,-1,&quot;ss&quot;):policyHeader.policyEndDate ; " name="endorsEndDate" type="id_Date"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_voCNYIhuEe6-hOaZAw8M6g - XMLPolicyIVO" name="policyIVO" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -328,8 +330,10 @@
         <mapperTableEntries expression="VERSIONS.BUNDLE_REMARKS " name="remarks" nullable="true" type="id_String"/>
         <mapperTableEntries expression="trn_DistrictCashier.Id " name="webAVRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="trn_DistrictCashier.Desc " name="webAVRefDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries expression="trn_JaNein.out " name="districtCashier" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="trn_JaNein2.out " name="membership" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="trn_JaNein2.out " name="districtCashier" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="trn_JaNein.out " name="membership" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="trn_paDiscountRef.out " name="paDiscountRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="String.valueOf( VERSIONS.PA_DISCOUNT ) " name="paDiscountRefDESC" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="VERSIONS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -405,6 +409,10 @@
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_JaNein2" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.POL_BEZIRKSKASSE " name="in" nullable="true" operator="=" type="id_String"/>
+        <mapperTableEntries name="out" nullable="true" type="id_Long"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_paDiscountRef" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="VERSIONS.PA_DISCOUNT " name="in" nullable="true" operator="=" type="id_Long"/>
         <mapperTableEntries name="out" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
@@ -885,6 +893,16 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paDiscountRefID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paDiscountRefDESC"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="XMLPolicyIVO"/>
@@ -948,6 +966,8 @@
       <column comment="" key="false" length="50" name="webAVRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="districtCashier" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="membership" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="paDiscountRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="paDiscountRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLPolicyIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1008,6 +1028,8 @@
       <column comment="" key="false" length="50" name="webAVRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="districtCashier" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="membership" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="paDiscountRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="paDiscountRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -1133,6 +1155,29 @@
     <metadata connector="FLOW" name="tFixedFlowInput_5">
       <column comment="" key="false" length="10" name="in" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="out" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1280" posY="224">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_6"/>
+    <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
+    <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
+    <elementParameter field="TABLE" name="VALUES" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="in"/>
+      <elementValue elementRef="VALUE" value=""/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="out"/>
+      <elementValue elementRef="VALUE" value=""/>
+    </elementParameter>
+    <elementParameter field="RADIO" name="USE_INTABLE" value="false"/>
+    <elementParameter field="TABLE" name="INTABLE" show="false"/>
+    <elementParameter field="RADIO" name="USE_INLINECONTENT" value="true"/>
+    <elementParameter field="TEXT" name="ROWSEPARATOR" value="&quot;\n&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;,&quot;"/>
+    <elementParameter field="MEMO" name="INLINECONTENT" value="-1,-1&#13;&#10;0,1000001&#13;&#10;5,1000007&#13;&#10;10,1000009&#13;&#10;15,1000008&#13;&#10;20,1000002&#13;&#10;25,1000010&#13;&#10;30,1000011&#13;&#10;35,1000012&#13;&#10;40,1000004&#13;&#10;45,1000013&#13;&#10;50,1000014&#13;&#10;55,1000015&#13;&#10;60,1000005&#13;&#10;65,1000016&#13;&#10;70,1000017&#13;&#10;75,1000018&#13;&#10;80,1000006&#13;&#10;85,1000019&#13;&#10;90,1000020&#13;&#10;95,1000021&#13;&#10;100,1000022"/>
+    <elementParameter field="TEXT" name="LABEL" value="paDiscountRef"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tFixedFlowInput_6">
+      <column comment="" key="false" length="10" name="in" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="out" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
@@ -1274,6 +1319,10 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="membership"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paDiscountRefID"/>
+      <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="paDiscountRefDESC"/>
+      <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
@@ -1337,6 +1386,8 @@
       <column comment="" key="false" length="50" name="webAVRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="districtCashier" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="membership" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="paDiscountRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="paDiscountRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="VERSIONS" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tMap_1">
@@ -1389,6 +1440,18 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_JaNein2"/>
   </connection>
+  <connection connectorName="FLOW" label="trn_paDiscountRef" lineStyle="8" metaname="tFixedFlowInput_6" offsetLabelX="0" offsetLabelY="0" source="tFixedFlowInput_6" target="tMap_1">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="in"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="out"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_paDiscountRef"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
@@ -1408,13 +1471,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9d78d080-2ac3-41f0-9276-c41fdf368f66"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>arjQReKa71oStz5x6YznPYLhq3aPcIAjkgj0Y07M2cTQ5Ok+w2h4hPqm6jaG9KKw1KBcByJnbbpJ&#13;
-XNTJYHAMJQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_bcaf4e5e-1abb-4375-97f5-6034d02c1c52"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>KN7KzlF/re27P+lMXAZYmL1zyg8T0fVDtBH4LX2MJJ6N/DH4IYaAQljFCU36hYGmja+AFECJ3sU2&#13;
-Yg7ybB2PhQ==</DigestValue></Reference></SignedInfo><SignatureValue>G37/RenJvKXfDhuUOvKDIphJ7NbIFMqq9lwSVm7NAKeWNqikfOkTqJKmjbIBzJYhEB4iU9F4bw3v&#13;
-6cNVKjJ9MA8/Q2NPfp7X++LHIhkxNBdA3G4dGJONS917/JHvFEqWv1yxKrprCEy6yW59jos4QX1n&#13;
-a5bfTkVJVn22OlmY0BjDe0gaYok+QUEUvDj17nZC+qyxNILyQk+gAWlsLxvMZMtxqn6Cb/CaTfbl&#13;
-2wlaMTYesshcKGiqOkQ3KbtMaZCo0ZNxd/pm1yAUgjEJ2p5wRfQNsSyVaz3Y/MzKhez0ILrUZJp2&#13;
-qxvRREaXLKpbOw1rYQMOl3Px46HhW28drQ687w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_16f317e1-3de9-4ced-b04c-e49a3d30c9ca"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>YLhlC/GjUX+DTi8tiOjo0gEbJ+DbG75N+lzfJpi4CLB89rNvZ6u6CcDfLrEdS7MXGGg0vDgA1G95&#13;
+fdYsVPCOEQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_41a2efec-2180-4f05-a65c-5d638e99cf18"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>9byCzNkAj/Hp221Ijqqjq26F4Byn0+D4NL7zZqdveEbL4apl0NtJYFL/7NDhtG+f8+Xc8pytjetd&#13;
+nPMLDC+Qjg==</DigestValue></Reference></SignedInfo><SignatureValue>CSLGLDt/Ew9dLbrC7Tkrwrm7wdODMKqGdhmY4NLhUwCHct8ulpaadRwzwJGlvLi7zrvv1MaLmryG&#13;
+PWuJXkyVPshJhbH3F0N0Bdg0sxkLy7HNuGtedUUuvKb75DI0Zna7UFGJwrVrqZx+Gy+7Fe3hzuvW&#13;
+MQGTNvO+GslIQRBNGd0s62yFDL7660LMZwg8ZefNg+xBt3PgWqmcY129RW6g+5tPl+51ZZYS8xtw&#13;
+l9/gSi0akVQafXB7bho+I0gM/G4syh1nKDUkibxEJ8+of28hlezU4dkvMhbgsH2OX5a4t3Cg74Ye&#13;
+w2mo/jzzqx4ys7AJdPoH9cMjRH3K6IbFZOA+7w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1436,4 +1499,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_bcaf4e5e-1abb-4375-97f5-6034d02c1c52" Target="#_9d78d080-2ac3-41f0-9276-c41fdf368f66"><Timestamp>2024-06-18 08:00:38</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_41a2efec-2180-4f05-a65c-5d638e99cf18" Target="#_16f317e1-3de9-4ced-b04c-e49a3d30c9ca"><Timestamp>2024-07-22 13:24:45</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
