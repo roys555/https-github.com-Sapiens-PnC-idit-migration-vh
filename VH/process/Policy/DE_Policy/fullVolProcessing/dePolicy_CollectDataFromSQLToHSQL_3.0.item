@@ -1327,7 +1327,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT adcv.police, payment_term, V_START_DATE, pol_gueltig_ab &#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION adcv &#13;&#10;JOIN (&#9;SELECT police, p.pol_gueltig_ab, max(v_start_date) latest &#13;&#10;&#9;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION adcv2   &#13;&#10;&#9;&#9;JOIN SEV.POLICE p ON p.POL_POLICEN_NR = adcv2.POLICE &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9; AND adcv2.V_START_DATE &gt;= p.POL_GUELTIG_AB  &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9; AND adcv2.V_START_DATE &lt; p.POL_UNGUELTIG_AB   &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9; AND p.pol_historie &lt;&gt; 'HT'   &#13;&#10;&#9;&#9;WHERE adcv2.v_start_date &gt;= TO_DATE('01.01.2016', 'DD.MM.YYYY')   &#13;&#10;&#9;&#9;AND p.pol_ungueltig_ab &gt; TO_DATE('01.01.2016', 'DD.MM.YYYY')  &#13;&#10;&#9;&#9;GROUP BY police, p.pol_gueltig_ab  &#13;&#10;&#9;&#9;ORDER BY police, p.pol_gueltig_ab  &#13;&#10;&#9; ) v ON v.police = adcv.POLICE AND adcv.V_START_DATE = v.latest  &#13;&#10;WHERE EXISTS (SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS pms WHERE pms.bundle_policy_id = adcv.POLICE  AND pms.MIGRATION_ID =&quot;+context.migrationID+&quot;)&#13;&#10;GROUP BY adcv.police, payment_term, V_START_DATE, pol_gueltig_ab&#13;&#10;ORDER BY adcv.police, V_START_DATE&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT adcv.police, payment_term, V_START_DATE, pol_gueltig_ab &#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION adcv &#13;&#10;JOIN (&#9;SELECT police, p.pol_gueltig_ab, max(v_start_date) latest &#13;&#10;&#9;&#9;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION adcv2   &#13;&#10;&#9;&#9;JOIN SEV.POLICE p ON p.POL_POLICEN_NR = adcv2.POLICE &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9; AND adcv2.V_START_DATE &gt;= p.POL_GUELTIG_AB  &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9; AND adcv2.V_START_DATE &lt; p.POL_UNGUELTIG_AB   &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9; AND p.pol_historie &lt;&gt; 'HT'   &#13;&#10;&#9;&#9;WHERE adcv2.v_start_date &gt;= timestamp '&quot;+context.borderDate+&quot;' &#13;&#10;&#9;&#9;AND p.pol_ungueltig_ab &gt; timestamp '&quot;+context.borderDate+&quot;' &#13;&#10;&#9;&#9;GROUP BY police, p.pol_gueltig_ab  &#13;&#10;&#9;&#9;ORDER BY police, p.pol_gueltig_ab  &#13;&#10;&#9; ) v ON v.police = adcv.POLICE AND adcv.V_START_DATE = v.latest  &#13;&#10;WHERE EXISTS (SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS pms WHERE pms.bundle_policy_id = adcv.POLICE  AND pms.MIGRATION_ID =&quot;+context.migrationID+&quot;)&#13;&#10;GROUP BY adcv.police, payment_term, V_START_DATE, pol_gueltig_ab&#13;&#10;ORDER BY adcv.police, V_START_DATE&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2068,14 +2068,14 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="versions"/>
   </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_1">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk5"/>
-  </connection>
   <connection connectorName="FLOW" label="row7" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row7"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk5"/>
   </connection>
   <connection connectorName="FLOW" label="payment_term" lineStyle="8" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -2234,13 +2234,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_84e8f7c3-4469-4f7f-a76c-8b097dbba2aa"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>djZJBQ8QKmLJK9s28np/ZlIg0bUIE3oYxVKJSsL/3Op01snddBbDz3jKzgsBMXuJXJ+HSV5ANKJd&#13;
-ePU9c22Ppg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f75956c9-018b-4301-92b5-9ae41181795f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Qa9WBmfkR+QPomjF1ILaeQqW3eFQ4vBeEI7Cb04QXg3urLKpeGq4CM8VSPlTHMVUxp1SVOrM84Ng&#13;
-HbAqzs3UQg==</DigestValue></Reference></SignedInfo><SignatureValue>cRywgA1gxQnmytMqJm6bahCzwaqXcjzyS6CZ1VrJJaQeh6VRt61wJ5vKXnlWhdLvf2ZZFU+BCECU&#13;
-UczxEQGaBPFgYz1bvV6DGqlvMN4QYhvTZSD0FVjfI2nG6yrfJYWAVy6rjyo8geCPSY4brMx8alNp&#13;
-Z2WlZhXmvbzr7xBPF5h6aq1pQckosrqHgorIgPNrcrMjAzpG01Ikqp2z6AzgEV6sA4ZiLOJJu9gS&#13;
-CCmlwiALbJ3+aks4IlBIQC3uZeaYwUhRDVu4MXgIHPb6ohv2JQun+b+83ClgZcFin6AISyRjm2Ci&#13;
-cI1yB2FbFmkEpzismeHPDvivRfBc8llRpZ3wZQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_83baaf37-87c0-492f-90c5-216e67b02fb3"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>4FnbBNwuT35vhKudwmmhlAtUk9kKcVE8pTu+BVQ817kDXYJDA8Jtc04fa34eooLO3NECEt3GQOh3&#13;
+mcvHzGY5fw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d3771174-2ad9-49f3-999f-ce05020db8e3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RwqqJHSopIs2dEnTsuWcYD9L9nmM8ruARVG8n1wY4nDjk1rthT8KiXMi2hWL3lajSQKmdqxJYslr&#13;
+ooCC1RlQcA==</DigestValue></Reference></SignedInfo><SignatureValue>Flz+rclQ260dCxy7sYxiJ7b4s3IctqBAMuBhaOXKbKA1JhjptX8OYqJ3xMFeMWGL41I8wdV4vKCy&#13;
+Ig7uiYn8KocrGj6Ndd9Z9skzTQbM56oi9+qCX+/LyP5pbW6PE8rEoCNsVDnb86YXpxl95JuMZjQJ&#13;
+TNwVZy5woKqDNm3NF36nrORkFJLSMtrmmtzxG2Eoi1fxTvm1yfqjuIQh2Fq5g+LAZMFHiJPE+R2n&#13;
+YIDWzp+dbypUCAaE9aSyrFw9QyQ9W6LZnGPFFlsLnT3DmgjBF8OoViNuEqRHeBEd1HXsCkg5Z7+G&#13;
+cTaFvBdMePjhCvYnXtVsIbC4anNRV2iaWGdWZA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2262,4 +2262,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f75956c9-018b-4301-92b5-9ae41181795f" Target="#_84e8f7c3-4469-4f7f-a76c-8b097dbba2aa"><Timestamp>2024-07-23 10:05:21</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d3771174-2ad9-49f3-999f-ce05020db8e3" Target="#_83baaf37-87c0-492f-90c5-216e67b02fb3"><Timestamp>2024-07-23 12:37:03</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
