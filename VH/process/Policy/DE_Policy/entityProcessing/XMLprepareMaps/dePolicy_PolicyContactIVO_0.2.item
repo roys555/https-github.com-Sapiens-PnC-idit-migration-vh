@@ -209,8 +209,13 @@
       <column comment="" key="false" length="20" name="ERROR_CODE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
+    <metadata connector="FLOW" label="XML_policyContatIVO" name="Intermediary">
+      <column comment="" key="false" length="50" name="external_contact_number" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyContactRoleVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="policyContactRoleVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(policyholder.PAR_PARTNERNR) " name="extContactNumber" type="id_String"/>
       </varTables>
@@ -242,6 +247,11 @@
         <mapperTableEntries expression="&quot;M&quot;" name="SEVERITY" nullable="true" type="id_String"/>
         <mapperTableEntries expression="&quot;DEPL0011&quot;" name="ERROR_CODE" nullable="true" type="id_String"/>
         <mapperTableEntries expression="TalendDate.getCurrentDate()" name="ERROR_TIMESTAMP" nullable="true" type="id_Date"/>
+      </outputTables>
+      <outputTables name="Intermediary" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="String.valueOf(policyholder.PAR_VERMITTLER_NR_VM ) " name="external_contact_number" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="(long)10" name="policyContactRoleVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="&quot;Intermediary&quot;" name="policyContactRoleVORefDesc" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyholder" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -361,7 +371,7 @@
       <column comment="" key="false" length="19" name="update_date" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="800" posY="512" sizeX="64" sizeY="32">
+  <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="800" posY="576" sizeX="64" sizeY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbOutput_2"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -479,6 +489,25 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="20" name="errorCode" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHashOutput" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="800" posY="512">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHashOutput_4"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_LiblEI04Ee6voKC5vynJ2w - XML_policyContatIVO"/>
+    <elementParameter field="CHECK" name="LINK_WITH" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="LIST" value="tHashOutput_1"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_WRITE_MODEL" show="false" value="MEMORY"/>
+    <elementParameter field="FILE" name="BASE_FILE_PATH" show="false" value="&quot;C:/Users/Roman.Kepa/vh_new_workspace/in.hash&quot;"/>
+    <elementParameter field="TEXT" name="MEMORY_HEAP_MAX_SIZE" show="false" value="2"/>
+    <elementParameter field="CLOSED_LIST" name="KEYS_MANAGEMENT" show="false" value="KEEP_ALL"/>
+    <elementParameter field="CHECK" name="APPEND" show="false" value="true"/>
+    <elementParameter field="CHECK" name="HASH_KEY_FROM_INPUT_CONNECTOR" show="false" value="false"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="XML_policyContatIVO" name="tHashOutput_4">
+      <column comment="" key="false" length="50" name="external_contact_number" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="policyContactRoleVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="policyContactRoleVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
@@ -615,6 +644,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="rejectNoContactInIDIT"/>
   </connection>
+  <connection connectorName="FLOW" label="Intermediary" lineStyle="0" metaname="Intermediary" offsetLabelX="0" offsetLabelY="0" outputId="5" source="tMap_1" target="tHashOutput_4">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="Intermediary"/>
+  </connection>
   <connection connectorName="FLOW" label="CN_CONTACT" lineStyle="8" metaname="tHSQLDbInput_2" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_2" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CN_CONTACT"/>
@@ -652,13 +685,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_1fb68540-3ea6-41a9-9488-b4735643017d"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>uTm8fDNrs9JuQNVIzrY/KScfZTcDId4G9hs7m9mbK2GbS/L34gjNgKF0yJqNRnfvY74ixTNan/0D&#13;
-aQYxLXeTEA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_5c198f3b-3845-4b1b-90a2-fcc350adc380"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>wtKy850H8wpKZAo1cXVAflgGtHYeS38qPvVgEze25PqSkwHa0/ipFRrHKyHcym6h6PKTRZk6dTQW&#13;
-PZcbYQAdMA==</DigestValue></Reference></SignedInfo><SignatureValue>GmOTAi13j3dl9G2PObhP3AvDa8cMEUZufDh3DbL8fMZ4RyiDCbxJ+wlYmFVXH4HiQvp5lMpkqsF4&#13;
-5xcPFjC5TpWsaEwuuI906TYJ/a9qzIYi4CrWe3/8npYJXNx96niXYhIY/cX7ql5oZ0JElgH1MBp3&#13;
-kj9H0V8Yr0oxV8NqFXaFMPA/IqHAsy0G2xRcX1kFjWPjNua12K5qctVnJppSIHZT/qeDAHLzLLCd&#13;
-QtL+MOGziYP2fMAkJTRfhTpnm8i5W7LeHIiANqsbb9S0yKzyM4cU4BUhhUz8pfhmLMnKcFu/vCpw&#13;
-NENxdHIoxM+5dlNbbj9Typlncs+25s+asT7uFg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_9f6d5436-197a-48d0-bbb5-9525494bbc51"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ea1CocjKmZHgdBY2TyIOSURSZoPhh3RKFvtY56xU/Lw83C/SNjbokRUpv8LJbjOJd2+QO+1UZlAS&#13;
+sZsHcd2qbA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a402e42a-4fae-4d16-891d-123c377ea8d2"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>MgiC3/ei3S9bix4HNbGDrVDK0fJBlShrkXBq5c3qRscgwmhUccDo0gCqICv0bembFHtj1oYlLiTK&#13;
+a36qSYbPpA==</DigestValue></Reference></SignedInfo><SignatureValue>R6sljHP2kR1qwAVylw3ifTHaMPdHoiQ1OuwAvvcT+EEgbA5noFqBw4mTcYK3mEHRzz9vDdquZbFE&#13;
+xg64VukTYoyoHB9OC5cd++2rBhKfBvd1LXcBw8pvM1zQDQ46c2QT2yAIdDj23/UoTZKZI9bF4kmi&#13;
+1oeeYyfw5tfzgYfi/RvRH1ReJ7SHL2ifFTrNDAtfzG66b8tVVVKAGKD/v4HMlo7oVS/48bkbfrWl&#13;
+HdV2D6ItiHR9NsV8Eincuv4ODlHrB8EtFkKk4xVlSqE+dtnWI9pxfhlu+775zAmHsTOKye/XRHUo&#13;
+qN3U+Ea17v0/yiHvABNj41q6VVcJLEt2/LqM6A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -680,4 +713,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_5c198f3b-3845-4b1b-90a2-fcc350adc380" Target="#_1fb68540-3ea6-41a9-9488-b4735643017d"><Timestamp>2024-07-25 10:03:20</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a402e42a-4fae-4d16-891d-123c377ea8d2" Target="#_9f6d5436-197a-48d0-bbb5-9525494bbc51"><Timestamp>2024-07-25 10:14:14</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
