@@ -4346,7 +4346,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH VERSIONS AS&#13;&#10;&#13;&#10;(SELECT DISTINCT p.POL_POLICEN_NR AS POLICE,  &#13;&#10;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#13;&#10;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#13;&#10;p.POL_WIRTSCHAFTSWEISE AS economyref,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM &#13;&#10;WHEN 'Secufarm' THEN 1000198&#13;&#10;WHEN 'Basis' THEN 1000198&#13;&#10;WHEN 'Garant' THEN 1000199&#13;&#10;END AS premiumSystem,&#13;&#10;CASE  &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Secufarm' AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NOT NULL THEN concat(concat(p.POL_PRODUKT_OBERGRUPPE,', '), p.pol_beschreibung)&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NULL THEN p.POL_PRODUKT_OBERGRUPPE &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NULL AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;ELSE NULL&#13;&#10;END AS bundle_remarks,&#13;&#10;CASE p.POL_RECHNUNGSTYP WHEN '1' THEN 1 ELSE 0 END IS_ANNUAL_PAYER,&#13;&#10;CASE WHEN p.POL_STORNOGRUND IS NOT NULL AND p.POL_HISTORIE = 'AN' THEN 40&#13;&#10;ELSE 20&#13;&#10;END AS bundle_policy_status,&#13;&#10;p.POL_HISTORIE AS bundle_Status,&#13;&#10;p.POL_STORNOGRUND AS cancelled,&#13;&#10;p.pol_praemienbonus AS pa_discount,&#13;&#10;p.POL_PC_ANBAUVERZEICHNIS AS webavref,&#13;&#10;p.pol_mitglied,&#13;&#10;p.POL_BEZIRKSKASSE&#13;&#10;FROM sev.POLICE p&#13;&#10;JOIN K2V_DEV.all_de_policy adp ON p.POL_POLICEN_NR = adp.bundle_policy_id &#13;&#10;WHERE 1=1&#13;&#10;AND p.pol_gueltig_ab &gt;= adp.START_DATE&#13;&#10;AND p.pol_ungueltig_ab &gt; timestamp '2016-01-01 00:00:00.000' &#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;) &#13;&#10;&#13;&#10;SELECT &#9;v.POLICE, v.B_VER_START_DATE, v.B_VER_END_DATE, v.economyref, v.premiumSystem, v.bundle_remarks, IS_ANNUAL_PAYER,  v.bundle_policy_status, v.bundle_status, v.cancelled, v.pa_discount, v.webavref, v.pol_mitglied,&#13;&#10;&#9;&#9;v.POL_BEZIRKSKASSE,&#13;&#10;&#9;&#9;DENSE_RANK() OVER (   PARTITION BY  v.POLICE ORDER BY v.B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM VERSIONS v&#13;&#10;&#13;&#10;ORDER BY police, B_VER_START_DATE ASC &#13;&#10;&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH VERSIONS AS&#13;&#10;&#13;&#10;(SELECT DISTINCT p.POL_POLICEN_NR AS POLICE,  &#13;&#10;p.POL_GUELTIG_AB AS B_VER_START_DATE,&#13;&#10;p.POL_UNGUELTIG_AB AS B_VER_END_DATE,&#13;&#10;p.POL_WIRTSCHAFTSWEISE AS economyref,&#13;&#10;CASE p.POL_PRAEMIENSYSTEM &#13;&#10;WHEN 'Secufarm' THEN 1000198&#13;&#10;WHEN 'Basis' THEN 1000198&#13;&#10;WHEN 'Garant' THEN 1000199&#13;&#10;END AS premiumSystem,&#13;&#10;CASE  &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Secufarm' AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NOT NULL THEN concat(concat(p.POL_PRODUKT_OBERGRUPPE,', '), p.pol_beschreibung)&#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NOT NULL AND p.pol_beschreibung IS NULL THEN p.POL_PRODUKT_OBERGRUPPE &#13;&#10;WHEN p.POL_PRAEMIENSYSTEM = 'Basis' AND p.POL_PRODUKT_OBERGRUPPE IS NULL AND p.pol_beschreibung IS NOT NULL THEN p.pol_beschreibung&#13;&#10;ELSE NULL&#13;&#10;END AS bundle_remarks,&#13;&#10;CASE p.POL_RECHNUNGSTYP WHEN '1' THEN 1 ELSE 0 END IS_ANNUAL_PAYER,&#13;&#10;CASE WHEN p.POL_STORNOGRUND IS NOT NULL AND p.POL_HISTORIE = 'AN' THEN 40&#13;&#10;ELSE 20&#13;&#10;END AS bundle_policy_status,&#13;&#10;p.POL_HISTORIE AS bundle_Status,&#13;&#10;p.POL_STORNOGRUND AS cancelled,&#13;&#10;p.pol_praemienbonus AS pa_discount,&#13;&#10;p.POL_PC_ANBAUVERZEICHNIS AS webavref,&#13;&#10;p.pol_mitglied,&#13;&#10;p.POL_BEZIRKSKASSE&#13;&#10;FROM sev.POLICE p&#13;&#10;JOIN K2V_DEV.all_de_policy adp ON p.POL_POLICEN_NR = adp.bundle_policy_id &#13;&#10;WHERE 1=1&#13;&#10;AND p.pol_gueltig_ab &gt;= adp.START_DATE&#13;&#10;AND p.pol_ungueltig_ab &gt;=timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;AND p.POL_HISTORIE &lt;&gt; 'HT'&#13;&#10;) &#13;&#10;&#13;&#10;SELECT &#9;v.POLICE, v.B_VER_START_DATE, v.B_VER_END_DATE, v.economyref, v.premiumSystem, v.bundle_remarks, IS_ANNUAL_PAYER,  v.bundle_policy_status, v.bundle_status, v.cancelled, v.pa_discount, v.webavref, v.pol_mitglied,&#13;&#10;&#9;&#9;v.POL_BEZIRKSKASSE,&#13;&#10;&#9;&#9;DENSE_RANK() OVER (   PARTITION BY  v.POLICE ORDER BY v.B_VER_START_DATE) - 1 AS BUNDLE_VERSION&#13;&#10;FROM VERSIONS v&#13;&#10;&#13;&#10;ORDER BY police, B_VER_START_DATE ASC &#13;&#10;&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -4658,6 +4658,10 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tDBInput_8">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
+  </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tMap_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ID"/>
@@ -4670,10 +4674,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tDBInput_8">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
   </connection>
   <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tDBOutput_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4791,6 +4791,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk8"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tDBInput_6">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
+  </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tMap_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ID"/>
@@ -4800,10 +4804,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tDBInput_6">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfcopyOfout" lineStyle="0" metaname="copyOfcopyOfout" offsetLabelX="0" offsetLabelY="0" source="tMap_5" target="tDBOutput_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4894,10 +4894,6 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk11"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tDBInput_3">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
-  </connection>
   <connection connectorName="FLOW" label="CLS_49" lineStyle="0" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tMap_8">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="orig_start_date"/>
@@ -4961,6 +4957,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CLS_49"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tDBInput_3">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk3"/>
   </connection>
   <connection connectorName="FLOW" label="ALL_DE_CONTRACT_v49" lineStyle="0" metaname="ALL_DE_CONTRACT_v49" offsetLabelX="0" offsetLabelY="0" source="tMap_8" target="tDBOutput_8">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -5412,13 +5412,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_dc80a7b5-a924-4ad9-bf24-138927f8a331"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>XfROSS/r2gGn/pf8Z02vRSBtPqqRE32WfhizIohQcfVB+F1Y+C4ec5ObQovM2KBgH9QCWtZN7RsT&#13;
-l4TsDEfJiQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_71f00b4d-7c83-4244-b72f-0cb3815fa594"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>n7UXZAxCDGuLmg721DWctjqLl05U5QBc5FkLGVOumxPqeSKNHkHRHaFXt8Xie/W3hmmsbkW7K18n&#13;
-u0qRRfuN0w==</DigestValue></Reference></SignedInfo><SignatureValue>U+bkiJg7Jznzn0ykksMjEG4IEXMwCiwWsPBOe8BtbZxi64v6L03SqjAm6BVOjpOTgp/wbZnx/Sqk&#13;
-gPzCAoeXM9j9SMkrJdQonJNx8M95dX1ahVfpBBbVTtqnWQAfROtPFdE7oHdrNT4GSysRf4Zh9WhL&#13;
-tF5/B42lVI1qF4IPSLkkackkcab1rcmnKKbjy8hFhCSYZexTZk1POyZ15wVI/3NdaxuNLhiXbqJq&#13;
-wAIeXoCT5jiDDrso7jRz0iDJOVfMZKcTNIPfcrBBbUy5f/L2x58/z6Mzmwcx7ZJsAodk9CeAl+dt&#13;
-iTswFeSkxZtVEnRb47c0E+B3qevPShBp9eWjyQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_78b3bd90-7b6c-457d-b725-dcb238a43fe9"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>NHPDi8EdU8xX4E8nz5wkZkQlXwKgp0RGAwkUvTLjuZf6hUYs6+v4iIcD8TSw0t3+VC3FW34YXenH&#13;
+ZIPH9uIgUg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_e6e573fd-d611-4ab3-b21f-f3aef4679421"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>UgTWiXUXJGHPK5OVpr5PpWC29qiuthHFV20DD0mWiuM97v+QW4PwV/7pPuOzD7tQCUfEH1N8P3XU&#13;
+RJS7pYi7MA==</DigestValue></Reference></SignedInfo><SignatureValue>FrEc9Gfpl0bsFFJAz40N6TDYPGlxy71VyvOu8eHKHIhBG6fFO9M98ZQNJxN9lY2pfkq8/fKPFXFa&#13;
+fzVunVvNeqshr3Gg8zAnxui3mhPAP8uHDK5AeXKlJnaOd3VO4jC0H79yEEXHxFivSWpbYsEHkIYa&#13;
+JuD4/Ni9cTk4Qk4HlpN6J106UOtWY5iRX6LDRXw9qwdUADO1WsrjicQO8xY5rS2hlvMzf79V4lot&#13;
+az9HC8V+kLfxxtynDUcYCySvDFbnV9dh+NqFgrkKex0QezVf2dyobRHdh92liWgVp4A+tqpDEfRK&#13;
+6USqWROgTrKIRgMp7gSITk9Rg1JVRUdS9jM96g==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5440,4 +5440,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_71f00b4d-7c83-4244-b72f-0cb3815fa594" Target="#_dc80a7b5-a924-4ad9-bf24-138927f8a331"><Timestamp>2024-07-25 14:34:07</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_e6e573fd-d611-4ab3-b21f-f3aef4679421" Target="#_78b3bd90-7b6c-457d-b725-dcb238a43fe9"><Timestamp>2024-07-26 09:30:38</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
