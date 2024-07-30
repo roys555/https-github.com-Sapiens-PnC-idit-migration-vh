@@ -4084,6 +4084,255 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-192" posY="864">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_3"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
+    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" show="false" value="ORACLE_18"/>
+    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;10.86.77.7&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="ORACLE_SERVICE_NAME"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1521&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;ORCL&quot;"/>
+    <elementParameter field="TEXT" name="SCHEMA_DB" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" show="false" value="&quot;system&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:MdBOFjh9oCZf91hGpQA3JfzrjkNyrfXOIXjdgZFMCMXH+3OHotxvlw=="/>
+    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="stg_AGR_CONTRACT_FLOATING_COVERS"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT adcv.POLICE, adcv.VERTRAG, adcv.POLICY_VERSION , adcv.V_START_DATE, it.ins_tax_betrag, anc.anc_serv_betrag, cw.comm_waiver_betrag, nbc.SI_comm_NB_betrag, mtc.SI_comm_maint_betrag&#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION adcv&#13;&#10;LEFT JOIN (&#13;&#10;&#9;&#9;&#9;SELECT adcv.police, adcv.vertrag, adcv.v_start_date, SUM(CASE WHEN SUBSTR(buk.buk_systemkuerzel, 1, 7) = 'FORDVST' THEN ink.ink_betrag ELSE ink.ink_betrag * -1 END) ins_tax_betrag&#13;&#10;&#9;&#9;&#9;FROM sev.inkasso_exkasso ink&#13;&#10;&#9;&#9;&#9;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = ink.ink_policen_nr AND adcv.VERTRAG = ink.ink_vertrag_nr&#13;&#10;&#9;&#9;&#9;JOIN sev.rechnung rec ON rec.rec_rechnungs_nr = ink.rec_rechnungs_nr &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9; AND rec.rec_art IS NULL &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9; AND rec.rec_faelligkeitsdatum = adcv.v_start_date&#13;&#10;&#9;&#9;&#9;JOIN SEV.VU vun ON vun.VUN_VU_NR = ink.MAN_VU_NR&#13;&#10;&#9;&#9;&#9;JOIN sev.buchungskuerzel buk ON buk.buk_buchungskuerzel = ink.ink_buchungskuerzel&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND buk.buk_systemkuerzel IN ('FORDVST', 'VERBVST', 'FORDVSTFRASS', 'VERBVSTFRASS')&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;and buk.buk_mandant = vun.VUN_MANDANT&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND buk.buk_gefahrgruppe IS NULL&#13;&#10;&#9;&#9;&#9;GROUP BY adcv.police, adcv.vertrag, adcv.v_start_date &#13;&#10;&#9;&#9; ) it ON it.police = adcv.police AND it.vertrag = adcv.vertrag AND it.v_start_date = adcv.V_START_DATE &#13;&#10;LEFT JOIN (&#13;&#10;&#9;&#9;&#9;SELECT adcv.police, adcv.vertrag, adcv.v_start_date, SUM(CASE WHEN SUBSTR(buk.buk_systemkuerzel, 1, 7) = 'FORDNEB' THEN ink.ink_betrag ELSE ink.ink_betrag * -1 END) anc_serv_betrag&#13;&#10;&#9;&#9;&#9;FROM sev.inkasso_exkasso ink&#13;&#10;&#9;&#9;&#9;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = ink.ink_policen_nr AND adcv.VERTRAG = ink.ink_vertrag_nr&#13;&#10;&#9;&#9;&#9;JOIN sev.rechnung rec ON rec.rec_rechnungs_nr = ink.rec_rechnungs_nr &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9; AND rec.rec_art IS NULL &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9; AND rec.rec_faelligkeitsdatum = adcv.v_start_date&#13;&#10;&#9;&#9;&#9;JOIN SEV.VU vun ON vun.VUN_VU_NR = ink.MAN_VU_NR&#13;&#10;&#9;&#9;&#9;JOIN sev.buchungskuerzel buk ON buk.buk_buchungskuerzel = ink.ink_buchungskuerzel&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND buk.buk_systemkuerzel IN ('FORDNEB', 'VERBNEB')&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;and buk.buk_mandant = vun.VUN_MANDANT&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND buk.buk_gefahrgruppe IS NULL&#13;&#10;&#9;&#9;&#9;GROUP BY adcv.police, adcv.vertrag, adcv.v_start_date &#13;&#10;&#9;&#9; ) anc ON anc.police = adcv.police AND anc.vertrag = adcv.vertrag AND anc.v_start_date = adcv.V_START_DATE&#13;&#10;LEFT JOIN (&#13;&#10;&#9;&#9;&#9;SELECT adcv.police, adcv.vertrag, adcv.v_start_date, SUM(CASE WHEN SUBSTR(buk.buk_systemkuerzel, 1, 7) = 'FORDWBO' THEN ink.ink_betrag ELSE ink.ink_betrag * -1 END) comm_waiver_betrag&#13;&#10;&#9;&#9;&#9;FROM sev.inkasso_exkasso ink&#13;&#10;&#9;&#9;&#9;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = ink.ink_policen_nr AND adcv.VERTRAG = ink.ink_vertrag_nr&#13;&#10;&#9;&#9;&#9;JOIN sev.rechnung rec ON rec.rec_rechnungs_nr = ink.rec_rechnungs_nr &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9; AND rec.rec_art IS NULL &#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9; AND rec.rec_faelligkeitsdatum = adcv.v_start_date&#13;&#10;&#9;&#9;&#9;JOIN SEV.VU vun ON vun.VUN_VU_NR = ink.MAN_VU_NR&#13;&#10;&#9;&#9;&#9;JOIN sev.buchungskuerzel buk ON buk.buk_buchungskuerzel = ink.ink_buchungskuerzel&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND buk.buk_systemkuerzel IN ('VERBWBO', 'FORDWBO')&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;and buk.buk_mandant = vun.VUN_MANDANT&#13;&#10;&#9;&#9;&#9;   &#9;&#9;&#9;&#9;&#9;&#9;&#9;AND buk.buk_gefahrgruppe IS NULL&#13;&#10;&#9;&#9;&#9;GROUP BY adcv.police, adcv.vertrag, adcv.v_start_date &#13;&#10;&#9;&#9;  ) cw ON cw.police = adcv.police AND cw.vertrag = adcv.vertrag AND cw.v_start_date = adcv.V_START_DATE&#13;&#10;&#9;&#9;  &#13;&#10;LEFT JOIN (&#13;&#10;&#9;&#9;&#9;SELECT adcv.police, adcv.vertrag, adcv.v_start_date, sum(avm.AVM_PROVISION_DIFF) SI_comm_NB_betrag&#13;&#10;&#9;&#9;&#9;FROM sev.abrechnung_vm avm&#13;&#10;&#9;&#9;&#9;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = avm.POL_POLICEN_NR AND adcv.VERTRAG = avm.VER_VERTRAG_NR AND adcv.V_START_DATE = avm.POL_GUELTIG_AB&#13;&#10;&#9;&#9;&#9;WHERE avm.AVM_ART ='AP'&#13;&#10;&#9;&#9;&#9;GROUP BY adcv.police, adcv.vertrag, adcv.v_start_date &#13;&#10;&#9;&#9;&#9;ORDER BY adcv.police, adcv.vertrag, adcv.v_start_date&#13;&#10;&#9;&#9;  ) nbc ON nbc.police = adcv.police AND nbc.vertrag = adcv.vertrag AND nbc.v_start_date = adcv.V_START_DATE&#13;&#10;LEFT JOIN (&#13;&#10;&#9;&#9;&#9;SELECT adcv.police, adcv.vertrag, adcv.v_start_date, sum(avm.AVM_PROVISION_DIFF) SI_comm_maint_betrag&#13;&#10;&#9;&#9;&#9;FROM sev.abrechnung_vm avm&#13;&#10;&#9;&#9;&#9;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = avm.POL_POLICEN_NR AND adcv.VERTRAG = avm.VER_VERTRAG_NR AND adcv.V_START_DATE = avm.POL_GUELTIG_AB&#13;&#10;&#9;&#9;&#9;WHERE avm.AVM_ART ='BP'&#13;&#10;&#9;&#9;&#9;GROUP BY adcv.police, adcv.vertrag, adcv.v_start_date &#13;&#10;&#9;&#9;&#9;ORDER BY adcv.police, adcv.vertrag, adcv.v_start_date&#13;&#10;&#9;&#9;  ) mtc ON mtc.police = adcv.police AND mtc.vertrag = adcv.vertrag AND mtc.v_start_date = adcv.V_START_DATE&#13;&#10;ORDER BY adcv.POLICE, adcv.VERTRAG, adcv.V_START_DATE&#13;&#10;&#13;&#10;&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
+    <elementParameter field="CHECK" name="IS_CONVERT_XMLTYPE" value="false"/>
+    <elementParameter field="TABLE" name="CONVERT_XMLTYPE" show="false"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" show="false" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="USE_CURSOR" value="false"/>
+    <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="INS_TAX_BETRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ANC_SERV_BETRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="COMM_WAIVER_BETRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SI_COMM_NB_BETRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SI_COMM_MAINT_BETRAG"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
+    <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="stg_AGR_CONTRACT_FLOATING_COVERS"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tDBInput_3">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="VERTRAG" nullable="false" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="V_START_DATE" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="INS_TAX_BETRAG" nullable="true" originalLength="10" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="ANC_SERV_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="COMM_WAIVER_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="SI_COMM_NB_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="SI_COMM_MAINT_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="128" posY="864">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_3"/>
+    <elementParameter field="EXTERNAL" name="MAP" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
+    <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_CdxC8NewEe6c8bKJq98xSw-tMap_3-PREVIEW.bmp"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
+    <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
+    <elementParameter field="TEXT" name="JACCARD" show="false" value="0"/>
+    <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
+    <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="floating_covers" name="floating_covers">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="VERTRAG" nullable="false" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="V_START_DATE" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="INS_TAX_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="NUMBER" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="ANC_SERV_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="NUMBER" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="COMM_WAIVER_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="NUMBER" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="SI_COMM_NB_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="NUMBER" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="SI_COMM_MAINT_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="NUMBER" type="id_Double" usefulColumn="true"/>
+    </metadata>
+    <nodeData xsi:type="TalendMapper:MapperData">
+      <uiProperties shellMaximized="true"/>
+      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <outputTables name="floating_covers" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="row3.POLICE " name="POLICE" type="id_Long"/>
+        <mapperTableEntries expression="row3.VERTRAG " name="VERTRAG" type="id_Long"/>
+        <mapperTableEntries expression="row3.POLICY_VERSION " name="POLICY_VERSION" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row3.V_START_DATE " name="V_START_DATE" type="id_Date"/>
+        <mapperTableEntries expression="row3.INS_TAX_BETRAG " name="INS_TAX_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="row3.ANC_SERV_BETRAG " name="ANC_SERV_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="row3.COMM_WAIVER_BETRAG " name="COMM_WAIVER_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="row3.SI_COMM_NB_BETRAG " name="SI_COMM_NB_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="row3.SI_COMM_MAINT_BETRAG " name="SI_COMM_MAINT_BETRAG" nullable="true" type="id_Double"/>
+      </outputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row3" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="POLICE" type="id_Long"/>
+        <mapperTableEntries name="VERTRAG" type="id_Long"/>
+        <mapperTableEntries name="POLICY_VERSION" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="V_START_DATE" type="id_Date"/>
+        <mapperTableEntries name="INS_TAX_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="ANC_SERV_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="COMM_WAIVER_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="SI_COMM_NB_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="SI_COMM_MAINT_BETRAG" nullable="true" type="id_Double"/>
+      </inputTables>
+    </nodeData>
+  </node>
+  <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="384" posY="864">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_3"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="true"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
+    <elementParameter field="CLOSED_LIST" name="CONNECTION_TYPE" show="false" value="ORACLE_SID"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" show="false" value="ORACLE_18"/>
+    <elementParameter field="TEXT" name="RAC_URL" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;1521&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="Oracle"/>
+    <elementParameter field="TEXT" name="DBNAME" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="LOCAL_SERVICE_NAME" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="TABLESCHEMA" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" show="false" value="&quot;&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" show="false" value="enc:system.encryption.key.v1:bs2rvvg3bcnqn7YXZ/IdqSyI+25mEOCNl2Z4sw9r"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;K2V_DEV.ALL_DE_CONTRACT_FLOATING_COVERS&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_CREATE"/>
+    <elementParameter field="LABEL" name="NOTE" value="Warning : this component configuration will automatically generate a commit before data insert/update/delete"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" show="false" value="oracle_id"/>
+    <elementParameter field="TEXT" name="JDBC_URL" show="false" value="&quot;jdbc:oracle:oci:/@talend&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" show="false" value="&quot;&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" show="false" value="*Note: Example for Additional JDBC Parameters: &quot;parameterName1=value1&amp;&amp;parameterName2=value2&quot;"/>
+    <elementParameter field="CHECK" name="USE_ALTERNATE_SCHEMA" value="false"/>
+    <elementParameter field="TEXT" name="ALTERNATE_SCHEMA" show="false" value="&quot;&quot;"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" show="false" value="10000"/>
+    <elementParameter field="TABLE" name="ADD_COLS"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICY_VERSION"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_START_DATE"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="INS_TAX_BETRAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ANC_SERV_BETRAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="COMM_WAIVER_BETRAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SI_COMM_NB_BETRAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SI_COMM_MAINT_BETRAG"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
+    <elementParameter field="CHECK" name="CONVERT_COLUMN_TABLE_TO_UPPERCASE" value="false"/>
+    <elementParameter field="CHECK" name="CONTAIN_BLOB_FROM_OTHER_DB" value="false"/>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
+    <elementParameter field="CHECK" name="USE_BATCH_SIZE" show="false" value="true"/>
+    <elementParameter field="CHECK" name="USE_BATCH_AND_USE_CONN" value="true"/>
+    <elementParameter field="TEXT" name="BATCH_SIZE" value="10000"/>
+    <elementParameter field="CHECK" name="SUPPORT_NULL_WHERE" value="false"/>
+    <elementParameter field="CHECK" name="USE_TIMESTAMP_FOR_DATE_TYPE" value="true"/>
+    <elementParameter field="CHECK" name="TRIM_CHAR" value="true"/>
+    <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;K2V_DEV.ALL_DE_CONTRACT_FLOATING_COVERS&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="floating_covers" name="tDBOutput_3">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="VERTRAG" nullable="false" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="V_START_DATE" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="INS_TAX_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="ANC_SERV_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="COMM_WAIVER_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="SI_COMM_NB_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="SI_COMM_MAINT_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="REJECT" label="floating_covers" name="REJECT">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="VERTRAG" nullable="false" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="POLICY_VERSION" nullable="true" originalLength="10" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="V_START_DATE" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="INS_TAX_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="ANC_SERV_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="COMM_WAIVER_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="SI_COMM_NB_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="0" name="SI_COMM_MAINT_BETRAG" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tDBInput_8">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
+  </connection>
   <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tMap_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ID"/>
@@ -4096,10 +4345,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row1"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tDBInput_8">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk5"/>
   </connection>
   <connection connectorName="FLOW" label="out" lineStyle="0" metaname="out" offsetLabelX="0" offsetLabelY="0" source="tMap_1" target="tDBOutput_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4172,6 +4417,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk8"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tDBInput_6">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
+  </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tMap_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="ID"/>
@@ -4181,10 +4430,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tDBInput_6">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk4"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfcopyOfout" lineStyle="0" metaname="copyOfcopyOfout" offsetLabelX="0" offsetLabelY="0" source="tMap_5" target="tDBOutput_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4607,6 +4852,14 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out1"/>
   </connection>
+  <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tMap_3">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
+  </connection>
+  <connection connectorName="FLOW" label="floating_covers" lineStyle="0" metaname="floating_covers" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tDBOutput_3">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="floating_covers"/>
+  </connection>
   <note opaque="true" posX="32" posY="0" sizeHeight="64" sizeWidth="449" text="check borderDate before repopulating the tables"/>
   <subjob>
     <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
@@ -4770,13 +5023,20 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_b59e6bb9-7389-4043-a873-5bd21bf9b1eb"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>d3WOaFaidX3VmdR71sLA17tw4hA7bMUxFOkXCL6VFIazu7lc/GWGZFoo2zdO0WNlD82HWXBrGhDB&#13;
-6MMJoX0NWw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_79087e9f-0778-4907-8bf7-87555781251a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>KlBBzD5Y/jO2thLYwMzeFoQ+JfTmV52q3YP1Fnv87c1cX0tU75tDe43uyAOqRmnHvvSdWoZCLABa&#13;
-KT9JR8fUSA==</DigestValue></Reference></SignedInfo><SignatureValue>MMbDrQQnLaJNwBRRshA1u4B0FVru+D/ohgvkndSnztsjH25zlXtgwkgKg2S4ris+UkfDxuUc3czI&#13;
-pjfitT6V68QEF7qkOhnIR7TX78AyOHLfsKL0eqCEExqYVLuwu4CFduNoIwZqkwpn62xT6gfYiZTC&#13;
-qepPdcnXJmpMLllDw324/TpQyrjUwQrIPcYPOEKfUasQS4Ehugro9FrUo++jkczn6JtFVGdTro56&#13;
-zdVE9iBqXOPHuzkcvt794H5vqYksiblkjQrrDNjiF4FvndMtdgHAgHEcexE/NvVu8vBMtEbwFmBc&#13;
-60ww4Y3M/05QgfrXGRalS1wTdu2qLwssWQxh9A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_3"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="ALL_DE_CONTRACT_FLOATING_COVERS    v101"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_064f6207-652d-40d9-9e8d-3c7861a4d32d"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>7IhAq79YNkCm14W0flkYrEydXAkmjhaiEuT2G+VRiYJU6eFJMZTOK24vUIyH3lOCgkq7PjSr9Nbc&#13;
+lB9rKAzitw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_eae40354-d6fb-4879-bd20-95f93e591eaa"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>GJIwNaCcSOhz/PZ1CXnvGF/u7HYMeafj4lqGXO3ykQtgwdle+bN9LW8Gnk4xoKuC0w+nFIKRRrVZ&#13;
+Ti8qiVD2KA==</DigestValue></Reference></SignedInfo><SignatureValue>UEianhbwsaRJb1EITbtVevtR3gSmdWqY09xv7oCg48CT05j/qvSmRY/58zTxOHVOgrzZA8Sa2FSE&#13;
+42Vgd8Y0FsUBr4GiClrU3TTj65w93VUAW+X/xy25S0BjPksqa19tKc9v+zMrzxKGfU+t8rd8gr7s&#13;
+JYgbI+5qHXyEI6K5MCruJxBRG3zB4oMzSs+YrUoUKvjCyXq7ON6QjRWws4qpdzM6ObkK1cQlTcFv&#13;
+ww+qrpgaIyoFql5Qjx7Zwsc0DAKZoVIIDb7bEEwz2/WcYWuFpMLj5FZ9Mn9qEiQLeRmuiunL1nxM&#13;
+j0WwUzHdrWoKB8+heFnxjVPGCSPQQ2EDztil7A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4798,4 +5058,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_79087e9f-0778-4907-8bf7-87555781251a" Target="#_b59e6bb9-7389-4043-a873-5bd21bf9b1eb"><Timestamp>2024-07-26 14:18:57</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_eae40354-d6fb-4879-bd20-95f93e591eaa" Target="#_064f6207-652d-40d9-9e8d-3c7861a4d32d"><Timestamp>2024-07-30 13:58:25</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
