@@ -1338,8 +1338,8 @@
         <mapperTableEntries expression="(double)0" name="basicPremiumForCollAmount" nullable="true" type="id_Double"/>
         <mapperTableEntries expression="" name="commissionForCollAmount" nullable="true" type="id_Double"/>
         <mapperTableEntries name="costForCollAmount" nullable="true" type="id_Double"/>
-        <mapperTableEntries expression="PolicyLobIVO.claimsFreeGradeRefID " name="coverStatusVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="PolicyLobIVO.claimsFreeGradeRefDESC " name="coverStatusVORefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="PolicyLobIVO.lobStatusRefID " name="coverStatusVORefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="PolicyLobIVO.lobStatusRefDESC " name="coverStatusVORefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="PolicyIVO.policyEndDate " name="endDate" nullable="true" type="id_Date"/>
         <mapperTableEntries expression="trn_FloatingCovers.entryTypeVORefID " name="entryTypeVORefID" type="id_Long"/>
         <mapperTableEntries expression="trn_FloatingCovers.entryTypeVORefDESC " name="entryTypeVORefDESC" type="id_String"/>
@@ -1447,6 +1447,8 @@
         <mapperTableEntries expression="PolicyIVO.POLICY_VERSION " name="POLICY_VERSION" nullable="true" operator="=" type="id_Integer"/>
         <mapperTableEntries name="claimsFreeGradeRefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="claimsFreeGradeRefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries name="lobStatusRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="lobStatusRefDESC" nullable="true" type="id_String"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="CONTRACT_FLOATING_COVERS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -1800,7 +1802,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT PolicyLobIVO.POLICE,&#10;&#9;&#9;PolicyLobIVO.VERTRAG,&#13;&#10;&#9;&#9;PolicyLobIVO.V_START_DATE,&#10;&#9;&#9;PolicyLobIVO.POLICY_VERSION,&#10;&#9;&#9;PolicyLobIVO.claimsFreeGradeRefID,&#10;&#9;&#9;PolicyLobIVO.claimsFreeGradeRefDESC&#10;FROM&#9;PolicyLobIVO&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT PolicyLobIVO.POLICE,&#10;&#9;&#9;PolicyLobIVO.VERTRAG,&#13;&#10;&#9;&#9;PolicyLobIVO.V_START_DATE,&#10;&#9;&#9;PolicyLobIVO.POLICY_VERSION,&#10;&#9;&#9;PolicyLobIVO.claimsFreeGradeRefID,&#10;&#9;&#9;PolicyLobIVO.claimsFreeGradeRefDESC,&#13;&#10;&#9;&#9;PolicyLobIVO.lobStatusRefID,&#13;&#10;&#9;&#9;PolicyLobIVO.lobStatusRefDESC&#13;&#10;&#10;FROM&#9;PolicyLobIVO&quot;"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -1816,6 +1818,10 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="claimsFreeGradeRefDESC"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="lobStatusRefID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="lobStatusRefDESC"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="&quot;PolicyLobIVO&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -1826,6 +1832,8 @@
       <column comment="" key="false" length="5" name="POLICY_VERSION" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="claimsFreeGradeRefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="claimsFreeGradeRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="lobStatusRefID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="lobStatusRefDESC" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="352" posY="608">
@@ -1953,6 +1961,14 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_FloatingCovers"/>
   </connection>
   <connection connectorName="FLOW" label="PolicyLobIVO" lineStyle="8" metaname="tHSQLDbInput_8" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_8" target="tMap_3">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="lobStatusRefID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="lobStatusRefDESC"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="PolicyLobIVO"/>
   </connection>
@@ -1990,13 +2006,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_32b481e4-2fdb-4381-968d-45c317704ff2"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RjgGMEXPJi9MBFb0VN+3zDX9ywo3XDYyZTdNHmeYDhep7VZboMc/EqsQcaGwku0w3JdWfbrckK9Q&#13;
-PWcE/BaotQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f593fcb1-d601-405e-ba9f-7d033a3a1e7b"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>IxrUGJxMyb5VDYlOJjjVtF/hfkmMK68BFkN8Vj8nZXgjzJU40wnMz+IjgcJM5inRzIn66ZV/LfWX&#13;
-cLoB8fEajA==</DigestValue></Reference></SignedInfo><SignatureValue>UhnWHPX+IMhzacdbC4fdW1UwfXa34CtTIl2DYGLlQtzM8DDmhAw/uxh79so1fhniJ4aiKCuLiNu7&#13;
-PkHgX2J4mTzitR1oYE9JBsE2MqIRSezNlOKjKj37iTgKJWToiJQW4nboDzcDV8sBw8wZnmoBy4y1&#13;
-foKAyM0RXYq4GLgaN3loQEYugzzkjRjWrsXCT3AE3I1hJS4ZbUvkd1gJsp2YaDBMn6X51iyT72eF&#13;
-JQSILVjSifHzK3bdsEjch0NgAe0l2mqiI6XtabTKpPOhUTd9nKUjO/XRPa10yXqiQfdEABiOdDtS&#13;
-sCCeZiK9EOly3Ygmg5I/beDk1yOE5fJZNB65PQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_38d32a42-9145-4578-a711-7548cc532b51"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VUHn3GyMecI35lwP4OtdNsDAMwnJh1OmO9UuvUurRMB1NmPgQyX0zA8yVPBMPP+aDVytilMePfuh&#13;
+FiMLDXj68A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_6f16d430-2ef4-4a8b-ac41-fc1133a2fd74"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>DQGvFXr4UxwGLlBzsR7D8UG2WQZItU7KoxX3Zvp6wBgnBpqvSpJCsXwIEasfy+yR5DbsrwZQ+9M6&#13;
+/oX2bLIgJg==</DigestValue></Reference></SignedInfo><SignatureValue>aurN6ZZx5eD7I7zvUtatW6nOXucw5twF0GCxEL4VYunebYESkkQcdZIKpo9zGGHWYdQKmSqsIjz/&#13;
+UTwLnqVOsj+B1BLnETuBxa5ebmBdIlgNlGw+MqibDEAoGSJuj8FTpDYzOp3z3383DwZidYKQQhV0&#13;
+anmKzZVAFC/T+ckmM/XKe2tkqSjEGDQvaLgnHEG+XbAMasaYj3uTjw8PySSgTXD51P61eWtJABOI&#13;
+mnkyl/MLbsVqUZtKE0d6XsxluWRM77fjL0OCrOxtL7Wr0vAJX/lvOufqKXiKUK2VpRkfAHqlkf1F&#13;
+L7rrFkhw0rHKctl7a0R2h7RBOnt2WIbgU7Y3yw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2018,4 +2034,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f593fcb1-d601-405e-ba9f-7d033a3a1e7b" Target="#_32b481e4-2fdb-4381-968d-45c317704ff2"><Timestamp>2024-07-31 13:30:01</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_6f16d430-2ef4-4a8b-ac41-fc1133a2fd74" Target="#_38d32a42-9145-4578-a711-7548cc532b51"><Timestamp>2024-07-31 13:40:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
