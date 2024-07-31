@@ -4065,7 +4065,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot; SELECT v.*&#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_FLOATING_COVERS  v&#13;&#10;WHERE 1=1&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VERTRAG = cms.POLICY_ID &#13;&#10;     AND cms.MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT &#13;&#10;cms.ENTITY_ID,&#10;v.POLICE, &#10;v.VERTRAG, &#10;v.POLICY_VERSION, &#10;v.V_START_DATE, &#10;v.INS_TAX_BETRAG, &#10;v.ANC_SERV_BETRAG, &#10;v.COMM_WAIVER_BETRAG, &#10;v.SI_COMM_NB_BETRAG, &#10;v.SI_COMM_MAINT_BETRAG&#10;FROM K2V_DEV.ALL_DE_CONTRACT_FLOATING_COVERS  v&#13;&#10;inner join  K2V_DEV.POLICY_MIGRATION_STATUS cms  on v.POLICE = cms.BUNDLE_POLICY_ID &#9;and v.VERTRAG = cms.POLICY_ID &#13;&#10;WHERE  cms.MIGRATION_STATUS  =100 &#13;&#10;     AND cms.MIGRATION_ID =&quot;  + context.migrationID &#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -4080,6 +4080,8 @@
     <elementParameter field="TEXT" name="CURSOR_SIZE" show="false" value="1000"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG"/>
@@ -4104,6 +4106,7 @@
     <elementParameter field="TEXT" name="LABEL" value="stg_ALL_DE_CONTRACT_FLOATING_COVERS"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_14">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICY_VERSION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -4130,6 +4133,7 @@
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="CONTRACT_FLOATING_COVERS">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICY_VERSION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -4144,6 +4148,7 @@
       <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="CONTRACT_FLOATING_COVERS" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="stg_CONTRACT_FLOATING_COVERS.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="stg_CONTRACT_FLOATING_COVERS.POLICE " name="POLICE" type="id_Long"/>
         <mapperTableEntries expression="stg_CONTRACT_FLOATING_COVERS.VERTRAG " name="VERTRAG" type="id_Long"/>
         <mapperTableEntries expression="stg_CONTRACT_FLOATING_COVERS.POLICY_VERSION " name="POLICY_VERSION" nullable="true" type="id_Long"/>
@@ -4155,6 +4160,7 @@
         <mapperTableEntries expression="stg_CONTRACT_FLOATING_COVERS.SI_COMM_MAINT_BETRAG " name="SI_COMM_MAINT_BETRAG" nullable="true" type="id_Double"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="stg_CONTRACT_FLOATING_COVERS" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries name="POLICE" type="id_Long"/>
         <mapperTableEntries name="VERTRAG" type="id_Long"/>
         <mapperTableEntries name="POLICY_VERSION" nullable="true" type="id_Long"/>
@@ -4190,6 +4196,11 @@
     <elementParameter field="TABLE" name="ADD_COLS"/>
     <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="FIELD_OPTIONS" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
       <elementValue elementRef="UPDATE_KEY" value="false"/>
       <elementValue elementRef="DELETE_KEY" value="false"/>
@@ -4240,6 +4251,7 @@
     <elementParameter field="TEXT" name="LABEL" value="CONTRACT_FLOATING_COVERS"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tHSQLDbOutput_14">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICY_VERSION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -4251,6 +4263,7 @@
       <column comment="" defaultValue="" key="false" length="10" name="SI_COMM_MAINT_BETRAG" nullable="true" originalLength="10" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" name="REJECT">
+      <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="VERTRAG" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="POLICY_VERSION" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -4487,13 +4500,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row8"/>
   </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tHSQLDbRow_2">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
-  </connection>
   <connection connectorName="FLOW" label="row14" lineStyle="0" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row14"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tHSQLDbRow_2">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
   </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tDBInput_10" offsetLabelX="0" offsetLabelY="0" source="tDBInput_10" target="tHSQLDbOutput_9">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4611,10 +4624,20 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="copyOftrn_CropGroup_out"/>
   </connection>
   <connection connectorName="FLOW" label="stg_CONTRACT_FLOATING_COVERS" lineStyle="0" metaname="tDBInput_14" offsetLabelX="0" offsetLabelY="0" source="tDBInput_14" target="tMap_9">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="stg_CONTRACT_FLOATING_COVERS"/>
   </connection>
   <connection connectorName="FLOW" label="CONTRACT_FLOATING_COVERS" lineStyle="0" metaname="CONTRACT_FLOATING_COVERS" offsetLabelX="0" offsetLabelY="0" source="tMap_9" target="tHSQLDbOutput_14">
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
+      <elementValue elementRef="TRACE_COLUMN" value="ENTITY_ID"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+    </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CONTRACT_FLOATING_COVERS"/>
   </connection>
@@ -4787,13 +4810,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_243db385-3a5d-4e23-94df-d672170b4363"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>6Tufr49SJVFx5spD8vnqCT65WbWQqsg8W9mamPKLZd8IdKqwCHgKsPEdq8nCclA4jJyIAH5ta57q&#13;
-BGsAdwBGCA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a9ea496d-81ae-45a7-90a2-8d1bcc923a1f"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VSfFai2pGTq/4WegSFLPyncSRw+lU2GfQQF54bCB1qfJKkWnCARu4o+6qjCfOnmK8k92pFz/9HSb&#13;
-vaai/ovGVA==</DigestValue></Reference></SignedInfo><SignatureValue>Qvl0ELpbb8C+mC9JTTCQk5jN0f5g8vwGPMVAHtA/Z/l8TiVEKCaUH8wAf1aWctnVMZFZipZFiPf2&#13;
-C0ljHk/7hmDCoEiltTxyy2oXk+Q0HwgqtUqVWIAGE1MWmFQe14kEO6nm+pVpYrhpjepbhY2wJzE3&#13;
-Rz3uiFi1hVsJHRlhBGPesvKQCHXTK1/coeyHBYyvLgumcDncSwNnTkPX94u00ggQEfhhD6AF7iMD&#13;
-zGv1MMp3S1oa44BM6qUqj6vYgHDR+20Pgwrqp/u5RxYC5V5t4WCUtSuRKN9aPxIqIEwFIfMVz7/y&#13;
-i+Nj8Ls7e2gvSHvXkQ/hsXRPP3nxANsjEy7KVQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c9d748cb-25b2-40e1-baa3-2ddb3fc30f24"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>iRV3E87XYKJbyZIJxsbGJD+3sNcK7CZo5+BOj3RbUrQuVYjcVwaYj3DHfL1dhHoEQxe9pRECidGR&#13;
+4vSzlwdjGQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_e47e179e-32e6-4a39-92ba-8d4537b5b771"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>O/gqLxxvCqZYoY2rh/PhZV7aW5egpHh2pGSMzKNbNZNIS1H4VaP+snRDxqMK8ZGC5XaK9QWIzPYb&#13;
+tMuOsKzHSA==</DigestValue></Reference></SignedInfo><SignatureValue>kCa1nagzWED+HBLibE8e6HIguyIcoOr42xYPEopFoxxa20QnImcIvzYcHROx1JOnYn91fRcSfDkH&#13;
+J2mExqW8Q5NqNt+A9QVqn1K65c1Ct+iQuTKf46v3eY11LY1+/DXbcdLczcTiOLq2JQZ7DxlaTvmE&#13;
+D19iM3wE5ofR7DbwGD7CDdV/CAwE5XMOn2UWULLP1hdgUSP81Ov1OK7XmJvvzKUL2oGMyCUIMtzE&#13;
+e3589xZXo+iXFls/l+7dGuOMtDpl0VO4cTuCdT4UH8E1XWIkygfIpMBjqFdGt2jCyZMMva3sfXF+&#13;
+mYqrpV5udjmMuxXX6Qtbd6tU4/LF18k6QfUoVQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4815,4 +4838,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a9ea496d-81ae-45a7-90a2-8d1bcc923a1f" Target="#_243db385-3a5d-4e23-94df-d672170b4363"><Timestamp>2024-07-31 10:54:52</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_e47e179e-32e6-4a39-92ba-8d4537b5b771" Target="#_c9d748cb-25b2-40e1-baa3-2ddb3fc30f24"><Timestamp>2024-07-31 11:36:45</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
