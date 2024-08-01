@@ -230,7 +230,7 @@
         <mapperTableEntries expression="(String)&quot;Account Manager&quot;" name="policyContactRoleVORefDesc" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables name="BrandCompany" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="(String)&quot;2&quot;" name="external_contact_number" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="String.valueOf(brand_company.CONTACT_ID ) " name="external_contact_number" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)30" name="policyContactRoleVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(String)&quot;Brand company&quot;" name="policyContactRoleVORefDesc" nullable="true" type="id_String"/>
       </outputTables>
@@ -270,6 +270,11 @@
         <mapperTableEntries name="id" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(policyholder.PAR_PARTNERNR) " name="external_contact_number" nullable="true" type="id_String"/>
         <mapperTableEntries name="update_date" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="ALL_ROWS" name="brand_company" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ROLE_ID" type="id_Long"/>
+        <mapperTableEntries name="ROLE_DESCRIPTION" type="id_String"/>
+        <mapperTableEntries name="CONTACT_ID" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -510,6 +515,42 @@
       <column comment="" key="false" length="50" name="policyContactRoleVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="160">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:pltLXlYbXvbDN/fSqQsMOIkjyNwDVOPaiNQMrfQL"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;idit_BRAND_COMPANY&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT idit_BRAND_COMPANY.ROLE_ID,&#10;&#9;&#9;idit_BRAND_COMPANY.ROLE_DESCRIPTION,&#10;&#9;&#9;idit_BRAND_COMPANY.CONTACT_ID&#10;FROM&#9;idit_BRAND_COMPANY&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ROLE_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ROLE_DESCRIPTION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CONTACT_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="idit_BRAND_COMPANY"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="idit_CN_CONTACT" name="tHSQLDbInput_3">
+      <column comment="" defaultValue="" key="false" length="10" name="ROLE_ID" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="13" name="ROLE_DESCRIPTION" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="CONTACT_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
     <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
@@ -652,6 +693,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="CN_CONTACT"/>
   </connection>
+  <connection connectorName="FLOW" label="brand_company" lineStyle="8" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="brand_company"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
@@ -685,13 +730,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_f7dd0b86-5486-4e2d-a7d3-01da450859dd"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>UHZxSwjnumNyQMIqZKBqpD8zfbWIXDqitMUv9ft6BWZHPNANGdrtSYdXO885ORj5TvoD8o024QTL&#13;
-EHJP6tcwyA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ce73ffea-0d9b-471e-8795-d2ea999ab450"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>f3hB0+6qTtAydhqaizN6NKe9Q4yEy/c4MkI2cncGNPwVAv7HyeLsJf6L1y/tW2J5XFHnmMeA/2ad&#13;
-O+DPovCuSA==</DigestValue></Reference></SignedInfo><SignatureValue>oaw/yj064EqwhCna+CUZWSELhfZ9D4LwLp/GaDnwE14UW+Si9tAb0it8SDA0zB+/edCA4pL7KDho&#13;
-8WVY+Ws4FxLBj4JPjMRpK8BAMkzq7Zz2p604dUxcRl4fmwRJbdrC3DnufVWmzDLsq1qpB9B1iF+r&#13;
-PR+xZ429fAWwTHiWcWlUc4CB7JkM9TJZQdOBlaolLB7qzqx9F34mc844Go6Fy2NckgMuQMqpQKiH&#13;
-I9JgXubzZ6fROY8G/Uy1QHQB9VgxGC5S12ahut9Z/g7S3+YvrLG9tLV5PzV0iXL+755paDtXEq3S&#13;
-MoVZ9aZwwSLcB3sPvUS0PjPOYzxRm9ATsB+JZg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_6306f9dd-79ce-4eb4-b133-a9af642eddfa"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>9mOKsLcZUtObyND0tThRohYXFM9+sIwOE2KUp8kAWs5Ug01qWwrS9/3Q3Ur1sFdv/zigjNOUtBmh&#13;
+Cv97gDiK8g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_bd721162-8afe-4604-aedb-7c069be1f3d0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Wrwss/l5s995QW6ajG5ff8nRG//KVrLKUuo2EecnE7PTXuPdmfoYfF+JWkGldQajBMau1T++HAbN&#13;
+3O4AnBfcrg==</DigestValue></Reference></SignedInfo><SignatureValue>JvVghPGju/rjG/9nxZzPEHgR3MQb+mM50zaBHWkkIsG46ANcbfahgVA4ccgQbu0nhV5naWNl9iLU&#13;
+XAk3bUa10KQOM+7F12EPNHMN0yGT1cKQ8KYR3SKnomw/kZJQ5lAuFoAy++58rogYDfGbPp1rCbYg&#13;
+aSO5sRaliq+A0CRLiAnc5o48hhY0BSmkDJBuQ0FBooGCHMZ7EFO8MIZ2W/cFdU2GDieBo7dHkYfL&#13;
+RaO90/Aef7MerhEfU9qAsXz6GCBlcN8L/Qt62FCncN0e8jaTLBE+eX/MYyWh8LvlYeVS5UdAcaUv&#13;
+ShRrRcGVIoG5t9AJMJPaSJkF81/PtD0HzSG22Q==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -713,4 +758,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ce73ffea-0d9b-471e-8795-d2ea999ab450" Target="#_f7dd0b86-5486-4e2d-a7d3-01da450859dd"><Timestamp>2024-07-26 09:58:20</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_bd721162-8afe-4604-aedb-7c069be1f3d0" Target="#_6306f9dd-79ce-4eb4-b133-a9af642eddfa"><Timestamp>2024-08-01 12:38:48</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
