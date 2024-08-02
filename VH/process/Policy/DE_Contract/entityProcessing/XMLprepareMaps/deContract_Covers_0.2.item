@@ -1330,14 +1330,17 @@
       <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="trn_FloatingCovers.CoverID == (long)1000200  &amp;&amp; CONTRACT_FLOATING_COVERS.INS_TAX_BETRAG != null ?CONTRACT_FLOATING_COVERS.INS_TAX_BETRAG:(double)0 " name="l_taxForCollAmount" type="id_Double"/>
+        <mapperTableEntries expression="(trn_FloatingCovers.CoverID ==1000400 || trn_FloatingCovers.CoverID ==1000701) &amp;&amp;  CONTRACT_FLOATING_COVERS.SUMINSURED != null? CONTRACT_FLOATING_COVERS.SUMINSURED : (trn_FloatingCovers.CoverID ==1000800  &amp;&amp; CONTRACT_FLOATING_COVERS.COMM_WAIVER_BETRAG !=null ? CONTRACT_FLOATING_COVERS.COMM_WAIVER_BETRAG   : (double)0 ) " name="l_commissionForCollAmount" type="id_Double"/>
+        <mapperTableEntries expression="CONTRACT_FLOATING_COVERS.ANC_SERV_BETRAG !=null? CONTRACT_FLOATING_COVERS.ANC_SERV_BETRAG:(double)0 " name="l_costForCollAmount" type="id_Double"/>
+        <mapperTableEntries expression="(trn_FloatingCovers.CoverID ==1000400 || trn_FloatingCovers.CoverID ==1000701) &amp;&amp;  CONTRACT_FLOATING_COVERS.SUMINSURED != null? (double)-1*  CONTRACT_FLOATING_COVERS.SUMINSURED :(double)0 " name="l_paymentLoadingForCollAmount" type="id_Double"/>
       </varTables>
       <outputTables activateCondensedTool="true" id="_-cb-8ETxEe--wPZU1Mq7Rw - floatingCoversIVO" name="floatingCovers" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="PolicyIVO.POLICE " name="POLICE" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(long)PolicyIVO.VERTRAG " name="VERTRAG" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(long)PolicyIVO.POLICY_VERSION " name="POLICY_VERSION" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(double)0" name="basicPremiumForCollAmount" nullable="true" type="id_Double"/>
-        <mapperTableEntries expression="" name="commissionForCollAmount" nullable="true" type="id_Double"/>
-        <mapperTableEntries name="costForCollAmount" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="Var.l_commissionForCollAmount " name="commissionForCollAmount" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="Var.l_costForCollAmount " name="costForCollAmount" nullable="true" type="id_Double"/>
         <mapperTableEntries expression="PolicyLobIVO.lobStatusRefID " name="coverStatusVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="PolicyLobIVO.lobStatusRefDESC " name="coverStatusVORefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="PolicyIVO.policyEndDate " name="endDate" nullable="true" type="id_Date"/>
@@ -1353,7 +1356,7 @@
         <mapperTableEntries expression="false" name="newCoverFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="PolicyIVO.originalChannelVORefID " name="originalChannelVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="PolicyIVO.originalChannelVORefDesc " name="originalChannelVORefDESC" nullable="true" type="id_String"/>
-        <mapperTableEntries name="paymentLoadingForCollAmount" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="Var.l_paymentLoadingForCollAmount " name="paymentLoadingForCollAmount" nullable="true" type="id_Double"/>
         <mapperTableEntries expression="true" name="premiumChangeFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="(long)1" name="premiumTypeId" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="PolicyIVO.policyStartDate " name="priorActStartDate" nullable="true" type="id_Date"/>
@@ -1461,6 +1464,7 @@
         <mapperTableEntries name="COMM_WAIVER_BETRAG" nullable="true" type="id_Double"/>
         <mapperTableEntries name="SI_COMM_NB_BETRAG" nullable="true" type="id_Double"/>
         <mapperTableEntries name="SI_COMM_MAINT_BETRAG" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="SUMINSURED" nullable="true" type="id_Double"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1855,7 +1859,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT CONTRACT_FLOATING_COVERS.ENTITY_ID,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.POLICE,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.VERTRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.POLICY_VERSION,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.V_START_DATE,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.INS_TAX_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.ANC_SERV_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.COMM_WAIVER_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.SI_COMM_NB_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.SI_COMM_MAINT_BETRAG&#10;FROM&#9;CONTRACT_FLOATING_COVERS&#13;&#10;WHERE CONTRACT_FLOATING_COVERS.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND CONTRACT_FLOATING_COVERS.VERTRAG = &quot;+context.p_id"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT CONTRACT_FLOATING_COVERS.ENTITY_ID,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.POLICE,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.VERTRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.POLICY_VERSION,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.V_START_DATE,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.INS_TAX_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.ANC_SERV_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.COMM_WAIVER_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.SI_COMM_NB_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.SI_COMM_MAINT_BETRAG,&#10;&#9;&#9;CONTRACT_FLOATING_COVERS.SUMINSURED&#10;FROM&#9;CONTRACT_FLOATING_COVERS&#13;&#10;WHERE CONTRACT_FLOATING_COVERS.POLICE = &quot;+context.bp_id+&quot; &#13;&#10;AND CONTRACT_FLOATING_COVERS.VERTRAG = &quot;+context.p_id"/>
     <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
@@ -1879,6 +1883,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="SI_COMM_MAINT_BETRAG"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="SUMINSURED"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="&quot;CONTRACT_FLOATING_COVERS&quot;"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
@@ -1893,6 +1899,7 @@
       <column comment="" defaultValue="" key="false" length="10" name="COMM_WAIVER_BETRAG" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="SI_COMM_NB_BETRAG" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="SI_COMM_MAINT_BETRAG" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
   </node>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tHashInput_1" offsetLabelX="0" offsetLabelY="0" source="tHashInput_1" target="tHSQLDbOutput_2">
@@ -2006,13 +2013,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_38d32a42-9145-4578-a711-7548cc532b51"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>VUHn3GyMecI35lwP4OtdNsDAMwnJh1OmO9UuvUurRMB1NmPgQyX0zA8yVPBMPP+aDVytilMePfuh&#13;
-FiMLDXj68A==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_6f16d430-2ef4-4a8b-ac41-fc1133a2fd74"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>DQGvFXr4UxwGLlBzsR7D8UG2WQZItU7KoxX3Zvp6wBgnBpqvSpJCsXwIEasfy+yR5DbsrwZQ+9M6&#13;
-/oX2bLIgJg==</DigestValue></Reference></SignedInfo><SignatureValue>aurN6ZZx5eD7I7zvUtatW6nOXucw5twF0GCxEL4VYunebYESkkQcdZIKpo9zGGHWYdQKmSqsIjz/&#13;
-UTwLnqVOsj+B1BLnETuBxa5ebmBdIlgNlGw+MqibDEAoGSJuj8FTpDYzOp3z3383DwZidYKQQhV0&#13;
-anmKzZVAFC/T+ckmM/XKe2tkqSjEGDQvaLgnHEG+XbAMasaYj3uTjw8PySSgTXD51P61eWtJABOI&#13;
-mnkyl/MLbsVqUZtKE0d6XsxluWRM77fjL0OCrOxtL7Wr0vAJX/lvOufqKXiKUK2VpRkfAHqlkf1F&#13;
-L7rrFkhw0rHKctl7a0R2h7RBOnt2WIbgU7Y3yw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_fd6635fb-40a2-4222-af2f-038d89bc4390"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+aErKizDRxWGod4kj/8sGz4J3dW6g2kDzRF7Ku2bE+DSvt4ASrx8Oj09HG12qlaC8DwOWTB56wZU&#13;
+EnQ5urDcdA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_00e3a316-da04-4b6e-b200-b5ae8ead11f7"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>U7kVPE/qJ6LxhW977P/XTRgm/+Od5mDYv4PJPV0LYqw9y6G2fGgsqW3WMyFY7JqejxOvNvLvOed1&#13;
+WLVBeYUYbQ==</DigestValue></Reference></SignedInfo><SignatureValue>Id2HMCLq9x8tJCsRZRj17Tva+i+F/361iD2kb9MAfVgnhft0EmbTLNVuFLPPlmTabvH24t7J1pf0&#13;
+yClezPT9gXUmeN4PoM5knxGsGitYhoZwHIBpXQGsQ3ji2XqgjIpNQxMTPIQSOYDbdM2xom9qad2H&#13;
+i9enzWHzPx2NIwxtPROUw3YCqNJAGIE3LO1kbDlbEAE1gsRpVaS0VpVECwzDHB1HS/TbFMXoeIAq&#13;
+Z5qiGHHJQUXnpczwEgzARrWauDsq7JVKkkdZImqltRRV6vZ5sI9L0tFKR/phbfvnbBSV6K28c98h&#13;
+WfrF2fqUsNW4h3Zt/8Uz/wB3H3MMrINImJ+Zkw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2034,4 +2041,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_6f16d430-2ef4-4a8b-ac41-fc1133a2fd74" Target="#_38d32a42-9145-4578-a711-7548cc532b51"><Timestamp>2024-07-31 13:40:34</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_00e3a316-da04-4b6e-b200-b5ae8ead11f7" Target="#_fd6635fb-40a2-4222-af2f-038d89bc4390"><Timestamp>2024-08-01 10:51:30</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
