@@ -2400,7 +2400,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  v.POLICE, v.VERTRAG, v.V_START_DATE, v.V_END_DATE, v.CROP_GROUP, v.VER_ZUSTAND, v.VER_SCHADENFREIHEITSRABATT, v.VER_HISTORIE, v.POL_WIRTSCHAFTSWEISE, &#13;&#10;v.V_CONTRACT_START, v.V_CONTRACT_END, v.CONTRACT_DURATION, v.PAYMENT_TERM, v.IS_ANNUAL_PAYER, v.COLLECTION_METHOD, v.VER_STATUS, v.VER_KUENDIGUNG, v.PAR_PARTNER_NR, v.VERTRAG_REMARKS, &#13;&#10;v.POLICY_VERSION, v.NEXT_NUM_IN_BUNDLE,&#13;&#10;v.GFM_FELDMARK, premiumSystem,  COINSURANCE_FLAG&#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION v&#13;&#10;WHERE 1=1&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VERTRAG  = cms.POLICY_ID &#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT  v.POLICE, v.VERTRAG, v.V_START_DATE, v.V_END_DATE, v.CROP_GROUP, v.VER_ZUSTAND, v.VER_SCHADENFREIHEITSRABATT, v.VER_HISTORIE, v.POL_WIRTSCHAFTSWEISE, &#13;&#10;v.V_CONTRACT_START, v.V_CONTRACT_END, v.CONTRACT_DURATION, v.PAYMENT_TERM, v.IS_ANNUAL_PAYER, v.COLLECTION_METHOD, v.VER_STATUS, v.VER_KUENDIGUNG, v.PAR_PARTNER_NR, v.VERTRAG_REMARKS, &#13;&#10;v.POLICY_VERSION, v.NEXT_NUM_IN_BUNDLE,&#13;&#10;v.GFM_FELDMARK, premiumSystem,  COINSURANCE_FLAG, v.CANCELLED_REASON&#13;&#10;FROM K2V_DEV.ALL_DE_CONTRACT_VERSION v&#13;&#10;WHERE 1=1&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE v.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and v.VERTRAG  = cms.POLICY_ID &#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID =&quot;  + context.migrationID + &quot;)&quot;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2463,6 +2463,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="COINSURANCE_FLAG"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CANCELLED_REASON"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
@@ -2493,6 +2495,7 @@
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED_REASON" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="128" posY="544">
@@ -2509,7 +2512,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="POLICY_VERSION_SELECTION" name="copyOfversions">
+    <metadata comment="" label="POLICY_VERSION_SELECTION" name="copyOfversions">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="VERTRAG" nullable="false" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="V_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy HH:mm:ss&quot;" precision="-1" sourceType="DATE" type="id_Date" usefulColumn="true"/>
@@ -2535,9 +2538,10 @@
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED_REASON" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="__hJ3YDEoEe6Aiprvzu3JPQ - POLICY_VERSION_SELECTION" name="copyOfversions" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row7.POLICE" name="POLICE" type="id_Long"/>
@@ -2565,6 +2569,7 @@
         <mapperTableEntries expression="row7.GFM_FELDMARK " name="GFM_FELDMARK" nullable="true" type="id_String"/>
         <mapperTableEntries expression="row7.premiumSystem " name="premiumSystem" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row7.COINSURANCE_FLAG " name="COINSURANCE_FLAG" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row7.CANCELLED_REASON " name="CANCELLED_REASON" nullable="true" type="id_String"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="row7" sizeState="INTERMEDIATE">
         <mapperTableEntries name="POLICE" type="id_Long"/>
@@ -2591,6 +2596,7 @@
         <mapperTableEntries name="GFM_FELDMARK" nullable="true" type="id_String"/>
         <mapperTableEntries name="premiumSystem" nullable="true" type="id_Long"/>
         <mapperTableEntries name="COINSURANCE_FLAG" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="CANCELLED_REASON" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -2622,6 +2628,7 @@
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED_REASON" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="544">
@@ -2774,6 +2781,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CANCELLED_REASON"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;POLICY_VERSION_SELECTION&quot;"/>
@@ -2804,6 +2816,7 @@
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED_REASON" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="POLICY_VERSION_SELECTION" name="REJECT">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -2831,6 +2844,7 @@
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED_REASON" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2990,6 +3004,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CANCELLED_REASON"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
     <elementParameter field="TABLE" name="HINT_OPTIONS" show="false"/>
@@ -3030,6 +3049,7 @@
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED_REASON" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" name="REJECT">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -3056,6 +3076,7 @@
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" originalLength="5" pattern="" precision="-1" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED_REASON" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -4010,6 +4031,8 @@
       <elementValue elementRef="LENGTH" value="10"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="COINSURANCE_FLAG"/>
       <elementValue elementRef="LENGTH" value="10"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CANCELLED_REASON"/>
+      <elementValue elementRef="LENGTH" value="10"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
@@ -4040,6 +4063,7 @@
       <column comment="" key="false" length="30" name="GFM_FELDMARK" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="premiumSystem" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="CANCELLED_REASON" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="-32" posY="1472">
@@ -4149,7 +4173,7 @@
       <column comment="" key="false" length="10" name="SUMINSURED" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_3bVd0E8wEe-4DIeJjVsDgg - CONTRACT_FLOATING_COVERS" name="CONTRACT_FLOATING_COVERS" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="stg_CONTRACT_FLOATING_COVERS.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -4524,6 +4548,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="COINSURANCE_FLAG"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="CANCELLED_REASON"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row6"/>
@@ -4548,13 +4575,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row8"/>
   </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tHSQLDbRow_2">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
+  </connection>
   <connection connectorName="FLOW" label="row14" lineStyle="0" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row14"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tHSQLDbRow_2">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
   </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tDBInput_10" offsetLabelX="0" offsetLabelY="0" source="tDBInput_10" target="tHSQLDbOutput_9">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -4872,13 +4899,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_709aa87b-a69c-4052-984d-ef31f36047bd"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>izOr1JTCv6ilVZiddh22rm44P17NAsQCVN+tP1yieflaiHr/IBPwDJMf3z3cFnhpQOUfIgZlg5cw&#13;
-ya5fbqyBCQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_00d3a93e-44db-4045-9f0a-9cac0d2a9d75"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>+oD06C7dSwNdVzbnCGt0YP58IXcyNgl/DYV39skf4GzpPxA8wuDnQ9c6uLOU+xzSsevQphhSGqsj&#13;
-EEwAxsGPlQ==</DigestValue></Reference></SignedInfo><SignatureValue>nrKvJuF1If/6OSrqJtHh8uz/kBvm87AedhSpcQMkMhaZH2yv4hBZsdd39BdBvszeei3PkJ4AQl/+&#13;
-JKpvSckx4DP9jEmBTaxejSQXt5HkQG2oyTAWNJio+FdqovpfYPC7PnF/MYyXfePaYT54qr3SVzG5&#13;
-oa1VU9WApMnIVWx+5T0TIwcuvmQY/gOLu7mVvdQPlMnMmK9xEzUGEz5vypcUZPUGMBIHH9tWOWBi&#13;
-qBewkO7nNo2zvJuw4KKOHbk2lQLA2GKo6QIrNNEQzTwRlxEz6qYxQL3rLee8FGz86zR2VjgMm0Mi&#13;
-S1rBgZZvcz9z+DYRfQjKcbksn2v+z0HEXVufog==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_36c4ad25-773b-401b-8f51-37c103ca786e"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>YNPf5G8dnWnEORmZ3hsdUrTVpaJNLa4NvKLLJ/anohOpYqaDnsLHo3i+M7QTt1pOkyqe0FkK0qeP&#13;
+CObGvedyVw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_1725fc55-7c88-462b-b07c-7c46d9087190"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>fnOOYwm4oPkEDpq2i8dmnR9q7EnbfFXcHcSRKCSuwNuYTYNUf4P1arXNv931xhAE3IL4i+uEwSit&#13;
+uo37sXk7dg==</DigestValue></Reference></SignedInfo><SignatureValue>m2fpLozjxRrBpj+u3OA7SYkWjbub4CII0q8J/C0r4AbGVN+DnODhT4VM02AoTaHxsOVgSTlEaT9J&#13;
+OK3RJEFJhvsDKmexG0ztxyeE3GyzFWFulzdhKnoSmXAq3zeST0MWIbtzNhCrmMTXWBINrYDuM45K&#13;
+7TrBq3tHubyXpsyN6ezhUN7O+LVyJ7CqHOSKOriynazBillkuUGLxkMx9I9tBpB4j5lgf6jhTxI6&#13;
+S2xuhO0mbtK+WeJFc8gJnrThN1OZPWsNEkgagq6OYAJ7P3E4k7+deluMIIJTF4sV855w44SYINBg&#13;
+HW6CIaAdx223ih9e86rn3lnFmkzt3jOWgfU1fQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -4900,4 +4927,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_00d3a93e-44db-4045-9f0a-9cac0d2a9d75" Target="#_709aa87b-a69c-4052-984d-ef31f36047bd"><Timestamp>2024-08-01 08:56:05</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_1725fc55-7c88-462b-b07c-7c46d9087190" Target="#_36c4ad25-773b-401b-8f51-37c103ca786e"><Timestamp>2024-08-02 09:24:40</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
