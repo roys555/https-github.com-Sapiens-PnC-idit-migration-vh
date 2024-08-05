@@ -151,10 +151,10 @@ public static String ChangeDayAndMonth(String params) {
 		  while(rsetEntity.next()) {
 			  value = rsetEntity.getString(dictColName);
 			  entityResult.add(value);  
-			  System.out.println("IdRefType : "+ value);
+			  //System.out.println("IdRefType : "+ value);
 		  }
 
-		  System.out.println("idRefTypeID array: "+ entityResult);
+		  //System.out.println("idRefTypeID array: "+ entityResult);
 
 		  connEntity.close();
 
@@ -163,7 +163,7 @@ public static String ChangeDayAndMonth(String params) {
 	  } 	
 
 	  //System.out.println("Identifier type: "+value);
-	  System.out.println("Identifier from table: "+identifierValue);
+	  //System.out.println("Identifier from table: "+identifierValue);
 
 	  if (value.equals(idType)) {
 		  PeselValidator myObj = new PeselValidator(identifierValue);
@@ -171,22 +171,22 @@ public static String ChangeDayAndMonth(String params) {
 
 		  //Gender gender = new Gender();
 		  Gender gender_id = (myObj.getSexId()==1)?Gender.FEMALE:Gender.MALE;
-		  System.out.println("Birthdate based on PESEL: "+birthDate);
-		  System.out.println("Gender based on PESEL: "+gender_id);
+		  //System.out.println("Birthdate based on PESEL: "+birthDate);
+		  //System.out.println("Gender based on PESEL: "+gender_id);
 		  result = birthDate;
 
 		  String changedDate = MaskingMethods.ChangeDayAndMonth(";;;"+birthDate+";");
-		  System.out.println("Zmieniona data urodzenia: "+changedDate);
+		  //System.out.println("Zmieniona data urodzenia: "+changedDate);
 		  LocalDate newDate = LocalDate.parse(changedDate);
 
 		  //generating new PESEL: based on new birtDdate and the same gender
 		  String newPesel = PeselGenerator.generatePesel(newDate, gender_id);
 		  result = newPesel;
-		  System.out.println("Zmieniony PESEL: "+newPesel);
+		  //System.out.println("Zmieniony PESEL: "+newPesel);
 	  } else {
 		  result = MaskingMethods.randomizeWord(";;;"+identifierValue+";");
 	  }  	
-	  System.out.println("Result: "+result);
+	  //System.out.println("Result: "+result);
 	  return result;
 
   }	
@@ -230,7 +230,7 @@ public static String ChangeDayAndMonth(String params) {
 	  String input_params = ";;;;"+min_val+";"+max_val;
 	  String replace = MaskingMethods.returnRandomDigitsGivenLength(input_params);
 	  
-	  String maskedNum = originalNum.substring(0,3) + replace;			  
+	  String maskedNum = ((modifiedNumLength==1)?originalNum:originalNum.substring(0,3) + replace);			  
 	  
 	  //System.out.println("Original: "+originalNum+", Replace: "+replace+",Masked: "+maskedNum);
 	  return maskedNum;
