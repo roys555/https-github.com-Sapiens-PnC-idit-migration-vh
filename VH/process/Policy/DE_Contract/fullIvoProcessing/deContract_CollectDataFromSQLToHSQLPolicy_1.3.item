@@ -4633,7 +4633,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT &#9; adcv.ENTITY_ID, vp.POL_POLICEN_NR, vp.VER_VERTRAG_NR, adcv.POLICY_VERSION, p.PAR_PARTNER_NR, adcv.V_START_DATE, vp.VMR_VERMITTLER_NR AS EXTERNAL_CONTACT_NUMBER, p.PAR_VERMITTLER_NR_VM , &#13;&#10;&#9;&#9;vp.POL_GUELTIG_AB, vp.VMP_UNGUELTIG_AB&#13;&#10;FROM SEV.VM_POLICE vp &#13;&#10;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = vp.POL_POLICEN_NR AND vp.POL_GUELTIG_AB &lt;= adcv.V_START_DATE AND vp.VMP_UNGUELTIG_AB &gt;= adcv.V_END_DATE &#13;&#10;JOIN SEV.PARTNER p ON p.PAR_PARTNER_NR = adcv.PAR_PARTNER_NR&#13;&#10;WHERE 1=1&#13;&#10;--AND adp.BUNDLE_POLICY_ID = 1125853602&#13;&#10;AND vp.POL_POLICEN_NR = adcv.POLICE &#13;&#10;AND vp.VMP_HISTORIE &lt;&gt; 'HT' &#13;&#10;AND vp.VMP_ZUSTAND = 'lebend'&#13;&#10;AND vp.VMP_UNGUELTIG_AB &gt; timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;AND adcv.V_START_DATE &gt;=timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE adcv.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and adcv.VERTRAG  = cms.POLICY_ID &#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID = &quot;  + context.migrationID + &quot;)&#13;&#10;&#13;&#10;GROUP BY adcv.ENTITY_ID, vp.POL_POLICEN_NR, vp.VER_VERTRAG_NR, adcv.POLICY_VERSION, p.PAR_PARTNER_NR, adcv.V_START_DATE, vp.VMR_VERMITTLER_NR, p.PAR_VERMITTLER_NR_VM, vp.POL_GUELTIG_AB, vp.VMP_UNGUELTIG_AB&#13;&#10;&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT &#9; adcv.ENTITY_ID, vp.POL_POLICEN_NR, vp.VER_VERTRAG_NR, adcv.POLICY_VERSION, p.PAR_PARTNER_NR, adcv.V_START_DATE, vp.VMR_VERMITTLER_NR AS EXTERNAL_CONTACT_NUMBER, p.PAR_VERMITTLER_NR_VM , &#13;&#10;&#9;&#9;vp.POL_GUELTIG_AB, vp.VMP_UNGUELTIG_AB&#13;&#10;FROM SEV.VM_POLICE vp &#13;&#10;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = vp.POL_POLICEN_NR AND adcv.VERTRAG = vp.VER_VERTRAG_NR  AND vp.POL_GUELTIG_AB &lt;= adcv.V_START_DATE AND vp.VMP_UNGUELTIG_AB &gt;= adcv.V_END_DATE &#13;&#10;JOIN SEV.PARTNER p ON p.PAR_PARTNER_NR = adcv.PAR_PARTNER_NR&#13;&#10;WHERE 1=1&#13;&#10;AND vp.VMP_HISTORIE &lt;&gt; 'HT' &#13;&#10;AND vp.VMP_ZUSTAND = 'lebend'&#13;&#10;AND vp.VMP_UNGUELTIG_AB &gt; timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;AND adcv.V_START_DATE &gt;=timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE adcv.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and adcv.VERTRAG  = cms.POLICY_ID &#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID = &quot;  + context.migrationID + &quot;)&#13;&#10;&#13;&#10;GROUP BY adcv.ENTITY_ID, vp.POL_POLICEN_NR, vp.VER_VERTRAG_NR, adcv.POLICY_VERSION, p.PAR_PARTNER_NR, adcv.V_START_DATE, vp.VMR_VERMITTLER_NR, p.PAR_VERMITTLER_NR_VM, vp.POL_GUELTIG_AB, vp.VMP_UNGUELTIG_AB&#13;&#10;&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -5106,13 +5106,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row8"/>
   </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tHSQLDbRow_2">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
-  </connection>
   <connection connectorName="FLOW" label="row14" lineStyle="0" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row14"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tHSQLDbRow_2">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
   </connection>
   <connection connectorName="FLOW" label="row15" lineStyle="0" metaname="tDBInput_10" offsetLabelX="0" offsetLabelY="0" source="tDBInput_10" target="tHSQLDbOutput_9">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -5497,8 +5497,10 @@
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
+    <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" value="true"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_17"/>
-    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
+    <elementParameter field="TEXT" name="SUBJOB_TITLE" value="POLICY_CONTACT_Intermediary (step 5) v105"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
   <subjob>
@@ -5506,13 +5508,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_5bfb7642-4a82-4a48-8c1a-2c33e9764715"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Ebq1tA3My89BadjiMPsW1+s8oEC7etieWGBYP00lQ1+I5ProdwNJ346gq9EtwIhhxmolnDk4tIJ6&#13;
-uVBoYqYqjg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_66b4d154-036b-4ef2-b96d-ce661c502d62"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>L01GMSKsMEpVTIUig+L2Keu14PYA2nFjw/SV8MVHXuyr+Kzj3lwZ52AFtj8qdjKYgB+0tCKfUbu6&#13;
-PLLTXOPEng==</DigestValue></Reference></SignedInfo><SignatureValue>Ka0Yf/yL4apDB6zWJqQaSjI8WDiSMUY6NfH/BTGyvK20foXsOcaIesjXgA/F4yOnWK8nwC/YHcmd&#13;
-9eo1QQJhoULmygMnRjMmfXLqdvUdcDLMEYGKv6o6UIjdkwh5cGWW6WU5eB2BmyiMq5mcrmhwPvyV&#13;
-dsRCCQa8DkKiIpLoZZhhxRON2c6gPwyLVc3EFilTB0taw7Khu42R2tZ2HO8MXZhstwOTHPflHtt7&#13;
-+yAmCzV9sKKauFxzafMsWGwwTxudPbVEaZs0lh+YbMAMI8Rhn33KY3vKPmF8Rgt2WqgpyrHM/AE9&#13;
-lnIA/wsKQ676M2trlrOp92gg7aRDjFh6cSOKAA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_05503cc5-e9fa-49ab-880b-51081e9dc7d8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/LoPs/IKp0lJ+mI3hTs23frkMUCLD25uWVmYMcGJ0SxuD+dPkTW10W63PzNrwJkEpQFUwhGNBO4L&#13;
+iGSwc0+uqg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8ab3e128-602d-4b1e-bff6-62f471393e23"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>my7PBoi7E6/j9impiKctGhkZZeKXUbzphzZct5rEo93sxoRb1GgLhk/6mmOzYUTD0Sf5X0bE5unA&#13;
+Nvr7vC9Rug==</DigestValue></Reference></SignedInfo><SignatureValue>Uij4XVaYhNBvxcnadHFOBMSvOZKHsfOLck/FkPoAo6LHgmBw3SSfpvCed6qn9wnFF0IZ/Lx8tGTq&#13;
+YOeVeTJ7IGGdQjnfLSTJTyS9jhyd/x1yMPs4LebVj7WzJ1W5C5A2TgbX6s0/nKfAl6+CJv6bmy5a&#13;
+oZB3/K6wwLrqs1xNnUybVMyJbjSYroHjEzqnrcgIx7blJ4FTfdv5aaa9QuGIQ0XlyuxNryDurhug&#13;
+23UHrXDc6w6LhltFmAwR2mPGuEpLCDMCS59BWLxDL5x1xLL4Abg7RLrEDKioaO8Ym7pP1oc6cPS+&#13;
+Ybijkm9WkzcYams9IE1MS78M43/XI0SGaVhX3w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5534,4 +5536,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_66b4d154-036b-4ef2-b96d-ce661c502d62" Target="#_5bfb7642-4a82-4a48-8c1a-2c33e9764715"><Timestamp>2024-08-06 09:45:10</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8ab3e128-602d-4b1e-bff6-62f471393e23" Target="#_05503cc5-e9fa-49ab-880b-51081e9dc7d8"><Timestamp>2024-08-06 12:08:03</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
