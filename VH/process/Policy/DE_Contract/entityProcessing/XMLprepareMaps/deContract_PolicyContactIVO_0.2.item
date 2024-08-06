@@ -230,7 +230,7 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(policyholder.PAR_PARTNER_NR) " name="extContactNumber" type="id_String"/>
       </varTables>
@@ -245,7 +245,7 @@
         <mapperTableEntries expression="(String)&quot;Account Manager&quot;" name="policyContactRoleVORefDesc" nullable="true" type="id_String"/>
       </outputTables>
       <outputTables name="BrandCompany" sizeState="INTERMEDIATE">
-        <mapperTableEntries expression="(String)&quot;2&quot;" name="external_contact_number" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="String.valueOf(  brand_company.CONTACT_ID ) " name="external_contact_number" nullable="true" type="id_String"/>
         <mapperTableEntries expression="(long)30" name="policyContactRoleVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="(String)&quot;Brand company&quot;" name="policyContactRoleVORefDesc" nullable="true" type="id_String"/>
       </outputTables>
@@ -286,6 +286,11 @@
         <mapperTableEntries name="id" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;MIG_AP-&quot;+String.valueOf(policyholder.PAR_PARTNER_NR) " name="external_contact_number" nullable="true" type="id_String"/>
         <mapperTableEntries name="update_date" nullable="true" type="id_String"/>
+      </inputTables>
+      <inputTables activateCondensedTool="true" lookupMode="LOAD_ONCE" matchingMode="ALL_ROWS" name="brand_company" sizeState="INTERMEDIATE">
+        <mapperTableEntries name="ROLE_ID" type="id_Long"/>
+        <mapperTableEntries name="ROLE_DESCRIPTION" type="id_String"/>
+        <mapperTableEntries name="CONTACT_ID" nullable="true" type="id_Long"/>
       </inputTables>
     </nodeData>
   </node>
@@ -507,6 +512,42 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="832" posY="96">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_3"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:NrlE5iiwWyB8eGn/jcMuaS4sBubqF2P+mLqu8YeC"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;idit_BRAND_COMPANY&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT idit_BRAND_COMPANY.ROLE_ID,&#10;&#9;&#9;idit_BRAND_COMPANY.ROLE_DESCRIPTION,&#10;&#9;&#9;idit_BRAND_COMPANY.CONTACT_ID&#10;FROM&#9;idit_BRAND_COMPANY&quot;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="ROLE_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ROLE_DESCRIPTION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="CONTACT_ID"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="idit_BRAND_COMPANY"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="idit_CN_CONTACT" name="tHSQLDbInput_3">
+      <column comment="" defaultValue="" key="false" length="10" name="ROLE_ID" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="13" name="ROLE_DESCRIPTION" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="19" name="CONTACT_ID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="&#10;System.out.println(&quot;Job : ContactPolicyIVO&quot;);&#10;System.out.println(context.EntityID);&#10;&#10;System.out.println(((String)globalMap.get(&quot;jobName&quot;)));"/>
@@ -707,6 +748,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
+  <connection connectorName="FLOW" label="brand_company" lineStyle="8" metaname="tHSQLDbInput_3" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_3" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="brand_company"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
@@ -744,13 +789,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_311f292f-d755-4ed2-9cf6-2100ee9c1731"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>cF8kWxObnKOJl4JxeRQ4BgeR2KeDZClclnCEcL+FOKgcI7GRUxFI4/4nTy1FxmaXZ6IUsq6bXwAY&#13;
-GxxKAQWC7w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_24aa140b-9f30-4397-997b-c78261e7658c"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>lCwVPONyPkHqGLNm+N+09vQpYFV7aWL3cIrrHh5KxOAdb6uWt6tHISxXuH6lyQo/ktTttA3qo7yx&#13;
-kWkFZF5Lvg==</DigestValue></Reference></SignedInfo><SignatureValue>DDxBv5gFcMFMGFG4YVhUKKE6BZmVSMh9cedv4VPkPKrTvzmD6cpOR6C536zSQLNUdeWrKA07vYnc&#13;
-GZ3V3b5etDVIFFNaghyv2cZH1uWIuGxtCd0yZBvb4s/KKAhpMdeNraUOgCx0t1IgYv9W04eVR4oj&#13;
-MetjiRu+uDO25S906qfR1N4SfT3PdC2o1DwIJtBd+3IEAVmIsIvy1ax1MGtBn48Js7AzFX13cNEG&#13;
-K6iTRu8ostao09of82tcBk8YRs4pMD70s9S+soctczn9hGdlb7z+idj+h65pugdZBGrRA7jhBESl&#13;
-x8K8x+ikKN5pFpiiWb/ge/LZCthR5YkZSdRTbg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_faacbd58-8ac3-48e9-953d-ae47d80d8f66"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>yRMFtC0gaH4miPvXJN/CDcKTWG7FJa3/mMXE84RnUMqi8vcZZrPaxSlMX4Jg4Gn/iTmrBhzMJJ1i&#13;
+AR4rjitWBw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ed8a1e2f-312a-4dbb-acd4-260ff96be21c"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>vwsjUrrj4UQhjozb4vcL5rs37gyc2sArHmZamdgAA6BOE4zw5bXiPPghakLfaLu+tD+5Z4XGQiTD&#13;
+YTFeQYPCzQ==</DigestValue></Reference></SignedInfo><SignatureValue>TrSmd1ZrDC5uDnrzf35WfyzNKjQOQhypPj93hqapKbb40ACvtucASyW+8DDwbLadh6ed/PLakGWG&#13;
+aG03SlrifaKapfVX4AeuPYfzHVyYK60B1ywBGWW3HT0PpT9VrBhc3LRwg040ZUc/KDZqupAUnPCn&#13;
+28JlaQnzNYzvg0aal4JvzhyaCPhlHO6WV2H6MYxicFoEWqBemthw0pkjH23Wl8fcW8F0yQlkN10P&#13;
+HkarxUM1bsZr+UzG8KohV0JFcsiKKoOktV+X0s6uPowdp9dZtgvZerzgpHx2NIFNblgzgzUwUimw&#13;
+NGIAAE9xBUhxxK+k/CQyD4J+t+9pvVnafi6Ung==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -772,4 +817,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_24aa140b-9f30-4397-997b-c78261e7658c" Target="#_311f292f-d755-4ed2-9cf6-2100ee9c1731"><Timestamp>2024-06-18 11:35:25</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ed8a1e2f-312a-4dbb-acd4-260ff96be21c" Target="#_faacbd58-8ac3-48e9-953d-ae47d80d8f66"><Timestamp>2024-08-06 07:29:09</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
