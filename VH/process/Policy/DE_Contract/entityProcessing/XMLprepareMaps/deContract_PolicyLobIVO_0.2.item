@@ -1756,10 +1756,10 @@
         <mapperTableEntries expression="row7.POLICE " name="POLICE" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="row7.VERTRAG " name="VERTRAG" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="row7.POLICY_VERSION " name="POLICY_VERSION" nullable="true" type="id_Integer"/>
-        <mapperTableEntries expression="idit_BONUS_MALUS.ID " name="claimsFreeGradeRefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="idit_BONUS_MALUS.DESCRIPTION " name="claimsFreeGradeRefDESC" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="row7.exception ?idit_BONUS_MALUS.ID :(long)0" name="claimsFreeGradeRefID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="row7.exception ?idit_BONUS_MALUS.DESCRIPTION :(String)null " name="claimsFreeGradeRefDESC" nullable="true" type="id_String"/>
       </outputTables>
-      <outputTables activateCondensedTool="true" activateExpressionFilter="true" columnNameFilter="" expressionFilter="row7.exception " id="_1VRYkL5xEe2-b8KOcQ5fjg - logsGlobal" name="copyOfDECN0021_2" sizeState="INTERMEDIATE">
+      <outputTables activateCondensedTool="true" activateExpressionFilter="true" columnNameFilter="" expressionFilter="row7.exception &amp;&amp;  idit_BONUS_MALUS.DESCRIPTION == null" id="_1VRYkL5xEe2-b8KOcQ5fjg - logsGlobal" name="copyOfDECN0021_2" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="(int)context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
         <mapperTableEntries expression="&quot;deContract&quot;" name="DOMAIN" nullable="true" type="id_String"/>
         <mapperTableEntries expression="context.EntityID" name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -2016,6 +2016,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row2"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHashInput_2" offsetLabelX="0" offsetLabelY="0" source="tHashInput_2" target="tHashInput_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
+  </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tHashInput_2" offsetLabelX="0" offsetLabelY="0" source="tHashInput_2" target="tJavaRow_1">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="bm_out_value"/>
@@ -2035,16 +2039,17 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHashInput_2" offsetLabelX="0" offsetLabelY="0" source="tHashInput_2" target="tHashInput_1">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
-  </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tJavaRow_1" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_1" target="tMap_2">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
   </connection>
-  <connection connectorName="FLOW" label="upd_PolicyLobIVO" lineStyle="0" metaname="upd_PolicyLobIVO" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_2" target="tHSQLDbOutput_3">
+  <connection connectorName="FLOW" label="DECN0021_2" lineStyle="0" metaname="DECN0021_2" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_2" target="tHashOutput_5">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="DECN0021_2"/>
+  </connection>
+  <connection connectorName="FLOW" label="upd_PolicyLobIVO" lineStyle="0" metaname="upd_PolicyLobIVO" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_2" target="tHSQLDbOutput_3">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="lobStatusRefID"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
@@ -2086,11 +2091,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="upd_PolicyLobIVO"/>
-  </connection>
-  <connection connectorName="FLOW" label="DECN0021_2" lineStyle="0" metaname="DECN0021_2" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_2" target="tHashOutput_5">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="DECN0021_2"/>
   </connection>
   <connection connectorName="FLOW" label="row6" lineStyle="0" metaname="tHashInput_3" offsetLabelX="0" offsetLabelY="0" source="tHashInput_3" target="tJavaRow_2">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -2198,13 +2198,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="92;131;150"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="207;226;236"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_31631636-6a6d-42ff-bc2a-44ea082d4204"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>h9BPQrAYdh+lVaRDQ5ITrMRPDdKa1AFztdiyqAFLWZcCIKtSl/27nyZvRi/L9wv9QMP44Jn++32s&#13;
-wCkVMC0FVw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_d0cb03e0-a86f-4379-9b52-45d7ab736ba2"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>EjGiLHzmY1hBY0c0yDK15xXHAOpIpaAZtazebIfqaBwWeBdDRoAzNEy1oxp6Gt8cMIactDefGQ5k&#13;
-0LOwB2TUuA==</DigestValue></Reference></SignedInfo><SignatureValue>YbVHRZWD4V8bGke4Zdm8iNyikvnwt4yWpknkDnmhDISEAkg66viyTVV0JHQiU7nCHk9FtvwXJhON&#13;
-O5bfZFZrZwnAHRzLA551tcd0OteTlNTutCEBfnQpl20SvjekShCyPmrjkwEsJHANPozsMxN5XggN&#13;
-oeudTNw5c7wT8vebz9EeBo5ZEE3esCBlZIyL6XHx8Txgms/w5qyEe/UTZkguVq/CTnSLNpv8B8uj&#13;
-N+RM1pHpKelgO9QtiiawybHRKTKEqi61Y0ARlovcKJnnHjiUqFpsJzb4HlLs7amzJlJBWBCwjoNR&#13;
-ShrgRzeYsuHD7z/+iLljq0n5h2kVfPSyo8ILzQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_aedc05cb-af06-4be3-b716-a34a1ae9334a"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Trgof0zVP7qtZTLLIoSM6s+OMPQICLHA3r61Z/uGAhSIxlxbDUyKoLEH76OIjeZOsZUHrIIaKrwj&#13;
+csrjxfYRog==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_29119566-dba8-483a-9952-b25565ba580a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>T6CI+XBDKBL/XwjCtLrEFF3y5wGE0bNDuGCvPOARZ/trOFt1iLJNvj+8pmiPOMooV3GxYVJJRW2p&#13;
+hse5QxDYVA==</DigestValue></Reference></SignedInfo><SignatureValue>Ez8VZmXYfwZ0zp7GMGCF19Y97kVj1Cgd0x3/PyWgmwzegmHCIsKt2IY3SzsxaynQEUTs3LMdr9hr&#13;
+iI8mcvgHDRxAbcJMpxG72GpTD0Y7iTBsK/yE5TnzesM5wP/FfDtIayR8o3gR/ZfWbIYIrSZEVXF2&#13;
+5AdJp3OQu3geaijTTTKfUVMFBnnTGBaCobaUbqNxIJm8nbccyMPC+RX+8tnl+xqi0BY75MHOa9Dd&#13;
+cgHPHoVpw5Nr3XVR1tacjPov9VWxzjrFdP8vhnC4V8w3x/qvduQYckxPYSkzmtEGMh8DVSR4mPTO&#13;
+XBy7RLOxslO4YkMojCWwKHQY+PqhDobZ9qwIjg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2226,4 +2226,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_d0cb03e0-a86f-4379-9b52-45d7ab736ba2" Target="#_31631636-6a6d-42ff-bc2a-44ea082d4204"><Timestamp>2024-08-08 08:01:46</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_29119566-dba8-483a-9952-b25565ba580a" Target="#_aedc05cb-af06-4be3-b716-a34a1ae9334a"><Timestamp>2024-08-08 08:33:37</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
