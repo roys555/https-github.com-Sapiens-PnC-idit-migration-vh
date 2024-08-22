@@ -348,7 +348,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="CoverIVO" name="CoverIVO">
+    <metadata comment="" label="CoverIVO" name="CoverIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -386,6 +386,9 @@
       <column comment="" key="false" length="-1" name="optionDeductibleMethodVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="optionDeductibleMethodVORefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="coverID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="commissionForCollAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="yearlyCommissionAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="basicYearlyPremiumAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="POL0103_Cover">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -402,8 +405,10 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <uiProperties shellMaximized="true"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="Covers.avm_provision_neu " name="l_CommisionForColAmount" type="id_Double"/>
+      </varTables>
       <outputTables activateCondensedTool="true" id="_-FpqUM83Ee6mF-LlU-XY0w - CoverIVO" name="CoverIVO" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="Covers.ENTITY_ID " name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="Covers.BUNDLE_POLICY_ID " name="BUNDLE_POLICY_ID" nullable="true" type="id_Long"/>
@@ -442,6 +447,9 @@
         <mapperTableEntries expression="(long)1000001" name="optionDeductibleMethodVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="&quot;N/A&quot;" name="optionDeductibleMethodVORefDESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="trn_DeCovers.CoverID " name="coverID" nullable="true" type="id_Long"/>
+        <mapperTableEntries expression="Var.l_CommisionForColAmount " name="commissionForCollAmount" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="Var.l_CommisionForColAmount " name="yearlyCommissionAmount" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="Covers.avm_provision_diff " name="basicYearlyPremiumAmount" nullable="true" type="id_Double"/>
       </outputTables>
       <outputTables activateExpressionFilter="true" expressionFilter="trn_Covers.out_desc == null" name="POL0103_Cover" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -771,6 +779,21 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="commissionForCollAmount"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="yearlyCommissionAmount"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="basicYearlyPremiumAmount"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;CoverIVO&quot;"/>
@@ -813,6 +836,9 @@
       <column comment="" key="false" length="-1" name="optionDeductibleMethodVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="optionDeductibleMethodVORefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="coverID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="commissionForCollAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="yearlyCommissionAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="basicYearlyPremiumAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="CoverIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -852,6 +878,9 @@
       <column comment="" key="false" length="-1" name="optionDeductibleMethodVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="optionDeductibleMethodVORefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="coverID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="commissionForCollAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="yearlyCommissionAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="basicYearlyPremiumAmount" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2041,13 +2070,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_fd94f050-b045-40b3-83a0-06b565d43217"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>PeVPQm7zVMHlrW7tmitntWtdsa4UNNMA1meqA2+DbuXotEmS39HZGfetq9AbECN8Qzfo66vQhAps&#13;
-FldJuLHMEA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_c682d360-5cf7-4475-aced-76add9e90b5c"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>a1XUxTcTgXjSSvQvNGkOg6iGpncJX/0BpVJHSm615CQ6GmlOtzvnms8/uyR6fmCnPxsGZFV/vkz7&#13;
-sqjbEHKKfA==</DigestValue></Reference></SignedInfo><SignatureValue>ewl+R1thG9sQojTELXJUG95wYwKjBEOaNI/xJ34NUc/lRxTcXVzxXQjyyqENOuJOzF+oN0GM3MwA&#13;
-1HOyEJN6NT2tk26qv3dF+j7lgelWQbEVmDgdCW8hLEiZj9bZVjk3W6gt5l6Bl7+DO6YLz6MtZDQc&#13;
-OGYnDMoy7awyf+mXNjpAVRCgV6R0OGp3bC7iCTUpZTvtoEmCh71t5qZrdaBgVb2djL9yF1p0a7/b&#13;
-1J9wu0dE8eFJaNFj3S0hgPCR3AxSEDTdx/t2ijERIaGCs0kkSy5Q3C+JroWjgWoqzpQFARMMZKur&#13;
-wDC+Sf1l+ElVVCyn4nsKs2YgrPjj/aXodgMWlg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c6c7601c-879a-4485-a529-fdb01a9de5b0"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Vhqf2TN3bbPdq0NWHRWYHR7iPzRtnXuDGY2vWuMoB39zgpNRu1eaof/Fg/3YkRCcTKgfaFuajX0A&#13;
+BGTb4t06Bg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_cc42ebc9-e63e-4e64-a2e2-101d04b5c398"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>AjinPIweOBEco+J3epmAZ1tzpRUq8PStFkABK8x5teWBc3rT+JfpqEN0t4WUDXj+ra1cu4uR3aia&#13;
+oSQPmllTiA==</DigestValue></Reference></SignedInfo><SignatureValue>KshUnMTkUg/YsZpf22mD5cj3bvF89S2SkYZZHnJkvMtZmhsvlnyittd6ZxZWgwiqZfhfARMSrS0u&#13;
+eyWB9nuBndKaF9VFbFldurHXw4QPPXNi0clOYF+vfhEcMR4jYzz+9tkTE83RSLUMILaT5231P41C&#13;
+l3gbfGsjZgXPyoUBILE3g/8b/5p9qgxWG4X43CCIaUBptOB405cSKew+wqu8VVi+jZPlDN3sFIf/&#13;
+ezf/prXbLSSarv776k1GNKlain9QMIkvypYuHh0el/ARRlg8oTzzYTHRA6J7c5A0pU95j1N+ZH9r&#13;
+MdUq4a1gb6QY2IsJAHaSg+G9QMaMUpx9w5iatg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2069,4 +2098,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_c682d360-5cf7-4475-aced-76add9e90b5c" Target="#_fd94f050-b045-40b3-83a0-06b565d43217"><Timestamp>2024-08-22 10:00:02</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_cc42ebc9-e63e-4e64-a2e2-101d04b5c398" Target="#_c6c7601c-879a-4485-a529-fdb01a9de5b0"><Timestamp>2024-08-22 11:21:17</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
