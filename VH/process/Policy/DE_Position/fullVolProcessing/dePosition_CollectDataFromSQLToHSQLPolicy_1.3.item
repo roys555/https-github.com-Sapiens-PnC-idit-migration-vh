@@ -4880,7 +4880,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT &#9; adcv.ENTITY_ID, vp.POL_POLICEN_NR, vp.VER_VERTRAG_NR, adcv.POLICY_VERSION, p.PAR_PARTNER_NR, adcv.V_START_DATE, vp.VMR_VERMITTLER_NR AS EXTERNAL_CONTACT_NUMBER, p.PAR_VERMITTLER_NR_VM , &#13;&#10;&#9;&#9;vp.POL_GUELTIG_AB, vp.VMP_UNGUELTIG_AB, &#13;&#10;     CASE WHEN vmr.PAR_PARTNER_NR IS NOT NULL THEN 'Do Not Create Role' END AS DIRECT&#13;&#10;FROM SEV.VM_POLICE vp &#13;&#10;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = vp.POL_POLICEN_NR AND adcv.VERTRAG = vp.VER_VERTRAG_NR  AND vp.POL_GUELTIG_AB &lt;= adcv.V_START_DATE AND vp.VMP_UNGUELTIG_AB &gt;= adcv.V_END_DATE &#13;&#10;JOIN SEV.PARTNER p ON p.PAR_PARTNER_NR = adcv.PAR_PARTNER_NR&#13;&#10;LEFT JOIN sev.vm vmr ON vmr.PAR_PARTNER_NR = p.PAR_VERMITTLER_NR_VM AND vmr.VMR_VERTRIEBSFORM in ('Direktvertrieb')&#13;&#10;WHERE 1=1&#13;&#10;AND vp.VMP_HISTORIE &lt;&gt; 'HT' &#13;&#10;AND vp.VMP_ZUSTAND = 'lebend'&#13;&#10;AND vp.VMP_UNGUELTIG_AB &gt; timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;AND adcv.V_START_DATE &gt;=timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE adcv.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and adcv.VERTRAG  = cms.POLICY_ID &#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID = &quot;  + context.migrationID + &quot;)&#13;&#10;&#13;&#10;--GROUP BY adcv.ENTITY_ID, vp.POL_POLICEN_NR, vp.VER_VERTRAG_NR, adcv.POLICY_VERSION, p.PAR_PARTNER_NR, adcv.V_START_DATE, vp.VMR_VERMITTLER_NR, p.PAR_VERMITTLER_NR_VM, vp.POL_GUELTIG_AB, vp.VMP_UNGUELTIG_AB, &#13;&#10; -- CASE WHEN vmr.PAR_PARTNER_NR IS NOT NULL THEN 'Do Not Create Role' END &#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT &#9; A.ENTITY_ID, vp.POL_POLICEN_NR, vp.VER_VERTRAG_NR, adcv.POLICY_VERSION, p.PAR_PARTNER_NR, adcv.V_START_DATE, vp.VMR_VERMITTLER_NR AS EXTERNAL_CONTACT_NUMBER, p.PAR_VERMITTLER_NR_VM , &#13;&#10;&#9;&#9;vp.POL_GUELTIG_AB, vp.VMP_UNGUELTIG_AB, &#13;&#10;     CASE WHEN vmr.PAR_PARTNER_NR IS NOT NULL THEN 'Do Not Create Role' END AS DIRECT&#13;&#10;FROM SEV.VM_POLICE vp &#13;&#10;JOIN K2V_DEV.ALL_DE_CONTRACT_VERSION adcv ON adcv.POLICE = vp.POL_POLICEN_NR AND adcv.VERTRAG = vp.VER_VERTRAG_NR  AND vp.POL_GUELTIG_AB &lt;= adcv.V_START_DATE AND vp.VMP_UNGUELTIG_AB &gt;= adcv.V_END_DATE &#13;&#10;JOIN SEV.PARTNER p ON p.PAR_PARTNER_NR = adcv.PAR_PARTNER_NR&#13;&#10;JOIN K2V_DEV.ALL_DE_POSITION A ON A.BUNDLE_POLICY_ID =adcv.POLice AND A.POLICY_ID = adcv.VERTRAG AND A.POL_GUELTIG_AB  = adcv.V_START_DATE AND A.GOB_UNGUELTIG_AB  = adcv.V_END_DATE &#13;&#10;LEFT JOIN sev.vm vmr ON vmr.PAR_PARTNER_NR = p.PAR_VERMITTLER_NR_VM AND vmr.VMR_VERTRIEBSFORM in ('Direktvertrieb')&#13;&#10;WHERE 1=1&#13;&#10;AND vp.VMP_HISTORIE &lt;&gt; 'HT' &#13;&#10;AND vp.VMP_ZUSTAND = 'lebend'&#13;&#10;AND vp.VMP_UNGUELTIG_AB &gt; timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;AND adcv.V_START_DATE &gt;=timestamp '&quot;+context.borderDate+&quot;'&#13;&#10;and EXISTS ( SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS cms  &#13;&#10;&#9;WHERE adcv.POLICE = cms.BUNDLE_POLICY_ID &#13;&#10;&#9;and adcv.VERTRAG  = cms.POLICY_ID &#13;&#10;    AND cms.MIGRATION_STATUS  =100 &#13;&#10;    AND cms.MIGRATION_ID = &quot;  + context.migrationID + &quot;)&#13;&#10;&#13;&#10;--GROUP BY adcv.ENTITY_ID, vp.POL_POLICEN_NR, vp.VER_VERTRAG_NR, adcv.POLICY_VERSION, p.PAR_PARTNER_NR, adcv.V_START_DATE, vp.VMR_VERMITTLER_NR, p.PAR_VERMITTLER_NR_VM, vp.POL_GUELTIG_AB, vp.VMP_UNGUELTIG_AB, &#13;&#10; -- CASE WHEN vmr.PAR_PARTNER_NR IS NOT NULL THEN 'Do Not Create Role' END &#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -4941,7 +4941,7 @@
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
-    <elementParameter field="IMAGE" name="PREVIEW" value="_QkxSgCV6Ee6aAfhWDAh9_A-tMap_14-PREVIEW.bmp"/>
+    <elementParameter field="IMAGE" name="PREVIEW" value="_rjU8AL6LEe6jcPiMlGgGPA-tMap_10-PREVIEW.bmp"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" show="false" value="true"/>
     <elementParameter field="CHECK" name="LKUP_PARALLELIZE" show="false" value="false"/>
     <elementParameter field="TEXT" name="LEVENSHTEIN" show="false" value="0"/>
@@ -5258,13 +5258,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="positions_legacy_selection"/>
   </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_9">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk15"/>
+  </connection>
   <connection connectorName="FLOW" label="row19" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tFilterColumns_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row19"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_9">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk15"/>
   </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tMap_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -5778,13 +5778,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_fb80f7fd-34f3-4e30-aeba-faaf2de5fcf8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>G/9TPdfw80nnKM9BT0OjPDA9Mc/0Z59NoLau+lIclpdNlODNjmbn126+iLJDozdk2NZw6EoMXMho&#13;
-nAJZMgVozQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_7382947d-991b-43f3-ae24-af6b5d11ee9c"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>47Knf7CK8lcJtdAJKr58xAtTmzZqUaqGUQzsYazA6KSjYv+dbuTpc+zS5OfjcWEL6ImPIihTN+V5&#13;
-Rlsp49ZlsQ==</DigestValue></Reference></SignedInfo><SignatureValue>DweGZYtS0O7VCSP2MlR+htR3kADprXzwtMQi4jF42W/DaNHiu7zEA0YCOaaP801+mL8lKurdoxjM&#13;
-O1XI1bmnv8HOOlk+gYvJ77b+GwgJIPsK0wmovCCjZRchuxcgAXYIG1J9W4omQ3/r91pX9WMAHXNl&#13;
-m5q0l/NNU29RgjvvTbc8gY1f1GR7odsI8iq/REMRvw6K1rKVPiZkasKqmVV5+UiWpGT78khbp4yb&#13;
-uTreB5p2ndvDoeFJTp0zLzPKYdW675aGMD7Khf1wD7CagkqBk0VQZlCHrkViIVjwYJPcsYToK5Pa&#13;
-zpI3KUTQiff8WzV98y+gKRUEDJEUyIsW4So4Zg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_7f57aa6d-39f0-4417-bd78-d74b139e4fe1"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>IbLiPmFAxUUwnVpYVYckUecFDmQIoqoT/wsSew6lDg6RRIqQIg28zaveUti6XytsNFRuTSOV+pcb&#13;
+q2359wMIOw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8fe49984-b803-4731-8289-7633aedb5a42"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>/QubrJllsXHIC/ykkp0MabkOrQDHl9tTRWUsU7KBMnSYWO0t+fWiTHDtOsL5O+R5aCt8tydkdvPI&#13;
+U/kVd05q4A==</DigestValue></Reference></SignedInfo><SignatureValue>MaGpmcD+hyHRfXkcH20NsJTNXswg4jhgFMudDHepQ/THx42yac06PE0Ec3HjnA/SyECSw7/xNso+&#13;
++GXBt0U0M/nDRdJhGks34FXfGYpjFBjIEey1Pggo2LE/upeyWKhZqvIMOt+8q4rlZeZAcVhGBv2m&#13;
+EX/7qqOz4uFJHkEd+0X72uW2n0GXu0njglII8vHGJFvVbK/vBmeOC3Y+IiX7EjdIJu9jDR+Is8B0&#13;
+zeH8oL7MqNzjL28ONEe08C4ngmI8MJcHbV0C3IsZ9Yh5QV/9JgOUrFNviKHU2WOJMq9K8jI3IWV7&#13;
+gsEJFVVGYMzttb2U97srpHKCrKBDc3iVfME3ew==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -5806,4 +5806,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_7382947d-991b-43f3-ae24-af6b5d11ee9c" Target="#_fb80f7fd-34f3-4e30-aeba-faaf2de5fcf8"><Timestamp>2024-08-26 12:21:29</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8fe49984-b803-4731-8289-7633aedb5a42" Target="#_7f57aa6d-39f0-4417-bd78-d74b139e4fe1"><Timestamp>2024-08-26 12:52:39</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
