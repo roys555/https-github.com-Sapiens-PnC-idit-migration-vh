@@ -168,7 +168,6 @@
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="BUNDLE_VERSIONS"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="BUNDLE_VERSIONS" name="tHSQLDbInput_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -204,10 +203,8 @@
     <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
-    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="XMLPolicyIVO" name="policyIVO">
+    <metadata comment="" label="XMLPolicyIVO" name="policyIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="LEGACY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="5" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -273,7 +270,7 @@
       <column comment="" key="false" length="50" name="endorsmentReasonRefDESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.VER_START_DATE " name="policyStartDate" type="id_Date"/>
         <mapperTableEntries expression="(long)100" name="currentChannelIVORefID" type="id_Long"/>
@@ -315,7 +312,7 @@
         <mapperTableEntries expression="Var.currentChannelIVORefDesc " name="originalChannelVORefDesc" nullable="true" type="id_String"/>
         <mapperTableEntries expression="false" name="paymentSlipFlag" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="VERSIONS.PAYMENT_TERM " name="paymentTermId" nullable="true" type="id_Long"/>
-        <mapperTableEntries name="policyBankAccountExternalNumber" nullable="true" type="id_String"/>
+        <mapperTableEntries expression="bank_account.BANK_ACCOUNT_EXTERNAL_NUMBER " name="policyBankAccountExternalNumber" nullable="true" type="id_String"/>
         <mapperTableEntries expression="VERSIONS.VER_END_DATE " name="policyEndDate" nullable="true" type="id_Date"/>
         <mapperTableEntries name="policyPeriodVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="policyPeriodVORefDesc" nullable="true" type="id_String"/>
@@ -428,11 +425,17 @@
         <mapperTableEntries expression="VERSIONS.PA_DISCOUNT " name="in" nullable="true" operator="=" type="id_Long"/>
         <mapperTableEntries name="out" nullable="true" type="id_Long"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="trn_CANCEL_REASON" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" minimized="true" name="trn_CANCEL_REASON" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="VERSIONS.CANCELLED " name="in_value" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="out_value" nullable="true" type="id_Long"/>
         <mapperTableEntries name="out_desc" nullable="true" type="id_String"/>
         <mapperTableEntries name="ADD1" nullable="true" type="id_Long"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="bank_account" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="VERSIONS.POLICY " name="POLICE" operator="=" type="id_Long"/>
+        <mapperTableEntries name="BKO_IBAN_NR" nullable="true" type="id_String"/>
+        <mapperTableEntries name="POLICE_8" nullable="true" type="id_String"/>
+        <mapperTableEntries name="BANK_ACCOUNT_EXTERNAL_NUMBER" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -527,7 +530,6 @@
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="XMLpolicyHeaderIVO"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="XMLpolicyHeaderIVO" name="tHSQLDbInput_2">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -591,7 +593,6 @@
     <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
     <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
     <elementParameter field="TEXT" name="LABEL" value="trn_EcnonmyRef"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tFixedFlowInput_1">
       <column comment="" key="false" length="1" name="i_we" nullable="true" originalLength="1" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
@@ -942,7 +943,6 @@
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="XMLPolicyIVO"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="XMLPolicyIVO" name="tHSQLDbOutput_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1099,7 +1099,6 @@
     <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
     <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
     <elementParameter field="TEXT" name="LABEL" value="trn_statusCodeVORef"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tFixedFlowInput_2">
       <column comment="" key="false" length="10" name="statusCodeRefId" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
@@ -1138,7 +1137,6 @@
     <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
     <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
     <elementParameter field="TEXT" name="LABEL" value="trn_webAVRef"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tFixedFlowInput_3">
       <column comment="" key="false" length="10" name="in_value" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
@@ -1168,7 +1166,6 @@
     <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
     <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
     <elementParameter field="TEXT" name="LABEL" value="trn_JaNein"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tFixedFlowInput_4">
       <column comment="" key="false" length="10" name="in" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
@@ -1197,7 +1194,6 @@
     <elementParameter field="TEXT" name="FIELDSEPARATOR" show="false" value="&quot;;&quot;"/>
     <elementParameter field="MEMO" name="INLINECONTENT" show="false" value=""/>
     <elementParameter field="TEXT" name="LABEL" value="trn_JaNein2"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tFixedFlowInput_5">
       <column comment="" key="false" length="10" name="in" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_String" usefulColumn="true"/>
@@ -1221,7 +1217,6 @@
     <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;,&quot;"/>
     <elementParameter field="MEMO" name="INLINECONTENT" value="-1,-1&#13;&#10;0,1000001&#13;&#10;5,1000007&#13;&#10;10,1000009&#13;&#10;15,1000008&#13;&#10;20,1000002&#13;&#10;25,1000010&#13;&#10;30,1000011&#13;&#10;35,1000012&#13;&#10;40,1000004&#13;&#10;45,1000013&#13;&#10;50,1000014&#13;&#10;55,1000015&#13;&#10;60,1000005&#13;&#10;65,1000016&#13;&#10;70,1000017&#13;&#10;75,1000018&#13;&#10;80,1000006&#13;&#10;85,1000019&#13;&#10;90,1000020&#13;&#10;95,1000021&#13;&#10;100,1000022"/>
     <elementParameter field="TEXT" name="LABEL" value="paDiscountRef"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tFixedFlowInput_6">
       <column comment="" key="false" length="10" name="in" nullable="true" originalLength="10" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
@@ -1261,7 +1256,6 @@
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="TEXT" name="LABEL" value="&quot;trn_CANCEL_REASON&quot;"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="trn_CANCEL_REASON" name="tHSQLDbInput_3">
       <column comment="" key="false" length="10" name="in_value" nullable="true" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1270,13 +1264,52 @@
       <column comment="" key="false" length="10" name="ADD1" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="760" posY="520">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_4"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:MCgkcfIkDNcHYJJsFpg4fesADzDUsemqMaTwsMZ9"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_mOX3IHczEe-Rp8mbtS71ZA - POLICY_BANK_ACCOUNT"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;POLICY_BANK_ACCOUNT&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT POLICY_BANK_ACCOUNT.POLICE,&#10;&#9;&#9;POLICY_BANK_ACCOUNT.BKO_IBAN_NR,&#10;&#9;&#9;POLICY_BANK_ACCOUNT.POLICE_8,&#10;&#9;&#9;POLICY_BANK_ACCOUNT.BANK_ACCOUNT_EXTERNAL_NUMBER&#10;FROM&#9;POLICY_BANK_ACCOUNT&#13;&#10;WHERE POLICY_BANK_ACCOUNT.POLICE =&quot;  +context.EntityID&#13;&#10;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BKO_IBAN_NR"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE_8"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BANK_ACCOUNT_EXTERNAL_NUMBER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;POLICY_BANK_ACCOUNT&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="POLICY_BANK_ACCOUNT" name="tHSQLDbInput_4">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="BKO_IBAN_NR" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="8" name="POLICE_8" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="50" name="BANK_ACCOUNT_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_1"/>
     <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="System.out.println(&quot;Job : PolicyIVO&quot;);&#10;System.out.println(context.EntityID);"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
-    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_1"/>
   </node>
@@ -1424,8 +1457,6 @@
     </elementParameter>
     <elementParameter field="CHECK" name="PRINT_CONTENT_WITH_LOG4J" value="true"/>
     <elementParameter field="TEXT" name="SCHEMA_OPT_NUM" show="false" value="100"/>
-    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
-    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="XMLPolicyIVO" name="tLogRow_1">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1559,6 +1590,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="trn_CANCEL_REASON"/>
   </connection>
+  <connection connectorName="FLOW" label="bank_account" lineStyle="8" metaname="tHSQLDbInput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_4" target="tMap_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="bank_account"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
@@ -1578,13 +1613,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_3fdc0937-1e08-427e-bd27-0719315bd2b1"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>T0apSz/xEtmhvLXeOJK6ClA8g4WNO7sSHLogQ1rCJWnuj1O5013tBuMEx2XezgkPWfpkY9j+lLSM&#13;
-+S5Z6hS8XA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f99ad754-6437-45a9-a166-b764f6729063"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>kOMpUgMH3DRZxRjrSWcR/a/LkeJY6Ie7t5qPObwBo86617JQw89hnNlrcs7fjcaMBYjP9TbTfNX2&#13;
-NpRqkEgtRA==</DigestValue></Reference></SignedInfo><SignatureValue>PbN5T8ICkM18yke4t2/czrufAHjte440Az5WcsdV9y0z1BZm8+QnLJAdMDTcnt+cLpGmy831Xp79&#13;
-DAUHutqKPT+lE4zoixOpPXymeX4083zcCzNGvK3f3nttNTbSzcC/4W4oS/3oJuZGLxyZCWy27ZRK&#13;
-d/A0/JZrivVBFDgLTGwGSO8t9Fo8Ys3NZzzyUg/M2DCn6fpQyVce30Pj7EJPzUZfRGxjOlw+bd/P&#13;
-+V5QxDaBBsL7vxK666cLUBJEL14PywTsivoytq4WdKSz/5BNOkZRKUA71AfQfifRHcZRmny5lchF&#13;
-Dd3DW4jbeWsfhHRSRWrj0Bvwt9KvGTi9aqvjpA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_7c80c8aa-c359-4b2c-b75e-38a6b42b8ee7"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>o1SGXDkl2YJ6sYjdzV1kAUB9NxGCa9nIZTtnPNXiUBF0/tu7dmHOuofWQddCX7xZZZLk1lulu4zk&#13;
++qcY5vEz3w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8591ee91-593b-4dbc-bfe7-4eda45e432b0"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>RnOyX2YGo2Cpuai2yZI1+/b5h9X46T1buEEOlUBTKmU1dX5hN+JyBCSZo8dh97LeOOpRTmYiWfJl&#13;
+kPN0A4e5tQ==</DigestValue></Reference></SignedInfo><SignatureValue>APJEJ4Pk/L7/pydnq3ZLlTadk5sAf5hQ7f3SvNcrYqIIzZrwrBE28D64nbxZuSc1zCx8wr/bzWMa&#13;
+vY1fohB7/rnomvaDTEAPVAUDNt2myPFsthJHvu8xeeGGcRd0CT5bLoM8Gjd2C9CMHoPzbXsrZZSU&#13;
+jNU78WdtOroIQv+slFUDL5GOFKOPzyHc3kW5tJp1iQmc4CVolEh9T5OSTYUuadL6iwJ1uOK1WERK&#13;
+hnTXZB1Z5BMBd4XbxRKyWQT6+hRczx1FY6QtnA4pGh2X4D7yT8qc9UuiiPtzqGZ2fKgyjYe0I+xd&#13;
+rOn8wnaitA8K0koMeBKGmdepqAvy57hLOFvPXg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1606,4 +1641,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f99ad754-6437-45a9-a166-b764f6729063" Target="#_3fdc0937-1e08-427e-bd27-0719315bd2b1"><Timestamp>2024-08-19 09:35:30</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8591ee91-593b-4dbc-bfe7-4eda45e432b0" Target="#_7c80c8aa-c359-4b2c-b75e-38a6b42b8ee7"><Timestamp>2024-09-20 10:56:22</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
