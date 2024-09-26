@@ -150,7 +150,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT a.BUNDLE_POLICY_ID as POL_POLICEN_NR, a.POLICY_ID as VER_VERTRAG_NR, a.POSITION_ID as OBJ_OBJEKT_NR&#13;&#10;FROM K2V_DEV.ALL_DE_POSITION A&#13;&#10;WHERE a.BUNDLE_POLICY_ID IN (&#13;&#10;'1100030902',&#13;&#10;'1254100601',&#13;&#10;'1259175701',&#13;&#10;'1438152801',&#13;&#10;'1495175301',&#13;&#10;'1498170901',&#13;&#10;'1006829602',&#13;&#10;'1077274603',&#13;&#10;'1257903902',&#13;&#10;'1469212001',&#13;&#10;'1040225802',&#13;&#10;'1258696001',&#13;&#10;'1466240201',&#13;&#10;'1478821001',&#13;&#10;'1017501802',&#13;&#10;'1030861502',&#13;&#10;'1129054803',&#13;&#10;'1020551003',&#13;&#10;'1038550502',&#13;&#10;'1049619202',&#13;&#10;'1109002102',&#13;&#10;'1254191002',&#13;&#10;'1415625301',&#13;&#10;'1501345002',&#13;&#10;'1501384402',&#13;&#10;'1127448603',&#13;&#10;'1227658804',&#13;&#10;'1254424201',&#13;&#10;'1029926302',&#13;&#10;'1069291702',&#13;&#10;'1097845602',&#13;&#10;'1112279802',&#13;&#10;'1259885901',&#13;&#10;'1490864001',&#13;&#10;'1010241402',&#13;&#10;'1049097302',&#13;&#10;'1480431901',&#13;&#10;'1399741102',&#13;&#10;'1006006103',&#13;&#10;&#13;&#10;'1044827502'&#13;&#10;)&#13;&#10;and a.POLICY_ID =3&#13;&#10;   &quot;     "/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT a.BUNDLE_POLICY_ID as POL_POLICEN_NR, a.POLICY_ID as VER_VERTRAG_NR, a.POSITION_ID as OBJ_OBJEKT_NR&#13;&#10;FROM K2V_DEV.ALL_DE_POSITION a&#13;&#10;WHERE EXISTS (SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS pms WHERE pms.MIGRATION_ID=163 &#13;&#10;&#9;AND pms.MIGRATION_STATUS  =200 AND pms.BUNDLE_POLICY_ID = a.bundle_policy_id AND pms.POLICY_ID = a.POLICY_ID)&#13;&#10;AND rownum &lt; 10001&#13;&#10;/*&#13;&#10;WHERE a.BUNDLE_POLICY_ID IN (&#13;&#10;'1100030902',&#13;&#10;'1254100601',&#13;&#10;'1259175701',&#13;&#10;'1438152801',&#13;&#10;'1495175301',&#13;&#10;'1498170901',&#13;&#10;'1006829602',&#13;&#10;'1077274603',&#13;&#10;'1257903902',&#13;&#10;'1469212001',&#13;&#10;'1040225802',&#13;&#10;'1258696001',&#13;&#10;'1466240201',&#13;&#10;'1478821001',&#13;&#10;'1017501802',&#13;&#10;'1030861502',&#13;&#10;'1129054803',&#13;&#10;'1020551003',&#13;&#10;'1038550502',&#13;&#10;'1049619202',&#13;&#10;'1109002102',&#13;&#10;'1254191002',&#13;&#10;'1415625301',&#13;&#10;'1501345002',&#13;&#10;'1501384402',&#13;&#10;'1127448603',&#13;&#10;'1227658804',&#13;&#10;'1254424201',&#13;&#10;'1029926302',&#13;&#10;'1069291702',&#13;&#10;'1097845602',&#13;&#10;'1112279802',&#13;&#10;'1259885901',&#13;&#10;'1490864001',&#13;&#10;'1010241402',&#13;&#10;'1049097302',&#13;&#10;'1480431901',&#13;&#10;'1399741102',&#13;&#10;'1006006103',&#13;&#10;&#13;&#10;'1044827502'&#13;&#10;)&#13;&#10;and a.POLICY_ID =3&#13;&#10;*/   &#13;&#10;&quot;     "/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -175,6 +175,7 @@
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="Select inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_1">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -196,6 +197,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata comment="" connector="FLOW" label="POLICY_MIGRATION_STATUS" name="copyOfcopyOfcopyOfmain_1" type="TABLE">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -374,6 +376,7 @@
     <elementParameter field="CHECK" name="TRIM_CHAR" value="true"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_MIGRATION_STATUS" name="tDBOutput_2">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -458,11 +461,15 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tJava_3"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="//String totalNum = String.valueOf(input_row.total_num);&#10;//globalMap.put(&quot;varTotalNum&quot;,totalNum );&#10;Integer migScope = ((Integer)globalMap.get(&quot;tDBOutput_2_NB_LINE&quot;));&#10;&#10;System.out.println(&quot;------------------------------&quot; );&#10;System.out.println(&quot;Scope = &quot; +migScope );&#10;System.out.println(&quot;------------------------------\n&quot; );&#10;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_3"/>
   </node>
   <node componentName="tPrejob" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPrejob_1"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
   <node componentName="tOracleConnection" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="192" posY="32">
@@ -503,16 +510,20 @@
     <elementParameter field="CHECK" name="AUTO_COMMIT" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="Oracle_staging"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
   <node componentName="tPostjob" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="640" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tPostjob_1"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
   <node componentName="tOracleClose" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="800" posY="32">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBClose_1"/>
     <elementParameter field="COMPONENT_LIST" name="CONNECTION" value="tDBConnection_1"/>
     <elementParameter field="TEXT" name="LABEL" value="Staging_db"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
   </node>
   <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="192">
@@ -564,6 +575,7 @@
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="Select inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_2">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -586,6 +598,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata comment="" connector="FLOW" label="POLICY_MIGRATION_STATUS" name="copyOfcopyOfcopyOfcopyOfmain_1" type="TABLE">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -765,6 +778,7 @@
     <elementParameter field="CHECK" name="TRIM_CHAR" value="true"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_MIGRATION_STATUS" name="tDBOutput_1">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -850,6 +864,8 @@
     <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="//String totalNum = String.valueOf(input_row.total_num);&#10;//globalMap.put(&quot;varTotalNum&quot;,totalNum );&#10;Integer migScope = ((Integer)globalMap.get(&quot;tDBOutput_1_NB_LINE&quot;));&#10;&#10;System.out.println(&quot;------------------------------&quot; );&#10;System.out.println(&quot;Scope = &quot; +migScope );&#10;System.out.println(&quot;------------------------------\n&quot; );&#10;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_1"/>
   </node>
@@ -902,6 +918,7 @@
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="Select inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_3">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -924,6 +941,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata comment="" connector="FLOW" label="POLICY_MIGRATION_STATUS" name="copyOfcopyOfcopyOfcopyOfcopyOfmain_1" type="TABLE">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -1103,6 +1121,7 @@
     <elementParameter field="CHECK" name="TRIM_CHAR" value="true"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_MIGRATION_STATUS" name="tDBOutput_3">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -1232,6 +1251,7 @@
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="Select inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_4">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -1254,6 +1274,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata comment="" connector="FLOW" label="POLICY_MIGRATION_STATUS" name="copyOfcopyOfcopyOfcopyOfmain_1_0" type="TABLE">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -1433,6 +1454,7 @@
     <elementParameter field="CHECK" name="TRIM_CHAR" value="true"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_MIGRATION_STATUS" name="tDBOutput_4">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -1518,6 +1540,8 @@
     <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="MEMO_JAVA" name="CODE" value="//String totalNum = String.valueOf(input_row.total_num);&#10;//globalMap.put(&quot;varTotalNum&quot;,totalNum );&#10;Integer migScope = ((Integer)globalMap.get(&quot;tDBOutput_4_NB_LINE&quot;));&#10;&#10;System.out.println(&quot;------------------------------&quot; );&#10;System.out.println(&quot;Scope = &quot; +migScope );&#10;System.out.println(&quot;------------------------------\n&quot; );&#10;&#10;"/>
     <elementParameter field="MEMO_IMPORT" name="IMPORT" value="//import java.util.List;"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tJava_2"/>
   </node>
@@ -1561,6 +1585,7 @@
     <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="index rebuild"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBRow_1"/>
     <metadata connector="REJECT" name="REJECT">
@@ -1617,6 +1642,7 @@
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" show="false" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="Select inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_5">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
@@ -1639,6 +1665,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="LABEL" value="map_inclusion"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata comment="" connector="FLOW" label="POLICY_MIGRATION_STATUS" name="out2" type="TABLE">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -1720,6 +1747,8 @@
     <elementParameter field="CHECK" name="ENABLE_AUTO_CONVERT_TYPE" show="false" value="false"/>
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_MIGRATION_STATUS" name="out3">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -1907,6 +1936,7 @@
     <elementParameter field="CHECK" name="TRIM_CHAR" value="true"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="POLICY_MIGRATION_STATUS" name="tDBOutput_5">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true">
@@ -2016,6 +2046,9 @@
     <elementParameter field="CHECK" name="ACTIVE_DIR_AUTH" show="false" value="false"/>
     <elementParameter field="ENCODING_TYPE" name="ENCODING" show="false" value="&quot;ISO-8859-15&quot;"/>
     <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="ENABLE_ALWAYS_ENCRYPTED" show="false" value="false"/>
+    <elementParameter field="TEXT" name="KEYSTORE_PRINCIPAL_ID" show="false" value=""/>
+    <elementParameter field="PASSWORD" name="KEYSTORE_SECRET" show="false" value=""/>
     <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
     <elementParameter field="TABLE" name="TRIM_COLUMN">
       <elementValue elementRef="SCHEMA_COLUMN" value="entityID"/>
@@ -2024,6 +2057,7 @@
     <elementParameter field="CHECK" name="SET_QUERY_TIMEOUT" value="false"/>
     <elementParameter field="TEXT" name="QUERY_TIMEOUT_IN_SECONDS" show="false" value="30"/>
     <elementParameter field="TEXT" name="LABEL" value="__TABLE__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_6">
       <column comment="" key="false" length="100" name="entityID" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="NVARCHAR" type="id_String" usefulColumn="true"/>
@@ -2203,13 +2237,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_8546a22d-f665-44bc-a2e3-aaf2f06f11c7"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>HF4kMYBJFLLm2RZF5WRDImSvPy203+q2pXFJipc4cELYza89hTAJz5uQTc7H9+rRM5WPWLvECeXK&#13;
-6fYUbZ7BjQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_4e2e30dd-f0dd-412f-a876-7c48bdc89343"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>xsThyX11bM7kvce3krvCk59PLzEBxb2bWI5FyNk2VJarP6MRQdbe66hyXvfsBGnR381IMed1hzcK&#13;
-Z9VL2doYfw==</DigestValue></Reference></SignedInfo><SignatureValue>K6OA8Qn+pFBO00a8EnfxiL1Y6wyCfCiip4jGG2iIkkwfoeHXMZBh/PQrc7LsHPo7QWDwu1GIUrfZ&#13;
-mGZh5JtPUgfBHPY5bpy56M07VdPLSXRc8pq6qtvHXsBxSI33ed25uqYeDmwucSbMPEOQPquDC+np&#13;
-87zLX6KTBS/xQiFHpSKARLvmyOBz4JshYeUHUCo5S6uUn1ar8AnDxf4/mRnek3mwS1S43Ge8u7Wv&#13;
-1Y1L4NGLw+4yEVmPJ4S5+YVoYBwamku/nzMhVQha/tHgGLtZKpZzDdlGhpfM+wJy7tEuRhRQ0lvI&#13;
-lz8MtvGTXMI0b1A68U11VVEtsii0kaCYR1utgg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_fafa2725-5009-437c-8e76-8eaa1cf391d1"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>AX3ioQ/IuhrrHDDR7oTFKmbuCJtdMCAkqxHkqN8sqnmW4J8iVJr7Uo/sO4ifQGaQnfAULVWa0Lyg&#13;
+T9kMErT7HQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_6e8152b8-6dad-4d44-9d43-a8c0901c3830"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>ti2t0L31ZAuuRz2DB8289/uS1/bvv2bzEm1EIwIDhDtoNMxdV7am8ZXX6WeDz6V6zsQC7USaXORQ&#13;
+ia6p16JXfw==</DigestValue></Reference></SignedInfo><SignatureValue>lHbcIyeJT/jUokIvCOQAr4HaQmH+LJ5CwM0Ah0G26V+2BLuWu8OTn4moN0m9rY4m7MQSrxTbhqFA&#13;
+UFrwwjf4NpPccLK6W6kXxzZu/dmK0BUdO6Oi/5vMCZZf7/ZhexIltlh0X4dnNiO6oxkE9CLKkD/h&#13;
+d6RVBgpIEwgkg9Jn6b+A/saULQLEIXbW9AyQ0L7Qo6VJqXcVuczo0z4kTsYf0lqDfSMbPPQMRFr5&#13;
+MYLMxZwTS4Rnm9mWKmQ/o0yFAVh7xd2nOGRn5+VoBOAM+OQmkW4/mQGUM6+m41/5Az4CS18AQDPa&#13;
+GtdYcpW2yiBDANg/7Vkz1oDWwo8UwgfY/Ak6Pw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2231,4 +2265,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_4e2e30dd-f0dd-412f-a876-7c48bdc89343" Target="#_8546a22d-f665-44bc-a2e3-aaf2f06f11c7"><Timestamp>2024-08-29 07:13:01</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_6e8152b8-6dad-4d44-9d43-a8c0901c3830" Target="#_fafa2725-5009-437c-8e76-8eaa1cf391d1"><Timestamp>2024-09-26 08:46:56</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
