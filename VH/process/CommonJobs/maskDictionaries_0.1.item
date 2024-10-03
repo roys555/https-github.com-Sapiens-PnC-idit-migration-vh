@@ -358,7 +358,7 @@
     <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
     <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:MIzirFRRSslsoY2XEq4/9Uu4iLgO8trZ4UoDio93"/>
     <elementParameter field="DBTABLE" name="TABLE" value="&quot;dummyFileList&quot;"/>
-    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="DROP_IF_EXISTS_AND_CREATE"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="CREATE_IF_NOT_EXISTS"/>
     <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT"/>
     <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
     <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
@@ -402,7 +402,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="96" posY="448">
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="392" posY="440">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_1"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -436,7 +436,7 @@
       <column comment="" key="false" length="-1" name="extension" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="224" posY="448">
+  <node componentName="tLogRow" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="520" posY="440">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tLogRow_1"/>
     <elementParameter field="RADIO" name="BASIC_MODE" value="false"/>
     <elementParameter field="RADIO" name="TABLE_PRINT" value="true"/>
@@ -790,7 +790,7 @@
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="640" posY="480">
+  <node componentName="tHSQLDbRow" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="80" posY="440">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbRow_1"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -845,7 +845,7 @@
     <elementParameter field="TEXT" name="NUMBER_PARALLEL" show="false" value="2"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="iterate1"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tFileList_1" offsetLabelX="0" offsetLabelY="0" source="tFileList_1" target="tHSQLDbInput_1">
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tFileList_1" offsetLabelX="0" offsetLabelY="0" source="tFileList_1" target="tHSQLDbRow_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tFileInputRaw_2" offsetLabelX="0" offsetLabelY="0" source="tFileInputRaw_2" target="tJavaRow_1">
@@ -855,9 +855,6 @@
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tJavaRow_1" offsetLabelX="0" offsetLabelY="0" source="tJavaRow_1" target="tHSQLDbOutput_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_4" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_4" target="tHSQLDbRow_1">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tHSQLDbInput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_1" target="tLogRow_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -887,6 +884,9 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row10"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tHSQLDbRow_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbRow_1" target="tHSQLDbInput_1">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk2"/>
   </connection>
   <subjob>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_1"/>
@@ -943,13 +943,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_859943e0-330c-4a78-9fce-fb64248106d2"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>oAz0d05fAwcYQOzAskbEysHrOlhHNGQjdjYiCakjdYMcysoreggzhFtsw5IlvC/9ppHjCAZauAZf&#13;
-bHO9dRt/WA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_f255c434-77ac-484b-9e03-44e817bd25f4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>d4Kwun6PCzFZMPhrFOMFy/w9hC+LR5EC9qc+Rx9W+h/OXlbu1HNTu/iASzXBwUwhT1DXC0qyMdgs&#13;
-HmfQbhQh+Q==</DigestValue></Reference></SignedInfo><SignatureValue>Stqpk8IX91+nurwD9nsPgDoZNFFzxx+Z9oaJ1zuT5K5KxkRnKfMKo9T4J/HwD5aCSQteFCC1ULJk&#13;
-T2gNvqUczyj5yymFvAjXG5monE6DQ7DCvXhSVsTCmtmVenYaauXRux9SAOiDTYSVCpeUQcOGbciZ&#13;
-JL8g5zGmYnSkoLrhpDjXPxC+l0gG3d/TFA3SSiXZQ9HiiHDfPjHn73YVdk3Cpe8TRC8h5KrOZMN+&#13;
-nY9bl0JUhkdzIgVeo8WEE+bLi/BmLpI2fEjdn9Pe4PmWylSl8r51cyEyFc30WjTU8iFOAEpcf54N&#13;
-7Y6R3aj7veY/YVKlRylwoASlI0g9weq80zUGRg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_e3ec0e5c-a245-4c5a-ad61-44032ca56667"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>KSTZ68TEZiuc1mNCgG/mpZ8dxaBUPren7oJbDUjcrawIXaNiU4gET2i68MIhFC0rxvPvaIpVyn5m&#13;
+maeuhdG3Tg==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_9c7c00d5-3a5b-4537-9f0e-618b3a402827"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>aA3uaX46bqGgcKnbCb/kDGSJz1SDvUtBGiWRUvkpCCGO33dD8A3D/jQ7C8UjiqEsbB8yni9AcBMa&#13;
+rlZHKiGqSg==</DigestValue></Reference></SignedInfo><SignatureValue>HBfXKtLRvd08KSTxttCk+XQkEFjSoPEz+Ww8JdkMKVSWatSTR2gTanh4xl1wPziUKGwhrKjXSqpf&#13;
+Iof5VciYou1N9WbhcFeL8lYst5RfEtJz+/tvvmc7IC+vlIKtQ5AXKlR29niY68BKmbzR7/j7GwGa&#13;
+XT37Q90Uk4YMeOMhB9mtKL0OIY6+Zdp/rPnXro3NR0F6D8D0cIJaVgG69kWZO2/UjPOYgFfFgmj9&#13;
+PKkEnokv+X8sgEp0Fvxt9kgAA+kevs4J+893BNrKPgXaRQJMKnqf8UOWRWziLR2gMmeY4qM0L+SS&#13;
+plg5nbBqz7qf9RtZtXB+QvBnApVR1KayosvN5A==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -971,4 +971,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_f255c434-77ac-484b-9e03-44e817bd25f4" Target="#_859943e0-330c-4a78-9fce-fb64248106d2"><Timestamp>2024-10-03 12:24:16</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_9c7c00d5-3a5b-4537-9f0e-618b3a402827" Target="#_e3ec0e5c-a245-4c5a-ad61-44032ca56667"><Timestamp>2024-10-03 12:26:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
