@@ -21,7 +21,7 @@
     <contextParameter comment="" internalId="_SBub0N1dEe6tq6fTc6NHMQ" name="PATH_contactXMLOutputDirectory" prompt="PATH_contactXMLOutputDirectory?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value=""/>
   </context>
   <context confirmationNeeded="false" hide="false" name="TEST">
-    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="150"/>
+    <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="184"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
     <contextParameter comment="" internalId="_xuPL4MTREe2kmaNIdZptpQ" name="HQLDB_name" prompt="HQLDB_name?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;proj&quot;"/>
     <contextParameter comment="" internalId="_zyPscG8yEe6s4NRAlgiHqQ" name="isTestLoad" prompt="isTestLoad?" promptNeeded="false" repositoryContextId="built-in" type="id_Boolean" value="true"/>
@@ -695,7 +695,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select &#13;&#10; pa.par_partner_nr,&#13;&#10;   pa.ANS_ANSCHRIFT_NR, &#13;&#10;&#9;ans.ANS_STRASSE,&#13;&#10;&#9;ans.ANS_HAUSNUMMER,&#13;&#10;&#9;ans.ANS_ADRESSEN_ZUSATZ,&#13;&#10;&#9;ans.ANS_LAENDERKENNZEICHEN,&#13;&#10;&#9;ans.ANS_PLZ,&#13;&#10;&#9;ans.ANS_GROSSKUNDEN_PLZ,&#13;&#10;&#9;ans.ANS_ORT,&#13;&#10;&#9;ans.ANS_POSTFACH_PLZ,&#13;&#10;&#9;ans.ANS_POSTFACH,&#13;&#10;&#9;ans.ANS_SAV,&#13;&#10;&#9;ans.ANS_SEN,&#13;&#10;&#9;ans.ANS_ORTSNAMENZUSATZ,&#13;&#10;&#9;ans.ANS_GEMEINDEKENNZIFFER,&#13;&#10;&#9;ans.ANS_HAUSNUMMERNZUSATZ,&#13;&#10;&#9;ans.ANS_KOORDINATE_BREITE ,&#13;&#10;    ans.ANS_KOORDINATE_LAENGE,&#13;&#10;&#9;replace(pa.PAN_ART,' ',null), &#13;&#10;&#9;CASE WHEN (pa.PAN_ART is NULL AND ans.ANS_ANSCHRIFT_NR IN ( &#13;&#10;       &#9;&#9;&#9;SELECT p.POL_KORRESPONDENZANSCHRIFT FROM SEV.police p WHERE  p.POL_KORRESPONDENZEMPFAENGER=pa.PAR_PARTNER_NR )) THEN 1 ELSE 0 END AS corresp_add_ind &#13;&#10; from  SEV.PARTNER_ANSCHRIFT pa &#13;&#10;  inner join SEV.ANSCHRIFT ans on pa.ANS_ANSCHRIFT_NR  = ans.ANS_ANSCHRIFT_NR&#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE pa.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100 &#13;&#10;                  AND cms.MIGRATION_ID = &quot;  + context.migrationID + &quot;)&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select &#13;&#10; pa.par_partner_nr,&#13;&#10;   pa.ANS_ANSCHRIFT_NR, &#13;&#10;&#9;ans.ANS_STRASSE,&#13;&#10;&#9;ans.ANS_HAUSNUMMER,&#13;&#10;&#9;ans.ANS_ADRESSEN_ZUSATZ,&#13;&#10;&#9;ans.ANS_LAENDERKENNZEICHEN,&#13;&#10;&#9;ans.ANS_PLZ,&#13;&#10;&#9;ans.ANS_GROSSKUNDEN_PLZ,&#13;&#10;&#9;ans.ANS_ORT,&#13;&#10;&#9;ans.ANS_POSTFACH_PLZ,&#13;&#10;&#9;ans.ANS_POSTFACH,&#13;&#10;&#9;ans.ANS_SAV,&#13;&#10;&#9;ans.ANS_SEN,&#13;&#10;&#9;ans.ANS_ORTSNAMENZUSATZ,&#13;&#10;&#9;ans.ANS_GEMEINDEKENNZIFFER,&#13;&#10;&#9;ans.ANS_HAUSNUMMERNZUSATZ,&#13;&#10;&#9;ans.ANS_KOORDINATE_BREITE ,&#13;&#10;    ans.ANS_KOORDINATE_LAENGE,&#13;&#10;&#9;replace(pa.PAN_ART,' ',null), &#13;&#10;&#9;CASE WHEN (pa.PAN_ART is NULL AND ans.ANS_ANSCHRIFT_NR IN ( &#13;&#10;       &#9;&#9;&#9;SELECT p.POL_KORRESPONDENZANSCHRIFT FROM SEV.police p WHERE  p.POL_KORRESPONDENZEMPFAENGER=pa.PAR_PARTNER_NR )) THEN 1 ELSE 0 END AS corresp_add_ind ,&#13;&#10;  CASE WHEN EXISTS (SELECT 1 FROM K2V_DEV.ALL_DE_POLICY adp WHERE adp.PAR_PARTNER_NR = pa.PAR_PARTNER_NR) THEN 1 ELSE 0 END hasPolicyInd&#13;&#10; from  SEV.PARTNER_ANSCHRIFT pa &#13;&#10;  inner join SEV.ANSCHRIFT ans on pa.ANS_ANSCHRIFT_NR  = ans.ANS_ANSCHRIFT_NR&#13;&#10;WHERE EXISTS ( SELECT 1 FROM K2V_DEV.CONTACT_MIGRATION_STATUS cms &#13;&#10;                WHERE pa.par_partner_nr = cms.PARTNER_ID &#13;&#10;                  AND cms.MIGRATION_STATUS  =100 &#13;&#10;                  AND cms.MIGRATION_ID = &quot;  + context.migrationID + &quot;)&quot;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -750,6 +750,8 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="corresp_add_ind"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="hasPolicyInd"/>
+      <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
     <elementParameter field="CHECK" name="NO_NULL_VALUES" value="false"/>
     <elementParameter field="CHECK" name="SUPPORT_NLS" value="false"/>
@@ -757,26 +759,27 @@
     <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tDBInput_2">
-      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" defaultValue="" key="false" length="8" name="ANS_ANSCHRIFT_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="ANS_STRASSE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="ANS_HAUSNUMMER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="60" name="ANS_ADRESSEN_ZUSATZ" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="ANS_LAENDERKENNZEICHEN" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="ANS_PLZ" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="5" name="ANS_GROSSKUNDEN_PLZ" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="40" name="ANS_ORT" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="ANS_POSTFACH_PLZ" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="ANS_POSTFACH" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="40" name="ANS_SAV" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="40" name="ANS_SEN" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="40" name="ANS_ORTSNAMENZUSATZ" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="8" name="ANS_GEMEINDEKENNZIFFER" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="10" name="ANS_HAUSNUMMERNZUSATZ" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="ANS_KOORDINATE_BREITE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="ANS_KOORDINATE_LAENGE" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="30" name="PAN_ART" nullable="true" originalLength="30" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
-      <column comment="" key="false" length="-1" name="corresp_add_ind" nullable="true" originalLength="-1" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="10" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="8" name="ANS_ANSCHRIFT_NR" nullable="false" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="ANS_STRASSE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ANS_HAUSNUMMER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="60" name="ANS_ADRESSEN_ZUSATZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ANS_LAENDERKENNZEICHEN" nullable="false" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="ANS_PLZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="5" name="ANS_GROSSKUNDEN_PLZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="40" name="ANS_ORT" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="ANS_POSTFACH_PLZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="ANS_POSTFACH" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="40" name="ANS_SAV" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="40" name="ANS_SEN" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="40" name="ANS_ORTSNAMENZUSATZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="8" name="ANS_GEMEINDEKENNZIFFER" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="10" name="ANS_HAUSNUMMERNZUSATZ" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ANS_KOORDINATE_BREITE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="ANS_KOORDINATE_LAENGE" nullable="true" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="30" name="PAN_ART" nullable="true" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="corresp_add_ind" nullable="true" pattern="" precision="-1" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="hasPolicyInd" nullable="true" pattern="" precision="-1" sourceType="INTEGER" type="id_Boolean" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tHSQLDbOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="416" posY="448">
@@ -904,6 +907,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="hasPolicyInd"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="AGRONOMIS_ADDRESS_LIST"/>
@@ -930,6 +938,7 @@
       <column comment="" key="false" length="30" name="ANS_KOORDINATE_LAENGE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="PAN_ART" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="corresp_add_ind" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="hasPolicyInd" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="AGRONOMIS_ADDRESS_LIST" name="REJECT">
       <column comment="" key="false" length="-1" name="PAR_PARTNER_NR" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -952,6 +961,7 @@
       <column comment="" key="false" length="30" name="ANS_KOORDINATE_LAENGE" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="PAN_ART" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="corresp_add_ind" nullable="true" pattern="" precision="0" sourceType="INT" type="id_Integer" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="hasPolicyInd" nullable="true" pattern="" precision="0" sourceType="BIT" type="id_Boolean" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -6052,7 +6062,7 @@
       <column comment="" key="false" length="50" name="tContactExtTypeVORefDesc" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables name="out_compHierarchy" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row30.PAR_PARTNER_NR " name="partner_nr" type="id_Long"/>
@@ -6065,7 +6075,7 @@
         <mapperTableEntries name="PAR_PARTNER_NR" type="id_Long"/>
         <mapperTableEntries name="VMR_VERTRIEBSWEG" nullable="true" type="id_String"/>
       </inputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="hierarchyLookup" sizeState="INTERMEDIATE">
+      <inputTables activateCondensedTool="true" innerJoin="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="hierarchyLookup" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row30.VMR_VERTRIEBSWEG " name="VERTRIEBSWEG" nullable="true" operator="=" type="id_String"/>
         <mapperTableEntries name="tContactExtTypeVORefID" nullable="true" type="id_Integer"/>
       </inputTables>
@@ -7645,6 +7655,9 @@
       <elementValue elementRef="TRACE_COLUMN" value="corresp_add_ind"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="hasPolicyInd"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
@@ -8524,13 +8537,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c8ef21d2-dd9a-45fd-a52f-855a3ed9ea57"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>TVfYoih+nFt9oT7hBic4GJ9WHnUC4zRtwSr5sxOYq0dXeSmkazfb2hjXAy2ljKBOeTH2Gf4lccor&#13;
-otVI/lvXjQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_79176510-dd83-4f66-9233-a0ad6d0fab79"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>BRPwNSNuT/BH2SObbd9dBtnBWW8pzD60qIqSckk+g5jJbKlyQrhjcnUKLqWlLQ4dW6UFd0rLExgF&#13;
-ISpVZWrzEg==</DigestValue></Reference></SignedInfo><SignatureValue>VDZ8j7zWjxnaNvy0VTNUuWbZVUi+oWAuqdcoCHfU7fc+40tZ/v09ptBq4c6APuy8/IEyo/kfLAev&#13;
-aj+dw5NchJDKS4fwHB9g9aUzPfvysrxO5TvxLYuPc2r0oT1EB/R2+cts8l/7H7F+S2/UQ550YAfM&#13;
-cgcZmJmbCB/b3wAtN/dE9mhFdrnT9bqO6CDWMF1WClliE7IRxUJUHNEkhHyV9Y0wNoxVBJjpbigH&#13;
-lY/Fyw1UCeJ5/1oU2yin9yDtWjK+/dWDsn/2d7hUGQ0fD9/ATpQLkHKSc5oYJWpithcY7K8nJbEX&#13;
-6C+EUi87WyCCUwnrOAXwIuEgopVX9Ae53IxtIQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_27006500-9ce0-40c5-84c7-7466d2b69278"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>mKtcjhzFOHpA8eLPbar6f107yuobLZLItmO0g45u5CIoX6oZ28wu+SdOsf2nv1DXbl9AbobrdY/8&#13;
+VhH8wC+4+g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_59119b89-383b-43d9-8265-751aa0fc7920"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>8wNtJIkdC4H2Yv5Dg8dpQNKjQ++RaiM0wkj3pLAIj7Ek5jCTL8wzG0P5PIjhDe5MeZSQZGUlYzip&#13;
+cR+Q4Zi6Kg==</DigestValue></Reference></SignedInfo><SignatureValue>VHN+Y62RJnD62ndssU16sAU3l0CfKdVQaeFIXpXKR1g4UymtsZkOacA89SwSvKJX3QVp62XVIP+/&#13;
+6KWIQ0SlXMQVp58nCVHxBvL05jMD+uvSOU/vP/V4iWN8e6h5KxcDPhNB2GZJXC4XdoDsFqR9RnW2&#13;
+naQ9p+lalCIPoU6g2GD/l3F/cfj8wNPH+7lkG/o7ZnqCfqTKASQwHjkZdOFYT2MDQDT0aQGPBkmQ&#13;
+x9iTd3tl2Ypm78pJ6+tqb0SJoM6nKuReyHZ9eKevwstoX+bIQVACMsAnyPEvoHM9mkpkxl8006yk&#13;
+MJ2CJo6/WdPrSudHxgphdsghY6O5SilYULuoRA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -8552,4 +8565,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_79176510-dd83-4f66-9233-a0ad6d0fab79" Target="#_c8ef21d2-dd9a-45fd-a52f-855a3ed9ea57"><Timestamp>2024-10-23 12:55:58</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_59119b89-383b-43d9-8265-751aa0fc7920" Target="#_27006500-9ce0-40c5-84c7-7466d2b69278"><Timestamp>2024-10-24 11:43:22</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
