@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="TEST" jobType="Standard" xmi:version="2.0">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><talendfile:ProcessType xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" xmlns:TalendMapper="http://www.talend.org/mapper" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" defaultContext="Default" jobType="Standard" xmi:version="2.0">
   <context confirmationNeeded="false" hide="false" name="Default">
     <contextParameter comment="" internalId="_j9r3ULdCEe2R4eKihpiCsQ" name="migrationID" prompt="migrationID?" promptNeeded="false" repositoryContextId="built-in" type="id_Integer" value="9681"/>
     <contextParameter comment="" internalId="_I6KHoMJbEe2EEMnnOmMtTQ" name="contact_type" prompt="contact_type?" promptNeeded="false" repositoryContextId="built-in" type="id_String" value="&quot;AGR&quot;"/>
@@ -1136,7 +1136,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT &#9;pg.POL_POLICEN_NR, pg.GFM_FELDMARK, pg.GEM_ANL_DATUM, pg.GEM_LFDNR, &#13;&#10;&#9;&#9;gf.VMR_VERMITTLER_NR, gf.GFM_ANL_DATUM, gf.GFM_AEN_DATUM, gf.GFM_NAME, &#13;&#10;&#9;&#9;gf.GFM_ANL_BENUTZER_ID, 0  as PARTNER_NR, &#13;&#10;   TRIM(LEADING '0' FROM pg.GFM_FELDMARK) AS community_id, &#13;&#10;&#9;&#9;pg.gem_storno &#13;&#10;FROM SEV.POLICE_GEMEINDE pg &#13;&#10;JOIN sev.GEMEINDE_FELDMARK gf ON gf.GFM_FELDMARK = pg.GFM_FELDMARK  &#13;&#10;JOIN K2V_DEV.ALL_DE_POLICY adp ON adp.BUNDLE_POLICY_ID = pg.POL_POLICEN_NR  &#13;&#10;WHERE ( pg.gem_storno IS NULL OR pg.gem_storno &gt;= timestamp '&quot;+context.borderDate+&quot;'    )&#13;&#10;AND EXISTS (SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS pms WHERE pms.BUNDLE_POLICY_ID = pg.POL_POLICEN_NR AND pms.MIGRATION_ID =  &quot;  +context.migrationID+&quot;)      &#13;&#10;ORDER BY pg.POL_POLICEN_NR  &#13;&#10;  &#13;&#10; &quot;&#13;&#10;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;SELECT &#9;pg.POL_POLICEN_NR, pg.GFM_FELDMARK, pg.GEM_ANL_DATUM, pg.GEM_LFDNR, &#13;&#10;&#9;&#9;gf.VMR_VERMITTLER_NR, gf.GFM_ANL_DATUM, gf.GFM_AEN_DATUM, gf.GFM_NAME, &#13;&#10;&#9;&#9;gf.GFM_ANL_BENUTZER_ID, 0  as PARTNER_NR, &#13;&#10;   TRIM(LEADING '0' FROM pg.GFM_FELDMARK) AS community_id, &#13;&#10;&#9;&#9;pg.gem_storno &#13;&#10;FROM SEV.POLICE_GEMEINDE pg &#13;&#10;JOIN sev.GEMEINDE_FELDMARK gf ON gf.GFM_FELDMARK = pg.GFM_FELDMARK  &#13;&#10;JOIN K2V_DEV.ALL_DE_POLICY adp ON adp.BUNDLE_POLICY_ID = pg.POL_POLICEN_NR  &#13;&#10;LEFT JOIN (&#13;&#10;&#9;&#9;SELECT pg.POL_POLICEN_NR, pg.GFM_FELDMARK, adp.ID_SEV_GEMEINDE_FELDMARK &#13;&#10;&#9;&#9;FROM SEV.POLICE_GEMEINDE pg &#13;&#10;&#9;&#9;LEFT JOIN K2V_DEV.ALL_DE_POSITION adp ON adp.BUNDLE_POLICY_ID = pg.POL_POLICEN_NR AND pg.GFM_FELDMARK = adp.ID_SEV_GEMEINDE_FELDMARK&#13;&#10;&#9;&#9;WHERE adp.POL_GUELTIG_AB &gt;= to_date((SELECT ADD_MONTHS(trunc(sysdate, 'YEAR'), - 24) FROM dual), 'DD.MM.YYYY')&#13;&#10;&#9;&#9;GROUP BY pg.POL_POLICEN_NR, pg.GFM_FELDMARK, adp.ID_SEV_GEMEINDE_FELDMARK&#13;&#10;&#9;&#9;ORDER BY pg.POL_POLICEN_NR, pg.GFM_FELDMARK, adp.ID_SEV_GEMEINDE_FELDMARK&#13;&#10;&#9; ) pos ON pos.POL_POLICEN_NR = pg.POL_POLICEN_NR AND pos.GFM_FELDMARK = pg.GFM_FELDMARK&#13;&#10;WHERE ( pg.gem_storno IS NULL OR pg.gem_storno &gt;= timestamp '&quot;+context.borderDate+&quot;'    )&#13;&#10;AND EXISTS (SELECT 1 FROM K2V_DEV.POLICY_MIGRATION_STATUS pms WHERE pms.BUNDLE_POLICY_ID = pg.POL_POLICEN_NR AND pms.MIGRATION_ID =  &quot;  +context.migrationID+&quot;)      &#13;&#10;ORDER BY pg.POL_POLICEN_NR  &#13;&#10;  &#13;&#10; &quot;&#13;&#10;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -2816,7 +2816,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" label="BUNDLE_OWN_CONTRIBUTION" name="out1">
+    <metadata comment="" connector="FLOW" label="BUNDLE_OWN_CONTRIBUTION" name="out1">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="false" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="60" name="CLAUSE_NAME" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="B_VER_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
@@ -2830,7 +2830,7 @@
       <column comment="" key="false" length="10" name="OWN_CONTRIBUTION_SELECT_W" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties shellMaximized="true"/>
+      <uiProperties/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" activateExpressionFilter="true" expressionFilter="row14.OUTPUT_VALUE != null &amp;&amp;  row14.OUTPUT_VALUE== (long) 1000002" id="_ihUwAJCBEe-YQPQchKch8g - BUNDLE_OWN_CONTRIBUTION" name="out1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row2.POLICE " name="POLICE" type="id_Long"/>
@@ -3511,14 +3511,14 @@
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_12" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_12" target="tRunJob_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk12"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbRow_6">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
-  </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbOutput_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_5" offsetLabelX="0" offsetLabelY="0" source="tDBInput_5" target="tHSQLDbRow_6">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
   </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_6" offsetLabelX="0" offsetLabelY="0" source="tDBInput_6" target="tMap_3">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -3553,13 +3553,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="DE_POLICY_HEADER"/>
   </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_6" target="tHSQLDbRow_3">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
+  </connection>
   <connection connectorName="FLOW" label="row13" lineStyle="0" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_6" target="tLogRow_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row13"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_6" target="tHSQLDbRow_3">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
   </connection>
   <connection connectorName="FLOW" label="cn_contact" lineStyle="8" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tMap_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -3681,13 +3681,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out_policy_bank_account_nr"/>
   </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_11" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_11" target="tHSQLDbRow_1">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk9"/>
+  </connection>
   <connection connectorName="FLOW" label="row22" lineStyle="0" metaname="tHSQLDbOutput_11" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_11" target="tLogRow_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row22"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_11" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_11" target="tHSQLDbRow_1">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk9"/>
   </connection>
   <connection connectorName="FLOW" label="row2" lineStyle="0" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tMap_7">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -3916,13 +3916,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_7a358f91-feb6-471f-80e6-d8eb58ffa24d"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>J2tZEUEWPKV/W6l7bjjJNytP+6B6OYTvhAJ1dnfhdkOjdz4i9hZCr+mW58+SLZL1QWiQusXkrTS4&#13;
-NgZHeWn26g==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_2814bac1-9290-47dd-9feb-148d2157155a"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>WQRo3S7V+fDz8KsZSlwLfV+6vrXqnskL6ohYpvW9LLJZfaRDERBi6e7qw/yBmB80kp+v6J0nWI9x&#13;
-dU/jJj0b4g==</DigestValue></Reference></SignedInfo><SignatureValue>h+2N0um7I4zP09n3bQl8XHxhi3GJRh3aImEjXepc15+pDsBK+6wXqH73TLlrWvwkpqF1Km3Ak3oY&#13;
-KgJ4POPkc6lfbiTeojQAqsz6AbQF0XfgN2lFnbIk/EwLmng2wC/lIujlYE2fBN0NYviV5Nuw9OPy&#13;
-hQkssSnr/U1u2/Pl8DV59mgSN+esZ2cwG60hFIK2U+zmcWujCBQYTMvMtqe3TcUubc4MJNdZasYD&#13;
-a907rnvY7lkSGsH8+ZEhyVP510zcVAbHYEv0SI6rPU0GkOURCZ344we3Jfk/c4rUknHSN7dFDd9W&#13;
-tLw/ww3EcbZ4/c8RqzSj/Mc5rPIzhwhOOnQI8w==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_bdcf6c6b-779d-4bbf-a900-f54c1de6c976"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>xCI3GJBvm+Z5eFqcuiLXPK3CTvwBaDa63BaukejOSU/A1RppIbjGJUY5hWr8+pc/XZv9KHicrTdY&#13;
+3mYq3xtbxQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_13a2b8eb-8192-4b92-837c-b0b78c2c2d3d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>db52qnsQYg7mq/wDNhOTPRT3hiSL7e4hOPMQPW4nfDeQUa2PbHfP4CJF4um6aO6XQpICMwKEGSV8&#13;
+F38WFhT3eA==</DigestValue></Reference></SignedInfo><SignatureValue>JONNI9jVt872aOEKhFRVrl4Ig0E4o2KSoM3amwhIq1bVsMAFKqyJddskfL6a3S7LSHp2g/N5nccW&#13;
+OAzPyEpurV2QiLR3e9cO2eU5qxtOQTKIgDmP7YHsBFtoBNI3i06z9ztCj5JFCUPl81A8aJ+pF2FO&#13;
+tMBFw5l4xpsK4uduaf0fi19O2mPNyIVHuTMjKyUv56VgNSXk75N+MdQfTH0HhGM8qR6q8mnERVz8&#13;
+XUaccQQH99jlxIzac+d7uBU/K1xkYWe7kffcCOjc66uHBylKUuMJI4LiPaO1c2/syIWpK8of+fpY&#13;
+7nm/lT9sY649WoMDfwFUjkNAsfT6h9NowHySUA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -3944,4 +3944,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_2814bac1-9290-47dd-9feb-148d2157155a" Target="#_7a358f91-feb6-471f-80e6-d8eb58ffa24d"><Timestamp>2024-10-23 13:27:13</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_13a2b8eb-8192-4b92-837c-b0b78c2c2d3d" Target="#_bdcf6c6b-779d-4bbf-a900-f54c1de6c976"><Timestamp>2024-10-24 08:21:50</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
