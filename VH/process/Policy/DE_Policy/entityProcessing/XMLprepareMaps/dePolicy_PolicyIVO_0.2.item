@@ -275,6 +275,7 @@
       <column comment="" key="false" length="10" name="coinsuranceCollectionArrangementVORef_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="coinsuranceCollectionArrangementVORef_DESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="coinsuranceLeadOfficeCommissionPercentage" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="annualRefuser" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties/>
@@ -357,6 +358,7 @@
         <mapperTableEntries name="coinsuranceCollectionArrangementVORef_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="coinsuranceCollectionArrangementVORef_DESC" nullable="true" type="id_String"/>
         <mapperTableEntries name="coinsuranceLeadOfficeCommissionPercentage" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="annualRefuser" nullable="true" type="id_Boolean"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="VERSIONS" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" type="id_String"/>
@@ -750,7 +752,7 @@
       <column comment="" key="false" length="10" name="out" nullable="true" originalLength="50" pattern="" precision="-1" sourceType="" type="id_Long" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1280" posY="224">
+  <node componentName="tFixedFlowInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1040" posY="280">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tFixedFlowInput_6"/>
     <elementParameter field="TEXT" name="NB_ROWS" value="1"/>
     <elementParameter field="RADIO" name="USE_SINGLEMODE" value="false"/>
@@ -855,7 +857,7 @@
       <column comment="" key="false" length="50" name="BANK_ACCOUNT_EXTERNAL_NUMBER" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1560" posY="400">
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1040" posY="480">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_5"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -1002,6 +1004,7 @@
       <column comment="" key="false" length="10" name="coinsuranceCollectionArrangementVORef_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="coinsuranceCollectionArrangementVORef_DESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="coinsuranceLeadOfficeCommissionPercentage" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="annualRefuser" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
@@ -1077,8 +1080,9 @@
         <mapperTableEntries expression="coinsurance.POLICE == null?null:(long)10001 " name="coinsuranceCollectionArrangementVORef_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="coinsurance.POLICE == null?null:&quot;10001&quot;" name="coinsuranceCollectionArrangementVORef_DESC" nullable="true" type="id_String"/>
         <mapperTableEntries expression="coinsurance.POLICE == null?null:(double)12" name="coinsuranceLeadOfficeCommissionPercentage" nullable="true" type="id_Double"/>
+        <mapperTableEntries expression="annual_refuser.POLICE == null?false:true" name="annualRefuser" nullable="true" type="id_Boolean"/>
       </outputTables>
-      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="policyIVO" sizeState="INTERMEDIATE">
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" minimized="true" name="policyIVO" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries name="LEGACY_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
@@ -1149,12 +1153,25 @@
         <mapperTableEntries name="coinsuranceCollectionArrangementVORef_ID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="coinsuranceCollectionArrangementVORef_DESC" nullable="true" type="id_String"/>
         <mapperTableEntries name="coinsuranceLeadOfficeCommissionPercentage" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="annualRefuser" nullable="true" type="id_Boolean"/>
       </inputTables>
       <inputTables activateCondensedTool="true" activateExpressionFilter="true" lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="coinsurance" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="policyIVO.LEGACY_ID " name="POLICE" nullable="true" operator="=" type="id_Long"/>
         <mapperTableEntries name="COINSURANCE_FLAG" nullable="true" type="id_Long"/>
         <mapperTableEntries expression="policyIVO.V_START_DATE " name="V_START_DATE" operator="=" type="id_Date"/>
         <mapperTableEntries expression="" name="POL_GUELTIG_AB" nullable="true" type="id_Date"/>
+      </inputTables>
+      <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="annual_refuser" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="policyIVO.LEGACY_ID " name="POLICE" nullable="true" operator="=" type="id_Long"/>
+        <mapperTableEntries name="REFUSER" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="VERTRAG_COUNT" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="ANNUAL_REFUSER" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="VERSION_DATE" type="id_Date"/>
+        <mapperTableEntries name="V_END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="B_VER_START_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="B_VER_END_DATE" nullable="true" type="id_Date"/>
+        <mapperTableEntries name="BUNDLE_VERSION" nullable="true" type="id_Long"/>
+        <mapperTableEntries name="BUNDLE_STATUS" nullable="true" type="id_String"/>
       </inputTables>
     </nodeData>
   </node>
@@ -1533,6 +1550,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="annualRefuser"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="XMLPolicyIVO"/>
@@ -1608,6 +1630,7 @@
       <column comment="" key="false" length="10" name="coinsuranceCollectionArrangementVORef_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="coinsuranceCollectionArrangementVORef_DESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="coinsuranceLeadOfficeCommissionPercentage" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="annualRefuser" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="XMLPolicyIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1680,11 +1703,12 @@
       <column comment="" key="false" length="10" name="coinsuranceCollectionArrangementVORef_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="50" name="coinsuranceCollectionArrangementVORef_DESC" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="coinsuranceLeadOfficeCommissionPercentage" nullable="true" pattern="" precision="0" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="-1" name="annualRefuser" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
-  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1480" posY="160">
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1520" posY="160">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_6"/>
     <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
     <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
@@ -1714,13 +1738,72 @@
       <elementValue elementRef="SCHEMA_COLUMN" value="POL_GUELTIG_AB"/>
       <elementValue elementRef="TRIM" value="false"/>
     </elementParameter>
-    <elementParameter field="TEXT" name="LABEL" value="&quot;BUNDLE_OWN_CONTRIBUTION&quot;"/>
+    <elementParameter field="TEXT" name="LABEL" value="BUNDLE_COINSURANCE_CHECK.POLICE"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" label="BUNDLE_COINSURANCE_CHECK" name="tHSQLDbInput_6">
       <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="COINSURANCE_FLAG" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="V_START_DATE" nullable="false" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="POL_GUELTIG_AB" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tHSQLDbInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1440" posY="480">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tHSQLDbInput_7"/>
+    <elementParameter field="CLOSED_LIST" name="RUNNING_MODE" value="HSQLDB_IN_MEMORY"/>
+    <elementParameter field="CHECK" name="TLS" show="false" value="false"/>
+    <elementParameter field="TEXT" name="HOST" show="false" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="PORT" show="false" value="&quot;9001&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" show="false" value="HSQLDB"/>
+    <elementParameter field="DIRECTORY" name="DBPATH" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="context.HQLDB_name"/>
+    <elementParameter field="TEXT" name="DATABASE_ALIAS" show="false" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;SA&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="enc:system.encryption.key.v1:lMFj+KllhPB/TfnE/2y0zriDApWtT33YZjR14Lgy"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:SCHEMA_TYPE" show="false" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="SCHEMA:REPOSITORY_SCHEMA_TYPE" show="false" value="_rnhJAJUiEe-X6crV6io0og - BUNDLE_ANNUAL_REFUSER"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;BUNDLE_ANNUAL_REFUSER&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;SELECT BUNDLE_ANNUAL_REFUSER.POLICE,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.REFUSER,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.VERTRAG_COUNT,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.ANNUAL_REFUSER,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.VERSION_DATE,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.V_END_DATE,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.B_VER_START_DATE,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.B_VER_END_DATE,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.BUNDLE_VERSION,&#10;&#9;&#9;BUNDLE_ANNUAL_REFUSER.BUNDLE_STATUS&#10;FROM&#9;BUNDLE_ANNUAL_REFUSER&#13;&#10; WHERE BUNDLE_ANNUAL_REFUSER.POLICE =   &quot; + context.LegacyID&#13;&#10;"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;BUNDLE_OWN_CONTRIBUTION&quot;"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="true"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN" show="false">
+      <elementValue elementRef="SCHEMA_COLUMN" value="POLICE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="REFUSER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERTRAG_COUNT"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="ANNUAL_REFUSER"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="VERSION_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="V_END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="B_VER_START_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="B_VER_END_DATE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_VERSION"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="BUNDLE_STATUS"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="&quot;BUNDLE_ANNUAL_REFUSER&quot;"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" label="BUNDLE_ANNUAL_REFUSER" name="tHSQLDbInput_7">
+      <column comment="" defaultValue="" key="false" length="10" name="POLICE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="REFUSER" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="VERTRAG_COUNT" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="ANNUAL_REFUSER" nullable="true" pattern="" precision="-1" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="VERSION_DATE" nullable="false" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="V_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="B_VER_START_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="0" name="B_VER_END_DATE" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="5" name="BUNDLE_VERSION" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
+      <column comment="" key="false" length="4" name="BUNDLE_STATUS" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
   </node>
   <node componentName="tJava" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="128" posY="32">
@@ -1808,6 +1891,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="coinsurance"/>
   </connection>
+  <connection connectorName="FLOW" label="annual_refuser" lineStyle="8" metaname="tHSQLDbInput_7" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbInput_7" target="tMap_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="annual_refuser"/>
+  </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" source="tJava_1" target="tHSQLDbInput_1">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk1"/>
@@ -1822,13 +1909,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_920cfbf3-f76c-465a-916d-12d4d08d53ba"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>9pFs3JDGlJRuqW/GA0sG9jIHp52TUq/dDaA4bG6k8sXGDXF4SrLX/hZMBKGqJ2IBmqAH0uF2gYzE&#13;
-RGCbU5+zMw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_068e1f08-5a7e-447a-8027-e11bc5b826df"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>crezlJXpFnQMMYIwLD3ToG9bRwwnhUMMhArn+w/KAPx7XFzdDMznOLwWo61CeLaInNU45m+kn6Xh&#13;
-a0C9++lZUQ==</DigestValue></Reference></SignedInfo><SignatureValue>HBq911BzXMri3kLAk5yL5eTIFOPkz4bCQo3PW4yM/ZXEexFHEmvabzr3uh+G6xiHGpe7I1g/dUJ+&#13;
-bLk8SVwRZMUpzGTn+aNpQMkzFoeVaF3KGCjHl6BV+fYtAU0V7JIvDELBtkudlp3wNMDzwkUzfp/K&#13;
-BhuyFh6BrU3X4pWr2/Lx3xB9W2AjOV/E1fBJlCMgh3VOQgIKM3vVDuwB2Cv1X6UAhEB2kYcTM1rL&#13;
-bdOS+X2Fn/VlioEL7c1vXgw/v0QEJHABc1UTfU/HQg11UIFOyhdxZxzbtcSCLFWJYxc9JKb63a0f&#13;
-tTS3O9OB3ca88NjjMQ0vKv6+r65yGT0aKqatnw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_36b45336-01aa-4fdf-b46f-bfe10c7b21d5"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>IbhJSDhw0SfFfH79UNHdWzOrcxZn3lnk9zSuZzq1mQhsNLVIqui3nJijhI+wUyPFnPW8ZjzQ4T1r&#13;
+viHUL1XThA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_ac20c887-b811-437f-8174-403d67d8f38d"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>3TnbLIUPr8Js0gCdecHHSPeihc0NEYNp8iee6kbRn9ljQP3wbDIAS9MxSh0jywkHu+WounSAl1M5&#13;
+mDg0qlvQzg==</DigestValue></Reference></SignedInfo><SignatureValue>pw6tPk3sLHfCrioBOgbsFMjpDyIMH5dckFI8OV7GMXzYXVyQxMkLp9ukdF94FtVYnXqWLQxAdv5P&#13;
+fhB/8/enk6N/AIrnozKuXjE8GXlZTBE2nlp+Qg7uJgUO6YYRXCLYpMxZBeCFDm+slK7XTRYjIx4C&#13;
+w05KYY0MC2YckeToZJnPNmzWRNGazXwMCiJ54B2qSy7PYIGVwrr7V0i195xXoZZk482VGOXe/wmk&#13;
++F5lcXNJRcpJp5XPzTEE02jG/F2DyVnBoWI1Bepo/L/W/GpWuNMJNQbDzMPXLYiI+xech82Mtc8e&#13;
+AYXvDJrk27w9DL8tbSosm0ZQ9PojvdKnPlzoZA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -1850,4 +1937,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_068e1f08-5a7e-447a-8027-e11bc5b826df" Target="#_920cfbf3-f76c-465a-916d-12d4d08d53ba"><Timestamp>2024-10-28 10:09:16</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_ac20c887-b811-437f-8174-403d67d8f38d" Target="#_36b45336-01aa-4fdf-b46f-bfe10c7b21d5"><Timestamp>2024-10-28 12:20:11</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
