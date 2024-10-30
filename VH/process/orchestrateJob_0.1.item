@@ -327,7 +327,6 @@
   </node>
   <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="544" posY="1152">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_8"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
@@ -349,7 +348,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH raster AS (&#13;&#10;SELECT vmp2.pra_provisionsraster_nr, vmp2.par_partner_nr&#13;&#10;        FROM sev.vm_provisionsraster vmp2,&#13;&#10;             sev.provisionsraster pra2&#13;&#10;       WHERE pra2.pra_region IS NULL&#13;&#10;         AND vmp2.pra_provisionsraster_nr = pra2.pra_provisionsraster_nr&#13;&#10;         AND vmp2.par_partner_nr =vmp2.PAR_PARTNER_NR&#13;&#10;         AND vmp2.vmo_konstellation_nr = 1&#13;&#10;         AND vmp2.vmo_gueltig_ab = (SELECT MAX(vmo_gueltig_ab)&#13;&#10;                                     FROM sev.vm_provisionsraster vmp1,&#13;&#10;                                          sev.provisionsraster pra1&#13;&#10;                                    WHERE vmp1.par_partner_nr = vmp2.PAR_PARTNER_NR&#13;&#10;                                      AND vmp1.vmo_konstellation_nr = 1&#13;&#10;                                      AND vmp1.pra_provisionsraster_nr = pra1.pra_provisionsraster_nr&#13;&#10;                                      AND pra1.pra_region IS NULL&#13;&#10;                                      AND vmp1.vmo_gueltig_ab &lt;= trunc(sysdate,'y'))&#13;&#10;)&#13;&#10;--scope vermittler&#13;&#10;Select DISTINCT vmr.PAR_PARTNER_NR , vmp.PRA_PROVISIONSRASTER_NR --, p.PRA_BEZEICHNUNG &#13;&#10;from sev.vm vmr &#13;&#10;INNER JOIN sev.VM_PROVISIONSRASTER vmp ON vmr.PAR_PARTNER_NR = vmp.PAR_PARTNER_NR&#13;&#10;INNER JOIN sev.PROVISIONSRASTER p ON vmp.PRA_PROVISIONSRASTER_NR = p.PRA_PROVISIONSRASTER_NR&#13;&#10;INNER JOIN raster rast ON vmp.PRA_PROVISIONSRASTER_NR = rast.pra_provisionsraster_nr AND vmp.PAR_PARTNER_NR=rast.par_partner_nr&#13;&#10;--nur Vermittler, keine AD und BV und BD&#13;&#10;where vmr.VMR_HIERARCHIE=1&#13;&#10;and ( vmr.VMR_ABLAUF_ZU_ARBEIT is NULL OR vmr.VMR_ABLAUF_ZU_ARBEIT &gt; CURRENT_TIMESTAMP )&#13;&#10;--kein Direktvertrieb&#13;&#10;-- JM and nvl(vmr.VMR_VERTRIEBSFORM,'leer')&lt;&gt;'Direktvertrieb'&#13;&#10;and nvl(vmr.VMR_VERTRIEBSFORM,'leer') IN ('Betreuer','Betreuer/ Tippgeber','HauptAgt','Makler','MehrfachAgt','NebenAgt','Tippgeber')&#13;&#10;and nvl(vmp.PRA_PROVISIONSRASTER_NR,'0') IN (&#13;&#10;'98','99','100','101','102','103','106','107','108','110','115','119',&#13;&#10;'120','122','123','125','128','130','131','134','135','138','139',&#13;&#10;'140','145','149','150','159','160','164','165','170','171','175',&#13;&#10;'179','180','181','182','183','184','185','186','188','190','191',&#13;&#10;'194','195','196','199','200','202'&#13;&#10;)&#13;&#10;and  (&#13;&#10;-- vmr. der Bd 101 bis 108 und kein ende-datum&#13;&#10;exists (select *&#13;&#10;from sev.partner par &#13;&#10;where par.PAR_PARTNER_NR= vmr.PAR_PARTNER_NR&#13;&#10;and vmr.VMR_ABLAUF_ZU_ARBEIT is null&#13;&#10;and par.PAR_PARTNER_NR_BD between 101 and 108)&#13;&#10; -- oder vmr ist in den letzten 10 jahren als Provisionsempfänger in VM_police &#13;&#10;or exists (SELECT *&#13;&#10;          FROM sev.vertrag ver ,&#13;&#10;               sev.police pol ,&#13;&#10;               SEV.VM_POLICE vmp&#13;&#10;         WHERE     ver.POL_GUELTIG_AB &gt;  timestamp '&quot;+context.borderDate+&quot;' &#13;&#10;                AND ver.VER_HISTORIE in('AN','HN')&#13;&#10;                AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;                and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;                and pol.POL_HISTORIE = 'AN'&#13;&#10;                and pol.POL_Police_TYP IN ('VH', 'KH')&#13;&#10;                AND vmp.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;               AND vmp.VER_VERTRAG_NR = ver.VER_VERTRAG_NR&#13;&#10;               AND vmp.POL_GUELTIG_AB &lt;= ver.POL_GUELTIG_AB&#13;&#10;               AND vmp.Vmp_UNGUELTIG_AB &gt; ver.POL_GUELTIG_AB&#13;&#10;               AND vmp.Vmp_HISTORIE &lt; 'HT'&#13;&#10;               AND vmp.Vmp_ZUSTAND = 'lebend'&#13;&#10;               AND vmp.VMR_VERMITTLER_NR = vmr.PAR_PARTNER_NR)&#13;&#10;--oder vermittler ist aktuell auf einem VN der in den letzten 10 jahren einen vertrag hat/hatte als betreuender Vermittler &#13;&#10; or exists(SELECT *&#13;&#10;          FROM sev.vertrag ver ,&#13;&#10;               sev.police pol,&#13;&#10;               sev.partner par &#13;&#10;         WHERE     ver.POL_GUELTIG_AB &gt;  timestamp '&quot;+context.borderDate+&quot;' &#13;&#10;                AND ver.VER_HISTORIE in('AN','HN')&#13;&#10;                AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;                and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;                and pol.POL_HISTORIE = 'AN'&#13;&#10;                and pol.POL_Police_TYP IN ('VH', 'KH')&#13;&#10;                and par.PAR_PARTNER_NR = pol.PAR_PARTNER_NR&#13;&#10;                and par.PAR_PARTNER_NR_VM=vmr.PAR_PARTNER_NR))&#13;&#10;--and exists (select 1 from k2v_dev.de_regression_scope drs where drs.par_partner_nr = vmr.PAR_PARTNER_NR and drs.isprimaryselection=1)&#13;&#10;&quot;&#13;&#10;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH raster AS (&#13;&#10;SELECT vmp2.pra_provisionsraster_nr, vmp2.par_partner_nr&#13;&#10;        FROM sev.vm_provisionsraster vmp2,&#13;&#10;             sev.provisionsraster pra2&#13;&#10;       WHERE pra2.pra_region IS NULL&#13;&#10;         AND vmp2.pra_provisionsraster_nr = pra2.pra_provisionsraster_nr&#13;&#10;         AND vmp2.par_partner_nr =vmp2.PAR_PARTNER_NR&#13;&#10;         AND vmp2.vmo_konstellation_nr = 1&#13;&#10;         AND vmp2.vmo_gueltig_ab = (SELECT MAX(vmo_gueltig_ab)&#13;&#10;                                     FROM sev.vm_provisionsraster vmp1,&#13;&#10;                                          sev.provisionsraster pra1&#13;&#10;                                    WHERE vmp1.par_partner_nr = vmp2.PAR_PARTNER_NR&#13;&#10;                                      AND vmp1.vmo_konstellation_nr = 1&#13;&#10;                                      AND vmp1.pra_provisionsraster_nr = pra1.pra_provisionsraster_nr&#13;&#10;                                      AND pra1.pra_region IS NULL&#13;&#10;                                      AND vmp1.vmo_gueltig_ab &lt;= trunc(sysdate,'y'))&#13;&#10;)&#13;&#10;--scope vermittler&#13;&#10;Select DISTINCT vmr.PAR_PARTNER_NR , vmp.PRA_PROVISIONSRASTER_NR --, p.PRA_BEZEICHNUNG &#13;&#10;from sev.vm vmr &#13;&#10;INNER JOIN sev.VM_PROVISIONSRASTER vmp ON vmr.PAR_PARTNER_NR = vmp.PAR_PARTNER_NR&#13;&#10;INNER JOIN sev.PROVISIONSRASTER p ON vmp.PRA_PROVISIONSRASTER_NR = p.PRA_PROVISIONSRASTER_NR&#13;&#10;INNER JOIN raster rast ON vmp.PRA_PROVISIONSRASTER_NR = rast.pra_provisionsraster_nr AND vmp.PAR_PARTNER_NR=rast.par_partner_nr&#13;&#10;--nur Vermittler, keine AD und BV und BD&#13;&#10;where vmr.VMR_HIERARCHIE=1&#13;&#10;and ( vmr.VMR_ABLAUF_ZU_ARBEIT is NULL OR vmr.VMR_ABLAUF_ZU_ARBEIT &gt; CURRENT_TIMESTAMP )&#13;&#10;--kein Direktvertrieb&#13;&#10;-- JM and nvl(vmr.VMR_VERTRIEBSFORM,'leer')&lt;&gt;'Direktvertrieb'&#13;&#10;and nvl(vmr.VMR_VERTRIEBSFORM,'leer') IN ('Betreuer','Betreuer/ Tippgeber','HauptAgt','Makler','MehrfachAgt','NebenAgt','Tippgeber')&#13;&#10;and nvl(vmp.PRA_PROVISIONSRASTER_NR,'0') IN (&#13;&#10;'98','99','100','101','102','103','106','107','108','110','115','119',&#13;&#10;'120','122','123','125','128','130','131','134','135','138','139',&#13;&#10;'140','145','149','150','159','160','164','165','170','171','175',&#13;&#10;'179','180','181','182','183','184','185','186','188','190','191',&#13;&#10;'194','195','196','199','200','202'&#13;&#10;)&#13;&#10;and  (&#13;&#10;-- vmr. der Bd 101 bis 108 und kein ende-datum&#13;&#10;exists (select *&#13;&#10;from sev.partner par &#13;&#10;where par.PAR_PARTNER_NR= vmr.PAR_PARTNER_NR&#13;&#10;and vmr.VMR_ABLAUF_ZU_ARBEIT is null&#13;&#10;and par.PAR_PARTNER_NR_BD between 101 and 108)&#13;&#10; -- oder vmr ist in den letzten 10 jahren als Provisionsempfänger in VM_police &#13;&#10;or exists (SELECT *&#13;&#10;          FROM sev.vertrag ver ,&#13;&#10;               sev.police pol ,&#13;&#10;               SEV.VM_POLICE vmp&#13;&#10;         WHERE     ver.POL_GUELTIG_AB &gt;  timestamp '&quot;+context.borderDate+&quot;' &#13;&#10;                AND ver.VER_HISTORIE in('AN','HN')&#13;&#10;                AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;                and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;                and pol.POL_HISTORIE = 'AN'&#13;&#10;                and pol.POL_Police_TYP IN ('VH', 'KH')&#13;&#10;                AND vmp.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;               AND vmp.VER_VERTRAG_NR = ver.VER_VERTRAG_NR&#13;&#10;               AND vmp.POL_GUELTIG_AB &lt;= ver.POL_GUELTIG_AB&#13;&#10;               AND vmp.Vmp_UNGUELTIG_AB &gt; ver.POL_GUELTIG_AB&#13;&#10;               AND vmp.Vmp_HISTORIE &lt; 'HT'&#13;&#10;               AND vmp.Vmp_ZUSTAND = 'lebend'&#13;&#10;               AND vmp.VMR_VERMITTLER_NR = vmr.PAR_PARTNER_NR)&#13;&#10;--oder vermittler ist aktuell auf einem VN der in den letzten 10 jahren einen vertrag hat/hatte als betreuender Vermittler &#13;&#10; or exists(SELECT *&#13;&#10;          FROM sev.vertrag ver ,&#13;&#10;               sev.police pol,&#13;&#10;               sev.partner par &#13;&#10;         WHERE     ver.POL_GUELTIG_AB &gt;  timestamp '&quot;+context.borderDate+&quot;' &#13;&#10;                AND ver.VER_HISTORIE in('AN','HN')&#13;&#10;                AND ver.VER_ZUSTAND = 'lebend'&#13;&#10;                and pol.POL_POLICEN_NR = ver.POL_POLICEN_NR&#13;&#10;                and pol.POL_HISTORIE = 'AN'&#13;&#10;                and pol.POL_Police_TYP IN ('VH', 'KH')&#13;&#10;                and par.PAR_PARTNER_NR = pol.PAR_PARTNER_NR&#13;&#10;                and par.PAR_PARTNER_NR_VM=vmr.PAR_PARTNER_NR))&#13;&#10;and exists (select 1 from k2v_dev.de_regression_scope drs where drs.par_partner_nr = vmr.PAR_PARTNER_NR and drs.isprimaryselection=1)&#13;&#10;&quot;&#13;&#10;"/>
     <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -381,7 +380,6 @@
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="896" posY="1152">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_4"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
@@ -455,7 +453,6 @@
   </node>
   <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="1184" posY="1152">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_4"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TEXT" name="PARALLELIZE_NUMBER" show="false" value="3"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
@@ -638,7 +635,6 @@
   </node>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="544" posY="1280">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_3"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="agr_MASTER_MigrateIntermediary"/>
@@ -2761,7 +2757,7 @@
       <elementValue elementRef="key" value="&quot;generateNewScopeFLG&quot;"/>
       <elementValue elementRef="value" value="&quot;false&quot;"/>
       <elementValue elementRef="key" value="&quot;contactFLG&quot;"/>
-      <elementValue elementRef="value" value="&quot;true&quot;"/>
+      <elementValue elementRef="value" value="&quot;false&quot;"/>
       <elementValue elementRef="key" value="&quot;brandCompanyFLG&quot;"/>
       <elementValue elementRef="value" value="&quot;false&quot;"/>
       <elementValue elementRef="key" value="&quot;contactRelationshipFLG&quot;"/>
@@ -2769,7 +2765,7 @@
       <elementValue elementRef="key" value="&quot;fieldpiecesFLG&quot;"/>
       <elementValue elementRef="value" value="&quot;false&quot;"/>
       <elementValue elementRef="key" value="&quot;intermediaryFLG&quot;"/>
-      <elementValue elementRef="value" value="&quot;false&quot;"/>
+      <elementValue elementRef="value" value="&quot;true&quot;"/>
       <elementValue elementRef="key" value="&quot;bundleFLG&quot;"/>
       <elementValue elementRef="value" value="&quot;false&quot;"/>
       <elementValue elementRef="key" value="&quot;contractFLG&quot;"/>
@@ -2861,6 +2857,7 @@
   </node>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="256" posY="448">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_8"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="checkMigrationID"/>
@@ -2900,6 +2897,7 @@
   </node>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="448" posY="576">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_9"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="agr_MASTER_MigrateContacts"/>
@@ -2930,6 +2928,7 @@
   </node>
   <node componentName="tOracleInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="448" posY="448">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBInput_2"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
@@ -2980,6 +2979,7 @@
   </node>
   <node componentName="tMap" componentVersion="2.1" offsetLabelX="0" offsetLabelY="0" posX="672" posY="448">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMap_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="EXTERNAL" name="MAP" value=""/>
     <elementParameter field="CLOSED_LIST" name="LINK_STYLE" value="AUTO"/>
     <elementParameter field="DIRECTORY" name="TEMPORARY_DATA_DIRECTORY" value=""/>
@@ -3052,6 +3052,7 @@
   </node>
   <node componentName="tOracleOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="960" posY="448">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tDBOutput_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
     <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" show="false" value="_tTaV8LnGEe2a4PO8eXSf6g"/>
     <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
@@ -3233,6 +3234,7 @@
   </node>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="672" posY="576">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="uploadToConvFolder"/>
@@ -3268,6 +3270,7 @@
   </node>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1240" posY="640">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_10"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="uploadToIDIT"/>
@@ -3312,7 +3315,6 @@
   </node>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="832" posY="1280">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_11"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="uploadToConvFolder"/>
@@ -3326,6 +3328,8 @@
     <elementParameter field="TABLE" name="CONTEXTPARAMS">
       <elementValue elementRef="PARAM_NAME_COLUMN" value="domainID"/>
       <elementValue elementRef="PARAM_VALUE_COLUMN" value="20"/>
+      <elementValue elementRef="PARAM_NAME_COLUMN" value="envName"/>
+      <elementValue elementRef="PARAM_VALUE_COLUMN" value="context.envName"/>
     </elementParameter>
     <elementParameter field="CHECK" name="PROPAGATE_CHILD_RESULT" value="false"/>
     <elementParameter field="CHECK" name="PRINT_PARAMETER" value="false"/>
@@ -3344,9 +3348,8 @@
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tRunJob_11"/>
   </node>
-  <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1088" posY="1344">
+  <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1280" posY="1360">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_12"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="uploadToIDIT"/>
@@ -3398,7 +3401,6 @@
   </node>
   <node componentName="tRunJob" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="320" posY="1152">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tRunJob_14"/>
-    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="CHECK" name="USE_DYNAMIC_JOB" value="false"/>
     <elementParameter field="TEXT" name="CONTEXT_JOB" show="false" value=""/>
     <elementParameter field="PROCESS_TYPE" name="PROCESS" value="checkMigrationID"/>
@@ -5566,6 +5568,7 @@
   </node>
   <node componentName="tMsgBox" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="960" posY="600">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMsgBox_1"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="false"/>
     <elementParameter field="TEXT" name="TITLE" value="&quot;Talend Open Studio&quot;"/>
     <elementParameter field="CLOSED_LIST" name="BUTTONS" value="4"/>
     <elementParameter field="CLOSED_LIST" name="ICON" value="QUESTION_MESSAGE"/>
@@ -5576,6 +5579,19 @@
     <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
     <metadata connector="FLOW" name="tMsgBox_1"/>
+  </node>
+  <node componentName="tMsgBox" componentVersion="0.101" offsetLabelX="0" offsetLabelY="0" posX="1080" posY="1280">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMsgBox_2"/>
+    <elementParameter field="TEXT" name="TITLE" value="&quot;Talend Open Studio&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="BUTTONS" value="4"/>
+    <elementParameter field="CLOSED_LIST" name="ICON" value="QUESTION_MESSAGE"/>
+    <elementParameter field="CHECK" name="ANSWER_MASK" show="false" value="false"/>
+    <elementParameter field="MEMO" name="QUESTION_LABEL" show="false" value="&quot;Question ?&quot;"/>
+    <elementParameter field="MEMO" name="MESSAGE" value="&quot;Upload to conv folder finished&quot;"/>
+    <elementParameter field="TEXT" name="LABEL" value="__UNIQUE_NAME__"/>
+    <elementParameter field="TEXT" name="HINT" value="&lt;b&gt;__UNIQUE_NAME__&lt;/b&gt;&lt;br&gt;__COMMENT__"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <metadata connector="FLOW" name="tMsgBox_2"/>
   </node>
   <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tPrejob_1" offsetLabelX="0" offsetLabelY="0" source="tPrejob_1" target="tDBConnection_1">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk1"/>
@@ -5593,14 +5609,12 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk14"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tRunJob_3">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk11"/>
-  </connection>
   <connection connectorName="FLOW" label="row10" lineStyle="0" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tMap_4">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row10"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_8" offsetLabelX="0" offsetLabelY="0" source="tDBInput_8" target="tRunJob_3">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk11"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfmain" lineStyle="0" metaname="copyOfmain" offsetLabelX="0" offsetLabelY="0" source="tMap_4" target="tDBOutput_4">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -5621,11 +5635,9 @@
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="copyOfmain"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_3" offsetLabelX="0" offsetLabelY="0" source="tRunJob_3" target="tJava_5">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_3" offsetLabelX="0" offsetLabelY="0" source="tRunJob_3" target="tRunJob_11">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk19"/>
   </connection>
   <connection connectorName="RUN_IF" label="If" lineStyle="6" metaname="tJava_4" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tJava_4" target="tJava_16">
@@ -5637,6 +5649,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="If19"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_7" offsetLabelX="0" offsetLabelY="0" source="tDBInput_7" target="tRunJob_4">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk22"/>
+  </connection>
   <connection connectorName="FLOW" label="row9" lineStyle="0" metaname="tDBInput_7" offsetLabelX="0" offsetLabelY="0" source="tDBInput_7" target="tMap_3">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="BUNDLE_POLICY_ID"/>
@@ -5646,10 +5662,6 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row9"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_7" offsetLabelX="0" offsetLabelY="0" source="tDBInput_7" target="tRunJob_4">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk22"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfout" lineStyle="0" metaname="copyOfout" offsetLabelX="0" offsetLabelY="0" source="tMap_3" target="tDBOutput_3">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -5666,34 +5678,29 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out"/>
   </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tHSQLDbOutput_6" target="tHSQLDbRow_1">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
-  </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tHSQLDbOutput_6" target="tJava_9">
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tHSQLDbOutput_6" target="tJava_9">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk4"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_6" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tHSQLDbOutput_6" target="tHSQLDbRow_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk3"/>
   </connection>
   <connection connectorName="FLOW" label="row12" lineStyle="8" metaname="tDBInput_9" offsetLabelX="0" offsetLabelY="0" source="tDBInput_9" target="tMap_5">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row12"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tLoop_2">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk24"/>
-  </connection>
   <connection connectorName="FLOW" label="row13" lineStyle="0" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tMap_6">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row13"/>
   </connection>
-  <connection connectorName="FLOW" label="packageSet2" lineStyle="0" metaname="packageSet2" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_6" target="tJavaRow_2">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_11" offsetLabelX="0" offsetLabelY="0" source="tDBInput_11" target="tLoop_2">
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="packageSet2"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk24"/>
   </connection>
-  <connection connectorName="FLOW" label="out1" lineStyle="0" metaname="out1" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_6" target="tDBOutput_5">
+  <connection connectorName="FLOW" label="out1" lineStyle="0" metaname="out1" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_6" target="tDBOutput_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="package_id"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
@@ -5703,9 +5710,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out1"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_12" offsetLabelX="0" offsetLabelY="0" source="tDBInput_12" target="tLoop_1">
+  <connection connectorName="FLOW" label="packageSet2" lineStyle="0" metaname="packageSet2" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_6" target="tJavaRow_2">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk37"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="packageSet2"/>
   </connection>
   <connection connectorName="FLOW" label="row14" lineStyle="0" metaname="tDBInput_12" offsetLabelX="0" offsetLabelY="0" source="tDBInput_12" target="tMap_7">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -5717,6 +5725,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row14"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_12" offsetLabelX="0" offsetLabelY="0" source="tDBInput_12" target="tLoop_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk37"/>
+  </connection>
   <connection connectorName="FLOW" label="out2" lineStyle="0" metaname="out2" offsetLabelX="1" offsetLabelY="18" source="tMap_7" target="tMap_15">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="package_id"/>
@@ -5727,12 +5739,7 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out2"/>
   </connection>
-  <connection connectorName="FLOW" label="packageSet" lineStyle="0" metaname="packageSet" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_15" target="tJavaRow_1">
-    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="packageSet"/>
-  </connection>
-  <connection connectorName="FLOW" label="out3" lineStyle="0" metaname="out3" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_15" target="tDBOutput_6">
+  <connection connectorName="FLOW" label="out3" lineStyle="0" metaname="out3" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tMap_15" target="tDBOutput_6">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="package_id"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
@@ -5741,6 +5748,11 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="out3"/>
+  </connection>
+  <connection connectorName="FLOW" label="packageSet" lineStyle="0" metaname="packageSet" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tMap_15" target="tJavaRow_1">
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="packageSet"/>
   </connection>
   <connection connectorName="FLOW" label="row19" lineStyle="8" metaname="tDBInput_17" offsetLabelX="0" offsetLabelY="0" source="tDBInput_17" target="tMap_15">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -5797,19 +5809,24 @@
   </connection>
   <connection connectorName="RUN_IF" label="If" lineStyle="6" metaname="tJava_1" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tJava_1" target="tRunJob_8">
     <elementParameter field="MEMO_JAVA" name="CONDITION" value="context.contactFLG"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="If2"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_8" offsetLabelX="0" offsetLabelY="0" source="tRunJob_8" target="tDBInput_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk45"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_9" offsetLabelX="0" offsetLabelY="0" source="tRunJob_9" target="tRunJob_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk72"/>
   </connection>
   <connection connectorName="FLOW" label="row8" lineStyle="0" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tMap_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row8"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tRunJob_9">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk43"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfcopyOfcopyOfmain" lineStyle="0" metaname="copyOfcopyOfcopyOfmain" offsetLabelX="9" offsetLabelY="-5" source="tMap_1" target="tDBOutput_1">
@@ -5819,12 +5836,15 @@
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="copyOfcopyOfcopyOfmain"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_1" offsetLabelX="0" offsetLabelY="0" source="tRunJob_1" target="tMsgBox_1">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk41"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_10" offsetLabelX="0" offsetLabelY="0" source="tRunJob_10" target="tJava_2">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk71"/>
   </connection>
   <connection connectorName="RUN_IF" label="If" lineStyle="6" metaname="tJava_2" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tJava_2" target="tJava_4">
@@ -5836,9 +5856,11 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="If5"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_11" offsetLabelX="0" offsetLabelY="0" source="tRunJob_11" target="tRunJob_12">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_11" offsetLabelX="0" offsetLabelY="0" source="tRunJob_11" target="tMsgBox_2">
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk17"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_12" offsetLabelX="0" offsetLabelY="0" source="tRunJob_12" target="tJava_5">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk73"/>
   </connection>
   <connection connectorName="RUN_IF" label="If" lineStyle="6" metaname="tJava_3" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tJava_3" target="tJava_5">
     <elementParameter field="MEMO_JAVA" name="CONDITION" value="!context.intermediaryFLG"/>
@@ -5846,7 +5868,6 @@
   </connection>
   <connection connectorName="RUN_IF" label="If" lineStyle="6" metaname="tJava_3" offsetLabelX="0" offsetLabelY="0" outputId="2" source="tJava_3" target="tRunJob_14">
     <elementParameter field="MEMO_JAVA" name="CONDITION" value="context.intermediaryFLG"/>
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="If9"/>
   </connection>
   <connection connectorName="RUN_IF" label="If" lineStyle="6" metaname="tJava_5" offsetLabelX="0" offsetLabelY="0" outputId="1" source="tJava_5" target="tJava_6">
@@ -5859,7 +5880,6 @@
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="If13"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_14" offsetLabelX="0" offsetLabelY="0" source="tRunJob_14" target="tDBInput_8">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk28"/>
   </connection>
   <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tRunJob_15" offsetLabelX="0" offsetLabelY="0" source="tRunJob_15" target="tDBInput_7">
@@ -5938,10 +5958,6 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk48"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tRunJob_26">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk54"/>
-  </connection>
   <connection connectorName="FLOW" label="row3" lineStyle="0" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tMap_2">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="VERTRAG"/>
@@ -5951,6 +5967,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row3"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_1" offsetLabelX="0" offsetLabelY="0" source="tDBInput_1" target="tRunJob_26">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk54"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfout1" lineStyle="0" metaname="copyOfout1" offsetLabelX="0" offsetLabelY="0" source="tMap_2" target="tDBOutput_2">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -5990,10 +6010,6 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk56"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tRunJob_30">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk60"/>
-  </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tMap_8">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="VERTRAG"/>
@@ -6006,6 +6022,10 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row4"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_3" offsetLabelX="0" offsetLabelY="0" source="tDBInput_3" target="tRunJob_30">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk60"/>
   </connection>
   <connection connectorName="FLOW" label="copyOfout1_0" lineStyle="0" metaname="copyOfout1_0" offsetLabelX="0" offsetLabelY="0" source="tMap_8" target="tDBOutput_7">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
@@ -6037,10 +6057,6 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk62"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_4" offsetLabelX="0" offsetLabelY="0" source="tDBInput_4" target="tRunJob_34">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk65"/>
-  </connection>
   <connection connectorName="FLOW" label="row5" lineStyle="0" metaname="tDBInput_4" offsetLabelX="0" offsetLabelY="0" source="tDBInput_4" target="tMap_11">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
       <elementValue elementRef="TRACE_COLUMN" value="VERTRAG"/>
@@ -6060,6 +6076,10 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row5"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tDBInput_4" offsetLabelX="0" offsetLabelY="0" source="tDBInput_4" target="tRunJob_34">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk65"/>
+  </connection>
   <connection connectorName="FLOW" label="copyOfout1_1" lineStyle="0" metaname="copyOfout1_1" offsetLabelX="0" offsetLabelY="0" source="tMap_11" target="tDBOutput_8">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
@@ -6077,15 +6097,15 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk66"/>
   </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tLoop_1" offsetLabelX="0" offsetLabelY="0" source="tLoop_1" target="tJava_7">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk32"/>
-  </connection>
   <connection connectorName="ITERATE" label="Iterate" lineStyle="7" metaname="tLoop_1" offsetLabelX="0" offsetLabelY="0" source="tLoop_1" target="tJava_13">
     <elementParameter field="CHECK" name="ENABLE_PARALLEL" value="false"/>
     <elementParameter field="TEXT" name="NUMBER_PARALLEL" show="false" value="2"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="iterate1"/>
+  </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tLoop_1" offsetLabelX="0" offsetLabelY="0" source="tLoop_1" target="tJava_7">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk32"/>
   </connection>
   <connection connectorName="ITERATE" label="Iterate" lineStyle="7" metaname="tJava_13" offsetLabelX="0" offsetLabelY="0" source="tJava_13" target="tDBRow_1">
     <elementParameter field="CHECK" name="ENABLE_PARALLEL" value="false"/>
@@ -6097,15 +6117,15 @@
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk6"/>
   </connection>
+  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tLoop_2" offsetLabelX="0" offsetLabelY="0" source="tLoop_2" target="tJava_10">
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk31"/>
+  </connection>
   <connection connectorName="ITERATE" label="Iterate" lineStyle="7" metaname="tLoop_2" offsetLabelX="0" offsetLabelY="0" source="tLoop_2" target="tJava_14">
     <elementParameter field="CHECK" name="ENABLE_PARALLEL" value="false"/>
     <elementParameter field="TEXT" name="NUMBER_PARALLEL" show="false" value="2"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="iterate2"/>
-  </connection>
-  <connection connectorName="SUBJOB_OK" label="OnSubjobOk" lineStyle="1" metaname="tLoop_2" offsetLabelX="0" offsetLabelY="0" source="tLoop_2" target="tJava_10">
-    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnSubjobOk31"/>
   </connection>
   <connection connectorName="ITERATE" label="Iterate" lineStyle="7" metaname="tJava_14" offsetLabelX="0" offsetLabelY="0" source="tJava_14" target="tDBRow_2">
     <elementParameter field="CHECK" name="ENABLE_PARALLEL" value="false"/>
@@ -6119,7 +6139,12 @@
   </connection>
   <connection connectorName="RUN_IF" label="If" lineStyle="6" metaname="tMsgBox_1" offsetLabelX="0" offsetLabelY="0" source="tMsgBox_1" target="tRunJob_10">
     <elementParameter field="MEMO_JAVA" name="CONDITION" value="((String)globalMap.get(&quot;tMsgBox_1_RESULT&quot;)).equals(&quot;0&quot;)"/>
+    <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="If32"/>
+  </connection>
+  <connection connectorName="RUN_IF" label="If" lineStyle="6" metaname="tMsgBox_2" offsetLabelX="0" offsetLabelY="0" source="tMsgBox_2" target="tRunJob_12">
+    <elementParameter field="MEMO_JAVA" name="CONDITION" value="((String)globalMap.get(&quot;tMsgBox_2_RESULT&quot;)).equals(&quot;0&quot;)"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="If33"/>
   </connection>
   <subjob>
     <elementParameter field="CHECK" name="SHOW_SUBJOB_TITLE" show="false" value="true"/>
@@ -6509,13 +6534,18 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_05272b3e-0dbd-4d04-b8b2-f4e309dd2917"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>InJKETxs+neBE60ZA7LoBDXPkxC6VMY9xjTQjl+LYxdHkyr9PK/F1XOhKdJjcuEzuknTJJOLCG8I&#13;
-HIJp9Y5VsQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_470650d5-cdd8-4eef-8531-93a5b505f734"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>jxERcdCrs0patPTcxvhkQ0o7oDtlq0Df98+SB69qdQu55EwRWVWm1QCBqD/MwbdHMTfd2O8NfuhA&#13;
-IYTku8Q5fA==</DigestValue></Reference></SignedInfo><SignatureValue>P0fliTgMX6Or1TVUFhc+/Wp1ElZYcZYMCA6RSIupfyzQS92+cI5TWSzX5hfGoGxAz95ecpdckm3h&#13;
-7Grzc4emgINrM/l1Xq+t757CZiM3tkcR+WRoQG0r/WoH5fCkVD3n2rn4gfeIi5Km25Sdz3T+7z26&#13;
-Ie5l0JYDiskjhSMOw/ez5fSbQfu8oisL8g0YDApcxXfahxmM7RgXZFIq7+eF2iEI4mNBaWaaipKK&#13;
-KaAUFT9g87rR4J1Aclv8S+/aGoXTgSzCyDXKCjGAlxsfZotdX2SoBVkAs/owf6tPoOBVsCstSgNc&#13;
-P7uosjQJKE/T4Nk1N6HdlQFI2VrvtcnwSbjyAw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="tMsgBox_2"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
+  </subjob>
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_13a65030-a52b-46c6-bde3-7043bb775e58"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>qSAzYrLs2e7eG4vwho5iIQdw+0pGanvf+KnF4pwfETwDMKFqVZEztfo8u6MZKJRw+Kt3f/FasV/r&#13;
+w7p8VxHrXw==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_a1cc980a-d74c-4a43-b154-6ed95fa917f2"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>SMhKyjrx/5uHbI2zTp157RFxqIujj8NUavgM/jeXFg70+F5Xa0xmm1pv4bbg2yWfu14h9faLO9WL&#13;
+AttH1+jCeg==</DigestValue></Reference></SignedInfo><SignatureValue>damF5WGhZWCeYTmMM+IOXdD5cppwBVS+rmkyrc5iMzonExFGFk/KpMigXeWeCiTfoDxSbTa+Wb5X&#13;
+wOqIpA1arLfgFYqWDicxgOnqbocq93Fda4aIv/MArVOVSgFca+4x2N1asA7pfClU5hkcFbK03X3G&#13;
+ZLe8L5nAMvwjd+KDguhgTH6dTYgksRH8nvCdam4ltWFLYHMNuUnBgphYgwemBhBWv3gRNhXi0U47&#13;
+K3tZMCnHqJ2+2RD4E4cEY+E9+k/ZESj5oM5xZR1TOKgEbcHvNs8DBmmSJ66yZHYzml/Q4iPEfo6x&#13;
+Usxz+gIUvRQKtQj5QWJXyw1rqrAwHtspaCQseg==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -6537,4 +6567,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_470650d5-cdd8-4eef-8531-93a5b505f734" Target="#_05272b3e-0dbd-4d04-b8b2-f4e309dd2917"><Timestamp>2024-10-30 08:31:09</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_a1cc980a-d74c-4a43-b154-6ed95fa917f2" Target="#_13a65030-a52b-46c6-bde3-7043bb775e58"><Timestamp>2024-10-30 14:32:16</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
