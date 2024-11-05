@@ -6567,7 +6567,7 @@
     <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" show="false" value=""/>
     <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
     <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
-    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH dat1 AS&#13;&#10;(&#13;&#10;SELECT &#9;gor.pol_policen_nr, gor.ver_vertrag_nr, gor.obj_objekt_nr, gor.GOR_RISIKO_TYP, gor.GOR_RISIKO_NR, rt.RIT_BEZEICHNUNG, gor.pol_gueltig_ab, &#13;&#10;(&#13;&#10;&#9;SELECT SUM(abr.abr_nettopraemie_diff)&#13;&#10;&#9;FROM sev.abrechnung abr&#13;&#10;&#9;WHERE abr.pol_policen_nr = gor.pol_policen_nr&#13;&#10;&#9;AND abr.ver_vertrag_nr = gor.ver_vertrag_nr&#13;&#10;&#9;AND abr.obj_objekt_nr = gor.obj_objekt_nr&#13;&#10;&#9;AND abr.gor_risiko_nr = gor.gor_risiko_nr&#13;&#10;) AS praemie,&#13;&#10;&#13;&#10;(&#13;&#10;&#9;SELECT SUM(av.avm_provision_diff)&#13;&#10;&#9;FROM sev.ABRECHNUNG_VM av &#13;&#10;&#9;WHERE av.pol_policen_nr = gor.pol_policen_nr&#13;&#10;&#9;AND av.ver_vertrag_nr = gor.ver_vertrag_nr&#13;&#10;&#9;AND av.obj_objekt_nr = gor.obj_objekt_nr&#13;&#10;&#9;AND av.gor_risiko_nr = gor.gor_risiko_nr&#13;&#10;) AS comm,&#13;&#10;(&#13;&#10;&#9;SELECT av.AVM_BERECHNUNGSGRUNDLAGE&#13;&#10;&#9;FROM sev.ABRECHNUNG_VM av &#13;&#10;&#9;WHERE av.pol_policen_nr = gor.pol_policen_nr&#13;&#10;&#9;AND av.ver_vertrag_nr = gor.ver_vertrag_nr&#13;&#10;&#9;AND av.obj_objekt_nr = gor.obj_objekt_nr&#13;&#10;&#9;AND av.gor_risiko_nr = gor.gor_risiko_nr&#13;&#10;&#9;GROUP BY av.AVM_BERECHNUNGSGRUNDLAGE&#13;&#10;) AS comm_type,&#13;&#10;gor.gor_vers_summe, adp.hektarwert&#13;&#10;&#13;&#10;FROM sev.gefahr_objekt_risiko gor&#9;&#13;&#10;JOIN K2V_DEV.ALL_DE_POSITION adp ON adp.bundle_policy_id = gor.pol_policen_nr AND gor.ver_vertrag_nr = adp.policy_id AND adp.position_id = gor.obj_objekt_nr AND adp.pol_gueltig_ab = gor.pol_gueltig_ab&#13;&#10;JOIN sev.RISIKO_TYP rt ON rt.RIT_RISIKO_TYP = gor.GOR_RISIKO_TYP&#13;&#10;WHERE gor.GOR_HISTORIE &lt;&gt; 'HT' AND gor.gor_zustand = 'lebend'&#13;&#10;ORDER BY gor.gor_vers_summe, gor.pol_policen_nr, gor.ver_vertrag_nr, gor.obj_objekt_nr, gor.gor_risiko_nr,&#13;&#10;&#9;&#9; gor.pol_gueltig_ab&#13;&#10;)&#13;&#10;&#13;&#10;SELECT &#9;cms.ENTITY_ID,  cms.BUNDLE_POLICY_ID, cms.POLICY_ID , cms.POSITION_ID, &#13;&#10;        dat1.pol_policen_nr, dat1.ver_vertrag_nr, dat1.obj_objekt_nr, dat1.GOR_RISIKO_TYP, dat1.GOR_RISIKO_NR, dat1.RIT_BEZEICHNUNG, dat1.pol_gueltig_ab, &#13;&#10;       CASE WHEN dat1.praemie&gt; 0  AND  dat1.gor_vers_summe &gt; 0 then (dat1.praemie / dat1.gor_vers_summe) * 100 ELSE 0 END AS praemiensatz, go2.GOB_OBJEKT_TYP, ot.OBT_BEZEICHNUNG &#13;&#10;FROM dat1&#13;&#10;INNER JOIN  K2V_DEV.POLICY_MIGRATION_STATUS cms  &#9;ON  dat1.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#9;and dat1.VER_VERTRAG_NR = cms.POLICY_ID     and dat1.OBJ_OBJEKT_NR = cms.POSITION_ID&#13;&#10;LEFT JOIN SEV.GEFAHR_OBJEKT go2 ON dat1.pol_policen_nr = go2.pol_policen_nr AND go2.ver_vertrag_nr = dat1.ver_vertrag_nr AND dat1.obj_objekt_nr = go2.obj_objekt_nr AND dat1.pol_gueltig_ab = go2.pol_gueltig_ab AND go2.GOB_HISTORIE &lt;&gt;'HT'&#13;&#10;LEFT JOIN sev.OBJEKT_TYP ot ON ot.OBT_OBJEKT_TYP = go2.GOB_OBJEKT_TYP &#13;&#10;WHERE 1=1 &#13;&#10;   AND cms.MIGRATION_STATUS  =100 &#13;&#10;      AND cms.MIGRATION_ID =  &quot;  + context.migrationID + &quot;&#13;&#10;ORDER BY dat1.pol_policen_nr, dat1.ver_vertrag_nr, dat1.obj_objekt_nr, dat1.gor_risiko_nr,&#13;&#10;&#9;&#9; dat1.pol_gueltig_ab&#13;&#10;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;&#13;&#10;WITH dat1 AS&#13;&#10;(&#13;&#10;SELECT &#9;gor.pol_policen_nr, gor.ver_vertrag_nr, gor.obj_objekt_nr, gor.GOR_RISIKO_TYP, gor.GOR_RISIKO_NR, rt.RIT_BEZEICHNUNG, gor.pol_gueltig_ab, &#13;&#10;(&#13;&#10;&#9;SELECT SUM(abr.abr_nettopraemie_diff)&#13;&#10;&#9;FROM sev.abrechnung abr&#13;&#10;&#9;WHERE abr.pol_policen_nr = gor.pol_policen_nr&#13;&#10;&#9;AND abr.ver_vertrag_nr = gor.ver_vertrag_nr&#13;&#10;&#9;AND abr.obj_objekt_nr = gor.obj_objekt_nr&#13;&#10;&#9;AND abr.gor_risiko_nr = gor.gor_risiko_nr&#13;&#10;) AS praemie,&#13;&#10;&#13;&#10;(&#13;&#10;&#9;SELECT SUM(av.avm_provision_diff)&#13;&#10;&#9;FROM sev.ABRECHNUNG_VM av &#13;&#10;&#9;WHERE av.pol_policen_nr = gor.pol_policen_nr&#13;&#10;&#9;AND av.ver_vertrag_nr = gor.ver_vertrag_nr&#13;&#10;&#9;AND av.obj_objekt_nr = gor.obj_objekt_nr&#13;&#10;&#9;AND av.gor_risiko_nr = gor.gor_risiko_nr&#13;&#10;) AS comm,&#13;&#10;(&#13;&#10;&#9;SELECT av.AVM_BERECHNUNGSGRUNDLAGE&#13;&#10;&#9;FROM sev.ABRECHNUNG_VM av &#13;&#10;&#9;WHERE av.pol_policen_nr = gor.pol_policen_nr&#13;&#10;&#9;AND av.ver_vertrag_nr = gor.ver_vertrag_nr&#13;&#10;&#9;AND av.obj_objekt_nr = gor.obj_objekt_nr&#13;&#10;&#9;AND av.gor_risiko_nr = gor.gor_risiko_nr&#13;&#10;&#9;GROUP BY av.AVM_BERECHNUNGSGRUNDLAGE&#13;&#10;) AS comm_type,&#13;&#10;gor.gor_vers_summe, adp.hektarwert&#13;&#10;&#13;&#10;FROM sev.gefahr_objekt_risiko gor&#9;&#13;&#10;JOIN K2V_DEV.ALL_DE_POSITION adp ON adp.bundle_policy_id = gor.pol_policen_nr AND gor.ver_vertrag_nr = adp.policy_id AND adp.position_id = gor.obj_objekt_nr AND adp.pol_gueltig_ab = gor.pol_gueltig_ab&#13;&#10;JOIN sev.RISIKO_TYP rt ON rt.RIT_RISIKO_TYP = gor.GOR_RISIKO_TYP&#13;&#10;WHERE gor.GOR_HISTORIE &lt;&gt; 'HT' AND gor.gor_zustand = 'lebend'&#13;&#10;ORDER BY gor.gor_vers_summe, gor.pol_policen_nr, gor.ver_vertrag_nr, gor.obj_objekt_nr, gor.gor_risiko_nr,&#13;&#10;&#9;&#9; gor.pol_gueltig_ab&#13;&#10;)&#13;&#10;&#13;&#10;SELECT &#9;cms.ENTITY_ID,  cms.BUNDLE_POLICY_ID, cms.POLICY_ID , cms.POSITION_ID, &#13;&#10;        dat1.pol_policen_nr, dat1.ver_vertrag_nr, dat1.obj_objekt_nr, dat1.GOR_RISIKO_TYP, dat1.GOR_RISIKO_NR, dat1.RIT_BEZEICHNUNG, dat1.pol_gueltig_ab, dat1.praemie, dat1.comm, dat1.comm_type, dat1.gor_vers_summe, dat1.hektarwert,&#13;&#10;&#13;&#10;       CASE WHEN dat1.praemie&gt; 0  AND  dat1.gor_vers_summe &gt; 0 then (dat1.praemie / dat1.gor_vers_summe) * 100 ELSE 0 END AS praemiensatz, go2.GOB_OBJEKT_TYP, ot.OBT_BEZEICHNUNG &#13;&#10;FROM dat1&#13;&#10;INNER JOIN  K2V_DEV.POLICY_MIGRATION_STATUS cms  &#9;ON  dat1.POL_POLICEN_NR = cms.BUNDLE_POLICY_ID &#9;and dat1.VER_VERTRAG_NR = cms.POLICY_ID     and dat1.OBJ_OBJEKT_NR = cms.POSITION_ID&#13;&#10;LEFT JOIN SEV.GEFAHR_OBJEKT go2 ON dat1.pol_policen_nr = go2.pol_policen_nr AND go2.ver_vertrag_nr = dat1.ver_vertrag_nr AND dat1.obj_objekt_nr = go2.obj_objekt_nr AND dat1.pol_gueltig_ab = go2.pol_gueltig_ab AND go2.GOB_HISTORIE &lt;&gt;'HT'&#13;&#10;LEFT JOIN sev.OBJEKT_TYP ot ON ot.OBT_OBJEKT_TYP = go2.GOB_OBJEKT_TYP &#13;&#10;WHERE 1=1 &#13;&#10;   AND cms.MIGRATION_STATUS  =100 &#13;&#10;      AND cms.MIGRATION_ID =  &quot;  + context.migrationID + &quot;&#13;&#10;ORDER BY dat1.pol_policen_nr, dat1.ver_vertrag_nr, dat1.obj_objekt_nr, dat1.gor_risiko_nr,&#13;&#10;&#9;&#9; dat1.pol_gueltig_ab&#13;&#10;&quot;"/>
     <elementParameter field="LABEL" name="NOTE" show="false" value="This option only applies when deploying and running in the Talend Runtime"/>
     <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" show="false" value="false"/>
     <elementParameter field="TEXT" name="DATASOURCE_ALIAS" show="false" value="&quot;&quot;"/>
@@ -6604,6 +6604,16 @@
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="POL_GUELTIG_AB"/>
       <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="PRAEMIE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="COMM"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="COMM_TYPE"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="GOR_VERS_SUMME"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="HEKTARWERT"/>
+      <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="PRAEMIENSATZ"/>
       <elementValue elementRef="TRIM" value="false"/>
       <elementValue elementRef="SCHEMA_COLUMN" value="GOB_OBJEKT_TYP"/>
@@ -6627,6 +6637,11 @@
       <column comment="" defaultValue="" key="false" length="3" name="GOR_RISIKO_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="POL_GUELTIG_AB" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="PRAEMIE" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="COMM" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="COMM_TYPE" nullable="true" originalLength="20" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="GOR_VERS_SUMME" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="HEKTARWERT" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="14" name="PRAEMIENSATZ" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOB_OBJEKT_TYP" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="OBT_BEZEICHNUNG" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -6647,6 +6662,11 @@
       <column comment="" defaultValue="" key="false" length="3" name="GOR_RISIKO_NR" nullable="false" originalLength="-1" pattern="" precision="0" sourceType="NUMBER" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="RIT_BEZEICHNUNG" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="0" name="POL_GUELTIG_AB" nullable="false" originalLength="-1" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATE" type="id_Date" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="PRAEMIE" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="COMM" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="20" name="COMM_TYPE" nullable="true" originalLength="20" pattern="" precision="-1" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="GOR_VERS_SUMME" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
+      <column comment="" key="false" length="14" name="HEKTARWERT" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="14" name="PRAEMIENSATZ" nullable="true" originalLength="14" pattern="" precision="2" sourceType="DOUBLE PRECISION" type="id_Double" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="GOB_OBJEKT_TYP" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="30" name="OBT_BEZEICHNUNG" nullable="true" originalLength="-1" pattern="" precision="0" sourceType="VARCHAR2" type="id_String" usefulColumn="true"/>
@@ -6666,7 +6686,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata connector="FLOW" name="out1">
+    <metadata comment="" label="POSITION_COVER_SELECTION_v139" name="out1">
       <column comment="" key="false" length="255" name="ENTITY_ID" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="10" name="BUNDLE_POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" defaultValue="" key="false" length="5" name="POLICY_ID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -6683,7 +6703,7 @@
       <column comment="" key="false" length="30" name="OBT_BEZEICHNUNG" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
       <outputTables activateCondensedTool="true" id="_vQ-WIJt8Ee-_5umlkMILbA - POSITION_COVER_SELECTION_v139" name="out1" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="row29.ENTITY_ID " name="ENTITY_ID" type="id_String"/>
@@ -6713,6 +6733,11 @@
         <mapperTableEntries name="GOR_RISIKO_NR" type="id_Long"/>
         <mapperTableEntries name="RIT_BEZEICHNUNG" nullable="true" type="id_String"/>
         <mapperTableEntries name="POL_GUELTIG_AB" type="id_Date"/>
+        <mapperTableEntries name="PRAEMIE" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="COMM" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="COMM_TYPE" nullable="true" type="id_String"/>
+        <mapperTableEntries name="GOR_VERS_SUMME" nullable="true" type="id_Double"/>
+        <mapperTableEntries name="HEKTARWERT" nullable="true" type="id_Double"/>
         <mapperTableEntries name="PRAEMIENSATZ" nullable="true" type="id_Double"/>
         <mapperTableEntries name="GOB_OBJEKT_TYP" nullable="true" type="id_String"/>
         <mapperTableEntries name="OBT_BEZEICHNUNG" nullable="true" type="id_String"/>
@@ -7027,13 +7052,13 @@
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="positions_legacy_selection"/>
   </connection>
-  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_9">
-    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk15"/>
-  </connection>
   <connection connectorName="FLOW" label="row19" lineStyle="0" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tFilterColumns_1">
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="CHECK" name="ACTIVATE" show="false" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row19"/>
+  </connection>
+  <connection connectorName="COMPONENT_OK" label="OnComponentOk" lineStyle="3" metaname="tHSQLDbOutput_1" offsetLabelX="0" offsetLabelY="0" source="tHSQLDbOutput_1" target="tHSQLDbRow_9">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="OnComponentOk15"/>
   </connection>
   <connection connectorName="FLOW" label="row4" lineStyle="0" metaname="tDBInput_2" offsetLabelX="0" offsetLabelY="0" source="tDBInput_2" target="tMap_5">
     <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER" show="false">
@@ -7594,6 +7619,21 @@
       <elementValue elementRef="TRACE_COLUMN" value="avm_provision_diff"/>
       <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
       <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="COMM_TYPE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="COMM"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="HEKTARWERT"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="PRAEMIE"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
+      <elementValue elementRef="TRACE_COLUMN" value="GOR_VERS_SUMME"/>
+      <elementValue elementRef="TRACE_COLUMN_CHECKED" value="true"/>
+      <elementValue elementRef="TRACE_COLUMN_CONDITION" value=""/>
     </elementParameter>
     <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
     <elementParameter field="TEXT" name="UNIQUE_NAME" show="false" value="row8"/>
@@ -7883,13 +7923,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c5a43141-01e7-4268-8f70-74869385fb98"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>FZ8yPUsOGb/YxtOdKeASTq15KgOydc6oZ8tcHHJa14m4JrOSCDQjgrxtcOOsfYpadKnnBf2IMZnW&#13;
-lyhu2VFFZA==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_e17796bd-0043-4b50-9a0d-9049f4b1ddf3"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>TXtiVqV6Il2+tAYDKQVy05ry09ZyHxSU56dei0kNIQdApR9I9F1mOzEh2PYo5f/KoGPesOyoPcIc&#13;
-Ri3OEKX+uA==</DigestValue></Reference></SignedInfo><SignatureValue>itB2aLcu49CS7qp6lHsPSrMKE13jyoSPr/L75JilD0IL3qYRGTTjsGePw79bEjnDEjrTi7Lu4Su9&#13;
-VqF6aUzlm3sCM68fOAc7Y+VAiN9z0iCKXj78Va9KN4vn9nJDa3BL8YRTa2zyuTFwWeZX2dPWXYlt&#13;
-/lJQNmnFg/p0lAy0RQHkji+yR17DeoRuZ6qmSG0zhWHwjImUT6uMX4hrJcN8NJc88zzr8RJTlgbU&#13;
-bmcP9L6cKjkymhZF/fwpfkyp63QZ3N3z1AT4EYirsqhW4VjtjZxWMXSTL5QNJMZwV5hLf02rUqJP&#13;
-P0lmlf7wDZ3m72HBM49nPL43sCyx9OxH6mugDQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_c9c16526-53b8-4372-956d-e4269033eb12"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>0JmfC1r1Z8wpt1qyGUVLLIWo0zJ3hPcOl7sBxCNsGahYgc/bb7RS3jD+n1FOB73oAXBCzlmbAn/m&#13;
+r+acBcVkZQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_63de8518-c35b-4dd6-8910-3f13bc354a91"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>HotRlIhRsSAw2o8Q1jWpdSJm0L+uU9KoeD3FkMgV/IC7/poHR0uUiFNG842xjBXaxg2FmvvBjgdq&#13;
+oPFvuzqIWQ==</DigestValue></Reference></SignedInfo><SignatureValue>YMZkhUvzm76gb0AQuCs9pCs7a9TfmNONaiffhWOCBgUcO84QYInGH3TJX7ZNWlhbV8eGgtkvEZ51&#13;
+NhUZ3bp/5Ia1xzx/9Z6FUXgFaVnQ0ysgwZMr+i1WkBaXXWCEs8v1y9yh2afklIy8+9QicYCGDEFv&#13;
+Ed0pVaggI0Y/oCiEVXQ9DPOTFr9ANOcJPbEyNkQJQP6eT9QZvPOZc8FM9OraPe7JNa6W0KFkNuVE&#13;
+YXVO/wUs8XBO27A/BzJgVQzROmrRR19SfltFVGLi7yq4Ue4YpYgegFOowSw8k4Q1NOyM6gC6n7Mm&#13;
+CXVE+lIiZX2XrxmhRbcJc8zWh140sapZXqM5NQ==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -7911,4 +7951,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_e17796bd-0043-4b50-9a0d-9049f4b1ddf3" Target="#_c5a43141-01e7-4268-8f70-74869385fb98"><Timestamp>2024-11-05 14:31:32</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_63de8518-c35b-4dd6-8910-3f13bc354a91" Target="#_c9c16526-53b8-4372-956d-e4269033eb12"><Timestamp>2024-11-05 15:01:10</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
