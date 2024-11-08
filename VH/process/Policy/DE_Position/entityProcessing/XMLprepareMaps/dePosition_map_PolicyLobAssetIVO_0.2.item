@@ -349,7 +349,7 @@
     <elementParameter field="TEXT" name="ROWS_BUFFER_SIZE" value="2000000"/>
     <elementParameter field="CHECK" name="CHANGE_HASH_AND_EQUALS_FOR_BIGDECIMAL" value="true"/>
     <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
-    <metadata comment="" connector="FLOW" label="PolicyLobAssetIVO" name="lobAssetIVO">
+    <metadata comment="" label="PolicyLobAssetIVO" name="lobAssetIVO">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="POLICE" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="10" name="VERTRAG" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
@@ -392,6 +392,7 @@
       <column comment="" key="false" length="10" name="hectarValueThresholdVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isShowJustification" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="monitoringExclusion" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <metadata connector="FLOW" label="logsGlobal" name="POL0083_CropType">
       <column comment="" key="false" length="-1" name="MIGRATION_ID" nullable="true" pattern="" precision="0" sourceType="INTEGER" type="id_Integer" usefulColumn="true"/>
@@ -450,7 +451,7 @@
       <column comment="" key="false" length="0" name="ERROR_TIMESTAMP" nullable="true" pattern="&quot;dd-MM-yyyy&quot;" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
-      <uiProperties/>
+      <uiProperties shellMaximized="true"/>
       <varTables name="Var" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="TalendDate.parseDate(&quot;yyyy-MM-dd 00:00:00&quot;,TalendDate.formatDate(&quot;yyyy-MM-dd 00:00:00&quot;, TalendDate.getCurrentDate() ) ) " name="v_current_timestamp" type="id_Date"/>
         <mapperTableEntries expression="POSITIONS.FIELD_NAME==null?POSITIONS.FIELD_NAME_1:POSITIONS.FIELD_NAME " name="v_field_name" type="id_String"/>
@@ -500,6 +501,7 @@
         <mapperTableEntries name="hectarValueThresholdVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isShowJustification" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="POSITIONS.Monitoring " name="monitoringExclusion" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="POSITIONS.HEKTARWERT " name="HEKTARWERT" nullable="true" type="id_Double"/>
       </outputTables>
       <outputTables activateExpressionFilter="true" expressionFilter="crop_type.out_desc == null" name="POL0083_CropType" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="context.migrationID" name="MIGRATION_ID" nullable="true" type="id_Integer"/>
@@ -1368,10 +1370,13 @@
       <column comment="" key="false" length="10" name="hectarValueThresholdVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isShowJustification" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="monitoringExclusion" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <nodeData xsi:type="TalendMapper:MapperData">
       <uiProperties shellMaximized="true"/>
-      <varTables minimized="true" name="Var" sizeState="INTERMEDIATE"/>
+      <varTables name="Var" sizeState="INTERMEDIATE">
+        <mapperTableEntries expression="lobAssetIVO.HEKTARWERT &gt; idit_hectare_thr.max_value  || lobAssetIVO.HEKTARWERT &lt; idit_hectare_thr.min_value ?true:false; " name="l_justification" type="id_Boolean"/>
+      </varTables>
       <outputTables activateCondensedTool="true" id="_OhlOIMv_Ee6X846F-8kDSg - PolicyLobAssetIVO" name="lobAssetIvo_2" sizeState="INTERMEDIATE">
         <mapperTableEntries expression="lobAssetIVO.ENTITY_ID" name="ENTITY_ID" nullable="true" type="id_String"/>
         <mapperTableEntries expression="lobAssetIVO.POLICE" name="POLICE" nullable="true" type="id_Long"/>
@@ -1413,8 +1418,9 @@
         <mapperTableEntries expression="lobAssetIVO.hbv" name="hbv" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="" name="hectareValueJustification" nullable="true" type="id_String"/>
         <mapperTableEntries expression="idit_hectare_thr.id " name="hectarValueThresholdVORefID" nullable="true" type="id_Long"/>
-        <mapperTableEntries expression="" name="isShowJustification" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries expression="Var.l_justification " name="isShowJustification" nullable="true" type="id_Boolean"/>
         <mapperTableEntries expression="lobAssetIVO.monitoringExclusion" name="monitoringExclusion" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries name="HEKTARWERT" nullable="true" type="id_Double"/>
       </outputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="lobAssetIVO" sizeState="INTERMEDIATE">
         <mapperTableEntries name="ENTITY_ID" nullable="true" type="id_String"/>
@@ -1459,6 +1465,7 @@
         <mapperTableEntries name="hectarValueThresholdVORefID" nullable="true" type="id_Long"/>
         <mapperTableEntries name="isShowJustification" nullable="true" type="id_Boolean"/>
         <mapperTableEntries name="monitoringExclusion" nullable="true" type="id_Boolean"/>
+        <mapperTableEntries name="HEKTARWERT" nullable="true" type="id_Double"/>
       </inputTables>
       <inputTables lookupMode="LOAD_ONCE" matchingMode="UNIQUE_MATCH" name="idit_hectare_thr" sizeState="INTERMEDIATE">
         <mapperTableEntries name="id" nullable="true" type="id_Long"/>
@@ -1704,6 +1711,11 @@
       <elementValue elementRef="DELETE_KEY" value="false"/>
       <elementValue elementRef="UPDATABLE" value="true"/>
       <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="HEKTARWERT"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
     </elementParameter>
     <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
     <elementParameter field="TEXT" name="LABEL" value="&quot;PolicyLobAssetIVO&quot;"/>
@@ -1751,6 +1763,7 @@
       <column comment="" key="false" length="10" name="hectarValueThresholdVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isShowJustification" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="monitoringExclusion" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
     </metadata>
     <metadata connector="REJECT" label="PolicyLobAssetIVO" name="REJECT">
       <column comment="" key="false" length="50" name="ENTITY_ID" nullable="true" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
@@ -1795,6 +1808,7 @@
       <column comment="" key="false" length="10" name="hectarValueThresholdVORefID" nullable="true" pattern="" precision="0" sourceType="BIGINT" type="id_Long" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="isShowJustification" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
       <column comment="" key="false" length="-1" name="monitoringExclusion" nullable="true" pattern="" precision="0" sourceType="BOOLEAN" type="id_Boolean" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="14" name="HEKTARWERT" nullable="true" pattern="" precision="2" sourceType="DOUBLE" type="id_Double" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
       <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" originalLength="-1" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
     </metadata>
@@ -2113,13 +2127,13 @@
     <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" show="false" value="0;0;0"/>
     <elementParameter field="COLOR" name="SUBJOB_COLOR" value="247;247;247"/>
   </subjob>
-<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_70542148-6f2f-4208-890e-42e82c206fd8"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>fO8LHsC/0O45+nBVEgKaN/MGKN/l5/1ycFXErebofeCsbPIkivy93ZIbCetM24cmtzxfkzeC/foO&#13;
-tr0lf0iVRQ==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_74341e00-05c4-4313-a1d5-2496148659c4"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>dzNcPI2gLeLecag3uWGfo+caExgzZPteQfK256dgS9m/anM97kc0lKE9L1R+nF8pZe43V2vpP2ZB&#13;
-SbRRfKxJjw==</DigestValue></Reference></SignedInfo><SignatureValue>ZCV8n+ennzRv+twtP76xGZOTy2fSvaeb2drYPN+zPY6zSM0KrJ8iBOl8c3GtqtPVFdHbnWMcru7q&#13;
-Gu6OMGICNSOms6/+v4AhhZLle5tgvVbLz2A5lvd5uJNbwGzQsamCX/MYgK9cAAXfvRchkS+dznbF&#13;
-Wfe87rB+gbY51xEf/OnOLm+EPu/YLPs8AP+hJzXzbpe3TE2vLWRUBSxZK/wO3ady8TnuidTzT8S7&#13;
-BmUNhs4J7E4Tfi0b+RsbLJ2iXvh9rzH14b93fhj2TOJH9AVfjAIZvhK1IVc2BqKOiDznyHRF1pJQ&#13;
-/8b0AbUfEELNOu8wU7YGeuNTfJvYwG1TXjvaPw==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
+<Signature xmlns="http://www.w3.org/2000/09/xmldsig#" Id="_ad739855-ff96-4847-971d-1fdf2ac76cb2"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha512"/><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>Tgk6vDP8/ZkFp5ti3FRHJrGtpHPeRXO1CHMX/fPRQTTvlsAl5jFWgYeb0I4B4bUZL+bST8I46kQV&#13;
+VajVYe/90w==</DigestValue></Reference><Reference Type="http://www.w3.org/2000/09/xmldsig#SignatureProperties" URI="#_8ad9a351-d7e1-4a6f-959d-52e8ee8d9c78"><Transforms><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha512"/><DigestValue>i5bkyQpFOlixCKw7PpdJ5lIk3fzdI7jdHgkj+X07MZikgYVEz2WgmQlve6UEIPCEjaK5Jpb+a0NZ&#13;
+aX4CvcI4NQ==</DigestValue></Reference></SignedInfo><SignatureValue>KxiXWiu0x7m7/mJzYQd2KD+/mgv0pmHQ+bWCBHnaT4BkSqdCTPhukFO7nsYtGvzpUjl19l/iqbZg&#13;
+lNn7W5MAKMutuckLwGgSXxshnECQpebNnRff68et3gO1b/tMWgVyW7OxnMH0W6IJ2FVJD20XnYNZ&#13;
+Ih9Okt0HSfy0vaUraOQmL1BNafuiNIu0Ft8uMgBIVe3RPCkslWaU1zNXidyZq6clOmn5wtjN9fUa&#13;
+3QXSk6FpY2i8hk59IwIcLyv82UmBK4dWKd00+311MxTbxmXwcUyULID/nd7qKMaLrrMPBIqa4WDw&#13;
+tubFFWA3rxwDBzu23E5zz7s1cl53YawIgWiOfA==</SignatureValue><KeyInfo><X509Data><X509SubjectName>C=FR,ST=Paris,L=Paris,O=Talend Inc.,OU=R&amp;D,CN=Talend Code Signing certificate</X509SubjectName><X509Certificate>MIIFADCCAuigAwIBAgIIA2OsD6bRyj0wDQYJKoZIhvcNAQELBQAwgY0xCzAJBgNVBAYTAkZSMQ4w&#13;
 DAYDVQQIEwVQYXJpczEOMAwGA1UEBxMFUGFyaXMxFDASBgNVBAoTC1RhbGVuZCBJbmMuMQwwCgYD&#13;
 VQQLDANSJkQxFjAUBgNVBAMMDVRhbGVuZCBSJkQgQ0ExIjAgBgkqhkiG9w0BCQEWE3NlY3VyaXR5&#13;
 QHRhbGVuZC5jb20wHhcNMTkwNjAzMDgxODIwWhcNMjkwNjAzMDAwMDAwWjB7MSgwJgYDVQQDEx9U&#13;
@@ -2141,4 +2155,4 @@ hakvpzhOyLo91h8YAQrEZJdNuKA8IYmBrFZQZDCz0uywKSyFfzPyJhvxylCLG/iDPPfE0VWcrMJ/&#13
 WQJly/2XPg/NBCTF3pSKS0kCiA7PeaI3cWkMYYA3PMwYDvzqs1opBRglG7ikj0bQxSm3lcjMuuvW&#13;
 gBRksFKjP3K/nztsjSoYITOM9jR29ReIL3v0E8RbAFwA2RGq6Dxd0ixfbucMesy5Gnr8tfYy6rW+&#13;
 qSQqd3ah4+PSzBNVwIB4ytpdrG3SlhCI2i2Th8ek8Sjsaquh9qPAerWNd2+84HWOOGj1Xe1qc6vg&#13;
-qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_74341e00-05c4-4313-a1d5-2496148659c4" Target="#_70542148-6f2f-4208-890e-42e82c206fd8"><Timestamp>2024-11-08 09:57:28</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
+qqu6JoK9EXKDiwBqDVkueIa+MhamE1VDnhn2pPui</X509Certificate></X509Data></KeyInfo><Object><SignatureProperties><SignatureProperty Id="_8ad9a351-d7e1-4a6f-959d-52e8ee8d9c78" Target="#_ad739855-ff96-4847-971d-1fdf2ac76cb2"><Timestamp>2024-11-08 10:48:00</Timestamp></SignatureProperty></SignatureProperties></Object></Signature></talendfile:ProcessType>
